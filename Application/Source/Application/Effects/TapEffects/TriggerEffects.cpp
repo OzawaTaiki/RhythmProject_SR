@@ -38,7 +38,7 @@ void TriggerEffects::Initialize()
 void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
 {
     ParticleRenderSettings settings;
-    settings.blendMode = BlendMode::Add;
+    settings.blendMode = PSOFlags::BlendMode::Add;
     settings.cullBack = false;
 
     {// 中心のやつ

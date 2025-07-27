@@ -7,7 +7,7 @@ SamplerState gSampler : register(s0);
 cbuffer gConstants : register(b0)
 {
     float intensity; // グレースの強度
-    
+
     float3 padding; // パディング
 };
 

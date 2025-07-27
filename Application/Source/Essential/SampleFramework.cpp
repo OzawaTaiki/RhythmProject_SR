@@ -65,11 +65,8 @@ void SampleFramework::Draw()
 
     textRenderer_->EndFrame();
 
-    PSOManager::GetInstance()->SetPipeLineStateObject(PSOFlags::Type::Composite);
-    PSOManager::GetInstance()->SetRootSignature(PSOFlags::Type::Composite);
 
     LayerSystem::CompositeAllLayers("default");
-    particleManager_->DrawParticles();
 
     dxCommon_->PreDraw();
     // スワップチェインに戻す

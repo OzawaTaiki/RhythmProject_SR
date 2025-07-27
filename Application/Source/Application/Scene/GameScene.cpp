@@ -135,8 +135,9 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     LayerSystem::CreateLayer("GameEnvironment", 0);
     LayerSystem::CreateLayer("GameCore", 1);
-    LayerSystem::CreateLayer("FeedbackEffect", 2);
-    LayerSystem::CreateOutputLayer("effect");
+    LayerSystem::CreateLayer("FeedbackEffect", 2, PSOFlags::BlendMode::Add);
+    LayerSystem::CreateOutputLayer("Vignette");
+    LayerSystem::CreateOutputLayer("DepthOutline");
 
 
     depthBasedOutLine_ = std::make_unique<DepthBasedOutLine>();
@@ -248,13 +249,13 @@ void GameScene::Draw()
     gameEnvironment_->Draw(&SceneCamera_);
 
     //LayerSystem::ApplyPostEffect("GameEnvironment", "effect", boxFilter_.get());
-    feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "GameCore");
+    feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("GameCore");
     gameCore_->Draw(&SceneCamera_);
 
-    LayerSystem::ApplyPostEffect("GameCore", "FeedbackEffect", depthBasedOutLine_.get());
+    LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
     Sprite::PreDraw();
 
     gameUI_->Draw(); // UIの描画
@@ -262,6 +263,7 @@ void GameScene::Draw()
 
     LayerSystem::SetLayer("FeedbackEffect");
     feedbackEffect_->Draw();
+    particleSystem_->DrawParticles();
 
 }
 

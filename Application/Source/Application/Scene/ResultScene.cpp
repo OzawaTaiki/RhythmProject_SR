@@ -64,6 +64,7 @@ void ResultScene::Initialize(SceneData* _sceneData)
 
     LayerSystem::CreateLayer("GameEnvironment", 0);
     LayerSystem::CreateLayer("Main", 1);
+    LayerSystem::CreateOutputLayer("BoxFilter");
 }
 
 void ResultScene::Update()
@@ -115,7 +116,7 @@ void ResultScene::Draw()
 
     gameEnvironment_->Draw(&SceneCamera_);
 
-    LayerSystem::ApplyPostEffect("GameEnvironment", "Main", boxFilter_.get());
+    LayerSystem::ApplyPostEffect("GameEnvironment", "BoxFilter", boxFilter_.get());
 
     LayerSystem::SetLayer("Main");
 

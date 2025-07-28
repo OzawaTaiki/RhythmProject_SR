@@ -14,7 +14,7 @@ public:
     LaneEffect() = default;
     ~LaneEffect() = default;
 
-    void Initialize(const Vector3& _laneCenter,Model* _planeModel);
+    void Initialize(uint32_t _laneIndex, const std::string&  _model);
 
     void Update(float _deltaTime);
 
@@ -40,5 +40,8 @@ private:
     Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f }; // エフェクトの色
 
     std::unique_ptr<ObjectModel> laneModel_;
+
+    static Vector4 defoultColor_;
+    static uint32_t textureHandle_; // テクスチャハンドル
 
 };

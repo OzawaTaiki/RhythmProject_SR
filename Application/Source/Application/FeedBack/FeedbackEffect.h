@@ -5,8 +5,12 @@
 #include <Application/FeedBack/JudgeEffect/JudgeEffect.h>
 #include <Application/FeedBack/JudgeText/JudgeText.h>
 #include <Application/FeedBack/MissedVignette/MissedVignette.h>
+#include <Application/FeedBack/LaneEffect/LaneEffect.h>
+
+#include <Application/Input/InputData.h>
 
 #include <memory>
+#include <cstdint>
 #include <vector>
 #include <list>
 #include <bitset>
@@ -21,8 +25,8 @@ public:
     FeedbackEffect() = default;
     ~FeedbackEffect() = default;
 
-    void Initialize(Camera* _camera);
-    void Update();
+    void Initialize(Camera* _camera, int32_t _laneCount);
+    void Update(float _deltaTime, const std::vector<InputDate>& _inputData);
     void Draw();
 
     /// <summary>
@@ -68,6 +72,9 @@ private:
 
     /// ミス時のエフェクト
     std::unique_ptr<MissedVignette> missedVignette_; // ミス時のビネットエフェクト
+
+    /// レーンエフェクト
+    std::vector<std::unique_ptr<LaneEffect>> laneEffects_; // レーンごとのエフェクト
 
     /// UI
 

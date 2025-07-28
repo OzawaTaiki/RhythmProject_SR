@@ -98,7 +98,7 @@ void GameScene::Initialize(SceneData* _sceneData)
     beatManager_->Initialize(100);
 
     feedbackEffect_ = std::make_unique<FeedbackEffect>();
-    feedbackEffect_->Initialize(&SceneCamera_);
+    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount());
 
     gameEnvironment_ = std::make_unique<GameEnvironment>();
     gameEnvironment_->Initialize();
@@ -193,7 +193,7 @@ void GameScene::Update()
     gameInputManager_->Update(); // 入力更新
     beatManager_->Update();
     gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
-    feedbackEffect_->Update();
+    feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
     gameEnvironment_->Update(deltaTime);
     gameUI_->Update(gameCore_->GetCombo()); // コンボ値をUIに渡す
 
@@ -255,15 +255,17 @@ void GameScene::Draw()
     LayerSystem::SetLayer("GameCore");
     gameCore_->Draw(&SceneCamera_);
 
-    LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
     Sprite::PreDraw();
 
     gameUI_->Draw(); // UIの描画
 
 
+    ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("FeedbackEffect");
     feedbackEffect_->Draw();
     particleSystem_->DrawParticles();
+
+    LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
 
 }
 
@@ -291,7 +293,7 @@ void GameScene::GenerateModels()
     plane_py01.SetSize(Vector2(1.0f, 1.0f));
     plane_py01.SetNormal(Vector3(0, 1, 0));
     plane_py01.SetPivot(Vector3(0, 1, 0));
-
+    plane_py01.SetFlipV(true);
     plane_py01.Generate("pY1x1p01Plane");// y+向き 1x1 pivot(0,1,0)
 
 

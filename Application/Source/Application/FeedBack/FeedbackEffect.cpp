@@ -1,8 +1,9 @@
 #include "FeedbackEffect.h"
 
 #include <Features/Camera/Camera/Camera.h>
+#include <Framework/LayerSystem/LayerSystem.h>
 
-void FeedbackEffect::Initialize(Camera* _camera)
+void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount)
 {
     if (_camera)
         camera_ = _camera;
@@ -23,9 +24,19 @@ void FeedbackEffect::Initialize(Camera* _camera)
     missedVignette_ = std::make_unique<MissedVignette>();
     missedVignette_->Initialize();
 
+
+    for (int32_t i = 0; i < _laneCount; ++i)
+    {
+        auto laneEffect = std::make_unique<LaneEffect>();
+        laneEffect->Initialize(i, "pY1x1p01Plane");
+
+        laneEffects_.push_back(std::move(laneEffect)); // レーンエフェクトを追加
+    }
+
 }
 
-void FeedbackEffect::Update()
+
+void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inputData)
 {
     //DebugWindoow(); // デバッグウィンドウの更新
 
@@ -36,7 +47,7 @@ void FeedbackEffect::Update()
     {
         if (usedJudgeTexts_[i]) // 使用中のテキストのみ更新
         {
-            judgeTextPool_[i]->Update(0.016f); // TODO 仮のデルタタイムを使用
+            judgeTextPool_[i]->Update(_deltaTime);
             if (judgeTextPool_[i]->IsFinished()) // 終了したテキストは未使用に戻す
             {
                 usedJudgeTexts_.set(i, false);
@@ -45,11 +56,36 @@ void FeedbackEffect::Update()
     }
 
     if (missedVignette_)
-        missedVignette_->Update(0.016f); // TODO 仮のデルタタイムを使用
+        missedVignette_->Update(_deltaTime);
+
+    for (const auto& input : _inputData)
+    {
+        if (input.state == KeyState::trigger || input.state == KeyState::Hold)
+            laneEffects_[input.laneIndex]->Start();
+    }
+
+    for (auto& laneEffect : laneEffects_)
+    {
+        if (laneEffect)
+        {
+            laneEffect->Update(_deltaTime);
+        }
+    }
+
 }
 
 void FeedbackEffect::Draw()
 {
+    LayerSystem::SetLayer("GameCore");
+    for (const auto& laneEffect : laneEffects_)
+    {
+        if (laneEffect)
+        {
+            laneEffect->Draw(camera_); // レーンエフェクトの描画
+        }
+    }
+
+    LayerSystem::SetLayer("FeedbackEffect");
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
         if (usedJudgeTexts_[i]) // 使用中のテキストのみ描画

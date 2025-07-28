@@ -153,6 +153,6 @@ void Lane::CreateLaneModel()
     laneModel_->Initialize("pY1x1p01Plane");
     laneModel_->scale_ = Vector3(laneWidth_ - 0.1f, 1.0f, laneLength_); // レーンの幅と長さを設定
     laneModel_->translate_ = startPosition_;
-    laneModel_->translate_.y -= 0.001f; // zファイティング対策で少し下げる
+    laneModel_->translate_.y -= 0.01f; // zファイティング対策で少し下げる
     laneModel_->Update();
 }

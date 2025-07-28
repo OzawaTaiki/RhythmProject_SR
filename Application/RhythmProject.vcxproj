@@ -106,7 +106,6 @@
     <ClCompile Include="Source\Application\Command\PasteCommand.cpp" />
     <ClCompile Include="Source\Application\Command\PlaceNoteCommand.cpp" />
     <ClCompile Include="Source\Application\Core\GameCore.cpp" />
-    <ClCompile Include="Source\Application\Effects\LaneEffect\LaneEffect.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp" />
@@ -114,6 +113,7 @@
     <ClCompile Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeSound\JudgeSound.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeText\JudgeText.cpp" />
+    <ClCompile Include="Source\Application\FeedBack\LaneEffect\LaneEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\MissedVignette\MissedVignette.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\GameEnvironment.cpp" />
     <ClCompile Include="Source\Application\GameUI\GameUI.cpp" />
@@ -157,7 +157,6 @@
     <ClInclude Include="Source\Application\Command\PasteCommand.h" />
     <ClInclude Include="Source\Application\Command\PlaceNoteCommand.h" />
     <ClInclude Include="Source\Application\Core\GameCore.h" />
-    <ClInclude Include="Source\Application\Effects\LaneEffect\LaneEffect.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h" />
@@ -165,6 +164,7 @@
     <ClInclude Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeSound\JudgeSound.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeText\JudgeText.h" />
+    <ClInclude Include="Source\Application\FeedBack\LaneEffect\LaneEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\MissedVignette\MissedVignette.h" />
     <ClInclude Include="Source\Application\GameEnvironment\GameEnvironment.h" />
     <ClInclude Include="Source\Application\GameUI\GameUI.h" />

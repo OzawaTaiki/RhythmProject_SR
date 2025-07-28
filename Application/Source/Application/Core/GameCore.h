@@ -101,6 +101,12 @@ public:
     int32_t GetCombo() const { return combo_; }
 
     /// <summary>
+    /// レーンの数を取得する
+    /// </summary>
+    /// <returns></returns>
+    int32_t GetLaneCount() const { return static_cast<int32_t>(lanes_.size()); }
+
+    /// <summary>
     /// 判定結果を取得する
     /// </summary>
     /// <returns>判定結果のマップ</returns>

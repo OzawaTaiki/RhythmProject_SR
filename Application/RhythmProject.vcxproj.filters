@@ -37,17 +37,8 @@
     <Filter Include="Application\FeedBack">
       <UniqueIdentifier>{15913ee5-bced-4b13-9693-e57cfca2a57f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\FeedBack\JudgeSound">
-      <UniqueIdentifier>{657fcfb3-623c-44e3-b1bc-d0b9cc00f822}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\FeedBack\JudgeEffect">
-      <UniqueIdentifier>{65add205-d443-47ac-99fc-3ea6b04894b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\BeatMapEditor\BPMCounter">
       <UniqueIdentifier>{8d1b859e-d15f-4c03-8e79-72e0bc68b5ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\FeedBack\JudgeText">
-      <UniqueIdentifier>{36b0ddf2-e0a1-4bb5-8294-02092c09ea62}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\BeatMapEditor\Command">
       <UniqueIdentifier>{a4cdee18-3ed8-4f63-8471-4cf980f84c4a}</UniqueIdentifier>
@@ -57,12 +48,6 @@
     </Filter>
     <Filter Include="Application\Environment">
       <UniqueIdentifier>{3270d924-6385-41eb-a1e7-adc5b2108b38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\FeedBack\LaneEffect">
-      <UniqueIdentifier>{8d76655d-dae6-4ce7-b884-14bd6cb43774}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\FeedBack\TapEffects">
-      <UniqueIdentifier>{1becb388-379b-4a7f-a968-049ec8f0f527}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Result">
       <UniqueIdentifier>{e8f93c9b-9596-4e37-bf76-9fc7d4f79075}</UniqueIdentifier>
@@ -93,6 +78,30 @@
     </Filter>
     <Filter Include="Application\FeedBack\MissedVignette">
       <UniqueIdentifier>{c684dc34-a1f7-469e-b109-12b541e03171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Judge">
+      <UniqueIdentifier>{ac6102ff-aa48-411e-9d58-217845cd0043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Judge\Effect">
+      <UniqueIdentifier>{65add205-d443-47ac-99fc-3ea6b04894b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Judge\Sound">
+      <UniqueIdentifier>{657fcfb3-623c-44e3-b1bc-d0b9cc00f822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Judge\Text">
+      <UniqueIdentifier>{36b0ddf2-e0a1-4bb5-8294-02092c09ea62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Tap">
+      <UniqueIdentifier>{99978e57-8bad-41ac-ad36-02a7eab374e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Tap\LaneEffect">
+      <UniqueIdentifier>{8d76655d-dae6-4ce7-b884-14bd6cb43774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Effect">
+      <UniqueIdentifier>{a527790c-6254-4efe-a512-825a566507de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Tap\Effect">
+      <UniqueIdentifier>{1becb388-379b-4a7f-a968-049ec8f0f527}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,17 +136,8 @@
     <ClCompile Include="Source\Application\BeatMapLoader\BeatMapLoader.cpp">
       <Filter>Application\BeatMapLoader</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp">
-      <Filter>Application\FeedBack\TapEffects</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp">
-      <Filter>Application\FeedBack\TapEffects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Essential\ParticleModifierFactory.cpp">
       <Filter>Essential</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp">
-      <Filter>Application\FeedBack\TapEffects</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Scene\TitleScene.cpp">
       <Filter>Application\Scene</Filter>
@@ -170,7 +170,7 @@
       <Filter>Application\Scene\SceneTransition</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\JudgeSound\JudgeSound.cpp">
-      <Filter>Application\FeedBack\JudgeSound</Filter>
+      <Filter>Application\FeedBack\Judge\Sound</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\FeedbackEffect.cpp">
       <Filter>Application\FeedBack</Filter>
@@ -179,7 +179,7 @@
       <Filter>Application\BeatMapEditor\BPMCounter</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\JudgeText\JudgeText.cpp">
-      <Filter>Application\FeedBack\JudgeText</Filter>
+      <Filter>Application\FeedBack\Judge\Text</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Command\CommandHistory.cpp">
       <Filter>Application\BeatMapEditor\Command\Core</Filter>
@@ -206,7 +206,7 @@
       <Filter>Application\Environment</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.cpp">
-      <Filter>Application\FeedBack\JudgeEffect</Filter>
+      <Filter>Application\FeedBack\Judge\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Result\UI\ResultUI.cpp">
       <Filter>Application\ResultUI</Filter>
@@ -221,7 +221,19 @@
       <Filter>Application\FeedBack\MissedVignette</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\LaneEffect\LaneEffect.cpp">
-      <Filter>Application\FeedBack\LaneEffect</Filter>
+      <Filter>Application\FeedBack\Tap\LaneEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp">
+      <Filter>Application\FeedBack\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp">
+      <Filter>Application\FeedBack\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp">
+      <Filter>Application\FeedBack\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\FeedBack\TapEffect\TapEffect.cpp">
+      <Filter>Application\FeedBack\Tap\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,17 +270,8 @@
     <ClInclude Include="Source\Application\BeatMapLoader\BeatMapData.h">
       <Filter>Application\BeatMapLoader</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h">
-      <Filter>Application\FeedBack\TapEffects</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h">
-      <Filter>Application\FeedBack\TapEffects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Essential\ParticleModifierFactory.h">
       <Filter>Essential</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h">
-      <Filter>Application\FeedBack\TapEffects</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Scene\TitleScene.h">
       <Filter>Application\Scene</Filter>
@@ -313,19 +316,19 @@
       <Filter>Application\Scene\SceneTransition</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\JudgeSound\JudgeSound.h">
-      <Filter>Application\FeedBack\JudgeSound</Filter>
+      <Filter>Application\FeedBack\Judge\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\FeedbackEffect.h">
       <Filter>Application\FeedBack</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.h">
-      <Filter>Application\FeedBack\JudgeEffect</Filter>
+      <Filter>Application\FeedBack\Judge\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\BeatMapEditor\BPMCounter\TapBPMCounter.h">
       <Filter>Application\BeatMapEditor\BPMCounter</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\JudgeText\JudgeText.h">
-      <Filter>Application\FeedBack\JudgeText</Filter>
+      <Filter>Application\FeedBack\Judge\Text</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Command\CommandHistory.h">
       <Filter>Application\BeatMapEditor\Command\Core</Filter>
@@ -370,7 +373,19 @@
       <Filter>Application\FeedBack\MissedVignette</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\LaneEffect\LaneEffect.h">
-      <Filter>Application\FeedBack\LaneEffect</Filter>
+      <Filter>Application\FeedBack\Tap\LaneEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h">
+      <Filter>Application\FeedBack\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h">
+      <Filter>Application\FeedBack\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h">
+      <Filter>Application\FeedBack\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\FeedBack\TapEffect\TapEffect.h">
+      <Filter>Application\FeedBack\Tap\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,9 @@ void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount)
     judgeEffect_ = std::make_unique<JudgeEffect>();
     judgeEffect_->Initialize();
 
+    tapEffect_ = std::make_unique<TapEffect>();
+    tapEffect_->Initialize();
+
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
         judgeTextPool_[i] = std::make_unique<JudgeText>();
@@ -61,7 +64,10 @@ void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inp
     for (const auto& input : _inputData)
     {
         if (input.state == KeyState::trigger || input.state == KeyState::Hold)
+        {
             laneEffects_[input.laneIndex]->Start();
+            tapEffect_->Play(input.laneIndex);
+        }
     }
 
     for (auto& laneEffect : laneEffects_)

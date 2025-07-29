@@ -8,6 +8,7 @@
 #include <System/Time/Stopwatch.h>
 #include <Features/Effect/Manager/ParticleSystem.h>
 
+#include <Features/TextRenderer/TextGenerator.h>
 
 class TitleScene : public BaseScene
 {
@@ -35,5 +36,11 @@ private:
 
     std::shared_ptr<LightGroup> lightGroup_ = nullptr;
 
+
+    /// ---------------------------------
+    ///     application
+
+
+    TextGenerator textGenerator_;
 
 };

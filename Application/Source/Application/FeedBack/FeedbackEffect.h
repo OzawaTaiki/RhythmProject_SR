@@ -6,6 +6,7 @@
 #include <Application/FeedBack/JudgeText/JudgeText.h>
 #include <Application/FeedBack/MissedVignette/MissedVignette.h>
 #include <Application/FeedBack/LaneEffect/LaneEffect.h>
+#include <Application/FeedBack/TapEffect/TapEffect.h>
 
 #include <Application/Input/InputData.h>
 
@@ -63,6 +64,7 @@ private:
 
     /// パーティクル
     std::unique_ptr<JudgeEffect> judgeEffect_;
+    std::unique_ptr<TapEffect> tapEffect_; // タップエフェクト
 
     /// 判定テキスト
     static const int32_t kMaxJudgeTexts_ = 10; // 最大の判定テキスト数

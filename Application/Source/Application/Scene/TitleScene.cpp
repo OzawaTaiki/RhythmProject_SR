@@ -25,6 +25,7 @@ void TitleScene::Initialize(SceneData* _sceneData)
 
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
+    textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
 
 }
@@ -62,7 +63,8 @@ void TitleScene::Update()
 
     particleSystem_->Update();
 
-
+    textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
+    textGenerator_.Draw(L"Press Space", Vector2(640, 500));
 
 }
 

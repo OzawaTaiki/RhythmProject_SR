@@ -12,9 +12,6 @@ void JudgeEffect::Play(int32_t _laneIndex)
 {
     Vector3  lanePos = Lane::GetLaneEndPosition(_laneIndex); // レーンの開始位置を取得
 
-    // 中心の円を発生させる
-    TriggerEffects::EmitCenterCircles(lanePos);
-
     // 周囲のパーティクルを発生させる
     TriggerEffects::EmitSurroundingParticles(lanePos);
 

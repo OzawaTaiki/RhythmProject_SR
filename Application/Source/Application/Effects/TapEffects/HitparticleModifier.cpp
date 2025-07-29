@@ -31,7 +31,7 @@ void HitCircleParticleModifier::Apply(Particle* _particle, float _deltaTime)
 {
     float t = _particle->GetCurrentTime() / _particle->GetLifeTime();
 
-    float easedt = Easing::Func(Easing::EasingFunc::EaseInCubic)(t);
+    float easedt = Easing::Func(Easing::EasingFunc::EaseInQuart)(t);
 
     Vector4 color = _particle->GetColor();
     color.w = 1.0f - easedt;
@@ -39,13 +39,16 @@ void HitCircleParticleModifier::Apply(Particle* _particle, float _deltaTime)
     _particle->SetColor(color);
 
 
-    float easedTSize = Easing::Func(Easing::EasingFunc::EaseInOutCirc)(t);
+    float easedTSize = 1.0f - Easing::Func(Easing::EasingFunc::EaseInExpo)(t);
 
     Vector3 size = _particle->GetScale();
     const float minSize = 0.3f;
 
     size.x *= easedTSize;
-    if (size.x < minSize)
-        size.x = minSize;
+    size.z *= easedTSize;
 
+    size.x = (std::max)(size.x, minSize);
+    size.z = (std::max)(size.z, minSize);
+
+    _particle->SetScale(size);
 }

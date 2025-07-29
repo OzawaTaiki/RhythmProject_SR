@@ -45,7 +45,7 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
         std::vector<Particle*> circleParticle;
         ParticleInitParam param;
 
-        param.lifeTime = 0.3f;
+        param.lifeTime = 0.2f;
         param.position = _pos;
         param.position.y += 0.01f;
         param.size = Vector3(centerSize, centerSize * 0.4f, centerSize);

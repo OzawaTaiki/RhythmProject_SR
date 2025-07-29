@@ -63,11 +63,11 @@ void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inp
 
     for (const auto& input : _inputData)
     {
-        if (input.state == KeyState::trigger || input.state == KeyState::Hold)
-        {
-            laneEffects_[input.laneIndex]->Start();
+        if (input.state == KeyState::trigger)
             tapEffect_->Play(input.laneIndex);
-        }
+
+        if (input.state == KeyState::trigger || input.state == KeyState::Hold)
+            laneEffects_[input.laneIndex]->Start();
     }
 
     for (auto& laneEffect : laneEffects_)

@@ -12,6 +12,9 @@
 #include <Features/Sprite/Sprite.h>
 #include <System/Audio/AudioSystem.h>
 
+#include <Features/PostEffects/BoxFilter.h>
+#include <Features/PostEffects/Vignette.h>
+#include <Features/PostEffects/DepthBasedOutLine.h>
 
 // Application
 #include <Application/Core/GameCore.h>
@@ -22,10 +25,8 @@
 
 #include <Application/BeatsManager/BeatManager.h>
 #include <Application/BeatMapLoader/BeatMapLoader.h>
+#include <Application/PauseMenu/PauseMenu.h>
 
-#include <Features/PostEffects/BoxFilter.h>
-#include <Features/PostEffects/Vignette.h>
-#include <Features/PostEffects/DepthBasedOutLine.h>
 
 
 enum class GameMode
@@ -84,6 +85,8 @@ private:
     std::unique_ptr<GameEnvironment> gameEnvironment_ = nullptr; // ゲーム環境のオブジェクト配置
     std::unique_ptr<GameUI> gameUI_ = nullptr; // ゲームUI
 
+    std::unique_ptr<PauseMenu> pauseMenu_ = nullptr; // 一時停止メニュー
+
     BeatMapLoader* beatMapLoader_ = nullptr;
     BeatMapData currentBeatMapData_ = {}; // 現在の譜面データ
 
@@ -109,5 +112,6 @@ private:
     void ImGui();
     // 楽曲終了後遷移するか
     bool isTransitionToResultScene_ = false;
+    bool noteUpdateEnabled_ = true; // ノートの更新を有効にするかどうか
 
 };

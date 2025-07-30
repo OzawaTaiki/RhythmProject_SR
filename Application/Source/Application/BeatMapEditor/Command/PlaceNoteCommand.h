@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Application/Command/ICommand.h>
+#include <Application/BeatMapEditor/Command/ICommand.h>
 
 #include <string>
 #include <cstdint>

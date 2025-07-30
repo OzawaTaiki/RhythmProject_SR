@@ -17,6 +17,18 @@
             "targetTime": 0.6366666555404663
         },
         {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 1.4700000286102295
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 3,
+            "noteType": "normal",
+            "targetTime": 1.8866666555404663
+        },
+        {
             "holdDuration": 0.0,
             "laneIndex": 2,
             "noteType": "normal",
@@ -29,6 +41,18 @@
             "targetTime": 2.303333282470703
         },
         {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 3.1366665363311768
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 0,
+            "noteType": "normal",
+            "targetTime": 3.553333282470703
+        },
+        {
             "holdDuration": 0.0,
             "laneIndex": 2,
             "noteType": "normal",
@@ -39,6 +63,18 @@
             "laneIndex": 1,
             "noteType": "normal",
             "targetTime": 3.9700000286102295
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 4.803332805633545
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 1,
+            "noteType": "normal",
+            "targetTime": 5.21999979019165
         },
         {
             "holdDuration": 0.0,
@@ -53,16 +89,40 @@
             "targetTime": 5.636666297912598
         },
         {
-            "holdDuration": 0.7291666269302368,
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 1,
+            "noteType": "normal",
+            "targetTime": 6.46999979019165
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 6.886666297912598
+        },
+        {
+            "holdDuration": 0.8450000286102295,
             "laneIndex": 3,
             "noteType": "hold",
             "targetTime": 7.303332805633545
         },
         {
-            "holdDuration": 0.8436059951782227,
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 1,
+            "noteType": "normal",
+            "targetTime": 8.136666297912598
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 8.553333282470703
+        },
+        {
+            "holdDuration": 0.8450000286102295,
             "laneIndex": 0,
             "noteType": "hold",
-            "targetTime": 8.865833282470703
+            "targetTime": 8.970000267028809
         },
         {
             "holdDuration": 0.0,
@@ -78,12 +138,6 @@
         },
         {
             "holdDuration": 0.0,
-            "laneIndex": 2,
-            "noteType": "normal",
-            "targetTime": 11.470000267028809
-        },
-        {
-            "holdDuration": 0.0,
             "laneIndex": 1,
             "noteType": "normal",
             "targetTime": 11.470000267028809
@@ -92,7 +146,7 @@
             "holdDuration": 0.0,
             "laneIndex": 2,
             "noteType": "normal",
-            "targetTime": 12.303333282470703
+            "targetTime": 11.470000267028809
         },
         {
             "holdDuration": 0.0,
@@ -102,13 +156,19 @@
         },
         {
             "holdDuration": 0.0,
-            "laneIndex": 3,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 12.303333282470703
+        },
+        {
+            "holdDuration": 0.0,
+            "laneIndex": 0,
             "noteType": "normal",
             "targetTime": 13.136666297912598
         },
         {
             "holdDuration": 0.0,
-            "laneIndex": 0,
+            "laneIndex": 3,
             "noteType": "normal",
             "targetTime": 13.136666297912598
         },
@@ -119,16 +179,52 @@
             "targetTime": 13.970000267028809
         },
         {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 0,
+            "noteType": "normal",
+            "targetTime": 14.386666297912598
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 3,
+            "noteType": "normal",
+            "targetTime": 14.803333282470703
+        },
+        {
             "holdDuration": 0.0,
             "laneIndex": 1,
             "noteType": "normal",
             "targetTime": 15.636666297912598
         },
         {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 16.053333282470703
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 3,
+            "noteType": "normal",
+            "targetTime": 16.469999313354492
+        },
+        {
             "holdDuration": 0.0,
             "laneIndex": 3,
             "noteType": "normal",
             "targetTime": 17.30333137512207
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 1,
+            "noteType": "normal",
+            "targetTime": 17.719999313354492
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 0,
+            "noteType": "normal",
+            "targetTime": 18.13666534423828
         },
         {
             "holdDuration": 0.0,
@@ -149,22 +245,46 @@
             "targetTime": 19.80333137512207
         },
         {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 1,
+            "noteType": "normal",
+            "targetTime": 21.05333137512207
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 0,
+            "noteType": "normal",
+            "targetTime": 21.469999313354492
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 3,
+            "noteType": "normal",
+            "targetTime": 21.88666534423828
+        },
+        {
+            "holdDuration": 0.0,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 22.30333137512207
+        },
+        {
             "holdDuration": 0.0,
             "laneIndex": 0,
             "noteType": "normal",
             "targetTime": 22.30333137512207
         },
         {
-            "holdDuration": 0.0,
+            "holdDuration": 0.011666670441627502,
             "laneIndex": 2,
             "noteType": "normal",
-            "targetTime": 22.30333137512207
+            "targetTime": 22.719999313354492
         },
         {
-            "holdDuration": 0.0,
+            "holdDuration": 0.8450000286102295,
             "laneIndex": 3,
-            "noteType": "normal",
-            "targetTime": 23.969999313354492
+            "noteType": "hold",
+            "targetTime": 23.13666534423828
         },
         {
             "holdDuration": 0.0,
@@ -173,22 +293,52 @@
             "targetTime": 23.969999313354492
         },
         {
-            "holdDuration": 0.0,
+            "holdDuration": 0.011666670441627502,
             "laneIndex": 2,
             "noteType": "normal",
-            "targetTime": 25.219999313354492
+            "targetTime": 24.38666534423828
         },
         {
-            "holdDuration": 0.0,
-            "laneIndex": 1,
+            "holdDuration": 0.8450000286102295,
+            "laneIndex": 0,
+            "noteType": "hold",
+            "targetTime": 24.80333137512207
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
             "noteType": "normal",
             "targetTime": 25.63666534423828
         },
         {
-            "holdDuration": 0.0,
-            "laneIndex": 2,
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 3,
             "noteType": "normal",
             "targetTime": 26.05333137512207
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 2,
+            "noteType": "normal",
+            "targetTime": 26.469999313354492
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 0,
+            "noteType": "normal",
+            "targetTime": 26.88666534423828
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 3,
+            "noteType": "normal",
+            "targetTime": 27.30333137512207
+        },
+        {
+            "holdDuration": 0.011666670441627502,
+            "laneIndex": 1,
+            "noteType": "normal",
+            "targetTime": 27.30333137512207
         }
     ],
     "offset": 0.2199999988079071,

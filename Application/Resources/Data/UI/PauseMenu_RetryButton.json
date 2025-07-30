@@ -1,0 +1,68 @@
+{
+    "PauseMenu_RetryButton": {
+        "PauseMenu_RetryButton_Text": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 640.0,
+                "y": 384.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "PauseMenu_RetryButton_TextOffset": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "PauseMenu_RetryButton_anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "PauseMenu_RetryButton_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "PauseMenu_RetryButton_directoryPath": "Resources/images/",
+        "PauseMenu_RetryButton_isActive": 257,
+        "PauseMenu_RetryButton_isVisible": 1,
+        "PauseMenu_RetryButton_label": "PauseMenu_RetryButton",
+        "PauseMenu_RetryButton_pos": {
+            "x": 0.0,
+            "y": 64.0
+        },
+        "PauseMenu_RetryButton_rotate": 0.0,
+        "PauseMenu_RetryButton_size": {
+            "x": 128.0,
+            "y": 64.0
+        },
+        "PauseMenu_RetryButton_textureName": "white.png"
+    }
+}

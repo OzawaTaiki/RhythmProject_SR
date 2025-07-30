@@ -1,0 +1,68 @@
+{
+    "PauseMenu_back": {
+        "PauseMenu_back_Text": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.2549019455909729,
+                "y": 0.2549019455909729,
+                "z": 0.2549019455909729
+            },
+            "outlineScale": 0.009999999776482582,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 640.0,
+                "y": 256.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.100000023841858,
+                "y": 1.100000023841858
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": true
+        },
+        "PauseMenu_back_TextOffset": {
+            "x": 0.0,
+            "y": -64.0
+        },
+        "PauseMenu_back_anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "PauseMenu_back_color": {
+            "w": 0.8352941274642944,
+            "x": 0.6313725709915161,
+            "y": 0.6313725709915161,
+            "z": 0.6313725709915161
+        },
+        "PauseMenu_back_directoryPath": "Resources/images/",
+        "PauseMenu_back_isActive": 257,
+        "PauseMenu_back_isVisible": 1,
+        "PauseMenu_back_label": "PauseMenu_back",
+        "PauseMenu_back_pos": {
+            "x": 640.0,
+            "y": 320.0
+        },
+        "PauseMenu_back_rotate": 0.0,
+        "PauseMenu_back_size": {
+            "x": 512.0,
+            "y": 256.0
+        },
+        "PauseMenu_back_textureName": "white.png"
+    }
+}

@@ -11,7 +11,7 @@
 #include <Application/BeatMapEditor/EditorCoordinate.h>
 #include <Application/BeatMapLoader/BeatMapData.h>
 #include <Application/BeatsManager/BeatManager.h>
-#include <Application/Command/CommandHistory.h>
+#include <Application/BeatMapEditor/Command/CommandHistory.h>
 
 #include <Application/BeatMapEditor/LiveMapping/LiveMapping.h>
 #include <Application/BeatMapEditor/BPMCounter/TapBPMCounter.h>

@@ -11,11 +11,11 @@
 #include <Utility/FileDialog/FileDialog.h>
 #include <Utility/StringUtils/StringUitls.h>
 
-#include <Application/Command/PlaceNoteCommand.h>
-#include <Application/Command/DeleteNoteCommand.h>
-#include <Application/Command/MoveNoteCommand.h>
-#include <Application/Command/ChangeHoldDurationCommand.h>
-#include <Application/Command/PasteCommand.h>
+#include <Application/BeatMapEditor/Command/PlaceNoteCommand.h>
+#include <Application/BeatMapEditor/Command/DeleteNoteCommand.h>
+#include <Application/BeatMapEditor/Command/MoveNoteCommand.h>
+#include <Application/BeatMapEditor/Command/ChangeHoldDurationCommand.h>
+#include <Application/BeatMapEditor/Command/PasteCommand.h>
 
 
 #include <fstream>
@@ -460,7 +460,7 @@ void BeatMapEditor::DrawRightPanel()
             LoadBeatMap(currentFilePath_); // 譜面のロード
         }
         ImGui::SameLine();
-        ImGui::BeginDisabled(currentFilePath_ == "");
+        //ImGui::BeginDisabled(currentFilePath_ == "");
         {
             if (ImGui::Button("Save BeatMap"))
             {
@@ -469,7 +469,7 @@ void BeatMapEditor::DrawRightPanel()
                 //SaveBeatMap(currentFilePath_); // 譜面の保存
             }
         }
-        ImGui::EndDisabled();
+        //ImGui::EndDisabled();
 
         ImGui::SameLine();
         if (ImGui::Button("New BeatMap"))
@@ -801,7 +801,7 @@ void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)
         return;
 
     currentBeatMapData_ = _beatMapData; // BeatMapDataを設定
-    currentFilePath_ = ""; // 現在のファイルパスを空に設定
+    currentFilePath_ = currentBeatMapData_.title; // 現在のファイルパスを空に設定
 
     beatManager_->SetBPM(currentBeatMapData_.bpm); // BPMを設定
     beatManager_->SetOffset(currentBeatMapData_.offset); // オフセットを設定
@@ -828,7 +828,6 @@ void BeatMapEditor::LoadBeatMap(const std::string& _beatMapPath)
     // ロードが完了するまで待機
     if (future.get())
     {
-        Reset(); // エディターの状態をリセット
         InitWithBeatMapData(beatMapLoader_->GetLoadedBeatMapData()); // BeatMapDataを初期化
     }
     else

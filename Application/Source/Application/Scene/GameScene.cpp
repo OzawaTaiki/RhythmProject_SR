@@ -106,6 +106,9 @@ void GameScene::Initialize(SceneData* _sceneData)
     gameUI_ = std::make_unique<GameUI>();
     gameUI_->Initialize();
 
+    pauseMenu_ = std::make_unique<PauseMenu>();
+    pauseMenu_->Initialize();
+
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
 
@@ -136,6 +139,7 @@ void GameScene::Initialize(SceneData* _sceneData)
     LayerSystem::CreateLayer("GameEnvironment", 0);
     LayerSystem::CreateLayer("GameCore", 1);
     LayerSystem::CreateLayer("FeedbackEffect", 2, PSOFlags::BlendMode::Add);
+    LayerSystem::CreateLayer("PauseMenu", 3);
     LayerSystem::CreateOutputLayer("Vignette");
     LayerSystem::CreateOutputLayer("DepthOutline");
 
@@ -163,6 +167,8 @@ void GameScene::Update()
 
     if(input_->IsKeyTriggered(DIK_F8))
         isTransitionToResultScene_ = !isTransitionToResultScene_; // F8キーで結果シーンへの遷移を切り替え
+    if (input_->IsKeyTriggered(DIK_F7))
+        noteUpdateEnabled_ = !noteUpdateEnabled_;
 
     depthBasedOutLineData_.ImGui();
 
@@ -170,7 +176,7 @@ void GameScene::Update()
 
 #pragma region Application
 
-    if (input_->IsKeyPressed(DIK_LSHIFT) && input_->IsKeyTriggered(DIK_R))
+    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_R))
     {
         voiceInstance_->Stop();
         voiceInstance_.reset();
@@ -190,9 +196,19 @@ void GameScene::Update()
 
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
 
+    pauseMenu_->Update();
+
     gameInputManager_->Update(); // 入力更新
-    beatManager_->Update();
-    gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
+    if (noteUpdateEnabled_ && !pauseMenu_->IsActive())
+    {
+        beatManager_->Update();
+        gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
+    }
+    else
+    {
+        if(voiceInstance_)
+            voiceInstance_->Stop();
+    }
     feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
     gameEnvironment_->Update(deltaTime);
     gameUI_->Update(gameCore_->GetCombo()); // コンボ値をUIに渡す
@@ -266,6 +282,11 @@ void GameScene::Draw()
     particleSystem_->DrawParticles();
 
     LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
+
+    LayerSystem::SetLayer("PauseMenu");
+    pauseMenu_->Draw();
+
+
 
 }
 
@@ -400,6 +421,10 @@ bool GameScene::IsMusicEnd() const
 
     if (!voiceInstance_->IsPlaying())
         return true;
+
+    voiceInstance_->GetElapsedTime();
+    soundInstance_->GetDuration();
+
 
     return false;
 }

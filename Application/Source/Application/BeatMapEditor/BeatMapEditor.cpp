@@ -32,134 +32,43 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 {
 
     input_ = Input::GetInstance();
+
     lineDrawer_ = LineDrawer::GetInstance();
+
     text_.Initialize(FontConfig());
 
-
-
     beatMapLoader_ = BeatMapLoader::GetInstance();
-    Vector2 laneAreaSize = Vector2(1280.0f - 600.0f-120.0f, 720.0f); // レーンエリアのサイズを設定
-    editorCoordinate_.Initialize(laneAreaSize); // 初期画面サイズとレーン数を設定
-    editorCoordinate_.SetTimeZeroOffsetRatio(0.1f);
+
+    tapBPMCounter_.Initialize(); // タップBPMカウンターの初期化
 
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(120.0f, 0.0f); // 初期BPMとオフセットを設定
 
-    InitWithBeatMapData(_beatMapData); // 譜面データを初期化
-    isModified_ = false; // 譜面が変更されていない状態に初期化
-    currentTime_ = 0.0f; // 現在の時間を初期化
-    isPlaying_ = false; // 再生状態を初期化
-
-
     for2dCamera_.Initialize(CameraType::Orthographic, Vector2(1280.0f, 720.0f)); // 2Dカメラの初期化
     for2dCamera_.matProjection_ = Matrix4x4::Identity();
-    for2dCamera_.matView_= Matrix4x4::Identity();
+    for2dCamera_.matView_ = Matrix4x4::Identity();
     for2dCamera_.UpdateMatrix(); // カメラの行列を更新
     lineDrawer_->SetCameraPtr2D(&for2dCamera_); // 2Dカメラをライン描画クラスに設定
 
-    selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
+    //                                       左右UI   マージン
+    Vector2 laneAreaSize = Vector2(1280.0f - 600.0f - 120.0f, 720.0f); // レーンエリアのサイズを設定
+    editorCoordinate_.Initialize(laneAreaSize); // 初期画面サイズとレーン数を設定
+    editorCoordinate_.SetTimeZeroOffsetRatio(0.1f);
 
+
+    InitWithBeatMapData(_beatMapData); // 譜面データを初期化
+
+    isModified_ = false; // 譜面が変更されていない状態に初期化
+    currentTime_ = 0.0f; // 現在の時間を初期化
+    isPlaying_ = false; // 再生状態を初期化
     snapInterval_ = 1.0f / 4.0f; // グリッドスナップの間隔を1/4拍に設定
     gridSnapEnabled_ = true; // グリッドスナップを有効に初期化
 
-    const size_t kMaxNoteCount = 1 << 6; // 最大ノート数を設定 一旦64個とする
-    noteSprites_.clear();
-    noteSprites_.resize(kMaxNoteCount); // ノートスプライトのリストを予約
-    for (size_t i = 0; i < kMaxNoteCount; ++i)
-    {
-        auto sprite = std::make_unique<UISprite>();
-        sprite->Initialize("NoteSprite_" + std::to_string(i));
-        sprite->SetAnchor(Vector2(0.5f, 0.5f)); // ノートのアンカーを中央に設定
-        sprite->SetSize(Vector2(50.0f, 25.0f)); // ノートのサイズを設定
 
-        noteSprites_[i] = std::move(sprite); // スプライトをリストに格納
-    }
-
-    holdNoteEnd_.clear(); // ロングノートの終端スプライトをクリア
-    holdNoteEnd_.reserve(kMaxNoteCount / 2); // 終端スプライトのリストを予約
-    noteBridges_.clear(); // ノートとスプライトのブリッジをクリア
-    noteBridges_.reserve(kMaxNoteCount / 2); // ブリッジのリストを予約
-    for (size_t i = 0; i < kMaxNoteCount / 2; ++i)
-    {
-        auto longNoteEndSprite = std::make_unique<UISprite>();
-        longNoteEndSprite->Initialize("LongNoteEndSprite_" + std::to_string(i));
-        longNoteEndSprite->SetAnchor(Vector2(0.5f, 0.5f)); // ロングノートの終端のアンカーを中央に設定
-        longNoteEndSprite->SetSize(Vector2(50.0f, 25.0f)); // ロングノートの終端のサイズを設定
-
-        holdNoteEnd_.push_back(std::move(longNoteEndSprite)); // 終端スプライトをリストに格納
-
-
-        auto bridgeSprite = std::make_unique<UISprite>();
-        bridgeSprite->Initialize("NoteBridgeSprite_" + std::to_string(i));
-        bridgeSprite->SetAnchor(Vector2(0.5f, 1.0f));// ブリッジのアンカーを中央上に設定
-        bridgeSprite->SetSize(Vector2(40.0f, 25.0f)); // ブリッジのサイズを設定
-
-        noteBridges_.push_back(std::move(bridgeSprite)); // ブリッジをリストに格納
-    }
-
-    // レーンのスプライトを初期化
-    laneSprites_.clear();
-    float laneWidth = editorCoordinate_.GetLaneWidth();
-    for (uint32_t i = 0; i < editorCoordinate_.GetLaneCount(); ++i)
-    {
-        auto laneSprite = std::make_unique<UISprite>();
-
-        laneSprite->Initialize("LaneSprite_" + std::to_string(i));
-        laneSprite->SetAnchor(Vector2(0.5f, 0.0f)); // レーンのアンカーを中央下に設定
-        laneSprite->SetSize(Vector2(laneWidth, editorCoordinate_.GetEditAreaHeight())); // レーンのサイズを設定
-        laneSprite->SetPos(Vector2(editorCoordinate_.GetLaneLeftX(i) + laneWidth/2.0f, editorCoordinate_.GetBottomMargin())); // レーンの位置を設定
-        laneSprite->SetColor(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
-
-        laneSprites_.push_back(std::move(laneSprite)); // スプライトをリストに格納
-    }
-
-    // playheadのスプライトを初期化
-    playheadSprite_ = std::make_unique<UISprite>();
-    playheadSprite_->Initialize("PlayheadSprite");
-    playheadSprite_->SetTextureNameAndLoad("triangle.png"); // テクスチャを設定
-    playheadSprite_->SetAnchor(Vector2(0.5f, 0.5f)); // 再生ヘッドのアンカーを中央下に設定
-    playheadSprite_->SetSize(Vector2(20.0f, 20.0f)); // 再生ヘッドのサイズを設定
-    playheadSprite_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f)); // 再生ヘッドの色を赤に設定
-    playheadSprite_->SetRotate(1.57f); // 再生ヘッドの回転を設定（PI/2ラジアン）
-
-    float playheadsize = playheadSprite_->GetSize().x; // 再生ヘッドのサイズを取得
-    Vector2 playheadPos = { editorCoordinate_.GetEditAreaX() - playheadsize / 2.0f, editorCoordinate_.TimeToScreenY(currentTime_) }; // 再生ヘッドの初期位置を設定
-    playheadSprite_->SetPos(playheadPos);
-
-    // ジャッジラインのスプライトを初期化
-    judgeLineSprite_ = std::make_unique<UISprite>();
-    judgeLineSprite_->Initialize("JudgeLineSprite");
-    judgeLineSprite_->SetAnchor(Vector2(0.0f, 0.5f));// ジャッジラインのアンカーを左中央に設定
-    float judgeLineXMargin = 30.0f; // ジャッジラインのXマージンを設定
-    judgeLineSprite_->SetSize(Vector2(editorCoordinate_.GetEditAreaWidth() + judgeLineXMargin, 5.0f)); // ジャッジラインのサイズを設定
-    judgeLineSprite_->SetPos(Vector2(editorCoordinate_.GetEditAreaX() - judgeLineXMargin / 2.0f, editorCoordinate_.TimeToScreenY(currentTime_))); // ジャッジラインの位置を設定
-    judgeLineSprite_->SetColor(Vector4(0.8f, 0.2f, 0.2f, 1.0f)); // ジャッジラインの色を設定
-
-
-    previewNoteSprite_ = std::make_unique<UISprite>();
-    previewNoteSprite_->Initialize("PreviewNoteSprite");
-    previewNoteSprite_->SetAnchor(Vector2(0.5f, 0.5f)); // プレビューのアンカーを中央に設定
-    previewNoteSprite_->SetSize(Vector2(50.0f, 25.0f)); // ノートのサイズを設定
-
-    previewBridgeSprite_ = std::make_unique<UISprite>();
-    previewBridgeSprite_->Initialize("PreviewBridgeSprite");
-    previewBridgeSprite_->SetAnchor(Vector2(0.5f, 1.0f)); // プレビューのアンカーを中央上に設定
-    previewBridgeSprite_->SetSize(Vector2(40.0f, 25.0f)); // ブリッジのサイズを設定
-
-    previewHoldEndSprite_ = std::make_unique<UISprite>();
-    previewHoldEndSprite_->Initialize("PreviewHoldEndSprite");
-    previewHoldEndSprite_->SetAnchor(Vector2(0.5f, 0.5f)); // プレビューのアンカーを中央に設定
-    previewHoldEndSprite_->SetSize(Vector2(50.0f, 25.0f)); // ロングノート終端のサイズを設定
-
-
-    // color
-    normalNoteColor_.defaultColor = Vector4(0.31f, 0.76f, 0.97f, 1.0f); // デフォルトのノート色
-    normalNoteColor_.hoverColor = Vector4(0.98f, 0.83f, 0.51f, 1.0f); // ホバー時の色
-    normalNoteColor_.selectedColor = Vector4(0.97f, 0.98f, 0.01f, 1.0f); // 選択時の色
-
-    longNoteColor_.defaultColor = Vector4(0.40f, 0.73f, 0.42f, 1.0f); // デフォルトのロングノート色
-    longNoteColor_.hoverColor = Vector4(0.98f, 0.83f, 0.51f, 1.0f); // ホバー時の色
-    longNoteColor_.selectedColor = Vector4(0.97f, 0.98f, 0.01f, 1.0f); // 選択時の色
+    InitNoteSprites();
+    InitLaneSprites();
+    InitTimelineSprites();
+    InitDummySprites();
 
 
     areaSelectionSprite_ = std::make_unique<UISprite>();
@@ -169,58 +78,8 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     areaSelectionSprite_->SetSize(Vector2(0.0f, 0.0f)); // 範囲選択の初期サイズを設定
 
 
-    dummy_editLaneArea_ = std::make_unique<UISprite>();
-    dummy_editLaneArea_->Initialize("DummySprite");
-    dummy_editLaneArea_->SetPos(Vector2(editorCoordinate_.GetEditAreaX(), editorCoordinate_.GetTopMargin()));
-    dummy_editLaneArea_->SetAnchor(Vector2(0.0f, 0.0f));// ダミースプライトのアンカーを左上に設定
-    dummy_editLaneArea_->SetSize(Vector2(editorCoordinate_.GetEditAreaWidth(), editorCoordinate_.GetEditAreaHeight())); // ダミースプライトのサイズを設定
+    selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
 
-    dummy_editArea_ = std::make_unique<UISprite>();
-    dummy_editArea_->Initialize("DummyEditAreaSprite");
-    dummy_editArea_->SetPos(Vector2(300.0f, 0.0f));
-    dummy_editArea_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーエディットエリアのアンカーを左上に設定
-    dummy_editArea_->SetSize(Vector2(1280.0f - 600.0f, 720.0f)); // ダミーエディットエリアのサイズを設定
-
-
-    dummy_window_ = std::make_unique<UISprite>();
-    dummy_window_->Initialize("DummyWindowSprite");
-    dummy_window_->SetPos(Vector2(0, 0));
-    dummy_window_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーウィンドウのアンカーを左上に設定
-    dummy_window_->SetSize(Vector2(1280.0f, 720.0f)); // ダミーウィンドウのサイズを設定
-
-
-    timelineSprites_.clear();
-    timelineSprites_["background"] = std::make_unique<UISprite>();
-    timelineSprites_["background"]->Initialize("TimelineBackgroundSprite");
-
-    timelineSprites_["start"] = std::make_unique<UISprite>();
-    timelineSprites_["start"]->Initialize("TimelineStartSprite");
-
-    timelineSprites_["end"] = std::make_unique<UISprite>();
-    timelineSprites_["end"]->Initialize("TimelineEndSprite");
-
-    timelineSprites_["playhead"] = std::make_unique<UISprite>();
-    timelineSprites_["playhead"]->Initialize("TimelinePlayheadSprite");
-
-    timelineSprites_["toTestButton"] = std::make_unique<UISprite>();
-    timelineSprites_["toTestButton"]->Initialize("ToTestButtonSprite");
-
-    timelineStartPosition_ = timelineSprites_["start"]->GetPos().x; // タイムラインの開始位置を取得
-    timelineEndPosition_ = timelineSprites_["end"]->GetPos().x; // タイムラインの終了位置を取得
-    timelineWidth_ = timelineEndPosition_ - timelineStartPosition_; // タイムラインの幅を計算
-
-    dummy_timeline_ = std::make_unique<UISprite>();
-    dummy_timeline_->Initialize("DummyTimelineSprite");
-    dummy_timeline_->SetPos(Vector2(timelineStartPosition_, timelineSprites_["background"]->GetPos().y)); // タイムラインの開始位置を設定
-    dummy_timeline_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミータイムラインのアンカーを左上に設定
-    dummy_timeline_->SetSize(Vector2(timelineWidth_, timelineSprites_["background"]->GetSize().y)); // ダミータイムラインのサイズを設定
-
-    textParam_.SetPosition(timelineSprites_["toTestButton"]->GetPos())
-        .SetPivot(timelineSprites_["toTestButton"]->GetAnchor())
-        .SetColor({ 0,0,0,1 });
-
-
-    tapBPMCounter_.Initialize(); // タップBPMカウンターの初期化
 }
 
 void BeatMapEditor::Update()
@@ -228,6 +87,8 @@ void BeatMapEditor::Update()
 
     // 入力処理
     HandleInput();
+
+
     UpdateTimeline();
 
     // エディター状態の更新
@@ -274,12 +135,6 @@ void BeatMapEditor::DrawNotes()
     // 可視範囲を取得
     float startTime, endTime;
     editorCoordinate_.GetVisibleTimeRange(startTime, endTime);
-
-    float startY = editorCoordinate_.TimeToScreenY(startTime); // 開始時間のY座標
-    float endY = editorCoordinate_.TimeToScreenY(endTime); // 終了時間のY座標
-
-    float s = editorCoordinate_.ScreenYToTime(startY); // 開始時間の秒数
-    float e = editorCoordinate_.ScreenYToTime(endY); // 終了時間の秒数
 
     // ノートの描画処理
     for (uint32_t drawNoteIndex = 0; drawNoteIndex < currentBeatMapData_.notes.size(); ++drawNoteIndex)
@@ -688,7 +543,6 @@ void BeatMapEditor::DrawRightPanel()
 #endif
 }
 
-
 void BeatMapEditor::DrawPreviewNote()
 {
     if (currentEditorMode_ == EditorMode::PlaceNormalNote ||
@@ -764,7 +618,6 @@ void BeatMapEditor::DrawTimeline()
     text_.Draw(L"テスト", textParam_);
 }
 
-
 void BeatMapEditor::Finalize()
 {
     // 保存確認
@@ -776,6 +629,168 @@ void BeatMapEditor::Finalize()
 
     // ここで必要なクリーンアップ処理を行います
     beatMapLoader_ = nullptr; // BeatMapLoaderのインスタンスを解放
+}
+
+void BeatMapEditor::InitNoteSprites()
+{
+    const size_t kMaxNoteCount = 1 << 6; // 最大ノート数を設定 一旦64個とする
+    noteSprites_.clear();
+    noteSprites_.resize(kMaxNoteCount); // ノートスプライトのリストを予約
+    for (size_t i = 0; i < kMaxNoteCount; ++i)
+    {
+        auto sprite = std::make_unique<UISprite>();
+        sprite->Initialize("NoteSprite_" + std::to_string(i));
+        sprite->SetAnchor(Vector2(0.5f, 0.5f)); // ノートのアンカーを中央に設定
+        sprite->SetSize(Vector2(50.0f, 25.0f)); // ノートのサイズを設定
+
+        noteSprites_[i] = std::move(sprite); // スプライトをリストに格納
+    }
+
+    holdNoteEnd_.clear(); // ロングノートの終端スプライトをクリア
+    holdNoteEnd_.reserve(kMaxNoteCount / 2); // 終端スプライトのリストを予約
+    noteBridges_.clear(); // ノートとスプライトのブリッジをクリア
+    noteBridges_.reserve(kMaxNoteCount / 2); // ブリッジのリストを予約
+    for (size_t i = 0; i < kMaxNoteCount / 2; ++i)
+    {
+        auto longNoteEndSprite = std::make_unique<UISprite>();
+        longNoteEndSprite->Initialize("LongNoteEndSprite_" + std::to_string(i));
+        longNoteEndSprite->SetAnchor(Vector2(0.5f, 0.5f)); // ロングノートの終端のアンカーを中央に設定
+        longNoteEndSprite->SetSize(Vector2(50.0f, 25.0f)); // ロングノートの終端のサイズを設定
+
+        holdNoteEnd_.push_back(std::move(longNoteEndSprite)); // 終端スプライトをリストに格納
+
+
+        auto bridgeSprite = std::make_unique<UISprite>();
+        bridgeSprite->Initialize("NoteBridgeSprite_" + std::to_string(i));
+        bridgeSprite->SetAnchor(Vector2(0.5f, 1.0f));// ブリッジのアンカーを中央上に設定
+        bridgeSprite->SetSize(Vector2(40.0f, 25.0f)); // ブリッジのサイズを設定
+
+        noteBridges_.push_back(std::move(bridgeSprite)); // ブリッジをリストに格納
+    }
+
+    previewNoteSprite_ = std::make_unique<UISprite>();
+    previewNoteSprite_->Initialize("PreviewNoteSprite");
+    previewNoteSprite_->SetAnchor(Vector2(0.5f, 0.5f)); // プレビューのアンカーを中央に設定
+    previewNoteSprite_->SetSize(Vector2(50.0f, 25.0f)); // ノートのサイズを設定
+
+    previewBridgeSprite_ = std::make_unique<UISprite>();
+    previewBridgeSprite_->Initialize("PreviewBridgeSprite");
+    previewBridgeSprite_->SetAnchor(Vector2(0.5f, 1.0f)); // プレビューのアンカーを中央上に設定
+    previewBridgeSprite_->SetSize(Vector2(40.0f, 25.0f)); // ブリッジのサイズを設定
+
+    previewHoldEndSprite_ = std::make_unique<UISprite>();
+    previewHoldEndSprite_->Initialize("PreviewHoldEndSprite");
+    previewHoldEndSprite_->SetAnchor(Vector2(0.5f, 0.5f)); // プレビューのアンカーを中央に設定
+    previewHoldEndSprite_->SetSize(Vector2(50.0f, 25.0f)); // ロングノート終端のサイズを設定
+
+
+    // color
+    normalNoteColor_.defaultColor = Vector4(0.31f, 0.76f, 0.97f, 1.0f); // デフォルトのノート色
+    normalNoteColor_.hoverColor = Vector4(0.98f, 0.83f, 0.51f, 1.0f); // ホバー時の色
+    normalNoteColor_.selectedColor = Vector4(0.97f, 0.98f, 0.01f, 1.0f); // 選択時の色
+
+    longNoteColor_.defaultColor = Vector4(0.40f, 0.73f, 0.42f, 1.0f); // デフォルトのロングノート色
+    longNoteColor_.hoverColor = Vector4(0.98f, 0.83f, 0.51f, 1.0f); // ホバー時の色
+    longNoteColor_.selectedColor = Vector4(0.97f, 0.98f, 0.01f, 1.0f); // 選択時の色
+
+
+
+}
+
+void BeatMapEditor::InitLaneSprites()
+{ // レーンのスプライトを初期化
+    laneSprites_.clear();
+    float laneWidth = editorCoordinate_.GetLaneWidth();
+    for (uint32_t i = 0; i < editorCoordinate_.GetLaneCount(); ++i)
+    {
+        auto laneSprite = std::make_unique<UISprite>();
+
+        laneSprite->Initialize("LaneSprite_" + std::to_string(i));
+        laneSprite->SetAnchor(Vector2(0.5f, 0.0f)); // レーンのアンカーを中央下に設定
+        laneSprite->SetSize(Vector2(laneWidth, editorCoordinate_.GetEditAreaHeight())); // レーンのサイズを設定
+        laneSprite->SetPos(Vector2(editorCoordinate_.GetLaneLeftX(i) + laneWidth / 2.0f, editorCoordinate_.GetBottomMargin())); // レーンの位置を設定
+        laneSprite->SetColor(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
+
+        laneSprites_.push_back(std::move(laneSprite)); // スプライトをリストに格納
+    }
+
+    // playheadのスプライトを初期化
+    playheadSprite_ = std::make_unique<UISprite>();
+    playheadSprite_->Initialize("PlayheadSprite");
+    playheadSprite_->SetTextureNameAndLoad("triangle.png"); // テクスチャを設定
+    playheadSprite_->SetAnchor(Vector2(0.5f, 0.5f)); // 再生ヘッドのアンカーを中央下に設定
+    playheadSprite_->SetSize(Vector2(20.0f, 20.0f)); // 再生ヘッドのサイズを設定
+    playheadSprite_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f)); // 再生ヘッドの色を赤に設定
+    playheadSprite_->SetRotate(1.57f); // 再生ヘッドの回転を設定（PI/2ラジアン）
+
+    float playheadsize = playheadSprite_->GetSize().x; // 再生ヘッドのサイズを取得
+    Vector2 playheadPos = { editorCoordinate_.GetEditAreaX() - playheadsize / 2.0f, editorCoordinate_.TimeToScreenY(currentTime_) }; // 再生ヘッドの初期位置を設定
+    playheadSprite_->SetPos(playheadPos);
+
+    // ジャッジラインのスプライトを初期化
+    judgeLineSprite_ = std::make_unique<UISprite>();
+    judgeLineSprite_->Initialize("JudgeLineSprite");
+    judgeLineSprite_->SetAnchor(Vector2(0.0f, 0.5f));// ジャッジラインのアンカーを左中央に設定
+    float judgeLineXMargin = 30.0f; // ジャッジラインのXマージンを設定
+    judgeLineSprite_->SetSize(Vector2(editorCoordinate_.GetEditAreaWidth() + judgeLineXMargin, 5.0f)); // ジャッジラインのサイズを設定
+    judgeLineSprite_->SetPos(Vector2(editorCoordinate_.GetEditAreaX() - judgeLineXMargin / 2.0f, editorCoordinate_.TimeToScreenY(currentTime_))); // ジャッジラインの位置を設定
+    judgeLineSprite_->SetColor(Vector4(0.8f, 0.2f, 0.2f, 1.0f)); // ジャッジラインの色を設定
+}
+
+void BeatMapEditor::InitTimelineSprites()
+{
+    timelineSprites_.clear();
+    timelineSprites_["background"] = std::make_unique<UISprite>();
+    timelineSprites_["background"]->Initialize("TimelineBackgroundSprite");
+
+    timelineSprites_["start"] = std::make_unique<UISprite>();
+    timelineSprites_["start"]->Initialize("TimelineStartSprite");
+
+    timelineSprites_["end"] = std::make_unique<UISprite>();
+    timelineSprites_["end"]->Initialize("TimelineEndSprite");
+
+    timelineSprites_["playhead"] = std::make_unique<UISprite>();
+    timelineSprites_["playhead"]->Initialize("TimelinePlayheadSprite");
+
+    timelineSprites_["toTestButton"] = std::make_unique<UISprite>();
+    timelineSprites_["toTestButton"]->Initialize("ToTestButtonSprite");
+
+    timelineStartPosition_ = timelineSprites_["start"]->GetPos().x; // タイムラインの開始位置を取得
+    timelineEndPosition_ = timelineSprites_["end"]->GetPos().x; // タイムラインの終了位置を取得
+    timelineWidth_ = timelineEndPosition_ - timelineStartPosition_; // タイムラインの幅を計算
+
+    dummy_timeline_ = std::make_unique<UISprite>();
+    dummy_timeline_->Initialize("DummyTimelineSprite");
+    dummy_timeline_->SetPos(Vector2(timelineStartPosition_, timelineSprites_["background"]->GetPos().y)); // タイムラインの開始位置を設定
+    dummy_timeline_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミータイムラインのアンカーを左上に設定
+    dummy_timeline_->SetSize(Vector2(timelineWidth_, timelineSprites_["background"]->GetSize().y)); // ダミータイムラインのサイズを設定
+
+    textParam_.SetPosition(timelineSprites_["toTestButton"]->GetPos())
+        .SetPivot(timelineSprites_["toTestButton"]->GetAnchor())
+        .SetColor({ 0,0,0,1 });
+}
+
+void BeatMapEditor::InitDummySprites()
+{
+
+    dummy_editLaneArea_ = std::make_unique<UISprite>();
+    dummy_editLaneArea_->Initialize("DummySprite");
+    dummy_editLaneArea_->SetPos(Vector2(editorCoordinate_.GetEditAreaX(), editorCoordinate_.GetTopMargin()));
+    dummy_editLaneArea_->SetAnchor(Vector2(0.0f, 0.0f));// ダミースプライトのアンカーを左上に設定
+    dummy_editLaneArea_->SetSize(Vector2(editorCoordinate_.GetEditAreaWidth(), editorCoordinate_.GetEditAreaHeight())); // ダミースプライトのサイズを設定
+
+    dummy_editArea_ = std::make_unique<UISprite>();
+    dummy_editArea_->Initialize("DummyEditAreaSprite");
+    dummy_editArea_->SetPos(Vector2(300.0f, 0.0f));
+    dummy_editArea_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーエディットエリアのアンカーを左上に設定
+    dummy_editArea_->SetSize(Vector2(1280.0f - 600.0f, 720.0f)); // ダミーエディットエリアのサイズを設定
+
+
+    dummy_window_ = std::make_unique<UISprite>();
+    dummy_window_->Initialize("DummyWindowSprite");
+    dummy_window_->SetPos(Vector2(0, 0));
+    dummy_window_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーウィンドウのアンカーを左上に設定
+    dummy_window_->SetSize(Vector2(1280.0f, 720.0f)); // ダミーウィンドウのサイズを設定
 }
 
 void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)
@@ -876,7 +891,6 @@ void BeatMapEditor::CreateNewBeatMap(const std::string& _filePath, const std::st
     currentBeatMapData_.offset = 0.0f; // デフォルトオフセットを設定
 
     currentFilePath_ = _filePath;
-
 }
 
 size_t BeatMapEditor::PlaceNote(uint32_t _laneIndex, float _targetTime, const std::string& _noteType, float _holdDuration)
@@ -1134,7 +1148,6 @@ void BeatMapEditor::PasteCopiedNotes()
     commandHistory_.ExecuteCommand(std::move(command));
 }
 
-//todo: ここではキー入力の分岐だけ if内で関数をよんで各操作をおこなう方がきれいじゃないか？
 void BeatMapEditor::HandleInput()
 {
     if (!dummy_window_->IsMousePointerInside())
@@ -1144,7 +1157,6 @@ void BeatMapEditor::HandleInput()
     HandleModeSpecificInput();
     HandleMouseInput();
 }
-
 
 void BeatMapEditor::HandleGlobalInput()
 {
@@ -1625,19 +1637,28 @@ void BeatMapEditor::ChangeEditorMode(EditorMode _mode)
 
     if (currentEditorMode_ == EditorMode::BPMSetting)
     {
+        // 楽曲は止めずVolだけなくす
+        if(musicVoiceInstance_)
+            musicVoiceInstance_->SetVolume(0);
+
         tapBPMCounter_.Initialize();
-        voiceInstanceForBPMSet_->Stop();
+        if (voiceInstanceForBPMSet_)
+            voiceInstanceForBPMSet_->Stop();
     }
     if (preCurrentEditorMode_ == EditorMode::BPMSetting)
     {
-        voiceInstanceForBPMSet_->Stop(); // BPM設定モードから切り替えるときは音声を停止
+        if (voiceInstanceForBPMSet_)
+            voiceInstanceForBPMSet_->Stop(); // BPM設定モードから切り替えるときは音声を停止
+
+        // 音楽の音量を元に戻す
+        if (musicVoiceInstance_)
+            musicVoiceInstance_->SetVolume(volume_);
     }
     if (currentEditorMode_ == EditorMode::LiveMapping)
     {
         liveMapping_.Initialize(editorCoordinate_.GetLaneCount()); // ライブマッピングモードに切り替えたときは初期化
     }
 }
-
 
 void BeatMapEditor::UpdateEditorState()
 {
@@ -1719,7 +1740,6 @@ void BeatMapEditor::UpdateTimeline()
             toTest_ = true;
         }
     }
-
 }
 
 int32_t BeatMapEditor::FindNoteAtTime(uint32_t _laneIndex, float _targetTime, float _tolerance) const

@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include ""
 
 
 class Input;
@@ -29,6 +30,18 @@ class BeatMapLoader;
 
 class BeatMapEditor
 {
+private:
+    enum class EditorMode
+    {
+        Select,
+        PlaceNormalNote,
+        PlaceLongNote,
+        Delete,
+        LiveMapping,
+        BPMSetting,
+
+        Count // モードの数
+    };
 public:
     BeatMapEditor() = default;
     ~BeatMapEditor() = default;
@@ -141,10 +154,38 @@ private:
     void CreateNewBeatMap(const std::string& _filePath, const std::string& _audioFilePath);
 
 
+    ///------------------
+    /// 入力
+
+    /// <summary>
+    /// メイン入力 Space ctrl+zなど
+    /// </summary>
+    void HandleGlobalInput();
+
+
+    /// <summary>
+    /// モード固有の入力処理
+    /// </summary>
+    void HandleModeSpecificInput();
+
+    /// <summary>
+    /// マウス入力処理
+    /// </summary>
+    void HandleMouseInput();
+
+    // モードごとの入力
+    void HandleSelectModeInput();
+    void HandlePlaceNormalNoteInput();
+    void HandlePlaceLongNoteInput();
+    void HandleDeleteModeInput();
+    void HandleLiveMappingInput();
+    void HandleBPMSettingInput();
+
+
+    void ChangeEditorMode(EditorMode _mode);
+
     ///---------------------
     /// 譜面編集
-
-
 
     /// <summary>
     /// ノートを選択
@@ -302,17 +343,6 @@ private:
 
 
 private:
-    enum class EditorMode
-    {
-        Select,
-        PlaceNormalNote,
-        PlaceLongNote,
-        Delete,
-        LiveMapping,
-        BPMSetting,
-
-        Count // モードの数
-    };
 
     struct NoteColor
     {

@@ -38,10 +38,12 @@ void EditorScene::Initialize(SceneData* _sceneData)
     {
         if (_sceneData->beforeScene == "GameScene")
         {
-            beatMapEditor_ = std::make_unique<BeatMapEditor>();
             auto gameToEditorData = dynamic_cast<SharedBeatMapData*>(_sceneData);
             if (gameToEditorData)
+            {
+                beatMapEditor_ = std::make_unique<BeatMapEditor>();
                 beatMapEditor_->Initialize(gameToEditorData->beatMapData); // ゲームから渡された譜面データを取得
+            }
         }
     }
 

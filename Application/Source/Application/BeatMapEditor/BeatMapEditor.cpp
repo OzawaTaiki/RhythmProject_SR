@@ -30,6 +30,7 @@
 
 void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 {
+
     input_ = Input::GetInstance();
     lineDrawer_ = LineDrawer::GetInstance();
     text_.Initialize(FontConfig());
@@ -452,10 +453,17 @@ void BeatMapEditor::DrawLeftPanel()
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
     {
         ImGui::SeparatorText("Editor Mode");
-        int* currentEditorModePtr = reinterpret_cast<int*>(&currentEditorMode_);
-        ImGui::RadioButton("Select", currentEditorModePtr, static_cast<int>(EditorMode::Select));
-        ImGui::RadioButton("Note", currentEditorModePtr, static_cast<int>(EditorMode::PlaceNormalNote));
-        ImGui::RadioButton("Long Note", currentEditorModePtr, static_cast<int>(EditorMode::PlaceLongNote));
+        int currentEditorMode = static_cast<int>(currentEditorMode_);
+        bool hasChanged = false;
+        hasChanged |= ImGui::RadioButton("Select", &currentEditorMode, static_cast<int>(EditorMode::Select));
+        hasChanged |= ImGui::RadioButton("Note", &currentEditorMode, static_cast<int>(EditorMode::PlaceNormalNote));
+        hasChanged |= ImGui::RadioButton("Long Note", &currentEditorMode, static_cast<int>(EditorMode::PlaceLongNote));
+
+        if (hasChanged)
+        {
+            ChangeEditorMode(static_cast<EditorMode>(currentEditorMode)); // エディターのモードを変更
+        }
+
 
         ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
 
@@ -468,14 +476,11 @@ void BeatMapEditor::DrawLeftPanel()
         {
             if (bpmCounter)
             {
-                tapBPMCounter_.Initialize(); // BPMカウンターを初期化
-                preCurrentEditorMode_ = currentEditorMode_; // 前のエディターのモードを保存
-                currentEditorMode_ = EditorMode::BPMSetting; // エディターのモードをタップBPMに設定
+                ChangeEditorMode(EditorMode::BPMSetting); // エディターのモードをBPM設定に変更
             }
             else
             {
-                voiceInstanceForBPMSet_->Stop();
-                currentEditorMode_ = preCurrentEditorMode_; // 前のエディターのモードに戻す
+                ChangeEditorMode(preCurrentEditorMode_);
             }
         }
 
@@ -1132,78 +1137,247 @@ void BeatMapEditor::PasteCopiedNotes()
 //todo: ここではキー入力の分岐だけ if内で関数をよんで各操作をおこなう方がきれいじゃないか？
 void BeatMapEditor::HandleInput()
 {
-    if (currentEditorMode_ == EditorMode::BPMSetting)
-    {
-        tapBPMCounter_.Update();
-        if (!voiceInstanceForBPMSet_ || (voiceInstanceForBPMSet_ && !voiceInstanceForBPMSet_->IsPlaying()))
-        {
-            if(musicSoundInstance_)
-                voiceInstanceForBPMSet_ = musicSoundInstance_->Play(volume_, true);
-        }
-        return;
-    }
+    if (!dummy_window_->IsMousePointerInside())
+        return;// ダミーウィンドウ外なら何もしない
 
-    if (input_->IsKeyTriggered(DIK_SPACE))
+    HandleGlobalInput();
+    HandleModeSpecificInput();
+    HandleMouseInput();
+}
+
+
+void BeatMapEditor::HandleGlobalInput()
+{
+    // space : 音楽の再生停止
+    // B : ビートの有無を切り替え
+    // ESC : 選択をクリア
+    // Delete : 選択ノートを削除
+
+    // Ctrl + Z : アンドゥ
+    // Ctrl + Y : リドゥ
+    // Ctrl + C : 選択ノートをコピー
+    // Ctrl + V : ノートを貼り付け
+    // Ctrl + DOWN : スクロール位置をリセット
+
+    // 数字キー : モード切り替え
+    // Tab : モードを循環
+
+
+    if (input_->IsKeyTriggered(DIK_SPACE) &&
+        currentEditorMode_ != EditorMode::BPMSetting)
     {
         isPlaying_ = !isPlaying_; // スペースキーで再生/停止を切り替え
         if (isPlaying_)
             PlayMusic();
         else
             StopMusic();
+    }
 
-        if (!isPlaying_)
+    if (input_->IsKeyTriggered(DIK_B))
+    {
+        enableBeats_ = !enableBeats_; // Bキーでビートの有無を切り替え
+    }
+
+    if (input_->IsKeyTriggered(DIK_ESCAPE))
+    {
+        ClearSelection(); // ESCキーで選択をクリア
+    }
+
+    if (input_->IsKeyTriggered(DIK_DELETE))
+    {
+        // 選択されたノートを削除
+        if (!selectedNoteIndices_.empty())
         {
-            // 停止時は現在の時間をスクロールオフセットに設定
-            currentTime_ = currentTime_;
+            std::vector<uint32_t> selectedNoteIndices;
+            for (size_t index : selectedNoteIndices_)
+            {
+                if (index < currentBeatMapData_.notes.size())
+                {
+                    selectedNoteIndices.push_back(static_cast<uint32_t>(index)); // 有効なノートインデックスのみ追加
+                }
+            }
+            if (!selectedNoteIndices.empty())
+            {
+                auto command = std::make_unique<DeleteNoteCommand>(this, selectedNoteIndices);
+                commandHistory_.ExecuteCommand(std::move(command)); // 選択されたノートを削除コマンドを実行
+            }
+            selectedNoteIndices_.clear(); // 選択状態をクリア
+            isModified_ = true; // 譜面が変更されたフラグを立てる
+        }
+    }
+
+
+    if (input_->IsKeyPressed(DIK_LCONTROL))
+    {
+        if (input_->IsKeyTriggered(DIK_Z))
+        {
+            commandHistory_.Undo(); // Ctrl + Zでアンドゥ
+        }
+        else if (input_->IsKeyTriggered(DIK_Y))
+        {
+            commandHistory_.Redo(); // Ctrl + Yでリドゥ
+        }
+        else if (input_->IsKeyTriggered(DIK_C))
+        {
+            CopySelectedNotes(); // Ctrl + Cで選択ノートをコピー
+        }
+        else if (input_->IsKeyTriggered(DIK_V))
+        {
+            if (!clipboardData_.IsEmpty())
+            {
+                PasteCopiedNotes(); // Ctrl + Vでクリップボードのノートを貼り付け
+            }
+        }
+        else if (input_->IsKeyTriggered(DIK_DOWN))
+        {
+            // Ctrl + DOWNで選択中のノートを下に移動
+            currentTime_ = 0;
             editorCoordinate_.SetScrollOffset(currentTime_);
         }
     }
 
-    if (currentEditorMode_ == EditorMode::LiveMapping)
-    {
-        if (isPlaying_)
-        {
-            // スナップしたtimeを渡す
-            int divi = static_cast<int>(1.0f / snapInterval_);
-            float time = editorCoordinate_.SnapTimeToGrid(currentTime_, currentBeatMapData_.bpm, divi);
-            liveMapping_.Update(time);
-            return;
-        }
-    }
 
-    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_Z))
+    //  Mode切り替え
+    if (input_->IsKeyTriggered(DIK_1))
     {
-        commandHistory_.Undo(); // Ctrl + Zでアンドゥ
+        ChangeEditorMode(EditorMode::Select); // 1キーで選択モードに切り替え
     }
-    else if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_Y))
+    else if (input_->IsKeyTriggered(DIK_2))
     {
-        commandHistory_.Redo(); // Ctrl + Yでリドゥ
+        ChangeEditorMode(EditorMode::PlaceNormalNote); // 2キーでノーマルノート配置モードに切り替え
     }
+    else if (input_->IsKeyTriggered(DIK_3))
+    {
+        ChangeEditorMode(EditorMode::PlaceLongNote); // 3キーでロングノート配置モードに切り替え
+    }
+    else if (input_->IsKeyTriggered(DIK_4))
+    {
+        ChangeEditorMode(EditorMode::Delete); // 4キーで削除モードに切り替え
+    }
+    else if (input_->IsKeyTriggered(DIK_5))
+    {
+        ChangeEditorMode(EditorMode::LiveMapping); // 5キーでライブマッピングモードに切り替え
+    }
+    if (input_->IsKeyTriggered(DIK_TAB))
+    {
+        int32_t mode = static_cast<int32_t>(currentEditorMode_);
+        mode = (mode + 1) % static_cast<int32_t>(EditorMode::Count); // モードを循環
 
-    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_C))
-    {
-        CopySelectedNotes(); // Ctrl + Cで選択ノートをコピー
+        ChangeEditorMode(static_cast<EditorMode>(mode)); // モードを変更
     }
-    else if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_V))
+}
+
+void BeatMapEditor::HandleModeSpecificInput()
+{
+
+    switch (currentEditorMode_)
     {
-        if (!clipboardData_.IsEmpty())
-        {
-            PasteCopiedNotes(); // Ctrl + Vでクリップボードのノートを貼り付け
-        }
+    case BeatMapEditor::EditorMode::Select:
+        HandleSelectModeInput();
+        break;
+    case BeatMapEditor::EditorMode::PlaceNormalNote:
+        HandlePlaceNormalNoteInput();
+        break;
+    case BeatMapEditor::EditorMode::PlaceLongNote:
+        HandlePlaceLongNoteInput();
+        break;
+    case BeatMapEditor::EditorMode::Delete:
+        HandleDeleteModeInput();
+        break;
+    case BeatMapEditor::EditorMode::LiveMapping:
+        HandleLiveMappingInput();
+        break;
+    case BeatMapEditor::EditorMode::BPMSetting:
+        HandleBPMSettingInput();
+        break;
+    case BeatMapEditor::EditorMode::Count:
+    default:
+        break;
     }
+}
 
-    if(input_->IsKeyTriggered(DIK_B))
-        enableBeats_ = !enableBeats_; // Bキーでビートの有無を切り替え
-
-    bool selected = false;
-    // マウスがエディターエリア内にあるかチェック
+void BeatMapEditor::HandleMouseInput()
+{
     bool mouseInsideEditorArea = dummy_editLaneArea_->IsMousePointerInside();
-    if (!dummy_window_->IsMousePointerInside())
-        return;// ダミーウィンドウ外なら何もしない
+    // ホイールでスクロール
+    float wheelDelta = input_->GetMouseWheel();
+    if (wheelDelta != 0.0f)
+    {
+        if (!mouseInsideEditorArea && dummy_editArea_->IsMousePointerInside())
+        {
+            // スクロール量に応じて時間を更新
+            float addedTime = wheelDelta * 0.1f / editorCoordinate_.GetZoom();
+            // スクロール速度を調整
+            // ゆっくりスクロールできるように。
+            if (input_->IsKeyPressed(DIK_LSHIFT))
+            {
+                addedTime *= 0.1f;
+            }
+            currentTime_ += addedTime; // 現在の時間を更新
+            currentTime_ = (std::max)(currentTime_, 0.0f);
+            editorCoordinate_.SetScrollOffset(currentTime_); // スクロールオフセットを更新
+        }
+        else if (mouseInsideEditorArea)
+        {
+            float addedZoom = wheelDelta * 0.1f; // ホイールの動きに応じてズームを調整
+            if (input_->IsKeyPressed(DIK_LSHIFT))
+            {
+                addedZoom *= 0.1f;
+            }
+            editorCoordinate_.SetZoom(editorCoordinate_.GetZoom() + addedZoom); // ズームを更新
 
+        }
+    }
 
-    // 入力処理の実装
-    // マウスホバーによる選択
+    // ホイールクリックでcurrentTimeをセット
+    if (input_->IsMouseTriggered(2))
+    {
+        // マウスの位置を取得
+        Vector2 mousePos = input_->GetMousePosition();
+        // スクリーン座標から時間に変換
+        float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y);
+        if (musicSoundInstance_)
+        {
+            currentTime_ = std::clamp(targetTime, 0.0f, musicSoundInstance_->GetDuration()); // 音楽の再生時間を超えないように制限
+        }
+        else
+        {
+            currentTime_ = (std::max)(targetTime, 0.0f); // 負の時間を防ぐ
+        }
+    }
+
+    // 移動させていない かつ 左クリック
+    if (!isMovingSelectedNote_ && input_->IsMouseTriggered(0))
+    {
+        isDragging_ = true; // ドラッグ開始フラグを立てる
+        // マウスの位置を取得
+        dragStartPosition_ = input_->GetMousePosition();
+        areaSelectionSprite_->SetPos(dragStartPosition_); // ドラッグ開始位置を設定
+
+    }
+
+    if (isDragging_)
+    {
+        if (input_->IsMouseReleased(0)) // 左クリックを離したとき
+        {
+            CheckSelectionArea(); // 選択エリアをチェック
+            dragEndPosition_ = input_->GetMousePosition(); // ドラッグ終了位置を取得
+            isDragging_ = false; // ドラッグ終了フラグを下ろす
+        }
+        else
+        {
+
+            dragEndPosition_ = input_->GetMousePosition(); // ドラッグ終了位置を取得
+            Vector2 size = dragEndPosition_ - dragStartPosition_; // ドラッグのサイズを計算
+
+            areaSelectionSprite_->SetSize(size); // ドラッグのサイズを設定
+            CheckSelectionArea(); // 選択エリアをチェック
+        }
+    }
+}
+
+void BeatMapEditor::HandleSelectModeInput()
+{
     if(!isMovingSelectedNote_)
     {
         for (size_t i = 0; i < noteIndex_; ++i) // 現在描画中のノート数まで
@@ -1233,7 +1407,6 @@ void BeatMapEditor::HandleInput()
                 {
                     bool multiSelect = input_->IsKeyPressed(DIK_LSHIFT);
                     SelectNote(actualNoteIndex, multiSelect);
-                    selected = true;
                     isMovingSelectedNote_ = true; // 選択したノートを移動可能にするフラグを立てる
 
                     moveState_.isMoving = true; // ノート移動状態を開始
@@ -1282,7 +1455,6 @@ void BeatMapEditor::HandleInput()
 
         float newTime = editorCoordinate_.ScreenYToTime(mousePos.y);
         MoveSelectedNoteTemporary(newTime); // 選択されたノートの時間を更新
-        selected = true; // ノートが移動されたので選択状態にする
 
         if (input_->IsMouseReleased(0)) // マウスの左ボタンが離されたとき
         {
@@ -1328,7 +1500,6 @@ void BeatMapEditor::HandleInput()
                 isSelectingHoldEnd_ = true; // ホールド終端の選択フラグを立てる
                 selectNoteIndex_ = actualNoteIndex; // 選択されたノートのインデックスを保存
                 selectHoldNoteDuration = currentBeatMapData_.notes[actualNoteIndex].holdDuration; // 選択されたホールドノートの持続時間を保存
-                selected = true; // 選択状態にする
             }
         }
     }
@@ -1354,217 +1525,119 @@ void BeatMapEditor::HandleInput()
             selectNoteIndex_ = -1; // 選択されたノートのインデックスをリセット
         }
     }
+}
 
-
-    // ホイールでスクロール
-    float wheelDelta = input_->GetMouseWheel();
-    if (wheelDelta != 0.0f)
+void BeatMapEditor::HandlePlaceNormalNoteInput()
+{
+    if (input_->IsMouseTriggered(0)) // 左クリックでノートを配置
     {
-        if (!mouseInsideEditorArea && dummy_editArea_->IsMousePointerInside())
+        Vector2 mousePos = input_->GetMousePosition(); // マウスの位置を取得
+        int32_t laneIndex = editorCoordinate_.ScreenXToLane(mousePos.x); // マウスのX座標をレーンに変換
+        float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y); // マウスのY座標を時間に変換
+        if (currentEditorMode_ == EditorMode::PlaceNormalNote)
         {
-                // スクロール量に応じて時間を更新
-            float addedTime = wheelDelta * 0.1f / editorCoordinate_.GetZoom();
-            // スクロール速度を調整
-            // ゆっくりスクロールできるように。
-            if (input_->IsKeyPressed(DIK_LSHIFT))
-            {
-                addedTime *= 0.1f;
-            }
-            currentTime_ += addedTime; // 現在の時間を更新
-            currentTime_ = (std::max)(currentTime_, 0.0f);
-            editorCoordinate_.SetScrollOffset(currentTime_); // スクロールオフセットを更新
+            auto command = std::make_unique<PlaceNoteCommand>(this, laneIndex, targetTime, "normal", 0.0f);
+            commandHistory_.ExecuteCommand(std::move(command)); // ノーマルノートを配置
         }
-        else if(mouseInsideEditorArea)
-        {
-            float addedZoom = wheelDelta * 0.1f; // ホイールの動きに応じてズームを調整
-            if (input_->IsKeyPressed(DIK_LSHIFT))
-            {
-                addedZoom *= 0.1f;
-            }
-            editorCoordinate_.SetZoom(editorCoordinate_.GetZoom() + addedZoom); // ズームを更新
+    }
+}
 
+void BeatMapEditor::HandlePlaceLongNoteInput()
+{
+    if (input_->IsMouseTriggered(0)) // 左クリックでノートを配置
+    {
+        Vector2 mousePos = input_->GetMousePosition(); // マウスの位置を取得
+        int32_t laneIndex = editorCoordinate_.ScreenXToLane(mousePos.x); // マウスのX座標をレーンに変換
+        float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y); // マウスのY座標を時間に変換
+        if (currentEditorMode_ == EditorMode::PlaceLongNote)
+        {
+            isCreatingLongNote_ = true; // ロングノートの作成フラグを立てる
+            longNoteStartTime_ = targetTime; // ロングノートの開始時間を記録
+            longNoteStartLane_ = laneIndex; // ロングノートの開始レーンを記録
         }
     }
 
-
-
-    // ホイールクリックでcurrentTimeをセット
-    if (input_->IsMouseTriggered(2))
-    {
-        // マウスの位置を取得
-        Vector2 mousePos = input_->GetMousePosition();
-        // スクリーン座標から時間に変換
-        float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y);
-        if (musicSoundInstance_)
-        {
-            currentTime_ = std::clamp(targetTime, 0.0f, musicSoundInstance_->GetDuration()); // 音楽の再生時間を超えないように制限
-        }
-        else
-        {
-            currentTime_ = (std::max)(targetTime, 0.0f); // 負の時間を防ぐ
-        }
-
-    }
-
-    // 移動させていない かつ 左クリック
-    if (!isMovingSelectedNote_ && input_->IsMouseTriggered(0))
-    {
-        isDragging_ = true; // ドラッグ開始フラグを立てる
-        // マウスの位置を取得
-        dragStartPosition_ = input_->GetMousePosition();
-        areaSelectionSprite_->SetPos(dragStartPosition_); // ドラッグ開始位置を設定
-
-    }
-
-    if (isDragging_)
+    if (isCreatingLongNote_)
     {
         if (input_->IsMouseReleased(0)) // 左クリックを離したとき
         {
-            CheckSelectionArea(); // 選択エリアをチェック
-            dragEndPosition_ = input_->GetMousePosition(); // ドラッグ終了位置を取得
-            isDragging_ = false; // ドラッグ終了フラグを下ろす
-        }
-        else
-        {
-
-            dragEndPosition_ = input_->GetMousePosition(); // ドラッグ終了位置を取得
-            Vector2 size = dragEndPosition_ - dragStartPosition_; // ドラッグのサイズを計算
-
-            areaSelectionSprite_->SetSize(size); // ドラッグのサイズを設定
-            CheckSelectionArea(); // 選択エリアをチェック
-        }
-    }
-
-
-    //  Mode切り替え
-    if (input_->IsKeyTriggered(DIK_1))
-    {
-        currentEditorMode_ = EditorMode::Select; // ノーマルモード
-    }
-    else if (input_->IsKeyTriggered(DIK_2))
-    {
-        currentEditorMode_ = EditorMode::PlaceNormalNote; // ホールドモード
-    }
-    else if (input_->IsKeyTriggered(DIK_3))
-    {
-        currentEditorMode_ = EditorMode::PlaceLongNote; // ホールドモード
-    }
-    else if (input_->IsKeyTriggered(DIK_4))
-    {
-        currentEditorMode_ = EditorMode::Delete; // 削除モード
-    }
-    else if (input_->IsKeyTriggered(DIK_5))
-    {
-        currentEditorMode_ = EditorMode::LiveMapping; // ライブマッピングモード
-        liveMapping_.Initialize(editorCoordinate_.GetLaneCount());
-    }
-
-    if (input_->IsKeyTriggered(DIK_TAB))
-    {
-        int32_t mode = static_cast<int32_t>(currentEditorMode_);
-        mode = (mode + 1) % static_cast<int32_t>(EditorMode::Count); // モードを循環
-        currentEditorMode_ = static_cast<EditorMode>(mode); // 新しいモードを設定
-    }
-
-    if(currentEditorMode_==EditorMode::PlaceNormalNote ||
-        currentEditorMode_ == EditorMode::PlaceLongNote)
-    {
-        if (input_->IsMouseTriggered(0)) // 左クリックでノートを配置
-        {
             Vector2 mousePos = input_->GetMousePosition(); // マウスの位置を取得
-            int32_t laneIndex = editorCoordinate_.ScreenXToLane(mousePos.x); // マウスのX座標をレーンに変換
+
             float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y); // マウスのY座標を時間に変換
-            if (currentEditorMode_ == EditorMode::PlaceNormalNote)
+            float holdDuration = targetTime - longNoteStartTime_; // ホールド時間を計算
+
+            if (holdDuration > 0.001f) // ホールド時間が0.001秒以上の場合のみ配置
             {
-                //PlaceNote(laneIndex, targetTime, "normal"); // ノーマルノートを配置
-
-                auto command = std::make_unique<PlaceNoteCommand>(this, laneIndex, targetTime, "normal", 0.0f);
-                commandHistory_.ExecuteCommand(std::move(command)); // ノーマルノートを配置
-
-
+                auto command = std::make_unique<PlaceNoteCommand>(this, longNoteStartLane_, longNoteStartTime_, "hold", holdDuration);
+                commandHistory_.ExecuteCommand(std::move(command)); // ロングノートを配置
             }
-            else if (currentEditorMode_ == EditorMode::PlaceLongNote)
-            {
-                isCreatingLongNote_ = true; // ロングノートの作成フラグを立てる
-                longNoteStartTime_ = targetTime; // ロングノートの開始時間を記録
-                longNoteStartLane_ = laneIndex; // ロングノートの開始レーンを記録
-            }
+            isCreatingLongNote_ = false; // ロングノートの作成フラグを下ろす
         }
-
-        if (isCreatingLongNote_)
-        {
-            if (input_->IsMouseReleased(0)) // 左クリックを離したとき
-            {
-                Vector2 mousePos = input_->GetMousePosition(); // マウスの位置を取得
-
-                float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y); // マウスのY座標を時間に変換
-                float holdDuration = targetTime - longNoteStartTime_; // ホールド時間を計算
-
-                if (holdDuration > 0.001f) // ホールド時間が0.001秒以上の場合のみ配置
-                {
-                    //PlaceNote(longNoteStartLane_, longNoteStartTime_, "hold", holdDuration); // ロングノートを配置
-
-                    auto command = std::make_unique<PlaceNoteCommand>(this, longNoteStartLane_, longNoteStartTime_, "hold", holdDuration);
-                    commandHistory_.ExecuteCommand(std::move(command)); // ロングノートを配置
-                }
-                isCreatingLongNote_ = false; // ロングノートの作成フラグを下ろす
-            }
-        }
-    }
-    if (currentEditorMode_ == EditorMode::Delete)
-    {
-        if (input_->IsMouseTriggered(0)) // 左クリックでノートを削除
-        {
-            for (size_t i = 0; i < noteIndex_; ++i) // 現在描画中のノート数まで
-            {
-                uint32_t actualNoteIndex = drawNoteIndices_[i]; // 実際のノートインデックスを取得
-                if (noteSprites_[i]->IsMousePointerInside())
-                {
-                    auto command = std::make_unique<DeleteNoteCommand>(this, actualNoteIndex);
-                    commandHistory_.ExecuteCommand(std::move(command)); // ノートを削除コマンドを実行
-                    break; // 一つ削除したらループを抜ける
-                }
-            }
-        }
-    }
-
-    if (input_->IsKeyTriggered(DIK_DELETE))
-    {
-        // 選択されたノートを削除
-        if (!selectedNoteIndices_.empty())
-        {
-            std::vector<uint32_t> selectedNoteIndices;
-            for (size_t index : selectedNoteIndices_)
-            {
-                if (index < currentBeatMapData_.notes.size())
-                {
-                    selectedNoteIndices.push_back(static_cast<uint32_t>(index)); // 有効なノートインデックスのみ追加
-                }
-            }
-            if (!selectedNoteIndices.empty())
-            {
-                auto command = std::make_unique<DeleteNoteCommand>(this, selectedNoteIndices);
-                commandHistory_.ExecuteCommand(std::move(command)); // 選択されたノートを削除コマンドを実行
-            }
-            selectedNoteIndices_.clear(); // 選択状態をクリア
-            isModified_ = true; // 譜面が変更されたフラグを立てる
-        }
-
-    }
-
-    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_DOWN))
-    {
-        // CTRL + DOWNで選択中のノートを下に移動
-        currentTime_ = 0;
-        editorCoordinate_.SetScrollOffset(currentTime_);
-    }
-
-    if (input_->IsKeyTriggered(DIK_ESCAPE))
-    {
-        // ESCキーで選択をクリア
-        ClearSelection();
     }
 }
+
+void BeatMapEditor::HandleDeleteModeInput()
+{
+    if (input_->IsMouseTriggered(0)) // 左クリックでノートを削除
+    {
+        for (size_t i = 0; i < noteIndex_; ++i) // 現在描画中のノート数まで
+        {
+            uint32_t actualNoteIndex = drawNoteIndices_[i]; // 実際のノートインデックスを取得
+            if (noteSprites_[i]->IsMousePointerInside())
+            {
+                auto command = std::make_unique<DeleteNoteCommand>(this, actualNoteIndex);
+                commandHistory_.ExecuteCommand(std::move(command)); // ノートを削除コマンドを実行
+                break; // 一つ削除したらループを抜ける
+            }
+        }
+    }
+}
+
+void BeatMapEditor::HandleLiveMappingInput()
+{
+    if (isPlaying_)
+    {
+        // スナップしたtimeを渡す
+        int divi = static_cast<int>(1.0f / snapInterval_);
+        float time = editorCoordinate_.SnapTimeToGrid(currentTime_, currentBeatMapData_.bpm, divi);
+        liveMapping_.Update(time);
+        return;
+    }
+}
+
+void BeatMapEditor::HandleBPMSettingInput()
+{
+    tapBPMCounter_.Update();
+    if (!voiceInstanceForBPMSet_ || (voiceInstanceForBPMSet_ && !voiceInstanceForBPMSet_->IsPlaying()))
+    {
+        if (musicSoundInstance_)
+            voiceInstanceForBPMSet_ = musicSoundInstance_->Play(volume_, true);
+    }
+}
+
+void BeatMapEditor::ChangeEditorMode(EditorMode _mode)
+{
+    if (currentEditorMode_ == _mode)
+        return; // 既に同じモードなら何もしない
+
+    preCurrentEditorMode_ = currentEditorMode_; // 現在のモードを保存
+    currentEditorMode_ = _mode; // 新しいモードに変更
+
+    if (currentEditorMode_ == EditorMode::BPMSetting)
+    {
+        tapBPMCounter_.Initialize();
+        voiceInstanceForBPMSet_->Stop();
+    }
+    if (preCurrentEditorMode_ == EditorMode::BPMSetting)
+    {
+        voiceInstanceForBPMSet_->Stop(); // BPM設定モードから切り替えるときは音声を停止
+    }
+    if (currentEditorMode_ == EditorMode::LiveMapping)
+    {
+        liveMapping_.Initialize(editorCoordinate_.GetLaneCount()); // ライブマッピングモードに切り替えたときは初期化
+    }
+}
+
 
 void BeatMapEditor::UpdateEditorState()
 {
@@ -1588,6 +1661,7 @@ void BeatMapEditor::UpdateEditorState()
         }
     }
     editorCoordinate_.SetScrollOffset(currentTime_);
+
 }
 
 void BeatMapEditor::UpdateTimeline()

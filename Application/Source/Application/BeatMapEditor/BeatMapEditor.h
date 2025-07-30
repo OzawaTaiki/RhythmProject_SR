@@ -20,7 +20,6 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
-#include ""
 
 
 class Input;
@@ -340,6 +339,13 @@ private:
     void DrawLeftPanel();
     void DrawRightPanel();
 
+
+
+    // 初期化分割
+    void InitNoteSprites();
+    void InitLaneSprites();
+    void InitTimelineSprites();
+    void InitDummySprites();
 
 
 private:

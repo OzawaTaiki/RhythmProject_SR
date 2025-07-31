@@ -73,13 +73,13 @@ void GameCore::Update(float  _deltaTime, const std::vector<InputDate>& _inputDat
         waitTimer_ += _deltaTime;
         elapsedTime = Lerp(-offset_, 0.0f, waitTimer_ / offset_);
     }
-    else if (auto voiceInstance = musicVoiceInstance_.lock())
+    else if (gamemusic_)
     {
         // 音楽の音声インスタンスが有効な場合、経過時間を取得
-        if (voiceInstance->IsPlaying())
+        if (gamemusic_->IsPlaying())
         {
             // 音楽が再生中の場合、経過時間を取得
-            elapsedTime = voiceInstance->GetElapsedTime();
+            elapsedTime = gamemusic_->GetElapsedTime();
         }
     }
     for (auto& lane : lanes_)
@@ -206,12 +206,11 @@ void GameCore::CreateBeatMapNotes()
     }
 }
 
-void GameCore::Restart(std::shared_ptr<VoiceInstance> _voiceInstance)
+void GameCore::Restart()
 {
     isWaitingForStart_ = true;
     waitTimer_ = 0.0f;
 
-    SetMusicVoiceInstance(_voiceInstance);
     CreateBeatMapNotes();
     judgeResult_->Initialize();
 

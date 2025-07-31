@@ -3,6 +3,8 @@
 #include <System/Audio/VoiceInstance.h>
 #include <System/Time/Stopwatch.h>
 
+#include <Application/GameMusic/GameMusic.h>
+
 #include <string>
 #include <cstdint>
 #include <memory>
@@ -58,6 +60,7 @@ public:
 
     void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
+    void SetGameMusic(const GameMusic* _gameMusic) { gameMusic_ = _gameMusic; }
 private:
     Stopwatch* stopwatch_;
     float bpm_ = 120.0f;       // 1分あたりの拍数
@@ -70,6 +73,8 @@ private:
     std::shared_ptr<VoiceInstance> voiceInstance_; // ボイスインスタンス
 
     std::shared_ptr<VoiceInstance> musicVoiceInstance_; // 音楽のボイスインスタンス
+
+    const GameMusic* gameMusic_; // 音楽の管理
 
     float volume_ = 0.5f;
     bool soundEnabled_ = true;

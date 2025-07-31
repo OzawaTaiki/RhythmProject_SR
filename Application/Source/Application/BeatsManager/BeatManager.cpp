@@ -31,7 +31,7 @@ void BeatManager::Initialize(float bpm, float offset, const std::string& soundPa
 void BeatManager::Update()
 {
     if (!playing_) return;
-    if (!musicVoiceInstance_ && !musicVoiceInstance_->IsPlaying())return;
+    if (!gameMusic_ || !gameMusic_->IsPlaying())return;
 
     // 新しい拍かチェック
     if (IsNewBeat() && soundEnabled_)
@@ -83,7 +83,7 @@ void BeatManager::Reset()
 
 float BeatManager::GetCurrentBeat() const
 {
-    float currentTime = musicVoiceInstance_->GetElapsedTime() - offset_;
+    float currentTime = gameMusic_->GetElapsedTime() - offset_;
     return currentTime / GetSecondsPerBeat();
 }
 

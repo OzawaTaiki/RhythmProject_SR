@@ -22,11 +22,6 @@
 
 GameScene::~GameScene()
 {
-    if (voiceInstance_)
-    {
-        voiceInstance_->Stop();
-        voiceInstance_.reset();
-    }
 }
 
 // TODO ; やりたいこと にゅうりょく精度アップ
@@ -136,6 +131,8 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     isTransitionToResultScene_ = true;
 
+    isMusicPlaying_ = true;
+
     LayerSystem::CreateLayer("GameEnvironment", 0);
     LayerSystem::CreateLayer("GameCore", 1);
     LayerSystem::CreateLayer("FeedbackEffect", 2, PSOFlags::BlendMode::Add);
@@ -168,7 +165,13 @@ void GameScene::Update()
     if(input_->IsKeyTriggered(DIK_F8))
         isTransitionToResultScene_ = !isTransitionToResultScene_; // F8キーで結果シーンへの遷移を切り替え
     if (input_->IsKeyTriggered(DIK_F7))
+    {
         noteUpdateEnabled_ = !noteUpdateEnabled_;
+        if(noteUpdateEnabled_)
+            gameMusic_->Resume(); // ノート更新が有効なら音楽を再生
+        else
+            gameMusic_->Pause(); // ノート更新が無効なら音楽を一時停止
+    }
 
     depthBasedOutLineData_.ImGui();
 
@@ -178,18 +181,7 @@ void GameScene::Update()
 
     if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_R))
     {
-        voiceInstance_->Stop();
-        voiceInstance_.reset();
-
-        voiceInstance_ = soundInstance_->GenerateVoiceInstance(0.3f, 0.0f); // ボリュームとオフセットを設定して再生
-
-        beatManager_->Reset();
-
-        gameCore_->Restart(voiceInstance_);
-        gameInputManager_->SetMusicVoiceInstance(voiceInstance_);
-        beatManager_->SetMusicVoiceInstance(voiceInstance_);
-
-        isWatingForStart_ = true;
+        Retry();
     }
 
     depthBasedOutLineData_.edgeColor.x = std::sin(static_cast<float>((Time::GetCurrentTime)())) * 0.5f + 0.5f;
@@ -206,8 +198,7 @@ void GameScene::Update()
     }
     else
     {
-        if(voiceInstance_)
-            voiceInstance_->Stop();
+        gameMusic_->Pause();
     }
     feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
     gameEnvironment_->Update(deltaTime);
@@ -232,7 +223,8 @@ void GameScene::Update()
 
     if (IsMusicEnd())
     {
-        if(isTransitionToResultScene_)
+
+        if (isTransitionToResultScene_)
         {
             auto data = std::make_unique<GameToResultData>();
             data->resultData.musicTitle = beatMapLoader_->GetLoadedBeatMapData().title; // 譜面のタイトルを取得
@@ -361,19 +353,26 @@ bool GameScene::IsComplateLoadBeatMap()
         beatManager_->SetBPM(beatMapLoader_->GetLoadedBeatMapData().bpm);
         beatManager_->SetOffset(beatMapLoader_->GetLoadedBeatMapData().offset);
         std::string audioFilePath = beatMapLoader_->GetLoadedBeatMapData().audioFilePath;
-        soundInstance_ = AudioSystem::GetInstance()->Load(audioFilePath);
+
+        gameMusic_ = std::make_unique<GameMusic>(audioFilePath); // 音楽の管理を初期化
+        gameMusic_->Initialize();
 
         gameEnvironment_->SetBPM(beatMapLoader_->GetLoadedBeatMapData().bpm);
 
         // ロード完了
         Debug::Log("BeatMap Loaded Successfully\n");
-        if(soundInstance_)
-            voiceInstance_ = soundInstance_->GenerateVoiceInstance(0.3f, 0.0f);
-        if (voiceInstance_)
+
+        if (gameMusic_)
         {
-            beatManager_->SetMusicVoiceInstance(voiceInstance_);
-            gameCore_->SetMusicVoiceInstance(voiceInstance_);
-            gameInputManager_->SetMusicVoiceInstance(voiceInstance_); // 入力管理に音声インスタンスを設定
+            beatManager_->SetGameMusic(gameMusic_.get());
+            gameCore_->SetGameMusic(gameMusic_.get());
+            gameInputManager_->SetGameMusic(gameMusic_.get()); // 入力管理に音声インスタンスを設定
+
+            pauseMenu_->SetCallBacks(
+                [this]() { gameMusic_->ResumeWithRewind(0.3f); }, // 一時停止コールバック
+                [this]() { Retry(); }, // リトライコールバック
+                [this]() { ToTitle(); } // タイトルに戻るコールバック
+            );
         }
         else
         {
@@ -406,27 +405,30 @@ void GameScene::UpdateGameStartOffset()
         beatManager_->Start();
         gameCore_->Start();
 
-        if (voiceInstance_)
-            voiceInstance_->Play();
+        if (gameMusic_)
+            gameMusic_->Play(0.3f);
     }
 }
 
 bool GameScene::IsMusicEnd() const
 {
-    if(!isBeatMapLoaded_)
-        return false;
-
-    if (!voiceInstance_)
-        return false;
-
-    if (!voiceInstance_->IsPlaying())
+    if (gameMusic_ && gameMusic_->IsMusicEnd())
         return true;
 
-    voiceInstance_->GetElapsedTime();
-    soundInstance_->GetDuration();
-
-
     return false;
+}
+
+void GameScene::Retry()
+{
+    beatManager_->Reset();
+    gameCore_->Restart();
+    gameMusic_->Pause();
+    isWatingForStart_ = true;
+}
+
+void GameScene::ToTitle()
+{
+    SceneManager::ReserveScene("TitleScene", nullptr);
 }
 
 
@@ -447,7 +449,7 @@ void GameScene::ImGui()
         ImGui::Text("combo: %d", gameCore_->GetCombo());
         ImGui::Text("maxCombo: %d", gameCore_->GetMaxCombo());
 
-        float time = voiceInstance_->GetElapsedTime();
+        float time = gameMusic_->GetElapsedTime();
         ImGui::Text("Elapsed Time: %.2f", time);
 
 
@@ -459,7 +461,7 @@ void GameScene::ImGui()
 
         if (ImGui::Button("play##music"))
         {
-            voiceInstance_->Play();
+            gameMusic_->Play(0.3f);
         }
         static float bpm = 120;
         ImGui::DragFloat("BPM", &bpm, 0.1f);
@@ -471,26 +473,24 @@ void GameScene::ImGui()
 
         static float volume = 0.2f;
         if (ImGui::DragFloat("music Vol", &volume, 0.01f))
-            voiceInstance_->SetVolume(volume);
+            gameMusic_->SetVolume(volume);
 
         static float offset = 0.6f;
         ImGui::DragFloat("offset", &offset, 0.001f);
 
         if (input_->IsKeyTriggered(DIK_R))
         {
-            voiceInstance_->Stop();
-            voiceInstance_.reset();
-            voiceInstance_ = soundInstance_->Play(volume); // ボリュームとオフセットを設定して再生
-            gameCore_->Restart(voiceInstance_); // ゲームコアに音声インスタンスを設定
-            gameInputManager_->SetMusicVoiceInstance(voiceInstance_);
+            gameMusic_->Pause();
+            gameMusic_->Play(0.3f);
+            gameCore_->Restart(); // ゲームコアに音声インスタンスを設定
             beatManager_->Reset();
         }
 
 
         ImGui::Separator();
-        ImGui::Text("Music Duration : %.2fsec", soundInstance_->GetDuration());
-        if (voiceInstance_)
-            ImGui::Text("Music elapse   : %.2fsec", voiceInstance_->GetElapsedTime());
+        ImGui::Text("Music Duration : %.2fsec", gameMusic_->GetDuration());
+        if (gameMusic_)
+            ImGui::Text("Music elapse   : %.2fsec", gameMusic_->GetElapsedTime());
 
         static float noteSpeed = 30.0f;
         if (ImGui::DragFloat("Note Speed", &noteSpeed, 0.1f, 0.1f, 100.0f))

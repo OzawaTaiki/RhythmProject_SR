@@ -3,6 +3,7 @@
 #include <System/Input/Input.h>
 
 #include <Application/Input/InputData.h>
+#include <Application/GameMusic/GameMusic.h>
 
 #include <map>
 #include <cstdint>
@@ -55,6 +56,8 @@ public:
     /// </summary>
     /// <param name="_voiceInstance">音声インスタンスのポインタ </param>
     void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> _voiceInstance) { musicVoiceInstance_ = _voiceInstance; }
+
+    void SetGameMusic(const GameMusic* _gameMusic) { gameMusic_ = _gameMusic; }
 private:
 
     /// <summary>
@@ -70,4 +73,6 @@ private:
     std::map<int8_t, int32_t> keyBindings_; // キーのバインディング
 
     std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス
+
+    const GameMusic* gameMusic_ = nullptr; // ゲーム音楽のインスタンス
 };

@@ -9,6 +9,7 @@
 #include <Application/Input/InputData.h>
 #include <Application/Note/Judge/NoteJudge.h>
 #include <Application/Note/Judge/JudgeResult.h>
+#include <Application/GameMusic/GameMusic.h>
 
 // STL
 #include <functional>
@@ -58,6 +59,11 @@ public:
     /// <param name="_voiceInstance">音声インスタンスを</param>
     void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> _voiceInstance) { musicVoiceInstance_ = _voiceInstance; }
 
+    /// <summary>
+    /// GameMusicを設定する
+    /// </summary>
+    /// <param name="_gameMusic">GameMusicのインスタンス</param>
+    void SetGameMusic(const GameMusic* _gameMusic) { gamemusic_ = _gameMusic; }
 
     /// <summary>
     /// 開始
@@ -67,7 +73,7 @@ public:
     /// <summary>
     /// リスタート
     /// </summary>
-    void Restart(std::shared_ptr<VoiceInstance> _voiceInstance);
+    void Restart();
 
 
     /// <summary>
@@ -163,5 +169,7 @@ private:
 
 
     std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス 弱参照
+
+    const GameMusic* gamemusic_ = nullptr; // 音楽の管理
 
 };

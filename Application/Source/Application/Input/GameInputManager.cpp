@@ -16,14 +16,14 @@ void GameInputManager::Initialize(Input* _input)
 
 void GameInputManager::Update()
 {
-    if (auto musicVoiceInstance = musicVoiceInstance_.lock())
+    if (gameMusic_)
     {
         inputData_.clear(); // 前回の入力データをクリア
 
         for (const auto& [keycode, laneIndex] : keyBindings_)
         {
             InputDate inputData;
-            inputData.elapsedTime = musicVoiceInstance->GetElapsedTime();
+            inputData.elapsedTime = gameMusic_->GetElapsedTime();
             inputData.laneIndex = laneIndex;
 
             if (input_->IsKeyTriggered(keycode))

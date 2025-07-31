@@ -106,6 +106,12 @@
     <Filter Include="Application\PauseMenu">
       <UniqueIdentifier>{b4266859-983c-4c23-8e9a-9e38136c7b61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\EventData">
+      <UniqueIdentifier>{7e36b1ac-afc4-4eda-b231-93a52f331f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameMusic">
+      <UniqueIdentifier>{7ce16ede-d359-462b-bc37-f072ab67e581}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -240,6 +246,9 @@
     </ClCompile>
     <ClCompile Include="Source\Application\PauseMenu\PauseMenu.cpp">
       <Filter>Application\PauseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameMusic\GameMusic.cpp">
+      <Filter>Application\GameMusic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +404,12 @@
     </ClInclude>
     <ClInclude Include="Source\Application\PauseMenu\PauseMenu.h">
       <Filter>Application\PauseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameMusic\GameMusic.h">
+      <Filter>Application\GameMusic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\EventData\PauseActionData.h">
+      <Filter>Application\EventData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

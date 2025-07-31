@@ -21,6 +21,7 @@
 #include <Application/Input/GameInputManager.h>
 #include <Application/FeedBack/FeedbackEffect.h>
 #include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameMusic/GameMusic.h>
 #include <Application/GameUI/GameUI.h>
 
 #include <Application/BeatsManager/BeatManager.h>
@@ -64,6 +65,9 @@ private:
     // 曲の再生が終わったか
     bool IsMusicEnd() const;
 
+    void Retry();
+
+    void ToTitle();
 private:
 
     // シーン関連
@@ -100,8 +104,9 @@ private:
     float gameStartOffset_ = 2.0f;
     float waitTimer_ = 0.0f;
 
-    std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+    bool isMusicPlaying_ = false; // 音楽が再生中かどうか
+
+    std::unique_ptr<GameMusic> gameMusic_ = nullptr; // 音楽の管理
 
 
     GameMode gameMode_ = GameMode::Normal;

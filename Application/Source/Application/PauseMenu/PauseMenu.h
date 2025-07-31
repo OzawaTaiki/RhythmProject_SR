@@ -2,19 +2,11 @@
 
 #include <Features/UI/UIGroup.h>
 
+#include <Application/EventData/PauseActionData.h>
+
 #include <memory>
 
-enum class PauseMenuButton
-{
-    None,
-    Resume,
-    Retry,
-    ToTitile,
-
-    Max
-    // memo : titileは仮 セレクト実装するまで
-
-};
+class EventManager;
 
 class PauseMenu
 {
@@ -30,22 +22,31 @@ public:
     //
     bool IsActive() const { return isActive_; }
 
-    PauseMenuButton GetSelectedButton() const { return selectedButton_; }
+    PauseActions GetSelectedButton() const { return actions_; }
+
+    void SetCallBacks(const std::function<void()>& _onResumeCallback,
+                    const std::function<void()>& _onRetryCallback,
+                    const std::function<void()>& _onToTitleCallback);
+
+    void SetOnResumeCallback(const std::function<void()>& _callback);
+    void SetOnRetryCallback(const std::function<void()>& _callback)   ;
+    void SetOnToTitleCallback(const std::function<void()>& _callback) ;
+
 
 private:
 
     // 有効か否か
     bool isActive_ = false;
 
-    PauseMenuButton selectedButton_ = PauseMenuButton::None;
+    PauseActions actions_ = PauseActions::None;
 
     std::unique_ptr<UIGroup> uiGroup_ = nullptr;
 
-#ifdef _DEBUG
+    std::function<void()> onResumeCallback_ = nullptr; // レジュームボタンのコールバック
+    std::function<void()> onRetryCallback_ = nullptr;  // リトライボタンのコールバック
+    std::function<void()> onToTitleCallback_ = nullptr; // タイトルに戻るボタンのコールバック
 
-    std::vector<UIButton*> debugButton_;
-    UISprite* debugSprite_ = nullptr;
-
-#endif
+    std::map<std::string, UIButton*> buttons_;
+    UISprite* sprite_ = nullptr;
 
 };

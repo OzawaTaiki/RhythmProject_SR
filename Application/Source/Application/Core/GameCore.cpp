@@ -4,9 +4,6 @@
 #include <Math/MyLib.h>
 #include <Debug/Debug.h>
 
-// TODO : 判定ラインパーフェクトでない
-// 判定ラインでパーフェクトにならない 一本目の黄色ラインがそうなっている なぁぜ
-
 GameCore::GameCore(int32_t _laneCount) :
     laneCount_(_laneCount),
     isWaitingForStart_(true),
@@ -128,44 +125,119 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
             continue;
 
         JudgeType result = JudgeType::None; // 初期化
-        if (note->GetNoteType() == NoteType::Normal||
-            note->GetNoteType() == NoteType::Hold)
+        NoteType noteType= note->GetNoteType();
+        switch (noteType)
         {
-            if(inputdata.state == KeyState::trigger)
-                result = noteJudge_->ProcessNoteJudge(note, inputdata.elapsedTime);
-        }
-        else if (note->GetNoteType() == NoteType::HoldEnd)
-        {
-            if (inputdata.state == KeyState::Released)
-            {
-                result = noteJudge_->ProcessNoteJudge(note, inputdata.elapsedTime);
-            }
+        case NoteType::Normal:
+            result = ProcessNormalNote(note, inputdata);
+            break;
+        case NoteType::Hold:
+            result = ProcessHoldNote(note, inputdata);
+            break;
+        case NoteType::HoldEnd:
+            result = ProcessHoldEndNote(note, inputdata);
+            break;
+        default:
+            break;
         }
 
         if (result == JudgeType::None)
             continue; // 判定なしの場合はスキップ
 
-        judgeResult_->AddJudge(result);
-        note->Judge();
+        RecordJudgeResult(result, note); // 判定結果を記録
 
         if (onJudgeCallback_)
             onJudgeCallback_(laneIndex, result); // 判定時のコールバックを呼び出す
 
-        if (result == JudgeType::Perfect ||
-            result == JudgeType::Good)
+        UpdateCombo(result);
+    }
+}
+
+JudgeType GameCore::ProcessNormalNote(Note* _note, const InputDate& _inputData)
+{
+    // 押した瞬間だけ判定
+    if (_inputData.state == KeyState::trigger)
+    {
+        return noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime);
+    }
+
+    return JudgeType::None;
+}
+
+JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData)
+{
+    // 押した瞬間だけ判定
+    if (_inputData.state == KeyState::trigger)
+    {
+        JudgeType result = noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime);
+
+        if (result != JudgeType::None && result != JudgeType::Miss)
         {
-            ++combo_; // コンボを増やす
-            maxCombo_ = (std::max)(maxCombo_, combo_); // 最大コンボを更新
+            holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
+            Debug::Log("Hold Enable\n");
         }
-        else
+
+        return result;
+    }
+
+    return JudgeType::None;
+}
+
+JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData)
+{
+    if (_inputData.state == KeyState::trigger)
+    {
+        holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
+    }
+    else if(holdState_.IsHoldingLane(_inputData.laneIndex))
+    {
+        Debug::Log("Hold State is holding lane: " + std::to_string(_inputData.laneIndex) + "\n");
+
+        if (_inputData.state == KeyState::Released)
         {
-            combo_ = 0; // コンボが途切れたらリセット
-            if (onMissCallback_)
+            JudgeType result = noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime);
+
+            holdState_.EndHold(); // ホールド状態を終了
+            // noneてことはブリッジ内なので
+            if (result == JudgeType::None)
             {
-                onMissCallback_(); // ミス時のコールバックを呼び出す
+                // コンボを途切れさせる
+                // 判定は反映させない
+                UpdateCombo(result);
             }
+
+            return result;
         }
     }
+
+    return JudgeType::None;
+}
+
+void GameCore::UpdateCombo(JudgeType _result)
+{
+    if (_result == JudgeType::Perfect ||
+        _result == JudgeType::Good)
+    {
+        ++combo_; // コンボを増やす
+        maxCombo_ = (std::max)(maxCombo_, combo_); // 最大コンボを更新
+    }
+    else
+    {
+        combo_ = 0; // コンボが途切れたらリセット
+        if (onMissCallback_)
+        {
+            onMissCallback_(); // ミス時のコールバックを呼び出す
+        }
+    }
+}
+
+void GameCore::RecordJudgeResult(JudgeType _result, Note* _note)
+{
+    if (_result == JudgeType::None)
+        return;
+
+    judgeResult_->AddJudge(_result);
+    _note->Judge();
 }
 
 void GameCore::ParseBeatMapData(const BeatMapData& _beatMapData)

@@ -122,6 +122,16 @@ private:
 
     void JudgeNotes(const std::vector<InputDate>& _inputData);
 
+    JudgeType ProcessNormalNote(Note* _note, const InputDate& _inputData);
+
+    JudgeType ProcessHoldNote(Note* _note, const InputDate& _inputData);
+
+    JudgeType ProcessHoldEndNote(Note* _note, const InputDate& _inputData);
+
+    void UpdateCombo(JudgeType _result);
+
+    void RecordJudgeResult(JudgeType _result, Note* _note);
+
     /// <summary>
     /// ノーツを生成する
     /// </summary>
@@ -131,8 +141,30 @@ private:
     void CreateBeatMapNotes();
 
 private:
+    struct HoldState
+    {
+        bool isHolding = false;
+        int32_t laneIndex = -1;
+
+        void StartHold(int32_t lane) {
+            isHolding = true;
+            laneIndex = lane;
+        }
+
+        void EndHold() {
+            isHolding = false;
+            laneIndex = -1;
+        }
+
+        bool IsHoldingLane(int32_t lane) const {
+            return isHolding && laneIndex == lane;
+        }
+    };
+
+private:
 
     // note
+
     // lane
     float noteSpeed_ = 30.0f; // ノーツの移動速度
     int32_t laneCount_ = 4; // レーンの数
@@ -166,6 +198,10 @@ private:
     float offset_ = 2.0f; // ゲーム開始オフセット時間
     float waitTimer_ = 0.0f; // 開始前オフセット待機タイマー
     bool isWaitingForStart_ = true; // 開始前オフセット待機中かどうか
+
+
+    // ホールド中
+    HoldState holdState_ = {};
 
 
     std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス 弱参照

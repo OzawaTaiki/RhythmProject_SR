@@ -797,7 +797,7 @@ void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)
 {
     Reset(); // エディターの状態をリセット
 
-    if (_beatMapData.title == "None")
+    if (_beatMapData.notes.empty())
         return;
 
     currentBeatMapData_ = _beatMapData; // BeatMapDataを設定

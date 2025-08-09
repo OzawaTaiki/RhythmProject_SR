@@ -27,6 +27,7 @@
 #include <Application/BeatsManager/BeatManager.h>
 #include <Application/BeatMapLoader/BeatMapLoader.h>
 #include <Application/PauseMenu/PauseMenu.h>
+#include <Application/Setting/SettingMenu.h>
 
 
 
@@ -90,6 +91,7 @@ private:
     std::unique_ptr<GameUI> gameUI_ = nullptr; // ゲームUI
 
     std::unique_ptr<PauseMenu> pauseMenu_ = nullptr; // 一時停止メニュー
+    std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
 
     BeatMapLoader* beatMapLoader_ = nullptr;
     BeatMapData currentBeatMapData_ = {}; // 現在の譜面データ

@@ -2,6 +2,8 @@
 
 #include <Framework/Framework.h>
 
+#include <Application/Setting/Setting.h>
+
 class SampleFramework : public Framework
 {
 public:

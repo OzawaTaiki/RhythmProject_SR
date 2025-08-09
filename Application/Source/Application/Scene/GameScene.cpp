@@ -104,6 +104,11 @@ void GameScene::Initialize(SceneData* _sceneData)
     pauseMenu_ = std::make_unique<PauseMenu>();
     pauseMenu_->Initialize();
 
+    settingMenu_ = std::make_unique<SettingMenu>();
+    settingMenu_->Initialize([&](float _noteSpeed) { gameCore_->SetNoteSpeed(_noteSpeed); });
+
+    pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
+
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
 

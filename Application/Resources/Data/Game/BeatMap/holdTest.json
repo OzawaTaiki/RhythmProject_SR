@@ -1,6 +1,6 @@
 {
     "artist": "unknown",
-    "audioFilePath": "C:\\class\\RhythmProject\\Application\\Resources\\Sounds\\Music\\Luminous_memory.wav",
+    "audioFilePath": "Resources\\Sounds\\Music\\Luminous_memory.wav",
     "bpm": 100.0,
     "difficultyLevel": 0,
     "notes": [

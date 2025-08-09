@@ -3,6 +3,7 @@
 #include <Features/UI/UIGroup.h>
 
 #include <Application/EventData/PauseActionData.h>
+#include <Application/Setting/SettingMenu.h>
 
 #include <memory>
 
@@ -32,6 +33,8 @@ public:
     void SetOnRetryCallback(const std::function<void()>& _callback)   ;
     void SetOnToTitleCallback(const std::function<void()>& _callback) ;
 
+    void SetSeetingMenu(SettingMenu* _settingMenu) { settingMenu_ = _settingMenu; }
+
 
 private:
 
@@ -47,6 +50,10 @@ private:
     std::function<void()> onToTitleCallback_ = nullptr; // タイトルに戻るボタンのコールバック
 
     std::map<std::string, UIButton*> buttons_;
+    UISlider* slider_ = nullptr; // スライダー（音量調整などに使用）
+
     UISprite* sprite_ = nullptr;
+
+    SettingMenu* settingMenu_ = nullptr; // 設定メニュー
 
 };

@@ -28,6 +28,8 @@ void SampleFramework::Initialize(const std::wstring& _winTitle)
 
     LayerSystem::Initialize();
 
+    Setting::Load();
+
     // 最初のシーンで初期化
     sceneManager_->Initialize("GameScene");
 }
@@ -88,6 +90,8 @@ void SampleFramework::Draw()
 
 void SampleFramework::Finalize()
 {
+    Setting::Save();
+
     Time_MT::GetInstance()->Finalize();
     Framework::Finalize();
 }

@@ -3,6 +3,10 @@
 #include <Debug/ImguITools.h>
 #include <Debug/ImGuiDebugManager.h>
 
+#include <Features/UI/UIButton.h>
+#include <Features/UI/UISprite.h>
+
+
 
 void ResultUI::Initialize(ResultData _resultData)
 {

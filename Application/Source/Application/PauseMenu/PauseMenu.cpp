@@ -5,6 +5,13 @@
 
 
 #include <Features/UI/UISprite.h>
+#include <Features/UI/UIButton.h>
+#include <Features/UI/UISlider.h>
+#include <Debug/Debug.h>
+#include <Application/Setting/Setting.h>
+
+#include <System/Audio/AudioSystem.h>
+
 
 
 void PauseMenu::Initialize()
@@ -12,6 +19,12 @@ void PauseMenu::Initialize()
 
     uiGroup_ = std::make_unique<UIGroup>();
     uiGroup_->Initialize();
+
+    auto backSprite = uiGroup_->CreateSprite("PauseMenu_blackback", L"Pause_blackback");
+    backSprite->SetSize({ 1280, 720 });
+    backSprite->SetColor({ 0, 0, 0, 0.8f }); // 半透明の黒背景
+    backSprite->SetPos({ 0, 0 });
+    backSprite->SetAnchor({ 0,0 });// 左上にアンカーを設定
 
     auto sprite = uiGroup_->CreateSprite("PauseMenu_back", L"Pause");
 
@@ -24,11 +37,14 @@ void PauseMenu::Initialize()
     auto toTitleButton = uiGroup_->CreateButton("PauseMenu_ToTitleButton", L"Title");
     toTitleButton->SetParent(sprite);
 
+
+
     UIGroup::LinkHorizontal(
         { resumeButton, retryButton, toTitleButton }
     );
 
     sprite_= sprite;
+
 
     buttons_["PauseMenu_ResumeButton"] = resumeButton;
     buttons_["PauseMenu_RetryButton"] = retryButton;
@@ -39,8 +55,8 @@ void PauseMenu::Update()
 {
     if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
     {
-        isActive_ = !isActive_;
-        actions_ = isActive_ ? PauseActions::Open : PauseActions::Close; // ポーズメニューの開閉をトグル
+        isActive_ = true;
+        actions_ =  PauseActions::Open; // ポーズメニューの開閉をトグル
 
     }
 
@@ -49,6 +65,10 @@ void PauseMenu::Update()
 
     uiGroup_->Update();
 
+    if(settingMenu_)
+    {
+        settingMenu_->Update();
+    }
 
 #ifdef _DEBUG
 
@@ -56,6 +76,7 @@ void PauseMenu::Update()
     {
         if (ImGui::CollapsingHeader("sprite"))
             sprite_->ImGui();
+
 
         for (auto& [key, button] : buttons_)
         {
@@ -79,6 +100,11 @@ void PauseMenu::Draw()
         return;
 
     uiGroup_->Draw();
+
+    if (settingMenu_)
+    {
+        settingMenu_->Draw();
+    }
 }
 
 void PauseMenu::SetCallBacks(const std::function<void()>& _onResumeCallback, const std::function<void()>& _onRetryCallback, const std::function<void()>& _onToTitleCallback)

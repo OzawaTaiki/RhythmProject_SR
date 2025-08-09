@@ -112,6 +112,12 @@
     <Filter Include="Application\GameMusic">
       <UniqueIdentifier>{7ce16ede-d359-462b-bc37-f072ab67e581}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\SettingMenu">
+      <UniqueIdentifier>{6752cdaf-b07e-43c2-98b6-8753d3721937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Setting">
+      <UniqueIdentifier>{3197d65e-9e27-4a11-b4a4-1bb8ad312bbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -249,6 +255,12 @@
     </ClCompile>
     <ClCompile Include="Source\Application\GameMusic\GameMusic.cpp">
       <Filter>Application\GameMusic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Setting\Setting.cpp">
+      <Filter>Application\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Setting\SettingMenu.cpp">
+      <Filter>Application\SettingMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,6 +422,12 @@
     </ClInclude>
     <ClInclude Include="Source\Application\EventData\PauseActionData.h">
       <Filter>Application\EventData</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Setting\Setting.h">
+      <Filter>Application\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Setting\SettingMenu.h">
+      <Filter>Application\SettingMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

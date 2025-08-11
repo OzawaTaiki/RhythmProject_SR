@@ -18,25 +18,6 @@ void GameEnvironment::Initialize(const std::string& _filePath)
 
 void GameEnvironment::Update(float _deltaTime)
 {
-//    UVTransform& uvTransform = overFloor_->GetMaterial()->GetUVTransform();
-//
-//#ifdef _DEBUG
-//    static Vector2 uvOffset = uvTransform.GetOffset();
-//    static float uvScale = uvTransform.GetScale().x; // UVスケールはX軸の値を使用
-//    static float uvRotation = uvTransform.GetRotation();
-//
-//    ImGui::Begin("GameEnvironment");
-//        ImGui::DragFloat2("UV Offset", &uvOffset.x, 0.01f);
-//        ImGui::DragFloat("UV Scale", &uvScale, 0.01f, 0.01f, 10.0f);
-//        ImGui::DragFloat("UV Rotation", &uvRotation, 0.01f, 0.0f, 6.28f); // 0から2πまでの範囲で回転
-//        ImGui::End();
-//
-//        // UVTransformに値を設定
-//        uvOffset += Vector2(0.001f, 0);
-//        uvTransform.SetOffset(uvOffset);
-//        uvTransform.SetScale(Vector2(uvScale, uvScale)); // X軸とY軸のスケールを同じにする
-//        uvTransform.SetRotation(uvRotation);
-//#endif // _DEBUG
     spriteSheetAnimation_.Update(_deltaTime);
 
     for (auto& obj : environmentObjects_)

@@ -2,6 +2,94 @@
     "name": "scene",
     "objects": [
         {
+            "type": "MESH",
+            "name": "frontRightSpeaker",
+            "transform": {
+                "transform": [
+                    10.0,
+                    -6.0,
+                    20.0
+                ],
+                "rotation": [
+                    -0.0,
+                    -2.516923666000366,
+                    0.0
+                ],
+                "scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "frontLeftSpeaker",
+            "transform": {
+                "transform": [
+                    -10.0,
+                    -6.0,
+                    20.0
+                ],
+                "rotation": [
+                    -0.0,
+                    2.516923666000366,
+                    0.0
+                ],
+                "scale": [
+                    1.9999996423721313,
+                    2.0,
+                    1.9999996423721313
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "leftSpeaker",
+            "transform": {
+                "transform": [
+                    -9.074250221252441,
+                    -6.0,
+                    38.71964645385742
+                ],
+                "rotation": [
+                    -0.0,
+                    3.141592502593994,
+                    0.0
+                ],
+                "scale": [
+                    3.163816452026367,
+                    3.163816452026367,
+                    3.163816452026367
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "rightSpeaker",
+            "transform": {
+                "transform": [
+                    9.074250221252441,
+                    -6.0,
+                    38.71964645385742
+                ],
+                "rotation": [
+                    -0.0,
+                    3.141592502593994,
+                    0.0
+                ],
+                "scale": [
+                    3.163816452026367,
+                    3.163816452026367,
+                    3.163816452026367
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
             "type": "LIGHT",
             "name": "Light",
             "transform": {
@@ -172,91 +260,8 @@
                     1.0,
                     7.249727725982666
                 ]
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "rightSpeaker",
-            "transform": {
-                "transform": [
-                    10.0,
-                    -3.819999933242798,
-                    20.247577667236328
-                ],
-                "rotation": [
-                    -0.0,
-                    0.6763355135917664,
-                    -0.0
-                ],
-                "scale": [
-                    1.0,
-                    2.0,
-                    1.0
-                ]
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "leftSpeaker",
-            "transform": {
-                "transform": [
-                    -10.0,
-                    -3.9200000762939453,
-                    20.247577667236328
-                ],
-                "rotation": [
-                    -0.0,
-                    -0.6763360500335693,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    2.0,
-                    1.0
-                ]
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "frontRightSpeaker",
-            "transform": {
-                "transform": [
-                    9.0,
-                    -2.9200000762939453,
-                    39.08366394042969
-                ],
-                "rotation": [
-                    -0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    2.0,
-                    3.0,
-                    1.5
-                ]
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "frontLeftSpeaker",
-            "transform": {
-                "transform": [
-                    -9.0,
-                    -2.9200000762939453,
-                    39.08366394042969
-                ],
-                "rotation": [
-                    -0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    2.0,
-                    3.0,
-                    1.5
-                ]
-            }
+            },
+            "file_name": "pY1x1Plane"
         },
         {
             "type": "MESH",
@@ -277,8 +282,7 @@
                     1.0,
                     3.0101025104522705
                 ]
-            },
-            "file_name": ""
+            }
         },
         {
             "type": "MESH",
@@ -299,7 +303,8 @@
                     1.0,
                     7.249727725982666
                 ]
-            }
+            },
+            "file_name": "pY1x1Plane"
         },
         {
             "type": "MESH",
@@ -320,7 +325,8 @@
                     1.0,
                     9.357223510742188
                 ]
-            }
+            },
+            "file_name": "pY1x1Plane"
         },
         {
             "type": "MESH",
@@ -342,7 +348,7 @@
                     3.960275173187256
                 ]
             },
-            "file_name": "OverFloor/overFloor.gltf"
+            "file_name": "OverFloor/OverFloor.gltf"
         },
         {
             "type": "MESH",
@@ -351,7 +357,7 @@
                 "transform": [
                     0.0,
                     -5.976009845733643,
-                    29.42386245727539
+                    31.545827865600586
                 ],
                 "rotation": [
                     -0.0,
@@ -359,11 +365,12 @@
                     0.0
                 ],
                 "scale": [
-                    17.5,
-                    0.10000000149011612,
-                    12.390166282653809
+                    17.549667358398438,
+                    0.9999999403953552,
+                    14.505824089050293
                 ]
-            }
+            },
+            "file_name": "pY1x1Plane"
         }
     ]
 }

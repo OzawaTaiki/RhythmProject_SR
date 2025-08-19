@@ -7,6 +7,7 @@
 #include <Application/FeedBack/MissedVignette/MissedVignette.h>
 #include <Application/FeedBack/LaneEffect/LaneEffect.h>
 #include <Application/FeedBack/TapEffect/TapEffect.h>
+#include <Application/GameEnvironment/BackgroundEffect.h>
 
 #include <Application/Input/InputData.h>
 
@@ -17,6 +18,7 @@
 #include <bitset>
 
 class Camera;
+class GameEnvironment;
 
 // フィードバックエフェクト
 // 音やパーティクルなど統括する 予定
@@ -26,7 +28,7 @@ public:
     FeedbackEffect() = default;
     ~FeedbackEffect() = default;
 
-    void Initialize(Camera* _camera, int32_t _laneCount);
+    void Initialize(Camera* _camera, int32_t _laneCount, GameEnvironment* _gameEnvironment);
     void Update(float _deltaTime, const std::vector<InputDate>& _inputData);
     void Draw();
 
@@ -65,6 +67,8 @@ private:
     /// パーティクル
     std::unique_ptr<JudgeEffect> judgeEffect_;
     std::unique_ptr<TapEffect> tapEffect_; // タップエフェクト
+
+    std::unique_ptr<BackgroundEffect> backgroundEffect_; // 背景エフェクト
 
     /// 判定テキスト
     static const int32_t kMaxJudgeTexts_ = 10; // 最大の判定テキスト数

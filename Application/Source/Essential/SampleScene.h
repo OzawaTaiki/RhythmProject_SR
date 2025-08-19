@@ -73,14 +73,12 @@ private:
 
 
     std::unique_ptr<ParticleEmitter> emitter_ = nullptr;
+    std::unique_ptr<ParticleEmitter> emitter2_ = nullptr;
 
     std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
     std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
 
     std::unique_ptr<SkyBox> skyBox_ = nullptr;
-
-    std::unique_ptr<GrayScale> grayScale_ = nullptr;
-    GrayScaleData grayScaleData_;
 
     // テキストジェネレータ
     TextGenerator textGenerator_;

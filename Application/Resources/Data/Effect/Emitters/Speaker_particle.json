@@ -1,0 +1,155 @@
+{
+    "Speaker_particle": {
+        "BoxOffset_Max": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "BoxOffset_Min": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "BoxOffset_Random": false,
+        "RGB_Max": {
+            "x": 0.3284313678741455,
+            "y": 0.545703649520874,
+            "z": 1.0
+        },
+        "RGB_Min": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.7058823108673096
+        },
+        "RGB_Random": true,
+        "RGB_Value": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "SphereOffset_Max": 0.0,
+        "SphereOffset_Min": 0.0,
+        "SphereOffset_Random": false,
+        "SphereOffset_Value": 0.0,
+        "alpha_Max": 1.0,
+        "alpha_Min": 0.699999988079071,
+        "alpha_Random": true,
+        "alpha_Value": 0.5,
+        "billboard_x": false,
+        "billboard_y": false,
+        "billboard_z": false,
+        "blendMode": 1,
+        "boxSize": {
+            "x": 1.0,
+            "y": 0.5,
+            "z": 0.10000000149011612
+        },
+        "cullBack": false,
+        "deceleration_Max": 1.0,
+        "deceleration_Min": 0.0,
+        "deceleration_Random": false,
+        "deceleration_Value": 0.10000000149011612,
+        "delayTime": 0.0,
+        "direction_Max": {
+            "x": 0.10000000149011612,
+            "y": 1.0,
+            "z": 0.0
+        },
+        "direction_Min": {
+            "x": -0.10000000149011612,
+            "y": 1.0,
+            "z": 0.0
+        },
+        "direction_Random": true,
+        "direction_Type": 2,
+        "direction_Value": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0
+        },
+        "emitCount": 10,
+        "emitPerSecond": 10,
+        "isLoop": false,
+        "lifeTime": 1.0,
+        "lifeTime_Max": 1.100000023841858,
+        "lifeTime_Min": 1.0,
+        "lifeTime_Random": true,
+        "lifeTime_Type": 1,
+        "lifeTime_Value": 1.0,
+        "modifiers": [
+            "SpeakerParticleModifier"
+        ],
+        "offset": {
+            "x": 0.0,
+            "y": 0.8,
+            "z": 0.8
+        },
+        "position": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "rotation": {
+            "qw": 1.0,
+            "qx": 0.0,
+            "qy": 0.0,
+            "qz": 0.0
+        },
+        "rotationSpeed_Max": {
+            "x": 3.141590118408203,
+            "y": 3.141590118408203,
+            "z": 3.141590118408203
+        },
+        "rotationSpeed_Min": {
+            "x": -3.141590118408203,
+            "y": -3.141590118408203,
+            "z": -3.141590118408203
+        },
+        "rotationSpeed_Random": true,
+        "rotationSpeed_Value": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "rotation_Max": {
+            "x": 6.283180236816406,
+            "y": 6.283180236816406,
+            "z": 6.283180236816406
+        },
+        "rotation_Min": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "rotation_Random": true,
+        "rotation_Value": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "shape": 1,
+        "size_Max": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        },
+        "size_Min": {
+            "x": 0.20000000298023224,
+            "y": 0.20000000298023224,
+            "z": 0.20000000298023224
+        },
+        "size_Random": true,
+        "size_Value": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "speed_Max": 2.0,
+        "speed_Min": 1.0,
+        "speed_Random": true,
+        "speed_Value": 1.0,
+        "sphereRadius": 0.5,
+        "texturePath": "white.png",
+        "useModelName": "nZ1x1Plane"
+    }
+}

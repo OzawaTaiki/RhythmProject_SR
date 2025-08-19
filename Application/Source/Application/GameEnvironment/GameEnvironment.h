@@ -27,15 +27,20 @@ public:
 
     void SetBPM(float _bpm);
 
+    ObjectModel* GetSpeaker(uint32_t _laneIndex);
+
     void StartAnimation();
 private:
 
     void Serialize(const std::string& _filePath);
 
+    void BuildSpeakerMap(const std::string& _objName,ObjectModel* _model, const std::string& _filepath);
 
 private:
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;
+
+    std::map<uint32_t, ObjectModel*> speakerMap_;
 
     SpriteSheetAnimation spriteSheetAnimation_; // 連番画像アニメーション
 

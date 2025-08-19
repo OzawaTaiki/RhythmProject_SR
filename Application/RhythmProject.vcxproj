@@ -55,7 +55,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Source\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -75,7 +75,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Source\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -106,6 +106,7 @@
     <ClCompile Include="Source\Application\BeatMapLoader\BeatMapLoader.cpp" />
     <ClCompile Include="Source\Application\BeatsManager\BeatManager.cpp" />
     <ClCompile Include="Source\Application\Core\GameCore.cpp" />
+    <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp" />
@@ -116,7 +117,9 @@
     <ClCompile Include="Source\Application\FeedBack\LaneEffect\LaneEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\MissedVignette\MissedVignette.cpp" />
     <ClCompile Include="Source\Application\FeedBack\TapEffect\TapEffect.cpp" />
+    <ClCompile Include="Source\Application\GameEnvironment\BackgroundEffect.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\GameEnvironment.cpp" />
+    <ClCompile Include="Source\Application\GameEnvironment\SpeakerEffect.cpp" />
     <ClCompile Include="Source\Application\GameMusic\GameMusic.cpp" />
     <ClCompile Include="Source\Application\GameUI\GameUI.cpp" />
     <ClCompile Include="Source\Application\Input\GameInputManager.cpp" />
@@ -162,6 +165,7 @@
     <ClInclude Include="Source\Application\BeatMapLoader\BeatMapLoader.h" />
     <ClInclude Include="Source\Application\BeatsManager\BeatManager.h" />
     <ClInclude Include="Source\Application\Core\GameCore.h" />
+    <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h" />
@@ -173,7 +177,9 @@
     <ClInclude Include="Source\Application\FeedBack\LaneEffect\LaneEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\MissedVignette\MissedVignette.h" />
     <ClInclude Include="Source\Application\FeedBack\TapEffect\TapEffect.h" />
+    <ClInclude Include="Source\Application\GameEnvironment\BackgroundEffect.h" />
     <ClInclude Include="Source\Application\GameEnvironment\GameEnvironment.h" />
+    <ClInclude Include="Source\Application\GameEnvironment\SpeakerEffect.h" />
     <ClInclude Include="Source\Application\GameMusic\GameMusic.h" />
     <ClInclude Include="Source\Application\GameUI\GameUI.h" />
     <ClInclude Include="Source\Application\Input\GameInputManager.h" />

@@ -9,6 +9,8 @@
 
 #include <Framework/LayerSystem/LayerSystem.h>
 
+#include <Features/Model/Primitive/Builder/PrimitiveBuilder.h>
+
 void SampleFramework::Initialize(const std::wstring& _winTitle)
 {
     Framework::Initialize(L"GameEngine");
@@ -23,6 +25,8 @@ void SampleFramework::Initialize(const std::wstring& _winTitle)
     particleManager_->SetModifierFactory(new ParticleModifierFactory());
 
     collisionManager_->Initialize(Vector2(100, 100), 5, Vector2(-50, -50), 1.0f);
+
+    PrimitiveBuilder::BuildAndRegisterAll();
 
     Time_MT::GetInstance()->Initialize();
 

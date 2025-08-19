@@ -7,38 +7,29 @@
 #include <Application/Effects/TapEffects/HitparticleModifier.h>
 #include <Application/Effects/TapEffects/LightPillarModifier.h>
 
+#include <Application/Effects/Speaker/SpeakerEffectModifier.h>
 
-std::unique_ptr<ParticleModifier> ParticleModifierFactory::CreateModifier(const std::string _name)
+
+ParticleModifierFactory::ParticleModifierFactory()
 {
-    if (_name == "DecelerationModifier")
-    {
-        return std::make_unique<DecelerationModifier>();
-    }
-    else if (_name == "AlphaOverLifetime")
-    {
-        return std::make_unique<AlphaOverLifetime>();
-    }
-    else if (_name == "ParticleModifier2")
-    {
-        // return std::make_unique<ParticleModifier2>();
-    }
-    else if (_name == "HitParticleModifier")
-    {
-        return std::make_unique<HitParticleModifier>();
-    }
-    else if (_name == "HitCircleParticleModifier")
-    {
-        return std::make_unique<HitCircleParticleModifier>();
-    }
-    else if (_name == "RotationBasedMovementModifier")
-    {
-         return std::make_unique<RotationBasedMovementModifier>();
-    }
-    else if (_name == "LightPillarModifier")
-    {
-        return std::make_unique<LightPillarModifier>();
-    }
+    // モディファイアの登録
+    modifierCreators_["DecelerationModifier"]       = []() { return std::make_unique<DecelerationModifier>(); };
+    modifierCreators_["AlphaOverLifetime"]          = []() { return std::make_unique<AlphaOverLifetime>(); };
+    modifierCreators_["HitParticleModifier"]        = []() { return std::make_unique<HitParticleModifier>(); };
+    modifierCreators_["HitCircleParticleModifier"]  = []() { return std::make_unique<HitCircleParticleModifier>(); };
+    modifierCreators_["RotationBasedMovementModifier"] = []() { return std::make_unique<RotationBasedMovementModifier>(); };
+    modifierCreators_["LightPillarModifier"]        = []() { return std::make_unique<LightPillarModifier>(); };
+    modifierCreators_["SpeakerRingModifier"]        = []() { return std::make_unique<SpeakerRingModifier>(); };
+    modifierCreators_["SpeakerParticleModifier"]    = []() { return std::make_unique<SpeakerParticleModifier>(); };
+}
 
+std::unique_ptr<ParticleModifier> ParticleModifierFactory::CreateModifier(const std::string& _name)
+{
+    auto it = modifierCreators_.find(_name);
+    if (it != modifierCreators_.end())
+    {
+        return it->second();
+    }
 
     throw std::runtime_error("モディファイアが見つかりませんでした。");
 

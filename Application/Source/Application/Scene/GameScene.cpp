@@ -92,11 +92,12 @@ void GameScene::Initialize(SceneData* _sceneData)
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(100);
 
-    feedbackEffect_ = std::make_unique<FeedbackEffect>();
-    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount());
-
     gameEnvironment_ = std::make_unique<GameEnvironment>();
     gameEnvironment_->Initialize();
+
+    feedbackEffect_ = std::make_unique<FeedbackEffect>();
+    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
+
 
     gameUI_ = std::make_unique<GameUI>();
     gameUI_->Initialize();
@@ -298,6 +299,13 @@ void GameScene::GenerateModels()
 
     plane.Generate("pY1x1Plane");
 
+
+    Plane plane_nz1x1;
+    plane.SetSize(Vector2(1.0f, 1.0f));
+    plane.SetNormal(Vector3(0, 1, 0));
+    plane.SetPivot(Vector3(0, 0, 0));
+
+    plane.Generate("pZ1x1Plane");
 
     Plane plane_py0n1;
     plane_py0n1.SetSize(Vector2(1.0f, 1.0f) * 2);

@@ -3,7 +3,9 @@
 #include <Features/Camera/Camera/Camera.h>
 #include <Framework/LayerSystem/LayerSystem.h>
 
-void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount)
+#include <Application/GameEnvironment/GameEnvironment.h>
+
+void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount, GameEnvironment* _gameEnvironment)
 {
     if (_camera)
         camera_ = _camera;
@@ -16,6 +18,9 @@ void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount)
 
     tapEffect_ = std::make_unique<TapEffect>();
     tapEffect_->Initialize();
+
+    backgroundEffect_ = std::make_unique<BackgroundEffect>();
+    backgroundEffect_->SetGameEnvironment(_gameEnvironment);
 
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
@@ -109,6 +114,10 @@ void FeedbackEffect::PlayJudgeEffect(int32_t _laneIndex, JudgeType _judgeType)
 
     if (judgeEffect_)
         judgeEffect_->Play(_laneIndex);
+
+    if (backgroundEffect_)
+        backgroundEffect_->PlaySpeakerEffect(_laneIndex);
+
 
     AllocateJudgeText(_judgeType, _laneIndex); // 判定テキストを割り当てる
 }

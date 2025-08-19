@@ -118,16 +118,12 @@ void SampleScene::Initialize(SceneData* _sceneData)
     //skyBox_->SetTexture("rosendal_plains_2_2k.dds");
 
     emitter_ = std::make_unique<ParticleEmitter>();
-    emitter_->Initialize("TapEffect_01");
+    emitter_->Initialize("ring_01");
+
+    emitter2_ = std::make_unique<ParticleEmitter>();
+    emitter2_->Initialize("speaker_particle");
 
 
-
-    grayScale_ = std::make_unique<GrayScale>();
-    grayScale_->Initialize();
-
-    grayScaleData_.intensity = 1.0f;
-
-    grayScale_->SetData(&grayScaleData_);
 
 
     LayerSystem::CreateLayer("Model", 0);
@@ -192,6 +188,10 @@ void SampleScene::Update()
     emitter_->ShowDebugWindow();
     ImGui::End();
 
+    ImGui::Begin("Emitter2");
+    emitter2_->ShowDebugWindow();
+    ImGui::End();
+
 #endif // _DEBUG
 
     if (input_->IsKeyTriggered(DIK_SPACE))
@@ -200,12 +200,6 @@ void SampleScene::Update()
         SceneManager::ReserveScene("GameScene",nullptr);
     }
 
-    if (input_->IsKeyPressed(DIK_LEFT))
-        grayScaleData_.intensity -= 0.01f;
-    if (input_->IsKeyPressed(DIK_RIGHT))
-        grayScaleData_.intensity += 0.01f;
-
-    grayScaleData_.intensity = std::clamp(grayScaleData_.intensity, 0.0f, 1.0f);
 
     // モデルの更新
     human_->Update();
@@ -213,8 +207,8 @@ void SampleScene::Update()
     emitter_->Update(0.016f);
 
 
-    textGenerator_.Draw(L"← → でグレースケールの強度変化", Vector2(200, 300), Vector4(1, 0, 0, 1));
-    textGenerator_.Draw(L"Space でシーンチェンジ", Vector2(200, 500), Vector4(1, 0, 0, 1));
+    //textGenerator_.Draw(L"← → でグレースケールの強度変化", Vector2(200, 300), Vector4(1, 0, 0, 1));
+    //textGenerator_.Draw(L"Space でシーンチェンジ", Vector2(200, 500), Vector4(1, 0, 0, 1));
     // --------------------------------
     // シーン共通更新処理
 
@@ -256,7 +250,6 @@ void SampleScene::Draw()
     Sprite::PreDraw();
     // スプライトの描画
     sprite_->Draw(Vector4(1, 1, 1, 1));
-    LayerSystem::ApplyPostEffect("Model", "Main", grayScale_.get());
 
 
     ParticleSystem::GetInstance()->DrawParticles();

@@ -121,6 +121,12 @@
     <Filter Include="Application\FeedBack\Effect\Speaker">
       <UniqueIdentifier>{a918a9b5-dc70-4d6a-8a2f-17d6f572ac4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\FeedBack\Holding">
+      <UniqueIdentifier>{45c47236-7d29-4fc8-ac15-2b05cd2c3d1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\EffectModifiers">
+      <UniqueIdentifier>{f8b0cbaf-7add-44ed-9b8e-438fd2a0bd01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -223,12 +229,6 @@
     <ClCompile Include="Source\Application\FeedBack\LaneEffect\LaneEffect.cpp">
       <Filter>Application\FeedBack\Tap\LaneEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp">
-      <Filter>Application\FeedBack\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp">
-      <Filter>Application\FeedBack\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp">
       <Filter>Application\FeedBack\Effect</Filter>
     </ClCompile>
@@ -265,14 +265,23 @@
     <ClCompile Include="Source\Application\Setting\SettingMenu.cpp">
       <Filter>Application\SettingMenu</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp">
-      <Filter>Application\FeedBack\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\GameEnvironment\SpeakerEffect.cpp">
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\GameEnvironment\BackgroundEffect.cpp">
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.cpp">
+      <Filter>Application\FeedBack\Holding</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp">
+      <Filter>Application\EffectModifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp">
+      <Filter>Application\EffectModifiers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp">
+      <Filter>Application\EffectModifiers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,12 +402,6 @@
     <ClInclude Include="Source\Application\FeedBack\LaneEffect\LaneEffect.h">
       <Filter>Application\FeedBack\Tap\LaneEffect</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h">
-      <Filter>Application\FeedBack\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h">
-      <Filter>Application\FeedBack\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h">
       <Filter>Application\FeedBack\Effect</Filter>
     </ClInclude>
@@ -441,14 +444,23 @@
     <ClInclude Include="Source\Application\Setting\SettingMenu.h">
       <Filter>Application\SettingMenu</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h">
-      <Filter>Application\FeedBack\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\GameEnvironment\SpeakerEffect.h">
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\GameEnvironment\BackgroundEffect.h">
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h">
+      <Filter>Application\FeedBack\Holding</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h">
+      <Filter>Application\EffectModifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h">
+      <Filter>Application\EffectModifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h">
+      <Filter>Application\EffectModifiers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

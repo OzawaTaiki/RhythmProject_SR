@@ -112,6 +112,7 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
+    gameCore_->SetHoldCallback([&](int32_t _laneIndex) {feedbackEffect_->PlayHoldEffect(_laneIndex); });
 
     SceneManager::GetInstance()->SetTransition(std::make_unique<SceneTrans>());
 

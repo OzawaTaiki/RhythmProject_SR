@@ -89,6 +89,13 @@ public:
     void SetMissCallback(const std::function<void(void)>& _callback) { onMissCallback_ = _callback; }
 
     /// <summary>
+    /// ホールド時のコールバック関数を設定する
+    /// </summary>
+    /// <param name="_callback">コールバック関数</param>
+    void SetHoldCallback(const std::function<void(int32_t)>& _callback) { onHoldCallback_ = _callback; }
+
+
+    /// <summary>
     /// ノーツの移動速度を設定する
     /// </summary>
     /// <param name="_speed">ノーツの移動速度</param>
@@ -191,6 +198,8 @@ private:
     std::function<void(int32_t, JudgeType)> onJudgeCallback_;
     // ミス時のコールバック関数
     std::function<void(void)> onMissCallback_;
+    // ホールド時のコールバック関数
+    std::function<void(int32_t)> onHoldCallback_;
 
     float noteDeletePosition_ = -10.0f; // ノーツを削除する位置
 

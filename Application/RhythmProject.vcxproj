@@ -111,6 +111,7 @@
     <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp" />
     <ClCompile Include="Source\Application\FeedBack\FeedbackEffect.cpp" />
+    <ClCompile Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeSound\JudgeSound.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeText\JudgeText.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h" />
     <ClInclude Include="Source\Application\EventData\PauseActionData.h" />
     <ClInclude Include="Source\Application\FeedBack\FeedbackEffect.h" />
+    <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeSound\JudgeSound.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeText\JudgeText.h" />

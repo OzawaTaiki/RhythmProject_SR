@@ -193,6 +193,9 @@ JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData)
     {
         Debug::Log("Hold State is holding lane: " + std::to_string(_inputData.laneIndex) + "\n");
 
+        if(onHoldCallback_)
+            onHoldCallback_(_inputData.laneIndex); // ホールド時のコールバックを呼び出す
+
         if (_inputData.state == KeyState::Released)
         {
             JudgeType result = noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime);

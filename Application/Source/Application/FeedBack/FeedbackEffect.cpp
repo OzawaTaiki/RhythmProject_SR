@@ -22,6 +22,9 @@ void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount, GameEnviron
     backgroundEffect_ = std::make_unique<BackgroundEffect>();
     backgroundEffect_->SetGameEnvironment(_gameEnvironment);
 
+    noteHoldEffect_ = std::make_unique<NoteHoldEffect>();
+    noteHoldEffect_->Initialize();
+
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
         judgeTextPool_[i] = std::make_unique<JudgeText>();
@@ -128,6 +131,15 @@ void FeedbackEffect::PlayMissedEffect()
     {
         missedVignette_->Emit(); // ミス時のビネットエフェクトを発動
     }
+}
+
+void FeedbackEffect::PlayHoldEffect(int32_t _laneIndex)
+{
+    if (noteHoldEffect_)
+    {
+        noteHoldEffect_->Play(_laneIndex); // ホールドエフェクトを再生
+    }
+    // TODO : 音
 }
 
 void FeedbackEffect::ApplyMissedVignetteEffect(const std::string& _input, const std::string& _output)

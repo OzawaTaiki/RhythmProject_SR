@@ -8,6 +8,7 @@
 #include <Application/FeedBack/LaneEffect/LaneEffect.h>
 #include <Application/FeedBack/TapEffect/TapEffect.h>
 #include <Application/GameEnvironment/BackgroundEffect.h>
+#include <Application/FeedBack/HoldingEffect/NoteHoldEffect.h>
 
 #include <Application/Input/InputData.h>
 
@@ -43,6 +44,8 @@ public:
     void PlayMissedEffect();
 
 
+    void PlayHoldEffect(int32_t _laneIndex);
+
     void ApplyMissedVignetteEffect(const std::string& _input, const std::string& _output);
 private:
 
@@ -69,6 +72,7 @@ private:
     std::unique_ptr<TapEffect> tapEffect_; // タップエフェクト
 
     std::unique_ptr<BackgroundEffect> backgroundEffect_; // 背景エフェクト
+    std::unique_ptr<NoteHoldEffect> noteHoldEffect_; // ホールドエフェクト
 
     /// 判定テキスト
     static const int32_t kMaxJudgeTexts_ = 10; // 最大の判定テキスト数

@@ -1,5 +1,5 @@
 {
-    "SpeakerRing": {
+    "PopEffect": {
         "BoxOffset_Max": {
             "x": 0.0,
             "y": 0.0,
@@ -11,57 +11,62 @@
             "z": 0.0
         },
         "BoxOffset_Random": false,
+        "BoxOffset_Value": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
         "RGB_Max": {
-            "x": 0.21078431606292725,
-            "y": 0.23399674892425537,
-            "z": 1.0
+            "x": 0.1609717160463333,
+            "y": 0.9950980544090271,
+            "z": 0.5289686322212219
         },
         "RGB_Min": {
-            "x": 0.0,
-            "y": 0.17647075653076172,
-            "z": 1.0
+            "x": 0.03921568766236305,
+            "y": 0.4117647111415863,
+            "z": 0.062745101749897
         },
-        "RGB_Random": false,
+        "RGB_Random": true,
         "RGB_Value": {
-            "x": 0.529411792755127,
-            "y": 0.7785470485687256,
+            "x": 0.18747472763061523,
+            "y": 0.0,
             "z": 1.0
         },
         "SphereOffset_Max": 0.0,
         "SphereOffset_Min": 0.0,
         "SphereOffset_Random": false,
         "SphereOffset_Value": 0.0,
-        "alpha_Max": 1.0,
-        "alpha_Min": 0.0,
+        "alpha_Max": 0.8999999761581421,
+        "alpha_Min": 0.5,
         "alpha_Random": false,
-        "alpha_Value": 0.30000001192092896,
+        "alpha_Value": 1.0,
         "billboard_x": false,
         "billboard_y": false,
         "billboard_z": false,
-        "blendMode": 1,
+        "blendMode": 8,
         "boxSize": {
             "x": 1.0,
-            "y": 1.0,
-            "z": 1.0
+            "y": 0.0,
+            "z": 0.0
         },
         "cullBack": false,
         "deceleration_Max": 1.0,
         "deceleration_Min": 0.0,
         "deceleration_Random": false,
-        "deceleration_Value": 0.0,
+        "deceleration_Value": 1.0,
         "delayTime": 0.0,
         "direction_Max": {
-            "x": 1.0,
+            "x": 0.5,
             "y": 1.0,
-            "z": 1.0
+            "z": 0.0
         },
         "direction_Min": {
-            "x": -1.0,
-            "y": -1.0,
-            "z": -1.0
+            "x": -0.5,
+            "y": 1.0,
+            "z": 0.0
         },
         "direction_Random": false,
-        "direction_Type": 0,
+        "direction_Type": 3,
         "direction_Value": {
             "x": 0.0,
             "y": 0.0,
@@ -69,25 +74,26 @@
         },
         "emitCount": 1,
         "emitPerSecond": 10,
-        "isLoop": false,
-        "lifeTime": 1.0,
-        "lifeTime_Max": 2.0,
-        "lifeTime_Min": 0.5,
-        "lifeTime_Random": false,
-        "lifeTime_Type": 2,
-        "lifeTime_Value": 0.4,
+        "isLoop": true,
+        "lifeTime": 3.0,
+        "lifeTime_Max": 0.30000001192092896,
+        "lifeTime_Min": 0.20000000298023224,
+        "lifeTime_Random": true,
+        "lifeTime_Type": 1,
+        "lifeTime_Value": 0.30000001192092896,
         "modifiers": [
-            "SpeakerRingModifier"
+            "RotationBasedMovementModifier",
+            "DecelerationModifier"
         ],
         "offset": {
             "x": 0.0,
-            "y": 0.8,
-            "z": 0.8
+            "y": 0.0,
+            "z": 0.0
         },
         "position": {
             "x": 0.0,
-            "y": 0.8,
-            "z": 1.0
+            "y": 0.0,
+            "z": 0.0
         },
         "rotation": {
             "qw": 1.0,
@@ -112,16 +118,16 @@
             "z": 0.0
         },
         "rotation_Max": {
-            "x": 6.283180236816406,
-            "y": 6.283180236816406,
-            "z": 6.283180236816406
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.5299999713897705
         },
         "rotation_Min": {
             "x": 0.0,
             "y": 0.0,
-            "z": 0.0
+            "z": -1.5800000429153442
         },
-        "rotation_Random": false,
+        "rotation_Random": true,
         "rotation_Value": {
             "x": 0.0,
             "y": 0.0,
@@ -131,25 +137,25 @@
         "size_Max": {
             "x": 2.0,
             "y": 2.0,
-            "z": 0.0
+            "z": 2.0
         },
         "size_Min": {
             "x": 0.5,
             "y": 0.5,
-            "z": 0.0
+            "z": 0.5
         },
         "size_Random": false,
         "size_Value": {
-            "x": 1.0,
-            "y": 1.0,
+            "x": 0.20000000298023224,
+            "y": 0.6000000238418579,
             "z": 1.0
         },
-        "speed_Max": 2.0,
-        "speed_Min": 0.5,
-        "speed_Random": false,
-        "speed_Value": 0.0,
-        "sphereRadius": 9.999999747378752e-06,
-        "texturePath": "white.png",
-        "useModelName": "RingForSpeaker"
+        "speed_Max": 6.0,
+        "speed_Min": 4.0,
+        "speed_Random": true,
+        "speed_Value": 5.0,
+        "sphereRadius": 0.009999999776482582,
+        "texturePath": "circle.png",
+        "useModelName": "nZ0.1x0.7Plane"
     }
 }

@@ -5,6 +5,8 @@
 #include <Features/LineDrawer/LineDrawer.h>
 #include <System/Audio/SoundInstance.h>
 #include <System/Audio/VoiceInstance.h>
+#include <Features/WaveformDisplay/WaveformDisplay.h>
+
 #include <Features/TextRenderer/TextGenerator.h>
 
 
@@ -496,6 +498,11 @@ private:
     std::unique_ptr<UISprite> dummy_editArea_;
 
 
+    // ========================================
+    // 波形表示
+    // ========================================
+    WaveformDisplay waveformDisplay_;
+    WaveformBounds waveformBounds_;
 
     // ========================================
     // 特殊機能

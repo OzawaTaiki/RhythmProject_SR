@@ -80,6 +80,9 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 
     selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
 
+    waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(1280.0f - 600.0f, 96.0f)); // 波形の表示範囲を初期化
+    waveformBackground_ = std::make_unique<UISprite>();
+    waveformBackground_->Initialize("waveformBackground");
 }
 
 void BeatMapEditor::Update()
@@ -93,6 +96,8 @@ void BeatMapEditor::Update()
 
     // エディター状態の更新
     UpdateEditorState();
+
+    waveformDisplay_.SetStartTime(currentTime_);
 
 }
 
@@ -123,6 +128,10 @@ void BeatMapEditor::Draw(const Camera* _camera)
     DrawTimeline();
 
     DrawUI();
+
+    // 波形の描画
+    waveformBackground_->Draw();
+    waveformDisplay_.Draw();
 }
 
 void BeatMapEditor::DrawNotes()
@@ -379,6 +388,7 @@ void BeatMapEditor::DrawLeftPanel()
                 currentBeatMapData_.audioFilePath = musicFilePath;
                 // 音楽をロード
                 musicSoundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);
+                waveformDisplay_.Initialize(musicSoundInstance_.get(), waveformBounds_, for2dCamera_.GetViewProjection());
             }
         }
         ImGui::BeginDisabled(!musicSoundInstance_); // 音楽がロードされていない場合は無効化
@@ -813,6 +823,7 @@ void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)
     {
         // 音声ファイルのパスが設定されている場合は、音声をロード
         musicSoundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);
+        waveformDisplay_.Initialize(musicSoundInstance_.get(), waveformBounds_, for2dCamera_.GetViewProjection());
     }
 }
 

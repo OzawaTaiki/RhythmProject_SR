@@ -503,6 +503,7 @@ private:
     // ========================================
     WaveformDisplay waveformDisplay_;
     WaveformBounds waveformBounds_;
+    std::unique_ptr<UISprite> waveformBackground_;
 
     // ========================================
     // 特殊機能

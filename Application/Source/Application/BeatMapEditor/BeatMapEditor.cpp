@@ -81,6 +81,8 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
 
     waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(1280.0f - 600.0f, 96.0f)); // 波形の表示範囲を初期化
+    waveformBackground_ = std::make_unique<UISprite>();
+    waveformBackground_->Initialize("waveformBackground");
 }
 
 void BeatMapEditor::Update()
@@ -127,6 +129,8 @@ void BeatMapEditor::Draw(const Camera* _camera)
 
     DrawUI();
 
+    // 波形の描画
+    waveformBackground_->Draw();
     waveformDisplay_.Draw();
 }
 

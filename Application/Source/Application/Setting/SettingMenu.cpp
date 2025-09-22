@@ -18,7 +18,7 @@ void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::func
     volumeSlider->SetPos({ 100, 100 });
     volumeSlider->SetSize({ 200, 20 });
     volumeSlider->SetRange(0.0f, 1.0f);
-    volumeSlider->SetValue(0.8f);
+    volumeSlider->SetValue(Setting::current_.masterVolume);
     volumeSlider->SetOnValueChanged([](float value) {
         Setting::current_.masterVolume = value; // 音量を設定に反映
         AudioSystem::GetInstance()->SetMasterVolume(value); // オーディオシステムに音量を反映

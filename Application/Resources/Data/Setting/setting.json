@@ -1,7 +1,7 @@
 {
-    "audioLatencyMs": 35.5,
+    "audioLatencyMs": -45.0,
     "effectVolume": 1.0,
     "masterVolume": 0.41999998688697815,
     "musicVolume": 1.0,
-    "noteSpeed": 5.0
+    "noteSpeed": 50.0
 }

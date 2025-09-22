@@ -34,6 +34,8 @@ void SampleFramework::Initialize(const std::wstring& _winTitle)
 
     Setting::Load();
 
+    AudioSystem::GetInstance()->SetMasterVolume(Setting::current_.masterVolume);
+
     // 最初のシーンで初期化
     sceneManager_->Initialize("GameScene");
 }

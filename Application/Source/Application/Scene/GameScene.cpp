@@ -108,7 +108,10 @@ void GameScene::Initialize(SceneData* _sceneData)
     pauseMenu_->Initialize();
 
     settingMenu_ = std::make_unique<SettingMenu>();
-    settingMenu_->Initialize([&](float _noteSpeed) { gameCore_->SetNoteSpeed(_noteSpeed); });
+    settingMenu_->Initialize(
+        [&](float _noteSpeed) { gameCore_->SetNoteSpeed(_noteSpeed); },
+        [&](float _audioLatency) { gameCore_->SetMusicLatency(_audioLatency); }
+    );
 
     pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
 

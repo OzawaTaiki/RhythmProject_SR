@@ -40,7 +40,7 @@ void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::func
     auto audioLatencySlider = uiGroup_->CreateSlider("AudioLatencySlider", L"音声遅延");
     audioLatencySlider->SetPos({ 100, 200 });
     audioLatencySlider->SetSize({ 200, 20 });
-    audioLatencySlider->SetRange(0.0f, 100.0f);
+    audioLatencySlider->SetRange(-100.0f, 100.0f);
     audioLatencySlider->SetValue(Setting::current_.audioLatencyMs);
     audioLatencySlider->SetOnValueChanged([&](float value) {
         Setting::current_.audioLatencyMs = value; // 音声遅延を設定に反映

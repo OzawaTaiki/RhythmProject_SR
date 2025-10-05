@@ -492,10 +492,10 @@ private:
     float timelineWidth_ = 0.0f; // タイムラインの幅
 
     // 選択・判定用
-    std::unique_ptr<UISprite> areaSelectionSprite_;
-    std::unique_ptr<UISprite> dummy_editLaneArea_;
-    std::unique_ptr<UISprite> dummy_window_;
-    std::unique_ptr<UISprite> dummy_editArea_;
+    std::unique_ptr<UIBase> areaSelectionSprite_;
+    std::unique_ptr<UIBase> dummy_editLaneArea_;
+    std::unique_ptr<UIBase> dummy_window_;
+    std::unique_ptr<UIBase> dummy_editArea_;
 
 
     // ========================================

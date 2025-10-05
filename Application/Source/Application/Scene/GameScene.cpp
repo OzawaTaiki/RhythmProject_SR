@@ -83,7 +83,7 @@ void GameScene::Initialize(SceneData* _sceneData)
     }
 
     gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
-    gameCore_->Initialize(Setting::current_.noteSpeed, 2.0f); // ノーツの移動速度とオフセット時間を設定
+    gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs); // ノーツの移動速度とオフセット時間を設定
 
     gameInputManager_ = std::make_unique<GameInputManager>();
     gameInputManager_->Initialize(input_);

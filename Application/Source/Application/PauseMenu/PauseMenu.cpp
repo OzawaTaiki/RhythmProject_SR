@@ -29,6 +29,7 @@ void PauseMenu::Initialize()
     auto sprite = uiGroup_->CreateSprite("PauseMenu_back", L"Pause");
 
     auto resumeButton = uiGroup_->CreateButton("PauseMenu_ResumeButton", L"Resume");
+    //resumeButton->SetDefaultColor({ 0.5f,0.5f,0.5f,1.0f });
     //resumeButton->SetParent(sprite);
 
     auto retryButton = uiGroup_->CreateButton("PauseMenu_RetryButton",L"Retry");
@@ -45,7 +46,7 @@ void PauseMenu::Initialize()
         { resumeButton.get(), retryButton.get(), toTitleButton.get() }
     );
 
-    //sprite_= sprite;
+    sprite_= sprite.get();
 
 
     buttons_["PauseMenu_ResumeButton"] = resumeButton;

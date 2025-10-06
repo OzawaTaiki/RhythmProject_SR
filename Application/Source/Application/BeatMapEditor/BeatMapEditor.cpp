@@ -72,7 +72,7 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 
 
     areaSelectionSprite_ = std::make_unique<UISprite>();
-    areaSelectionSprite_->Initialize("AreaSelectionSprite");
+    areaSelectionSprite_->Initialize("AreaSelectionSprite", true);
     areaSelectionSprite_->SetAnchor(Vector2(0.0f, 0.0f)); // 範囲選択のアンカーを左上に設定
     areaSelectionSprite_->SetColor(Vector4(0.0f, 0.5f, 1.0f, 0.3f)); // 範囲選択の色を設定
     areaSelectionSprite_->SetSize(Vector2(0.0f, 0.0f)); // 範囲選択の初期サイズを設定
@@ -784,20 +784,20 @@ void BeatMapEditor::InitDummySprites()
 {
 
     dummy_editLaneArea_ = std::make_unique<UISprite>();
-    dummy_editLaneArea_->Initialize("DummySprite");
+    dummy_editLaneArea_->Initialize("DummySprite",true);
     dummy_editLaneArea_->SetPos(Vector2(editorCoordinate_.GetEditAreaX(), editorCoordinate_.GetTopMargin()));
     dummy_editLaneArea_->SetAnchor(Vector2(0.0f, 0.0f));// ダミースプライトのアンカーを左上に設定
     dummy_editLaneArea_->SetSize(Vector2(editorCoordinate_.GetEditAreaWidth(), editorCoordinate_.GetEditAreaHeight())); // ダミースプライトのサイズを設定
 
     dummy_editArea_ = std::make_unique<UISprite>();
-    dummy_editArea_->Initialize("DummyEditAreaSprite");
+    dummy_editArea_->Initialize("DummyEditAreaSprite", true);
     dummy_editArea_->SetPos(Vector2(300.0f, 0.0f));
     dummy_editArea_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーエディットエリアのアンカーを左上に設定
     dummy_editArea_->SetSize(Vector2(1280.0f - 600.0f, 720.0f)); // ダミーエディットエリアのサイズを設定
 
 
     dummy_window_ = std::make_unique<UISprite>();
-    dummy_window_->Initialize("DummyWindowSprite");
+    dummy_window_->Initialize("DummyWindowSprite", true);
     dummy_window_->SetPos(Vector2(0, 0));
     dummy_window_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーウィンドウのアンカーを左上に設定
     dummy_window_->SetSize(Vector2(1280.0f, 720.0f)); // ダミーウィンドウのサイズを設定

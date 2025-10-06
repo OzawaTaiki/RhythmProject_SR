@@ -205,7 +205,7 @@ void ResultUI::InitUIGroup()
         {
             transitionToTitle_ = true;
         });
-    toTitleButton->SetTextParam(param);
+    //toTitleButton->SetTextParam(param);
 
     auto retryButton = uiGroup_->CreateButton("Retry", L"リトライ");
 
@@ -213,7 +213,7 @@ void ResultUI::InitUIGroup()
         {
             replay_ = true;
         });
-    retryButton->SetTextParam(param);
+    //retryButton->SetTextParam(param);
 
     UIGroup::LinkHorizontal({ toTitleButton.get(), retryButton.get() });
 

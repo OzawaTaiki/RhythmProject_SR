@@ -15,7 +15,7 @@ void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::func
     audioLatencySetFunc_ = _audioLatencySetFunc;
 
     auto volumeSlider = uiGroup_->CreateSlider("VolumeSlider", 0.0f, 1.0f);
-    volumeSlider->SetPos({ 100, 100 });
+    //volumeSlider->SetPos({ 100, 100 });
     volumeSlider->SetSize({ 200, 20 });
     volumeSlider->SetValue(Setting::current_.masterVolume);
     volumeSlider->SetOnValueChanged([](float value) {
@@ -25,7 +25,7 @@ void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::func
         });
 
     auto noteSpeedSlider = uiGroup_->CreateSlider("NoteSpeedSlider", 5.0f, 100.0f);
-    noteSpeedSlider->SetPos({ 100, 150 });
+    //noteSpeedSlider->SetPos({ 100, 150 });
     noteSpeedSlider->SetSize({ 200, 20 });
     noteSpeedSlider->SetValue(Setting::current_.noteSpeed);
     noteSpeedSlider->SetOnValueChanged([&](float value) {
@@ -36,7 +36,7 @@ void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::func
         });
 
     auto audioLatencySlider = uiGroup_->CreateSlider("AudioLatencySlider", -1000.0f, 1000.0f);
-    audioLatencySlider->SetPos({ 100, 200 });
+    //audioLatencySlider->SetPos({ 100, 200 });
     audioLatencySlider->SetSize({ 200, 20 });
     audioLatencySlider->SetValue(Setting::current_.audioLatencyMs);
     audioLatencySlider->SetOnValueChanged([&](float value) {

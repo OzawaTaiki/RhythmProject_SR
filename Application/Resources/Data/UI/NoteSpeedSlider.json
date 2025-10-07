@@ -1,0 +1,56 @@
+{
+    "NoteSpeedSlider": {
+        "NoteSpeedSlider_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "NoteSpeedSlider_color": {
+            "w": 0.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "NoteSpeedSlider_directoryPath": "Resources/images/",
+        "NoteSpeedSlider_fillColor": {
+            "w": 1.0,
+            "x": 0.699999988079071,
+            "y": 0.699999988079071,
+            "z": 0.699999988079071
+        },
+        "NoteSpeedSlider_handleColor": {
+            "w": 1.0,
+            "x": 0.8999999761581421,
+            "y": 0.8999999761581421,
+            "z": 0.8999999761581421
+        },
+        "NoteSpeedSlider_handleSize": {
+            "x": 20.0,
+            "y": 40.0
+        },
+        "NoteSpeedSlider_isActive": 257,
+        "NoteSpeedSlider_isVisible": 1,
+        "NoteSpeedSlider_label": "NoteSpeedSlider",
+        "NoteSpeedSlider_maxValue": 100.0,
+        "NoteSpeedSlider_minValue": 5.0,
+        "NoteSpeedSlider_pos": {
+            "x": 128.0,
+            "y": 192.0
+        },
+        "NoteSpeedSlider_rotate": 0.0,
+        "NoteSpeedSlider_size": {
+            "x": 200.0,
+            "y": 20.0
+        },
+        "NoteSpeedSlider_stepSize": 0.009999999776482582,
+        "NoteSpeedSlider_textureName": "white.png",
+        "NoteSpeedSlider_trackColor": {
+            "w": 1.0,
+            "x": 0.30000001192092896,
+            "y": 0.30000001192092896,
+            "z": 0.30000001192092896
+        },
+        "NoteSpeedSlider_trackHeight": 10.0,
+        "NoteSpeedSlider_useStep": false,
+        "NoteSpeedSlider_value": 52.025001525878906
+    }
+}

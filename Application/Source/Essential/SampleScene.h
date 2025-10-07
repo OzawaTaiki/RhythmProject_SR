@@ -26,6 +26,7 @@
 
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
+#include <Features/UI/UISlider.h>
 
 class SampleScene : public BaseScene
 {
@@ -80,6 +81,8 @@ private:
     std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
 
     std::unique_ptr<SkyBox> skyBox_ = nullptr;
+
+    std::shared_ptr<UISlider> slider_ = nullptr;
 
     // テキストジェネレータ
     TextGenerator textGenerator_;

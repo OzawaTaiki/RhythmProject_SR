@@ -1,0 +1,81 @@
+{
+    "NoteSpeedSlider_labelText": {
+        "NoteSpeedSlider_labelText_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "NoteSpeedSlider_labelText_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "NoteSpeedSlider_labelText_directoryPath": "Resources/images/",
+        "NoteSpeedSlider_labelText_isActive": 257,
+        "NoteSpeedSlider_labelText_isVisible": 1,
+        "NoteSpeedSlider_labelText_label": "NoteSpeedSlider_labelText",
+        "NoteSpeedSlider_labelText_pos": {
+            "x": 0.0,
+            "y": -12.0
+        },
+        "NoteSpeedSlider_labelText_rotate": 0.0,
+        "NoteSpeedSlider_labelText_size": {
+            "x": 1.0,
+            "y": 1.0
+        },
+        "NoteSpeedSlider_labelText_text": [
+            78,
+            111,
+            116,
+            101,
+            83,
+            112,
+            101,
+            101,
+            100,
+            83,
+            108,
+            105,
+            100,
+            101,
+            114
+        ],
+        "NoteSpeedSlider_labelText_textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "NoteSpeedSlider_labelText_textureName": "white.png"
+    }
+}

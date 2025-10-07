@@ -1,0 +1,78 @@
+{
+    "VolumeSlider_labelText": {
+        "VolumeSlider_labelText_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "VolumeSlider_labelText_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "VolumeSlider_labelText_directoryPath": "Resources/images/",
+        "VolumeSlider_labelText_isActive": 257,
+        "VolumeSlider_labelText_isVisible": 1,
+        "VolumeSlider_labelText_label": "VolumeSlider_labelText",
+        "VolumeSlider_labelText_pos": {
+            "x": 0.0,
+            "y": -12.0
+        },
+        "VolumeSlider_labelText_rotate": 0.0,
+        "VolumeSlider_labelText_size": {
+            "x": 1.0,
+            "y": 1.0
+        },
+        "VolumeSlider_labelText_text": [
+            86,
+            111,
+            108,
+            117,
+            109,
+            101,
+            83,
+            108,
+            105,
+            100,
+            101,
+            114
+        ],
+        "VolumeSlider_labelText_textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "VolumeSlider_labelText_textureName": "white.png"
+    }
+}

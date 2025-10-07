@@ -111,12 +111,12 @@ void SampleScene::Initialize(SceneData* _sceneData)
     // 2Dスプライトの初期化
     uint32_t textureHandle = TextureManager::GetInstance()->Load("uvChecker.png");
     sprite_ = Sprite::Create("uvChecker", textureHandle);
-
+    sprite_->translate_ ={ 640,360 };
 
     // 音声データの読み込み
-    //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
+    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
     //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
-    soundInstance_ = AudioSystem::GetInstance()->Load("C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav");
+    //soundInstance_ = AudioSystem::GetInstance()->Load("C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav");
 
     //skyBox_ = std::make_unique<SkyBox>();
     //skyBox_->Initialize(30.0f);
@@ -140,6 +140,8 @@ void SampleScene::Initialize(SceneData* _sceneData)
     textureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
     textureGenerator_->Initialize();
 
+    slider_ = std::make_shared<UISlider>();
+    slider_->Initialize("TestSlider");
 }
 
 void SampleScene::Update()
@@ -201,6 +203,38 @@ void SampleScene::Update()
 
     sprite_->ImGui();
 
+
+    static auto audioData = soundInstance_->GetAudioData();
+
+    {
+        static std::map<std::string, std::string> wav = {
+            {"Alarm","Resources/Sounds/Alarm01.wav"},
+            {"Demo","Resources/Sounds/Music/demoMusic.wav"},
+            {"Luminous_memory","Resources/Sounds/Music/Luminous_memory.wav"},
+            {"composite_100Hz_1000Hz_10000Hz","C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav"},
+
+        };
+
+        static int currentIndex = 0;
+        if (ImGui::Combo("WAV", &currentIndex, [](void* data, int idx, const char** out_text)
+                         {
+                             auto& map = *static_cast<std::map<std::string, std::string>*>(data);
+                             auto it = map.begin();
+                             std::advance(it, idx);
+                             *out_text = it->first.c_str();
+                             return true;
+                         }, static_cast<void*>(&wav), static_cast<int>(wav.size()), 4))
+        {
+            if (voiceInstance_)
+                voiceInstance_->Stop();
+
+            auto it = wav.begin();
+            std::advance(it, currentIndex);
+            soundInstance_ = AudioSystem::GetInstance()->Load(it->second);
+            audioData = soundInstance_->GetAudioData();
+        }
+    }
+
 #endif // _DEBUG
 
     if (input_->IsKeyTriggered(DIK_SPACE))
@@ -215,8 +249,6 @@ void SampleScene::Update()
         const int sampleRate = 44100;
         const float duration = 5.0f;
 
-        static auto audioData
-         = soundInstance_->GetAudioData();
             //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
         audioSpectrum.SetAudioData(audioData);
         audioSpectrum.SetSampleRate(sampleRate);
@@ -252,7 +284,7 @@ void SampleScene::Update()
     human_->Update();
     ground_->Update();
     emitter_->Update(0.016f);
-
+    slider_->Update();
 
     //textGenerator_.Draw(L"← → でグレースケールの強度変化", Vector2(200, 300), Vector4(1, 0, 0, 1));
     //textGenerator_.Draw(L"Space でシーンチェンジ", Vector2(200, 500), Vector4(1, 0, 0, 1));
@@ -287,9 +319,9 @@ void SampleScene::Draw()
     //skyBox_->QueueCmdCubeTexture();
     LayerSystem::SetLayer("Model");
     // groundの描画
-    ground_->Draw(&SceneCamera_,  drawColor_);
+    //ground_->Draw(&SceneCamera_,  drawColor_);
     // humanの描画
-    human_->Draw(&SceneCamera_, drawColor_);
+    //human_->Draw(&SceneCamera_, drawColor_);
 
     //LayerSystem::ApplyPostEffect("Model", "BoxFilter", boxFilter_);
 
@@ -298,7 +330,7 @@ void SampleScene::Draw()
     // スプライトの描画
     //sprite_->Draw(Vector4(1, 1, 1, 1));
     sprite_->Draw(textureGenerator_->GetTextureHandle());
-
+    slider_->Draw();
 
     ParticleSystem::GetInstance()->DrawParticles();
 

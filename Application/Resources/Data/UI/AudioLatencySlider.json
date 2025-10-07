@@ -1,0 +1,56 @@
+{
+    "AudioLatencySlider": {
+        "AudioLatencySlider_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "AudioLatencySlider_color": {
+            "w": 0.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "AudioLatencySlider_directoryPath": "Resources/images/",
+        "AudioLatencySlider_fillColor": {
+            "w": 1.0,
+            "x": 0.699999988079071,
+            "y": 0.699999988079071,
+            "z": 0.699999988079071
+        },
+        "AudioLatencySlider_handleColor": {
+            "w": 1.0,
+            "x": 0.8999999761581421,
+            "y": 0.8999999761581421,
+            "z": 0.8999999761581421
+        },
+        "AudioLatencySlider_handleSize": {
+            "x": 20.0,
+            "y": 40.0
+        },
+        "AudioLatencySlider_isActive": 257,
+        "AudioLatencySlider_isVisible": 1,
+        "AudioLatencySlider_label": "AudioLatencySlider",
+        "AudioLatencySlider_maxValue": 1000.0,
+        "AudioLatencySlider_minValue": -1000.0,
+        "AudioLatencySlider_pos": {
+            "x": 128.0,
+            "y": 256.0
+        },
+        "AudioLatencySlider_rotate": 0.0,
+        "AudioLatencySlider_size": {
+            "x": 200.0,
+            "y": 20.0
+        },
+        "AudioLatencySlider_stepSize": 0.009999999776482582,
+        "AudioLatencySlider_textureName": "white.png",
+        "AudioLatencySlider_trackColor": {
+            "w": 1.0,
+            "x": 0.30000001192092896,
+            "y": 0.30000001192092896,
+            "z": 0.30000001192092896
+        },
+        "AudioLatencySlider_trackHeight": 10.0,
+        "AudioLatencySlider_useStep": false,
+        "AudioLatencySlider_value": 0.0
+    }
+}

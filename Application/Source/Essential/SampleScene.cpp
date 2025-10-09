@@ -97,16 +97,21 @@ void SampleScene::Initialize(SceneData* _sceneData)
     // 任意の名前で生成する
     groundPlane.Generate("groundPlane");
 
+    Ring ring(1.0f, 3.0f);
+    ring.SetDivide(512);
+
     // 地面を生成する
-    ground_ = std::make_unique<ObjectModel>("ground");
+    ground_ = std::make_unique<ObjectModel>("Ring");
     // 生成した板ポリを使用する (生成時に設定した名前を渡す)
-    ground_->Initialize("terrain.obj");
+    //ground_->Initialize("terrain.obj");
     // UV変換を設定する
     //ground_->GetUVTransform().SetScale({ 10,10 });
 
     // 地面のテクスチャを読み込む 描画時に使用する
     groundTextureHandle_ = TextureManager::GetInstance()->Load("white.png");
 
+    ground_->Initialize(ring.Generate("Ring"));
+    ground_->GetMaterial()->SetEnableLighting(false);
 
     // 2Dスプライトの初期化
     uint32_t textureHandle = TextureManager::GetInstance()->Load("uvChecker.png");
@@ -129,8 +134,6 @@ void SampleScene::Initialize(SceneData* _sceneData)
     emitter2_->Initialize("speaker_particle");
 
 
-
-
     LayerSystem::CreateLayer("Model", 0);
     LayerSystem::CreateLayer("Main", 1);
 
@@ -138,7 +141,7 @@ void SampleScene::Initialize(SceneData* _sceneData)
     textGenerator_.Initialize(FontConfig());
 
     textureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
-    textureGenerator_->Initialize();
+    textureGenerator_->Initialize({ 0.0f,0.0f ,0.0f ,0.3f });
 
     slider_ = std::make_shared<UISlider>();
     slider_->Initialize("TestSlider");
@@ -153,6 +156,10 @@ void SampleScene::Update()
     if (Input::GetInstance()->IsKeyTriggered(DIK_F1))
         enableDebugCamera_ = !enableDebugCamera_;
 
+    static float kminHz = 60.0f;
+    static float kmaxHz = 13000.f;
+    static int32_t barCount = 48;
+    static bool changed = false;
 
     {
         ImGui::Begin("Engine");
@@ -184,22 +191,27 @@ void SampleScene::Update()
                     voiceInstance_ = nullptr; // VoiceInstanceを解放
                 }
             }
-
-
         }
+        changed = false;
+        changed |= ImGui::DragFloat("minHz", &kminHz, 1.0f, 20.0f, 20000.0f);
+        changed |= ImGui::DragFloat("maxHz", &kmaxHz, 1.0f, 20.0f, 20000.0f);
+        changed |= ImGui::DragInt("barCount", &barCount, 1.0f, 1, 128);
+
         ImGui::End();
 
         // light調整用
-        lights_->ImGui();
+        //lights_->ImGui();
 
     }
-    ImGui::Begin("Emitter");
-    emitter_->ShowDebugWindow();
-    ImGui::End();
 
-    ImGui::Begin("Emitter2");
-    emitter2_->ShowDebugWindow();
-    ImGui::End();
+
+    //ImGui::Begin("Emitter");
+    //emitter_->ShowDebugWindow();
+    //ImGui::End();
+
+    //ImGui::Begin("Emitter2");
+    //emitter2_->ShowDebugWindow();
+    //ImGui::End();
 
     sprite_->ImGui();
 
@@ -240,7 +252,7 @@ void SampleScene::Update()
     if (input_->IsKeyTriggered(DIK_SPACE))
     {
         // シーンの切り替え
-        SceneManager::ReserveScene("GameScene",nullptr);
+        //SceneManager::ReserveScene("GameScene",nullptr);
     }
 
     //SpectrumTest::Test();
@@ -258,8 +270,14 @@ void SampleScene::Update()
         float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
 
         auto spectrum = audioSpectrum.GetSpectrumAtTime(curentTime);
-        textureGenerator_->Generate(spectrum, 300.0f, rms, 64);
-        // TODO : 音圧を倍率とする
+        if(changed)
+            textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
+                                         barCount,
+                                         kminHz,
+                                         kmaxHz,
+                                         sampleRate, static_cast<int32_t>(spectrum.size() * 2));
+        textureGenerator_->Generate(spectrum, rms, barCount);
+        sprite_->SetTextureHandle(textureGenerator_->GetTextureHandle());
     }
 
 
@@ -282,6 +300,7 @@ void SampleScene::Update()
 
     // モデルの更新
     human_->Update();
+    //ground_->euler_.z += 0.1f;
     ground_->Update();
     emitter_->Update(0.016f);
     slider_->Update();
@@ -319,6 +338,7 @@ void SampleScene::Draw()
     //skyBox_->QueueCmdCubeTexture();
     LayerSystem::SetLayer("Model");
     // groundの描画
+    ground_->Draw(&SceneCamera_, textureGenerator_->GetTextureHandle(), drawColor_);
     //ground_->Draw(&SceneCamera_,  drawColor_);
     // humanの描画
     //human_->Draw(&SceneCamera_, drawColor_);
@@ -329,7 +349,7 @@ void SampleScene::Draw()
     Sprite::PreDraw();
     // スプライトの描画
     //sprite_->Draw(Vector4(1, 1, 1, 1));
-    sprite_->Draw(textureGenerator_->GetTextureHandle());
+    sprite_->Draw();
     slider_->Draw();
 
     ParticleSystem::GetInstance()->DrawParticles();
@@ -338,7 +358,7 @@ void SampleScene::Draw()
 
 void SampleScene::DrawShadow()
 {
-    human_->DrawShadow();
+    //human_->DrawShadow();
 }
 
 #ifdef _DEBUG

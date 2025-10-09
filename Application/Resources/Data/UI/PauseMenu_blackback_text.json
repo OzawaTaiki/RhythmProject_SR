@@ -1,0 +1,81 @@
+{
+    "PauseMenu_blackback_text": {
+        "PauseMenu_blackback_text_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "PauseMenu_blackback_text_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "PauseMenu_blackback_text_directoryPath": "Resources/images/",
+        "PauseMenu_blackback_text_isActive": 1,
+        "PauseMenu_blackback_text_isVisible": 0,
+        "PauseMenu_blackback_text_label": "PauseMenu_blackback_text",
+        "PauseMenu_blackback_text_pos": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "PauseMenu_blackback_text_rotate": 0.0,
+        "PauseMenu_blackback_text_size": {
+            "x": 1.0,
+            "y": 1.0
+        },
+        "PauseMenu_blackback_text_text": [
+            80,
+            97,
+            117,
+            115,
+            101,
+            95,
+            98,
+            108,
+            97,
+            99,
+            107,
+            98,
+            97,
+            99,
+            107
+        ],
+        "PauseMenu_blackback_text_textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "PauseMenu_blackback_text_textureName": "white.png"
+    }
+}

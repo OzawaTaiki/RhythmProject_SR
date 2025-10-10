@@ -149,17 +149,18 @@ void SampleScene::Initialize(SceneData* _sceneData)
 
 void SampleScene::Update()
 {
+
     // シーン関連更新
 #ifdef _DEBUG
-
-    // デバッグカメラ
-    if (Input::GetInstance()->IsKeyTriggered(DIK_F1))
-        enableDebugCamera_ = !enableDebugCamera_;
 
     static float kminHz = 60.0f;
     static float kmaxHz = 13000.f;
     static int32_t barCount = 48;
     static bool changed = false;
+
+    // デバッグカメラ
+    if (Input::GetInstance()->IsKeyTriggered(DIK_F1))
+        enableDebugCamera_ = !enableDebugCamera_;
 
     {
         ImGui::Begin("Engine");
@@ -247,6 +248,30 @@ void SampleScene::Update()
         }
     }
 
+    {
+        AudioSpectrum audioSpectrum(1024, 0.5f);
+        const int sampleRate = 44100;
+        const float duration = 5.0f;
+
+        //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
+        audioSpectrum.SetAudioData(audioData);
+        audioSpectrum.SetSampleRate(sampleRate);
+        float curentTime = 0.0f;
+        if (voiceInstance_ && voiceInstance_->IsPlaying())
+            curentTime = voiceInstance_->GetElapsedTime();
+        float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
+
+        auto spectrum = audioSpectrum.GetSpectrumAtTime(curentTime);
+        if (changed)
+            textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
+                                             barCount,
+                                             kminHz,
+                                             kmaxHz,
+                                             sampleRate, static_cast<int32_t>(spectrum.size() * 2));
+        textureGenerator_->Generate(spectrum, rms, barCount);
+        sprite_->SetTextureHandle(textureGenerator_->GetTextureHandle());
+    }
+
 #endif // _DEBUG
 
     if (input_->IsKeyTriggered(DIK_SPACE))
@@ -256,29 +281,6 @@ void SampleScene::Update()
     }
 
     //SpectrumTest::Test();
-    {
-        AudioSpectrum audioSpectrum(1024, 0.5f);
-        const int sampleRate = 44100;
-        const float duration = 5.0f;
-
-            //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
-        audioSpectrum.SetAudioData(audioData);
-        audioSpectrum.SetSampleRate(sampleRate);
-        float curentTime = 0.0f;
-        if (voiceInstance_ && voiceInstance_->IsPlaying())
-            curentTime = voiceInstance_->GetElapsedTime();
-        float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
-
-        auto spectrum = audioSpectrum.GetSpectrumAtTime(curentTime);
-        if(changed)
-            textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
-                                         barCount,
-                                         kminHz,
-                                         kmaxHz,
-                                         sampleRate, static_cast<int32_t>(spectrum.size() * 2));
-        textureGenerator_->Generate(spectrum, rms, barCount);
-        sprite_->SetTextureHandle(textureGenerator_->GetTextureHandle());
-    }
 
 
     /*std::array<std::complex<float>, 8> testData = {

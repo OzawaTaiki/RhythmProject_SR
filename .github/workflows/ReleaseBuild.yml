@@ -1,0 +1,48 @@
+name: ReleaseBuild
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  SOLUTION_FILE_PATH: Application/RhythmProject.sln
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: windows-2022
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+          fetch-depth: 1
+      
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.vcxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
+      - name: Cache Release build outputs
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/obj/Release
+            **/bin/Release
+          key: ${{ runner.os }}-release-${{ hashFiles('**/*.cpp', '**/*.h', '**/*.hlsl') }}
+          restore-keys: |
+            ${{ runner.os }}-release-
+      
+      - name: AddMsBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+      
+      - name: Build
+        run: |
+          msbuild ${{env.SOLUTION_FILE_PATH}} /p:Platform=x64,Configuration=${{env.CONFIGURATION}} /m /p:CL_MPCount=4 /p:UseMultiToolTask=true /p:EnforceProcessCountAcrossBuilds=true

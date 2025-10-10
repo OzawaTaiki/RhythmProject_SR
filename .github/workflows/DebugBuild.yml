@@ -1,29 +1,50 @@
 name: DebugBuild
+
 on:
   push:
     branches:
       - master
+
 env:
-  #リポジトリのルートディレクトリを起点としたソリューションファイルのパス
   SOLUTION_FILE_PATH: Application/RhythmProject.sln
-  #Visual Studio の構成
   CONFIGURATION: Debug
-  
+
 jobs:
   build:
     runs-on: windows-2022
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive' #サブモジュールを再帰的にチェックアウト
-        
+          submodules: 'recursive'
+          fetch-depth: 1  # 履歴を浅くする
+      
+      # NuGetパッケージのキャッシュ
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.vcxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
+      # 中間ファイルとバイナリのキャッシュ
+      - name: Cache build outputs
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/obj
+            **/bin
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.cpp', '**/*.h', '**/*.hlsl') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+      
       - name: AddMsBuild to PATH
         uses: microsoft/setup-msbuild@v2
-        with: 
+        with:
           msbuild-architecture: x64
-
+      
       - name: Build
-        run: | 
-          msbuild ${{env.SOLUTION_FILE_PATH}} /p:Platform=x64,Configuration=${{env.CONFIGURATION}}
+        run: |
+          msbuild ${{env.SOLUTION_FILE_PATH}} /p:Platform=x64,Configuration=${{env.CONFIGURATION}} /m /p:CL_MPCount=4 /p:UseMultiToolTask=true /p:EnforceProcessCountAcrossBuilds=true

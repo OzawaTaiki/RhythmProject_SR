@@ -132,6 +132,7 @@
     <ClCompile Include="Source\Application\Note\Judge\JudgeType.cpp" />
     <ClCompile Include="Source\Application\Note\Judge\NoteJudge.cpp" />
     <ClCompile Include="Source\Application\Note\Note.cpp" />
+    <ClCompile Include="Source\Application\OptionMenu\OptionMenu.cpp" />
     <ClCompile Include="Source\Application\PauseMenu\PauseMenu.cpp" />
     <ClCompile Include="Source\Application\Result\UI\ResultUI.cpp" />
     <ClCompile Include="Source\Application\Scene\EditorScene.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Source\Application\Scene\SelectScene.cpp" />
     <ClCompile Include="Source\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\Application\Scene\Transition\SceneTrans.cpp" />
+    <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
     <ClCompile Include="Source\Application\Setting\Setting.cpp" />
     <ClCompile Include="Source\Application\Setting\SettingMenu.cpp" />
     <ClCompile Include="Source\Essential\ParticleModifierFactory.cpp" />
@@ -172,7 +174,10 @@
     <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h" />
-    <ClInclude Include="Source\Application\EventData\PauseActionData.h" />
+    <ClInclude Include="Source\Application\EventData\PauseActionData.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\FeedbackEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.h" />
@@ -195,6 +200,7 @@
     <ClInclude Include="Source\Application\Note\Judge\NoteJudge.h" />
     <ClInclude Include="Source\Application\Note\Note.h" />
     <ClInclude Include="Source\Application\Note\NoteType.h" />
+    <ClInclude Include="Source\Application\OptionMenu\OptionMenu.h" />
     <ClInclude Include="Source\Application\PauseMenu\PauseMenu.h" />
     <ClInclude Include="Source\Application\Result\ResultData.h" />
     <ClInclude Include="Source\Application\Result\UI\ResultUI.h" />
@@ -205,6 +211,7 @@
     <ClInclude Include="Source\Application\Scene\SelectScene.h" />
     <ClInclude Include="Source\Application\Scene\TitleScene.h" />
     <ClInclude Include="Source\Application\Scene\Transition\SceneTrans.h" />
+    <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h" />
     <ClInclude Include="Source\Application\Setting\Setting.h" />
     <ClInclude Include="Source\Application\Setting\SettingMenu.h" />
     <ClInclude Include="Source\Essential\ParticleModifierFactory.h" />

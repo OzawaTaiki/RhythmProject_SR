@@ -3,24 +3,35 @@
 #include <System/Input/Input.h>
 #include <Debug/Debug.h>
 #include <System/Audio/AudioSystem.h>
+#include <Features/Event/EventManager.h>
 
 #include <Application/Setting/Setting.h>
 
-void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::function<void(float)> _audioLatencySetFunc)
+SettingMenu::SettingMenu()
+{
+    EventManager::GetInstance()->AddEventListener("OpenOptionMenu", this);
+}
+
+SettingMenu::~SettingMenu()
+{
+    EventManager::GetInstance()->RemoveEventListener("OpenOptionMenu", this);
+}
+
+void SettingMenu::Initialize()
 {
     uiGroup_ = std::make_unique<UIGroup>();
     uiGroup_->Initialize();
 
-    speedSetFunc_ = _speedSetFunc;
-    audioLatencySetFunc_ = _audioLatencySetFunc;
+    auto sprite = uiGroup_->CreateSprite("SettingMenu_back", L"Settings");
 
     auto volumeSlider = uiGroup_->CreateSlider("VolumeSlider", 0.0f, 1.0f);
-    //volumeSlider->SetPos({ 100, 100 });
     volumeSlider->SetSize({ 200, 20 });
     volumeSlider->SetValue(Setting::current_.masterVolume);
     volumeSlider->SetOnValueChanged([](float value) {
         Setting::current_.masterVolume = value; // 音量を設定に反映
-        AudioSystem::GetInstance()->SetMasterVolume(value); // オーディオシステムに音量を反映
+
+        AudioSystem::GetInstance()->SetMasterVolume(value);
+
         Debug::Log(std::format("Volume changed: {}\n", value));
         });
 
@@ -30,28 +41,36 @@ void SettingMenu::Initialize(std::function<void(float)> _speedSetFunc, std::func
     noteSpeedSlider->SetValue(Setting::current_.noteSpeed);
     noteSpeedSlider->SetOnValueChanged([&](float value) {
         Setting::current_.noteSpeed = value; // ノーツ速度を設定に反映
-        if (speedSetFunc_)
-            speedSetFunc_(value); // コールバック関数を呼び出してノーツ速度を設定
+
+        ValueChangedEventData eventData("NoteSpeed", value);
+        EventManager::GetInstance()->DispatchEvent(GameEvent("ValueChanged", &eventData)); // ノーツ速度変更イベントをディスパッチ
         Debug::Log(std::format("Note speed changed: {}\n", value));
         });
 
     auto audioLatencySlider = uiGroup_->CreateSlider("AudioLatencySlider", -1000.0f, 1000.0f);
-    //audioLatencySlider->SetPos({ 100, 200 });
     audioLatencySlider->SetSize({ 200, 20 });
     audioLatencySlider->SetValue(Setting::current_.audioLatencyMs);
     audioLatencySlider->SetOnValueChanged([&](float value) {
-        Setting::current_.audioLatencyMs = value; // 音声遅延を設定に反映
-        if (audioLatencySetFunc_)
-            audioLatencySetFunc_(value); // コールバック関数を呼び出して音声遅延を設定
+        Setting::current_.audioLatencyMs = value; // 音声遅延を設定に   反映
+
+        ValueChangedEventData eventData("AudioLatency", value);
+        EventManager::GetInstance()->DispatchEvent(GameEvent("ValueChanged", &eventData)); // 音声遅延変更イベントをディスパッチ
         Debug::Log(std::format("Audio latency changed: {}\n", value));
         });
+
+    sprite->AddChild(volumeSlider);
+    sprite->AddChild(noteSpeedSlider);
+    sprite->AddChild(audioLatencySlider);
 
     // スライダーをリストに追加
     sliders_.push_back(volumeSlider);
     sliders_.push_back(noteSpeedSlider);
     sliders_.push_back(audioLatencySlider);
 
-    isActive_ = true;
+    previewPanel_ = std::make_unique<SettingsPreviewPanel>();
+    previewPanel_->Initialize();
+
+    isActive_ = false;
 }
 
 void SettingMenu::Update()
@@ -59,7 +78,16 @@ void SettingMenu::Update()
     if (!isActive_)
         return;
 
+    // ESCキーでメニューを閉じる
+    if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
+    {
+        isActive_ = false;
+        Debug::Log("SettingMenu closed\n");
+    }
+
     uiGroup_->Update();
+    previewPanel_->Update();
+
 }
 
 void SettingMenu::Draw()
@@ -68,4 +96,14 @@ void SettingMenu::Draw()
         return;
 
     uiGroup_->Draw();
+    previewPanel_->Draw();
+}
+
+void SettingMenu::OnEvent(const GameEvent& _event)
+{
+    if (_event.GetEventType() == "OpenOptionMenu")
+    {
+        isActive_ = true;
+        Debug::Log("SettingMenu opened\n");
+    }
 }

@@ -1,5 +1,6 @@
 #include "TitleScene.h"
 #include <Features/Scene/Manager/SceneManager.h>
+#include <Features/Event/EventManager.h>
 
 void TitleScene::Initialize(SceneData* _sceneData)
 {
@@ -25,6 +26,13 @@ void TitleScene::Initialize(SceneData* _sceneData)
 
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
+    ///
+    ///
+    ///
+
+    settingMenu_ = std::make_unique<SettingMenu>();
+    settingMenu_->Initialize();
+
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
 
@@ -42,8 +50,12 @@ void TitleScene::Update()
 
 #endif // _DEBUG
 
-
-    if (input_->IsKeyTriggered(DIK_SPACE))
+    if (input_->IsKeyPressed(DIK_LCONTROL) &&
+        input_->IsKeyTriggered(DIK_O))
+    {
+        EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
+    }
+    if (input_->IsKeyTriggered(DIK_RETURN))
     {
         // シーンの切り替え
         SceneManager::ReserveScene("GameScene", nullptr);
@@ -62,14 +74,15 @@ void TitleScene::Update()
     }
 
     particleSystem_->Update();
-
-    textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
-    textGenerator_.Draw(L"Press Space", Vector2(640, 500));
+    settingMenu_->Update();
 
 }
 
 void TitleScene::Draw()
 {
+    settingMenu_->Draw();
+    textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
+    textGenerator_.Draw(L"Press Space", Vector2(640, 500));
 }
 
 void TitleScene::DrawShadow(){}

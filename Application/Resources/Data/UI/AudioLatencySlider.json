@@ -33,8 +33,8 @@
         "AudioLatencySlider_maxValue": 1000.0,
         "AudioLatencySlider_minValue": -1000.0,
         "AudioLatencySlider_pos": {
-            "x": 128.0,
-            "y": 256.0
+            "x": -128.0,
+            "y": 64.0
         },
         "AudioLatencySlider_rotate": 0.0,
         "AudioLatencySlider_size": {

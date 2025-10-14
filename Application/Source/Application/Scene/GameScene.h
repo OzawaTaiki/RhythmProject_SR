@@ -11,6 +11,7 @@
 #include <System/Audio/VoiceInstance.h>
 #include <Features/Sprite/Sprite.h>
 #include <System/Audio/AudioSystem.h>
+#include <Features/Event/EventListener.h>
 
 #include <Features/PostEffects/BoxFilter.h>
 #include <Features/PostEffects/Vignette.h>
@@ -37,9 +38,10 @@ enum class GameMode
     EditorTest
 };
 
-class GameScene : public BaseScene
+class GameScene : public BaseScene, public iEventListener
 {
 public:
+    GameScene();
     ~GameScene() override;
     void Initialize(SceneData* _sceneData) override;
     void Update() override;
@@ -69,6 +71,8 @@ private:
     void Retry();
 
     void ToTitle();
+
+    void OnEvent(const GameEvent& _event) override;
 private:
 
     // シーン関連

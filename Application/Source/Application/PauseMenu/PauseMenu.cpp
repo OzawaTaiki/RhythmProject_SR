@@ -2,7 +2,7 @@
 
 #include <System/Input/Input.h>
 #include <Debug/ImGuiDebugManager.h>
-
+#include <Features/Event/EventManager.h>
 
 #include <Features/UI/UISprite.h>
 #include <Features/UI/UIButton.h>
@@ -14,13 +14,20 @@
 
 
 
+PauseMenu::PauseMenu()
+{
+}
+
+PauseMenu::~PauseMenu()
+{
+}
+
 void PauseMenu::Initialize()
 {
-
     uiGroup_ = std::make_unique<UIGroup>();
     uiGroup_->Initialize();
 
-    auto backSprite = uiGroup_->CreateSprite("PauseMenu_blackback", L"Pause_blackback");
+    auto backSprite = uiGroup_->CreateSprite("PauseMenu_blackback");
     backSprite->SetSize({ 1280, 720 });
     backSprite->SetColor({ 0, 0, 0, 0.8f }); // 半透明の黒背景
     backSprite->SetPos({ 0, 0 });
@@ -28,143 +35,86 @@ void PauseMenu::Initialize()
 
     auto sprite = uiGroup_->CreateSprite("PauseMenu_back", L"Pause");
 
-    auto resumeButton = uiGroup_->CreateButton("PauseMenu_ResumeButton", L"Resume");
-    //resumeButton->SetDefaultColor({ 0.5f,0.5f,0.5f,1.0f });
-    //resumeButton->SetParent(sprite);
+    auto resumeButton   = uiGroup_->CreateButton("PauseMenu_ResumeButton",  L"Resume");
+    {
+        resumeButton->SetOnClickEnd([&]()
+                                    {
+                                        EventManager::GetInstance()->DispatchEvent(GameEvent("RequestResume", nullptr));
+                                        isActive_ = false;
+                                        isDraw_ = false;
+                                        Debug::Log("Resume button clicked\n");
+                                    });
+    }
+    auto retryButton    = uiGroup_->CreateButton("PauseMenu_RetryButton",   L"Retry");
+    {
+        retryButton->SetOnClickEnd([&]()
+                                   {
+                                       EventManager::GetInstance()->DispatchEvent(GameEvent("RequestRetry", nullptr));
+                                       isActive_ = false;
+                                       isDraw_ = false;
+                                       Debug::Log("Retry button clicked\n");
+                                   });
+    }
+    auto toTitleButton  = uiGroup_->CreateButton("PauseMenu_ToTitleButton", L"Title");
+    {
+        toTitleButton->SetOnClickEnd([&]()
+                                     {
+                                         EventManager::GetInstance()->DispatchEvent(GameEvent("RequestToTitle", nullptr));
+                                         isActive_ = false;
+                                         isDraw_ = false;
+                                         Debug::Log("ToTitle button clicked\n");
+                                     });
+    }
+    auto toOptionButton = uiGroup_->CreateButton("PauseMenu_OptionButton",  L"Option");
+    {
+        auto optionButtonBack = std::make_shared<UISprite>();
+        optionButtonBack->Initialize("PauseMenu_OptionButtonIcon");
+        toOptionButton->AddChild(optionButtonBack);
 
-    auto retryButton = uiGroup_->CreateButton("PauseMenu_RetryButton",L"Retry");
-    //retryButton->SetParent(sprite);
+        toOptionButton->SetOnClickEnd([&]()
+                                      {
+                                          EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
+                                          isDraw_ = false;
+                                          Debug::Log("Option button clicked\n");
+                                      });
 
-    auto toTitleButton = uiGroup_->CreateButton("PauseMenu_ToTitleButton", L"Title");
-    //toTitleButton->SetParent(sprite);
+    }
 
     sprite->AddChild(resumeButton);
     sprite->AddChild(retryButton);
     sprite->AddChild(toTitleButton);
+    sprite->AddChild(toOptionButton);
 
     UIGroup::LinkHorizontal(
         { resumeButton.get(), retryButton.get(), toTitleButton.get() }
     );
 
-    sprite_= sprite.get();
-
-
-    buttons_["PauseMenu_ResumeButton"] = resumeButton;
-    buttons_["PauseMenu_RetryButton"] = retryButton;
-    buttons_["PauseMenu_ToTitleButton"] = toTitleButton;
+    // 下押してオプションへ
+    toOptionButton->SetNavigationTarget(resumeButton.get(), Direction::Down);
+    toOptionButton->SetNavigationTarget(retryButton.get(), Direction::Down);
+    toOptionButton->SetNavigationTarget(toTitleButton.get(), Direction::Down);
 }
 
 void PauseMenu::Update()
 {
-    if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
+    if (!isActive_ || !isDraw_)
     {
-        isActive_ = true;
-        actions_ =  PauseActions::Open; // ポーズメニューの開閉をトグル
-
-    }
-
-    if (!isActive_)
+        if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
+        {
+            isActive_ = true;
+            isDraw_ = true;
+        }
         return;
+    }
 
     uiGroup_->Update();
-
-    if(settingMenu_)
-    {
-        settingMenu_->Update();
-    }
-
-#ifdef _DEBUG
-
-    if (ImGuiDebugManager::GetInstance()->Begin("pauseMenu"))
-    {
-        if (ImGui::CollapsingHeader("sprite"))
-            sprite_->ImGui();
-
-
-        for (auto& [key, button] : buttons_)
-        {
-            if (ImGui::CollapsingHeader(key.c_str()))
-            {
-                button->ImGui();
-            }
-        }
-
-        ImGui::End();
-    }
-
-
-#endif
-
 }
 
 void PauseMenu::Draw()
 {
-    if (!isActive_)
+    if (!isDraw_)
         return;
 
     uiGroup_->Draw();
 
-    if (settingMenu_)
-    {
-        settingMenu_->Draw();
-    }
-}
-
-void PauseMenu::SetCallBacks(const std::function<void()>& _onResumeCallback, const std::function<void()>& _onRetryCallback, const std::function<void()>& _onToTitleCallback)
-{
-    SetOnResumeCallback(_onResumeCallback);
-    SetOnRetryCallback(_onRetryCallback);
-    SetOnToTitleCallback(_onToTitleCallback);
-}
-
-void PauseMenu::SetOnResumeCallback(const std::function<void()>& _callback)
-{
-    if (_callback)
-    {
-        onResumeCallback_ = _callback;
-
-        auto it = buttons_.find("PauseMenu_ResumeButton");
-        if (it != buttons_.end())
-        {
-            it->second->SetOnClickEnd([this]() {
-                isActive_ = false; // ポーズメニューを閉じる
-                actions_ = PauseActions::Resume; // 選択されたボタンを更新
-                onResumeCallback_(); // コールバックを呼び出す
-                });
-        }
-    }
-}
-
-void PauseMenu::SetOnRetryCallback(const std::function<void()>& _callback)
-{
-    if (_callback)
-    {
-        onRetryCallback_ = _callback;
-        auto it = buttons_.find("PauseMenu_RetryButton");
-        if (it != buttons_.end())
-        {
-            it->second->SetOnClickEnd([this]() {
-                isActive_ = false; // ポーズメニューを閉じる
-                actions_ = PauseActions::Retry; // 選択されたボタンを更新
-                onRetryCallback_(); // コールバックを呼び出す
-                });
-        }
-    }
-}
-
-void PauseMenu::SetOnToTitleCallback(const std::function<void()>& _callback)
-{
-    if (_callback)
-    {
-        onToTitleCallback_ = _callback;
-        auto it = buttons_.find("PauseMenu_ToTitleButton");
-        if (it != buttons_.end())
-        {
-            it->second->SetOnClickEnd([this]() {
-                isActive_ = false; // ポーズメニューを閉じる
-                actions_ = PauseActions::ToTitle; // 選択されたボタンを更新
-                onToTitleCallback_(); // コールバックを呼び出す
-                });
-        }
-    }
 }

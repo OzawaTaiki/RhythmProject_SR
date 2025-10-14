@@ -127,6 +127,9 @@
     <Filter Include="Application\Input\Judge">
       <UniqueIdentifier>{a73bc968-3077-4492-9411-9cafd32a5298}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\OptionMenu">
+      <UniqueIdentifier>{87155632-38d6-44b4-8ca1-719a77c6d3c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -283,6 +286,8 @@
     <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp">
       <Filter>Application\EffectModifiers</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application\OptionMenu\OptionMenu.cpp" />
+    <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -461,6 +466,12 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h">
       <Filter>Application\EffectModifiers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\OptionMenu\OptionMenu.h">
+      <Filter>Application\OptionMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h">
+      <Filter>Application\SettingMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

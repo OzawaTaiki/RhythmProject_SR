@@ -33,8 +33,8 @@
         "NoteSpeedSlider_maxValue": 100.0,
         "NoteSpeedSlider_minValue": 5.0,
         "NoteSpeedSlider_pos": {
-            "x": 128.0,
-            "y": 192.0
+            "x": -128.0,
+            "y": 0.0
         },
         "NoteSpeedSlider_rotate": 0.0,
         "NoteSpeedSlider_size": {
@@ -51,6 +51,6 @@
         },
         "NoteSpeedSlider_trackHeight": 10.0,
         "NoteSpeedSlider_useStep": false,
-        "NoteSpeedSlider_value": 52.025001525878906
+        "NoteSpeedSlider_value": 25.899999618530273
     }
 }

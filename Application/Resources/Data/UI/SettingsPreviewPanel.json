@@ -1,0 +1,28 @@
+{
+    "SettingsPreviewPanel": {
+        "SettingsPreviewPanel_anchor": {
+            "x": 1.0,
+            "y": 0.0
+        },
+        "SettingsPreviewPanel_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "SettingsPreviewPanel_directoryPath": "Resources/images/",
+        "SettingsPreviewPanel_isActive": 257,
+        "SettingsPreviewPanel_isVisible": 117440513,
+        "SettingsPreviewPanel_label": "SettingsPreviewPanel",
+        "SettingsPreviewPanel_pos": {
+            "x": 1280.0,
+            "y": 0.0
+        },
+        "SettingsPreviewPanel_rotate": 0.0,
+        "SettingsPreviewPanel_size": {
+            "x": 320.0,
+            "y": 720.0
+        },
+        "SettingsPreviewPanel_textureName": "white.png"
+    }
+}

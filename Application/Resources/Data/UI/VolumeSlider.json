@@ -33,8 +33,8 @@
         "VolumeSlider_maxValue": 1.0,
         "VolumeSlider_minValue": 0.0,
         "VolumeSlider_pos": {
-            "x": 128.0,
-            "y": 128.0
+            "x": -128.0,
+            "y": -64.0
         },
         "VolumeSlider_rotate": 0.0,
         "VolumeSlider_size": {
@@ -51,6 +51,6 @@
         },
         "VolumeSlider_trackHeight": 10.0,
         "VolumeSlider_useStep": false,
-        "VolumeSlider_value": 0.48500001430511475
+        "VolumeSlider_value": 0.5199999809265137
     }
 }

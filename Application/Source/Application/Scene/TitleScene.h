@@ -9,6 +9,7 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 
 #include <Features/TextRenderer/TextGenerator.h>
+#include <Application/Setting/SettingMenu.h>
 
 class TitleScene : public BaseScene
 {
@@ -42,5 +43,6 @@ private:
 
 
     TextGenerator textGenerator_;
+    std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
 
 };

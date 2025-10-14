@@ -19,6 +19,8 @@
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Features/AudioSpectrum/SpectrumValidator.h>
 
+#include <System/Time/Stopwatch.h>
+
 SampleScene::~SampleScene()
 {
 }
@@ -282,23 +284,28 @@ void SampleScene::Update()
 
     //SpectrumTest::Test();
 
+    //std::vector<std::complex<float>> test1;
+    //std::vector<std::complex<float>> test2;
+    //for (int i=0; i < 1024; ++i)
+    //{
+    //    test1.emplace_back(static_cast<float>(i), 0.0f);
+    //    test2.emplace_back(static_cast<float>(i), 0.0f);
+    //}
 
-    /*std::array<std::complex<float>, 8> testData = {
-        std::complex<float>(0.0f, 0.0f),
-        std::complex<float>(1.0f, 0.0f),
-        std::complex<float>(2.0f, 0.0f),
-        std::complex<float>(3.0f, 0.0f),
-        std::complex<float>(4.0f, 0.0f),
-        std::complex<float>(5.0f, 0.0f),
-        std::complex<float>(6.0f, 0.0f),
-        std::complex<float>(7.0f, 0.0f)
-    };
-    AudioSpectrum::Butterfly8(testData);
-    std::vector<float>fftTest ={
-        0.0f,1.0f,2.0f,3.0f,4.0f,5.0f,6.0f,7.0f
-    };
-    std::vector<std::complex<float>> output;
-    AudioSpectrum::FFT(fftTest, output);*/
+    //std::chrono::steady_clock::time_point start, end;
+
+    //start = std::chrono::steady_clock::now();
+    //AudioSpectrum::RecursiveFFT(test1);
+    //end = std::chrono::steady_clock::now();
+
+    //Debug::Log(std::format("RecursiveFFT: {} ms", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()) +"\n");
+
+    //start = std::chrono::steady_clock::now();
+    //AudioSpectrum::IterativeFFT(test2);
+    //end = std::chrono::steady_clock::now();
+    //Debug::Log(std::format("IterativeFFT: {} ms", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()) + "\n");
+
+
 
     // モデルの更新
     human_->Update();

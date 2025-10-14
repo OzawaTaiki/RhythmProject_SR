@@ -12,7 +12,9 @@
 #include <Debug/Debug.h>
 #include <Debug/ImguITools.h>
 #include <Debug/ImGuiDebugManager.h>
+#include <Utility/StringUtils/StringUitls.h>
 #include <Features/TextRenderer/TextRenderer.h>
+#include <Features/Event/EventManager.h>
 
 #include <Application/Scene/Transition/SceneTrans.h>
 #include <Application/Scene/Data/SceneDatas.h>
@@ -21,8 +23,22 @@
 #include <Features/ColorMask/ColorMask.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 
+GameScene::GameScene()
+{
+    EventManager::GetInstance()->AddEventListener("ValueChanged", this);
+    EventManager::GetInstance()->AddEventListener("RequestResume", this);
+    EventManager::GetInstance()->AddEventListener("RequestRetry", this);
+    EventManager::GetInstance()->AddEventListener("RequestToTitle", this);
+
+
+}
+
 GameScene::~GameScene()
 {
+    EventManager::GetInstance()->RemoveEventListener("ValueChanged", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestResume", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
 }
 
 // TODO ; やりたいこと にゅうりょく精度アップ
@@ -99,8 +115,6 @@ void GameScene::Initialize(SceneData* _sceneData)
     feedbackEffect_ = std::make_unique<FeedbackEffect>();
     feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
 
-    
-
     gameUI_ = std::make_unique<GameUI>();
     gameUI_->Initialize();
 
@@ -108,12 +122,9 @@ void GameScene::Initialize(SceneData* _sceneData)
     pauseMenu_->Initialize();
 
     settingMenu_ = std::make_unique<SettingMenu>();
-    settingMenu_->Initialize(
-        [&](float _noteSpeed) { gameCore_->SetNoteSpeed(_noteSpeed); },
-        [&](float _audioLatency) { gameCore_->SetMusicLatency(_audioLatency); }
-    );
-
-    pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
+    settingMenu_->Initialize();
+    settingMenu_->SetCamera(&SceneCamera_);
+    //pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
 
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
@@ -215,7 +226,7 @@ void GameScene::Update()
     feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
     gameEnvironment_->Update(deltaTime);
     gameUI_->Update(gameCore_->GetCombo()); // コンボ値をUIに渡す
-
+    settingMenu_->Update();
 
 #pragma endregion // Application
 
@@ -289,7 +300,7 @@ void GameScene::Draw()
 
     LayerSystem::SetLayer("PauseMenu");
     pauseMenu_->Draw();
-
+    settingMenu_->Draw();
 
 
 }
@@ -387,11 +398,11 @@ bool GameScene::IsComplateLoadBeatMap()
             gameCore_->SetGameMusic(gameMusic_.get());
             gameInputManager_->SetGameMusic(gameMusic_.get()); // 入力管理に音声インスタンスを設定
 
-            pauseMenu_->SetCallBacks(
-                [this]() { gameMusic_->ResumeWithRewind(Setting::current_.musicVolume); }, // 一時停止コールバック
-                [this]() { Retry(); }, // リトライコールバック
-                [this]() { ToTitle(); } // タイトルに戻るコールバック
-            );
+            //pauseMenu_->SetCallBacks(
+            //    [this]() { gameMusic_->ResumeWithRewind(Setting::current_.musicVolume); }, // 一時停止コールバック
+            //    [this]() { Retry(); }, // リトライコールバック
+            //    [this]() { ToTitle(); } // タイトルに戻るコールバック
+            //);
         }
         else
         {
@@ -450,6 +461,43 @@ void GameScene::ToTitle()
     SceneManager::ReserveScene("TitleScene", nullptr);
 }
 
+void GameScene::OnEvent(const GameEvent& _event)
+{
+    std::string eventType = _event.GetEventType();
+
+    // ポーズメニューからのイベント
+    if(StringUtils::Contains(eventType, "Request"))
+    {
+        if (eventType == "RequestResume")
+        {
+            gameMusic_->ResumeWithRewind(Setting::current_.musicVolume);
+        }
+        else if (eventType == "RequestRetry")
+        {
+            Retry();
+        }
+        else if (eventType == "RequestToTitle")
+        {
+            ToTitle();
+        }
+    }
+
+    // 値設定イベント
+    else  if (eventType == "ValueChanged")
+    {
+        auto data = dynamic_cast<ValueChangedEventData*>(_event.GetData());
+        if (data)
+        {if (data->name == "NoteSpeed")
+            {
+                gameCore_->SetNoteSpeed(data->value);
+            }
+            else if (data->name == "AudioLatency")
+            {
+                gameCore_->SetMusicLatency(data->value);
+            }
+        }
+    }
+}
 
 void GameScene::ImGui()
 {

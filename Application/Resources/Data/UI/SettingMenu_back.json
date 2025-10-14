@@ -1,0 +1,28 @@
+{
+    "SettingMenu_back": {
+        "SettingMenu_back_anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "SettingMenu_back_color": {
+            "w": 1.0,
+            "x": 0.15444016456604004,
+            "y": 0.15324757993221283,
+            "z": 0.15324757993221283
+        },
+        "SettingMenu_back_directoryPath": "Resources/images/",
+        "SettingMenu_back_isActive": 257,
+        "SettingMenu_back_isVisible": 1,
+        "SettingMenu_back_label": "SettingMenu_back",
+        "SettingMenu_back_pos": {
+            "x": 640.0,
+            "y": 323.0
+        },
+        "SettingMenu_back_rotate": 0.0,
+        "SettingMenu_back_size": {
+            "x": 960.0,
+            "y": 540.0
+        },
+        "SettingMenu_back_textureName": "white.png"
+    }
+}

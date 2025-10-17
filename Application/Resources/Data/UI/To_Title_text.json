@@ -1,0 +1,71 @@
+{
+    "To_Title_text": {
+        "To_Title_text_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "To_Title_text_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "To_Title_text_directoryPath": "Resources/images/",
+        "To_Title_text_isActive": 257,
+        "To_Title_text_isVisible": 1,
+        "To_Title_text_label": "To_Title_text",
+        "To_Title_text_pos": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "To_Title_text_rotate": 0.0,
+        "To_Title_text_size": {
+            "x": 1.0,
+            "y": 1.0
+        },
+        "To_Title_text_text": [
+            12479,
+            12452,
+            12488,
+            12523,
+            12408
+        ],
+        "To_Title_text_textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "useGradient": true,
+            "useOutline": true
+        },
+        "To_Title_text_textureName": "white.png"
+    }
+}

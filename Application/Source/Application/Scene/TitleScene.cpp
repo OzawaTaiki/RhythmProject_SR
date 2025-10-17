@@ -82,7 +82,7 @@ void TitleScene::Draw()
 {
     settingMenu_->Draw();
     textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
-    textGenerator_.Draw(L"Press Space", Vector2(640, 500));
+    textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
 }
 
 void TitleScene::DrawShadow(){}

@@ -23,6 +23,7 @@
 #include <Features/ColorMask/ColorMask.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 
+
 GameScene::GameScene()
 {
     EventManager::GetInstance()->AddEventListener("ValueChanged", this);
@@ -172,6 +173,7 @@ void GameScene::Initialize(SceneData* _sceneData)
     depthBasedOutLineData_.edgeWidth = 1.5f;
     depthBasedOutLine_->SetCamera(&SceneCamera_);
     depthBasedOutLine_->SetData(&depthBasedOutLineData_);
+
 }
 
 void GameScene::Update()
@@ -196,7 +198,7 @@ void GameScene::Update()
             gameMusic_->Pause(); // ノート更新が無効なら音楽を一時停止
     }
 
-    depthBasedOutLineData_.ImGui();
+    //depthBasedOutLineData_.ImGui();
 
 #endif // _DEBUG
 
@@ -301,7 +303,6 @@ void GameScene::Draw()
     LayerSystem::SetLayer("PauseMenu");
     pauseMenu_->Draw();
     settingMenu_->Draw();
-
 
 }
 
@@ -568,7 +569,7 @@ void GameScene::ImGui()
         //if (IsMusicEnd())
             //voiceInstance_ = soundInstance_->Play(volume, 130.1f); // スペースキーで音楽を再生
 
-
+        feedbackEffect_->DebugWindoow();
 
         ImGui::End();
     }

@@ -69,10 +69,11 @@ void SampleFramework::Draw()
     sceneManager_->Draw();
 
     lineDrawer_->Draw();
+
+    batch2DRenderer_->Render();
     //=============================
 
     textRenderer_->EndFrame();
-
 
     LayerSystem::CompositeAllLayers("default");
 

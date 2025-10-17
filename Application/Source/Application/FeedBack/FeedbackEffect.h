@@ -47,6 +47,13 @@ public:
     void PlayHoldEffect(int32_t _laneIndex);
 
     void ApplyMissedVignetteEffect(const std::string& _input, const std::string& _output);
+
+
+    /// <summary>
+    /// デバッグウィンドウを表示する
+    /// </summary>
+    void DebugWindoow();
+
 private:
 
     /// <summary>
@@ -56,11 +63,6 @@ private:
     /// <param name="_position">座標</param>
     void AllocateJudgeText(JudgeType _judgeType, int32_t _laneIndex);
 
-
-    /// <summary>
-    /// デバッグウィンドウを表示する
-    /// </summary>
-    void DebugWindoow();
 
 private:
 

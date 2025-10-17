@@ -155,7 +155,7 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
 
         UpdateCombo(result);
     }
-}
+    }
 
 JudgeType GameCore::ProcessNormalNote(Note* _note, const InputDate& _inputData)
 {

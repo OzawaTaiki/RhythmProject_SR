@@ -32,7 +32,7 @@ void TriggerEffects::Initialize()
 
     triangleEmitter_.Initialize("TapEffect_Triangle");
 
-    lightPillarEmitter_.Initialize("TapEffect_LightPillar");
+    lightPillarEmitter_.Initialize("tap_light_pillar");
 }
 
 void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
@@ -74,9 +74,9 @@ void TriggerEffects::EmitSurroundingParticles(const Vector3& _pos)
 {
     emitter_.SetPosition(_pos);
     triangleEmitter_.SetPosition(_pos);
-    //lightPillarEmitter_.SetPosition(_pos);
+    lightPillarEmitter_.SetPosition(_pos);
 
     emitter_.GenerateParticles();
     triangleEmitter_.GenerateParticles();
-    //lightPillarEmitter_.GenerateParticles();
+    lightPillarEmitter_.GenerateParticles();
 }

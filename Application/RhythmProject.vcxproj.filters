@@ -286,8 +286,12 @@
     <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp">
       <Filter>Application\EffectModifiers</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\OptionMenu\OptionMenu.cpp" />
-    <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
+    <ClCompile Include="Source\Application\OptionMenu\OptionMenu.cpp">
+      <Filter>Application\OptionMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp">
+      <Filter>Application\SettingMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">

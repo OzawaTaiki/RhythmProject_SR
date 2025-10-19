@@ -21,7 +21,7 @@ public:
     // 周囲のパーティクルを発生させる
     static void EmitSurroundingParticles(const Vector3& _pos);
     // 光の柱を発生させる
-    static void EmitLightPillar(const Vector3& _pos, const Vector3& _direction, float _length = 1.0f);
+    static void EmitLightPillar(const Vector3& _pos, const Vector3& _direction);
 
 private:
 

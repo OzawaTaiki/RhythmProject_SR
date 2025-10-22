@@ -1,6 +1,7 @@
 #include "TitleScene.h"
 #include <Features/Scene/Manager/SceneManager.h>
 #include <Features/Event/EventManager.h>
+#include <Framework/LayerSystem/LayerSystem.h>
 
 void TitleScene::Initialize(SceneData* _sceneData)
 {
@@ -35,6 +36,8 @@ void TitleScene::Initialize(SceneData* _sceneData)
 
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
+    LayerSystem::CreateLayer("main", 0);
+    LayerSystem::CreateLayer("option", 1);
 
 }
 
@@ -50,10 +53,17 @@ void TitleScene::Update()
 
 #endif // _DEBUG
 
-    if (input_->IsKeyPressed(DIK_LCONTROL) &&
-        input_->IsKeyTriggered(DIK_O))
+    particleSystem_->Update();
+    settingMenu_->Update();
+
+    if (input_->IsKeyTriggered(DIK_ESCAPE))
     {
         EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
+    }
+    if (input_->IsKeyTriggered(DIK_F10) &&
+        input_->IsKeyPressed(DIK_F1))
+    {
+        SceneManager::ReserveScene("Sample", nullptr);
     }
     if (input_->IsKeyTriggered(DIK_RETURN))
     {
@@ -73,16 +83,17 @@ void TitleScene::Update()
         SceneCamera_.UpdateMatrix();
     }
 
-    particleSystem_->Update();
-    settingMenu_->Update();
 
 }
 
 void TitleScene::Draw()
 {
-    settingMenu_->Draw();
+    LayerSystem::SetLayer("main");
     textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
     textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
+
+    LayerSystem::SetLayer("option");
+    settingMenu_->Draw();
 }
 
 void TitleScene::DrawShadow(){}

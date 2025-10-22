@@ -70,6 +70,8 @@ void SampleFramework::Draw()
 
     lineDrawer_->Draw();
 
+    ParticleSystem::GetInstance()->DrawParticles();
+
     batch2DRenderer_->Render();
     //=============================
 
@@ -91,8 +93,6 @@ void SampleFramework::Draw()
 
     // 後にupdateに
     sceneManager_->ChangeScene();
-
-
 }
 
 void SampleFramework::Finalize()

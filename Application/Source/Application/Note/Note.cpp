@@ -85,14 +85,21 @@ void LongNote::Initilize(float _targetTime, const Vector3& _targetPosition)
 void LongNote::Update(float _elapseTime, float _speed)
 {
     Note::Update(_elapseTime, _speed);
-
     if (noteBridge_)
     {
         Vector3 spos = model_->translate_;
         Vector3 epos = spos;
-        epos.z -= _speed * (holdDuration_);
+        // TODO : ホールド中のみ判定ラインで切れるようにする
+        /*実装こんな感じ？わからん
+        bool isHolding = false; // ホールド中かどうかのフラグを取得する処理を実装する
+        if(isHolding)
+            epos = judgePosition_; // ホールド中は判定位置まで伸ばす
+        else
+            epos.z = targetPosition_.z + _speed * (targetTime_ - _elapseTime); // ホールド終了後は自分の位置まで
+        */
+        float bridgeLength = std::min(holdDuration_, targetTime_ - _elapseTime);
+        epos.z -= _speed * (bridgeLength);
         Vector3 direction = epos - spos;
-
         // レーンマタギを実装したら必要
         /*const Vector3 downVector = Vector3(0, 0, -1);// 下向きベクトル
         direction = direction.Normalize();

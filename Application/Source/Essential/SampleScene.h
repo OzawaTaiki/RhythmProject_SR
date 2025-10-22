@@ -20,6 +20,7 @@
 #include <System/Audio/AudioSystem.h>
 #include <System/Audio/SoundInstance.h>
 #include <system/Audio/VoiceInstance.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
 
 #include <Features/Model/SkyBox.h>
 #include <Features/PostEffects/GrayScale.h>
@@ -86,6 +87,8 @@ private:
 
     // テキストジェネレータ
     TextGenerator textGenerator_;
+
+    AudioSpectrum audioSpectrum_; 
 
     std::unique_ptr<SpectrumTextureGenerator> textureGenerator_;
 

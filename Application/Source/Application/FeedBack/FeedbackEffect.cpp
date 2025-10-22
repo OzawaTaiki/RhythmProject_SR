@@ -88,7 +88,7 @@ void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inp
 
 }
 
-void FeedbackEffect::Draw()
+void FeedbackEffect::Draw() 
 {
     LayerSystem::SetLayer("GameCore");
     for (const auto& laneEffect : laneEffects_)

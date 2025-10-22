@@ -15,7 +15,6 @@
 #include <Debug/ImGuiManager.h>
 #include <Framework/LayerSystem/LayerSystem.h>
 
-#include <Features/AudioSpectrum/AudioSpectrum.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Features/AudioSpectrum/SpectrumValidator.h>
 
@@ -121,8 +120,8 @@ void SampleScene::Initialize(SceneData* _sceneData)
     sprite_->translate_ ={ 640,360 };
 
     // 音声データの読み込み
-    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
-    //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
+    //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
+    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
     //soundInstance_ = AudioSystem::GetInstance()->Load("C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav");
 
     //skyBox_ = std::make_unique<SkyBox>();
@@ -147,18 +146,30 @@ void SampleScene::Initialize(SceneData* _sceneData)
 
     slider_ = std::make_shared<UISlider>();
     slider_->Initialize("TestSlider");
+
+    audioSpectrum_= AudioSpectrum(1024, 0.5f);
+    const int sampleRate = 44100;
+    const float duration = 5.0f;
+
+    //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
+    audioSpectrum_.SetAudioData(soundInstance_->GetAudioData());
+    audioSpectrum_.SetSampleRate(sampleRate);
+
+    Time::SetDeltaTimeFixed(false);
 }
 
 void SampleScene::Update()
 {
 
     // シーン関連更新
-#ifdef _DEBUG
+    static auto audioData = soundInstance_->GetAudioData();
 
     static float kminHz = 60.0f;
     static float kmaxHz = 13000.f;
     static int32_t barCount = 48;
-    static bool changed = false;
+    static bool changed = true;
+#ifdef _DEBUG
+
 
     // デバッグカメラ
     if (Input::GetInstance()->IsKeyTriggered(DIK_F1))
@@ -219,7 +230,6 @@ void SampleScene::Update()
     sprite_->ImGui();
 
 
-    static auto audioData = soundInstance_->GetAudioData();
 
     {
         static std::map<std::string, std::string> wav = {
@@ -250,29 +260,6 @@ void SampleScene::Update()
         }
     }
 
-    {
-        AudioSpectrum audioSpectrum(1024, 0.5f);
-        const int sampleRate = 44100;
-        const float duration = 5.0f;
-
-        //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
-        audioSpectrum.SetAudioData(audioData);
-        audioSpectrum.SetSampleRate(sampleRate);
-        float curentTime = 0.0f;
-        if (voiceInstance_ && voiceInstance_->IsPlaying())
-            curentTime = voiceInstance_->GetElapsedTime();
-        float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
-
-        auto spectrum = audioSpectrum.GetSpectrumAtTime(curentTime);
-        if (changed)
-            textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
-                                             barCount,
-                                             kminHz,
-                                             kmaxHz,
-                                             sampleRate, static_cast<int32_t>(spectrum.size() * 2));
-        textureGenerator_->Generate(spectrum, rms, barCount);
-        sprite_->SetTextureHandle(textureGenerator_->GetTextureHandle());
-    }
 
 #endif // _DEBUG
 
@@ -280,6 +267,24 @@ void SampleScene::Update()
     {
         // シーンの切り替え
         //SceneManager::ReserveScene("GameScene",nullptr);
+        voiceInstance_ = soundInstance_->Play(0.3f);
+    }
+
+    {
+        float curentTime = 0.0f;
+        if (voiceInstance_ && voiceInstance_->IsPlaying())
+            curentTime = voiceInstance_->GetElapsedTime();
+        float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
+
+        auto spectrum = audioSpectrum_.GetSpectrumAtTime(curentTime);
+        if (changed)
+            textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
+                                             barCount,
+                                             kminHz,
+                                             kmaxHz,
+                                             soundInstance_->GetSampleRate(), static_cast<int32_t>(spectrum.size() * 2));
+        textureGenerator_->Generate(spectrum, rms, barCount);
+        sprite_->SetTextureHandle(textureGenerator_->GetTextureHandle());
     }
 
     //SpectrumTest::Test();
@@ -309,7 +314,7 @@ void SampleScene::Update()
 
     // モデルの更新
     human_->Update();
-    //ground_->euler_.z += 0.1f;
+    ground_->euler_.z += 0.1f;
     ground_->Update();
     emitter_->Update(0.016f);
     slider_->Update();
@@ -360,8 +365,7 @@ void SampleScene::Draw()
     //sprite_->Draw(Vector4(1, 1, 1, 1));
     sprite_->Draw();
     slider_->Draw();
-
-    ParticleSystem::GetInstance()->DrawParticles();
+    textGenerator_.Draw(std::format(L"FPS: {:.2f}", Time::GetFramerate()), Vector2(10, 10), Vector4(1, 0, 0, 1));
 
 }
 

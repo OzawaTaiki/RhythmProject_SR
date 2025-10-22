@@ -8,18 +8,20 @@
 
 #include <vector>
 
+// BPMカウンタークラス
 class TapBPMCounter
 {
 public:
     TapBPMCounter() = default;
     ~TapBPMCounter() = default;
 
+    // 初期化
     void Initialize();
-
+    // 更新
     void Update();
-
+    // リセット
     void Reset();
-
+    // BPMを取得
     float GetBPM() const;
 
 private:

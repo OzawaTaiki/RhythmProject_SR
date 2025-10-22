@@ -23,34 +23,41 @@
 #include <vector>
 #include <memory>
 
-
+// 前方宣言
 class Input;
 class LineDrawer;
-
 class BeatMapLoader;
 
+/// <summary>
+/// ビートマップエディター
+/// </summary>
 class BeatMapEditor
 {
 private:
+    // エディターモード
     enum class EditorMode
     {
-        Select,
-        PlaceNormalNote,
-        PlaceLongNote,
-        Delete,
-        LiveMapping,
-        BPMSetting,
+        Select, // 選択
+        PlaceNormalNote,// ノーマルノート配置
+        PlaceLongNote, // ロングノート配置
+        Delete,// ノート削除
+        LiveMapping,// ライブマッピング
+        BPMSetting,// BPM設定
 
-        Count // モードの数
+        Count // モード数
     };
 public:
+
     BeatMapEditor() = default;
     ~BeatMapEditor() = default;
 
-
+    // 初期化
     void Initialize(const BeatMapData& _beatMapData = {});
+    // 更新
     void Update();
+    // 描画
     void Draw(const Camera* _camera);
+    // 終了処理
     void Finalize();
 
 public:
@@ -512,7 +519,7 @@ private:
     TapBPMCounter tapBPMCounter_;
 
 
-    bool toTest_ = false;
+    bool toTest_ = false; // テストモードへ移行フラグ
     TextParam textParam_;
 };
 

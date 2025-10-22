@@ -39,11 +39,10 @@ public:
     void StopAllSounds();
 
 
-    /// -----------------------------------------------------
+    // ゲッター・セッター
+
     void SetVolume(float _volume) { volume_ = _volume; }
     float GetVolume() const { return volume_; }
-
-private: // メンバ関数
 
 
 private: // メンバ変数

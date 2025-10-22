@@ -15,6 +15,7 @@ GameMusic::~GameMusic()
 
 void GameMusic::Initialize(float _rewindTime)
 {
+    // コールバックの設定
     voiceCallBack_ = std::make_unique<VoiceCallBack>();
     voiceCallBack_->SetOnStreamEndCallback([this]() {MusicEnd(); }); // 音楽が終了したときのコールバックを設定
 
@@ -63,9 +64,11 @@ void GameMusic::ResumeWithRewind(float _volume)
         if (voiceInstance_)
             voiceInstance_.reset();
 
+        // 巻き戻し再生の開始時間を計算
         float startTime = pausedAtTime_ - rewindTime_;
-        startTime = (std::max)(startTime, 0.0f);
+        startTime = (std::max)(startTime, 0.0f); // 負の値にならないようにする
 
+        // 再生を開始
         voiceInstance_ = soundInstance_->Play(_volume, startTime, false, true, voiceCallBack_.get());
         isMusicPlaying_ = true;
     }

@@ -7,7 +7,7 @@
 
 #include <memory>
 
-
+// ポーズメニュー
 class PauseMenu
 {
 public:
@@ -15,26 +15,25 @@ public:
     PauseMenu();
     ~PauseMenu();
 
-
+    // 初期化
     void Initialize();
-
+    // 更新
     void Update();
-
+    // 描画
     void Draw();
 
     // ポーズメニューがアクティブならゲームは止まっている
-    //
+    // アクティブか否か
     bool IsActive() const { return isActive_; }
 
 private:
 
-    // 有効か否か
-    bool isActive_ = false;
+    bool isActive_ = false; // 有効フラグ
 
-    bool isDraw_ = false;
+    bool isDraw_ = false; // 描画フラグ
 
-    std::unique_ptr<UIGroup> uiGroup_ = nullptr;
+    std::unique_ptr<UIGroup> uiGroup_ = nullptr; // UIグループ
 
-    std::map<std::string, std::shared_ptr<UIButton>> buttons_;
+    std::map<std::string, std::shared_ptr<UIButton>> buttons_; // ボタン群
 
 };

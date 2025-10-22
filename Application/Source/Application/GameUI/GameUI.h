@@ -4,6 +4,7 @@
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/Json/JsonBinder.h>
 
+// ゲームUIクラス
 class GameUI
 {
 public:
@@ -22,7 +23,7 @@ public:
 
 
 private:
-
+    // デバック用UI
     void ImGui();
 
 private:

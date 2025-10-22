@@ -4,7 +4,7 @@
 
 #include <memory>
 
-
+// ミス時のビネットエフェクト
 class MissedVignette
 {
 public:
@@ -26,11 +26,13 @@ public:
     /// </summary>
     void ApplyEffect(const std::string& _input, const std::string& _output);
 
-
+    /// <summary>
+    /// エフェクトを発動する
+    /// </summary>
     void Emit();
 private:
 
-    bool emit_ = false;
+    bool emit_ = false; // エフェクト発動フラグ
 
     float duration_ = 0.5f; // エフェクトの持続時間
     float elapsedTime_ = 0.0f; // 経過時間

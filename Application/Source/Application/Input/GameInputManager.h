@@ -10,7 +10,7 @@
 #include <memory>
 #include <stdexcept>
 
-
+// アプリ用の入力管理クラス
 class GameInputManager
 {
 public:

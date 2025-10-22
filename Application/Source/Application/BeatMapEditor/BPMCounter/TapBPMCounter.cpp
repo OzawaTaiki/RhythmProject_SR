@@ -25,12 +25,7 @@ void TapBPMCounter::Update()
         if (tapTimes_.empty())
         {
             stopwatch_.Start();
-        }/*
-        else if (tapTimes_.back() != 0.0f && tapTimes_.back() * 2.0f < currentTime)
-        {
-            stopwatch_.Reset();
-            currentTime = 0.0f;
-        }*/
+        }
         totalTime_ += currentTime;
         if (currentTime != 0.0f)
             tapTimes_.push_back(currentTime); // タップ時間を記録

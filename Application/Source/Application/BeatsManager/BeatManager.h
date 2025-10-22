@@ -9,8 +9,12 @@
 #include <cstdint>
 #include <memory>
 
+/// <summary>
+/// ビート管理クラス
+/// </summary>
 class BeatManager
 {
+// 制御クラス？
 public:
     BeatManager();
     ~BeatManager() = default;
@@ -54,30 +58,30 @@ public:
     // サウンド有効・無効設定
     void EnableSound(bool enable) { soundEnabled_ = enable; }
 
-    void SetStopWatch(Stopwatch* stopwatch) { stopwatch_ = stopwatch; }
-
+    /// ========================================
+    /// Setter
+    /// ========================================
     void SetEnableSound(bool enable) { soundEnabled_ = enable; }
 
     void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
     void SetGameMusic(const GameMusic* _gameMusic) { gameMusic_ = _gameMusic; }
 private:
-    Stopwatch* stopwatch_;
     float bpm_ = 120.0f;       // 1分あたりの拍数
     float offset_ = 0.0f;      // 開始オフセット（秒）
     int lastBeat_ = 0;        // 最後に処理した拍数
     bool playing_ = false;     // 再生中かどうか
 
     // サウンド関連
-    std::shared_ptr<SoundInstance> soundInstance_; // サウンドインスタンス
-    std::shared_ptr<VoiceInstance> voiceInstance_; // ボイスインスタンス
+    std::shared_ptr<SoundInstance> soundInstance_= nullptr; // サウンドインスタンス
+    std::shared_ptr<VoiceInstance> voiceInstance_= nullptr; // ボイスインスタンス
 
-    std::shared_ptr<VoiceInstance> musicVoiceInstance_; // 音楽のボイスインスタンス
+    std::shared_ptr<VoiceInstance> musicVoiceInstance_= nullptr; // 音楽のボイスインスタンス
 
-    const GameMusic* gameMusic_; // 音楽の管理
+    const GameMusic* gameMusic_ = nullptr; // 音楽の管理
 
-    float volume_ = 0.5f;
-    bool soundEnabled_ = true;
+    float volume_ = 0.5f;   // 音量
+    bool soundEnabled_ = true; // サウンド有効フラグ
 
     // 1拍あたりの秒数を計算
     float GetSecondsPerBeat() const { return 60.0f / bpm_; }

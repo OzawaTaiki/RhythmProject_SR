@@ -54,7 +54,7 @@ void GameCore::Update(float  _deltaTime, const std::vector<InputDate>& _inputDat
 {
     for (auto& lane : lanes_)
     {
-        int32_t deleteCount = lane->DeleteNotesOutOfScreen(noteDeletePosition_);
+        int32_t deleteCount = lane->DeleteNotesOutOfScreen(noteDeletePosition_);// 画面外に出たノーツ数を取得
         judgeResult_->AddJudge(JudgeType::Miss, deleteCount); // 削除されたノーツの数をミスとしてカウント
         if (deleteCount > 0)
         {
@@ -66,11 +66,12 @@ void GameCore::Update(float  _deltaTime, const std::vector<InputDate>& _inputDat
         }
     }
 
+    // ノーツの判定処理
     JudgeNotes(_inputData);
 
     float elapsedTime = 0.0f;
     if (isWaitingForStart_)
-    {
+    {// 開始前オフセット待機中
         waitTimer_ += _deltaTime;
         elapsedTime = Lerp(-beginOffset_, 0.0f, waitTimer_ / beginOffset_);
     }
@@ -98,6 +99,7 @@ void GameCore::Draw(const Camera* _camera)
             lane->Draw(_camera);
         }
     }
+    // 判定ラインの描画
     LineDrawer::GetInstance()->RegisterPoint(Vector3(-4, 0, 0), Vector3(4, 0, 0));
 
     noteJudge_->DrawJudgeLine();
@@ -114,6 +116,7 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
 {
     for (auto& inputdata : _inputData)
     {
+        // レーンインデックスの範囲チェック
         int32_t laneIndex = inputdata.laneIndex;
         if (laneIndex < 0 || laneIndex >= static_cast<int32_t>(lanes_.size()))
         {
@@ -122,27 +125,27 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
             return;
         }
 
+        // 各レーンの最初のノーツを取得して判定を行う
         auto& lane = lanes_[laneIndex];
-
         auto note = lane->GetFirstNote();
         if (!note)
             continue;
 
         JudgeType result = JudgeType::None; // 初期化
-        NoteType noteType= note->GetNoteType();
+        NoteType noteType= note->GetNoteType(); // ノーツの種類に応じて判定処理を分岐
         switch (noteType)
         {
-        case NoteType::Normal:
-            result = ProcessNormalNote(note, inputdata);
-            break;
-        case NoteType::Hold:
-            result = ProcessHoldNote(note, inputdata);
-            break;
-        case NoteType::HoldEnd:
-            result = ProcessHoldEndNote(note, inputdata);
-            break;
-        default:
-            break;
+            case NoteType::Normal:
+                result = ProcessNormalNote(note, inputdata);
+                break;
+            case NoteType::Hold:
+                result = ProcessHoldNote(note, inputdata);
+                break;
+            case NoteType::HoldEnd:
+                result = ProcessHoldEndNote(note, inputdata);
+                break;
+            default:
+                break;
         }
 
         if (result == JudgeType::None)
@@ -153,9 +156,10 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
         if (onJudgeCallback_)
             onJudgeCallback_(laneIndex, result); // 判定時のコールバックを呼び出す
 
+
         UpdateCombo(result);
     }
-    }
+}
 
 JudgeType GameCore::ProcessNormalNote(Note* _note, const InputDate& _inputData)
 {
@@ -193,11 +197,11 @@ JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData)
     {
         holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
     }
-    else if(holdState_.IsHoldingLane(_inputData.laneIndex))
+    else if (holdState_.IsHoldingLane(_inputData.laneIndex))
     {
         Debug::Log("Hold State is holding lane: " + std::to_string(_inputData.laneIndex) + "\n");
 
-        if(onHoldCallback_)
+        if (onHoldCallback_)
             onHoldCallback_(_inputData.laneIndex); // ホールド時のコールバックを呼び出す
 
         if (_inputData.state == KeyState::Released)
@@ -242,7 +246,7 @@ void GameCore::RecordJudgeResult(JudgeType _result, Note* _note)
 {
     if (_result == JudgeType::None)
         return;
-
+    // 判定結果を記録
     judgeResult_->AddJudge(_result);
     _note->Judge();
 }
@@ -269,9 +273,10 @@ void GameCore::ParseBeatMapData(const BeatMapData& _beatMapData)
     // 時間でソート
     for (auto& notes : notesPerLane_)
     {
-        notes.sort([](const NoteData& a, const NoteData& b) {
-            return a.targetTime < b.targetTime; // 昇順でソート
-            });
+        notes.sort([](const NoteData& a, const NoteData& b)
+                   {
+                       return a.targetTime < b.targetTime; // 昇順でソート
+                   });
     }
 
     CreateBeatMapNotes();

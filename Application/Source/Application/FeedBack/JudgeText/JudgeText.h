@@ -11,6 +11,7 @@
 
 class Camera; // 前方宣言
 
+// 判定テキスト表示クラス
 class JudgeText
 {
 public:
@@ -68,6 +69,7 @@ private:
     /// <param name="_bottomColor">下頂点の色</param>
     static void GetJudgeTextColor(JudgeType _judgeType, Vector4& _topColor, Vector4& _bottomColor);
 
+    // テキストパラメータの更新
     void UpdateTextParam();
 
     static float displayYOffset_; // Y軸のオフセット
@@ -79,18 +81,18 @@ private:
 
     TextParam textParam_; // テキストパラメータ
 
-    Vector4 topColor_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 上頂点の色
-    Vector4 bottomColor_ = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // 下頂点の色
+    Vector4 topColor_       = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 上頂点の色
+    Vector4 bottomColor_    = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // 下頂点の色
 
-    Vector2 scale_ = { 1.0f, 1.0f }; // テキストのスケール
-    Vector2 movement_ = { 0.0f, 0.0f }; // テキストの移動量
-    float alpha_ = 1.0f; // テキストのアルファ値
+    Vector2 scale_      = { 1.0f, 1.0f };   // テキストのスケール
+    Vector2 movement_   = { 0.0f, 0.0f };   // テキストの移動量
+    float   alpha_      = 1.0f;             // テキストのアルファ値
 
     std::wstring judgeText_; // 判定テキスト
 
-    Vector2 position_;
-    float timer_ = 0.0f; // 表示時間のタイマー
-    float displayDuration_ = 1.0f; // 表示時間
+    Vector2 position_       = {};   // テキストの表示位置
+    float timer_            = 0.0f; // 表示時間のタイマー
+    float displayDuration_  = 1.0f; // 表示時間
 
-    std::unique_ptr<AnimationSequence> animationSequence_; // アニメーションシーケンス
+    std::unique_ptr<AnimationSequence> animationSequence_; // アニメーション制御クラス
 };

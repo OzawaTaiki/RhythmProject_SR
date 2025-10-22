@@ -2,6 +2,7 @@
 
 #include <Features/Effect/Modifier/ParticleModifier.h>
 
+// スピーカーエフェクト用のパーティクルモディファイア
 class SpeakerRingModifier : public ParticleModifier
 {
 public:
@@ -9,10 +10,9 @@ public:
     ~SpeakerRingModifier() = default;
 
     void Apply(Particle* _particle, float _deltaTime) override;
-
 };
 
-
+// スピーカーエフェクト用のパーティクルモディファイア
 class SpeakerParticleModifier : public ParticleModifier
 {
 public:
@@ -20,5 +20,4 @@ public:
     ~SpeakerParticleModifier() = default;
 
     void Apply(Particle* _particle, float _deltaTime) override;
-
 };

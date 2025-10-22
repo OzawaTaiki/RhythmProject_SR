@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// コマンドインターフェース
+/// </summary>
 class ICommand 
 {
 

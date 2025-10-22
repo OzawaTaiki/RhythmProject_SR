@@ -6,6 +6,7 @@ void SpeakerRingModifier::Apply(Particle* _particle, float _deltaTime)
     if (_particle == nullptr)
         return;
 
+    // 拡大処理
     float progress = _particle->GetCurrentTime() / _particle->GetLifeTime() * 2.0f;
     float useProgress = progress;
     if (progress > 1.0f)
@@ -23,8 +24,7 @@ void SpeakerRingModifier::Apply(Particle* _particle, float _deltaTime)
         _particle->SetScale(size);
     }
 
-
-
+    // フェード処理
     Vector4 color = _particle->GetColor();
 
     // 生成時のalpah
@@ -41,7 +41,7 @@ void SpeakerParticleModifier::Apply(Particle* _particle, float _deltaTime)
     if (_particle == nullptr)
         return;
 
-
+    // 縮小処理
     float progress = _particle->GetCurrentTime() / _particle->GetLifeTime();
 
     Vector3 size = _particle->GetScale();
@@ -54,7 +54,7 @@ void SpeakerParticleModifier::Apply(Particle* _particle, float _deltaTime)
 
     _particle->SetScale(size);
 
-
+    // フェード処理
     Vector4 color = _particle->GetColor();
 
     progress = Easing::EaseInQuint(progress);

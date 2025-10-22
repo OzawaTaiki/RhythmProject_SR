@@ -124,11 +124,11 @@
     <Filter Include="Application\EffectModifiers">
       <UniqueIdentifier>{f8b0cbaf-7add-44ed-9b8e-438fd2a0bd01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Input\Judge">
-      <UniqueIdentifier>{a73bc968-3077-4492-9411-9cafd32a5298}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\OptionMenu">
       <UniqueIdentifier>{87155632-38d6-44b4-8ca1-719a77c6d3c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Judge">
+      <UniqueIdentifier>{a73bc968-3077-4492-9411-9cafd32a5298}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -149,10 +149,10 @@
       <Filter>Application\Note</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeLine.cpp">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\NoteJudge.cpp">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeResult.cpp">
       <Filter>Application\Result\Judge</Filter>
@@ -221,7 +221,7 @@
       <Filter>Application\ResultUI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeType.cpp">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\GameUI\GameUI.cpp">
       <Filter>Application\GameUI</Filter>
@@ -310,10 +310,10 @@
       <Filter>Application\Note</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\JudgeLine.h">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\NoteJudge.h">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\JudgeResult.h">
       <Filter>Application\Result\Judge</Filter>
@@ -364,7 +364,7 @@
       <Filter>Application\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\JudgeType.h">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\NoteType.h">
       <Filter>Application\Note</Filter>

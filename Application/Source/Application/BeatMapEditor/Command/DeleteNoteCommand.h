@@ -4,6 +4,9 @@
 
 #include <Application/BeatMapEditor/BeatMapEditor.h>
 
+/// <summary>
+/// ノート削除コマンド
+/// </summary>
 class DeleteNoteCommand : public ICommand
 {
 public:

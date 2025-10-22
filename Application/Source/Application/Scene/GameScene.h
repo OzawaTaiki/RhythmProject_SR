@@ -37,7 +37,8 @@ enum class GameMode
     Normal,
     EditorTest
 };
-
+// TODO : だいぶ肥大化しているので分割することを検討する
+// ゲームシーン
 class GameScene : public BaseScene, public iEventListener
 {
 public:
@@ -67,11 +68,11 @@ private:
 
     // 曲の再生が終わったか
     bool IsMusicEnd() const;
-
+    // リトライ処理
     void Retry();
-
+    //  タイトルへ戻る処理
     void ToTitle();
-
+    // イベント受信処理
     void OnEvent(const GameEvent& _event) override;
 private:
 

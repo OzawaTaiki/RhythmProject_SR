@@ -16,39 +16,38 @@ void GameInputManager::Initialize(Input* _input)
 
 void GameInputManager::Update()
 {
-    if (gameMusic_)
+    if (!gameMusic_)
     {
-        inputData_.clear(); // 前回の入力データをクリア
-
-        for (const auto& [keycode, laneIndex] : keyBindings_)
-        {
-            InputDate inputData;
-            inputData.elapsedTime = gameMusic_->GetElapsedTime();
-            inputData.laneIndex = laneIndex;
-
-            if (input_->IsKeyTriggered(keycode))
-            {
-                inputData.state = KeyState::trigger;
-
-                inputData_.push_back(inputData);
-
-                Debug::Log("Key triggered: " + std::to_string(keycode) + " on lane " + std::to_string(laneIndex) + "\n");
-            }
-            else if (input_->IsKeyPressed(keycode))
-            {
-                inputData.state = KeyState::Hold;
-                inputData_.push_back(inputData);
-            }
-            else if (input_->IsKeyReleased(keycode))
-            {
-                inputData.state = KeyState::Released;
-                inputData_.push_back(inputData);
-            }
-        }
+        Debug::Log("Music instance is not set.\n");
+        return;
     }
-    else
+
+    inputData_.clear(); // 前回の入力データをクリア
+
+    for (const auto& [keycode, laneIndex] : keyBindings_)
     {
-        Debug::Log("Music voice instance is not set.\n");
+        InputDate inputData;
+        inputData.elapsedTime = gameMusic_->GetElapsedTime();
+        inputData.laneIndex = laneIndex;
+
+        if (input_->IsKeyTriggered(keycode))
+        {
+            inputData.state = KeyState::trigger;
+
+            inputData_.push_back(inputData);
+
+            Debug::Log("Key triggered: " + std::to_string(keycode) + " on lane " + std::to_string(laneIndex) + "\n");
+        }
+        else if (input_->IsKeyPressed(keycode))
+        {
+            inputData.state = KeyState::Hold;
+            inputData_.push_back(inputData);
+        }
+        else if (input_->IsKeyReleased(keycode))
+        {
+            inputData.state = KeyState::Released;
+            inputData_.push_back(inputData);
+        }
     }
 }
 

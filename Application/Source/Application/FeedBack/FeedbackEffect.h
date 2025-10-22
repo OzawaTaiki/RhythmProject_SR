@@ -18,6 +18,7 @@
 #include <list>
 #include <bitset>
 
+// 前方宣言
 class Camera;
 class GameEnvironment;
 
@@ -43,9 +44,17 @@ public:
     /// </summary>
     void PlayMissedEffect();
 
-
+    /// <summary>
+    /// ホールドエフェクトを再生する
+    /// </summary>
+    /// <param name="_laneIndex">再生するレーンインデックス</param>
     void PlayHoldEffect(int32_t _laneIndex);
 
+    /// <summary>
+    /// ミス時のビネットエフェクトを適用する
+    /// </summary>
+    /// <param name="_input">入力レンダーターゲット名</param>
+    /// <param name="_output">出力レンダーターゲット名</param>
     void ApplyMissedVignetteEffect(const std::string& _input, const std::string& _output);
 
 
@@ -87,9 +96,6 @@ private:
 
     /// レーンエフェクト
     std::vector<std::unique_ptr<LaneEffect>> laneEffects_; // レーンごとのエフェクト
-
-    /// UI
-
 
     // 座標変換用カメラ
     Camera* camera_ = nullptr; // カメラへのポインタ

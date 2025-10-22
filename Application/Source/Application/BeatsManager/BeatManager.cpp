@@ -30,8 +30,10 @@ void BeatManager::Initialize(float bpm, float offset, const std::string& soundPa
 
 void BeatManager::Update()
 {
+    // 再生中か確認
     if (!playing_) return;
     if (!gameMusic_ || !gameMusic_->IsPlaying())return;
+
 
     // 新しい拍かチェック
     if (IsNewBeat() && soundEnabled_)
@@ -49,8 +51,6 @@ void BeatManager::Start()
     if (!playing_)
     {
         playing_ = true;
-        //Debug::Log("Elapsed Time: " + std::to_string(stopwatch_->GetElapsedTime<float>()) + "\n");
-        //stopwatch_->Start();
     }
 }
 
@@ -59,7 +59,6 @@ void BeatManager::Stop()
     if (playing_)
     {
         playing_ = false;
-        //stopwatch_->Stop();
 
         // 音を停止
         if (soundEnabled_ && voiceInstance_)
@@ -71,7 +70,7 @@ void BeatManager::Stop()
 
 void BeatManager::Reset()
 {
-    //stopwatch_->Reset();
+    // 拍数のリセット
     lastBeat_ = 0;
 
     // 音を停止

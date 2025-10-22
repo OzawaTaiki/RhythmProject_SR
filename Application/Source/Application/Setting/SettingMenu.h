@@ -6,6 +6,7 @@
 #include <Features/Event/EventListener.h>
 #include <Application/Setting/Preview/SettingsPreviewPanel.h>
 
+// スライダーの値が変更されたときのイベントデータ
 struct ValueChangedEventData : EventData
 {
     ValueChangedEventData(const std::string& _name, float _value)
@@ -16,6 +17,7 @@ struct ValueChangedEventData : EventData
     float value;        // スライダーの値
 };
 
+// 設定メニュークラス
 class SettingMenu : public iEventListener
 {
 public:
@@ -32,10 +34,8 @@ public:
 
     // UIグループを取得
     UIGroup* GetUIGroup() const { return uiGroup_.get(); }
-
+    // イベント受信
     void OnEvent(const GameEvent& _event) override;
-
-    void SetCamera(const Camera* _camera) { camera_ = _camera; }
 
 private:
 
@@ -49,6 +49,4 @@ private:
     std::vector<std::shared_ptr<UISlider>> sliders_; // スライダー   のリスト
 
     std::unique_ptr<SettingsPreviewPanel> previewPanel_ = nullptr; // 設定プレビュー
-
-    const Camera* camera_ = nullptr; // プレビュー用カメラ
 };

@@ -19,6 +19,7 @@ void DeleteNoteCommand::Execute()
         return;
     }
 
+    // 以前の削除データをクリア
     deletedNoteData_.clear();
 
     std::vector<NoteData> deletedNotes;

@@ -111,6 +111,7 @@ void FeedbackEffect::Draw()
 
 void FeedbackEffect::PlayJudgeEffect(int32_t _laneIndex, JudgeType _judgeType)
 {
+    // 各エフェクトの再生
 
     if (judgeSound_)
         judgeSound_->Play();
@@ -161,7 +162,6 @@ void FeedbackEffect::AllocateJudgeText(JudgeType _judgeType, int32_t _laneIndex)
             return; // 割り当て完了
         }
     }
-
 }
 
 void FeedbackEffect::DebugWindoow()
@@ -179,7 +179,6 @@ void FeedbackEffect::DebugWindoow()
         ImGui::SameLine();
         if (ImGui::Button("Miss"))
             AllocateJudgeText(JudgeType::Miss, 2);
-
     }
     ImGui::End();
 

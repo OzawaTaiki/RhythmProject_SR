@@ -4,6 +4,7 @@
 
 #include <Application/BeatMapEditor/BeatMapEditor.h>
 
+// コピーしたノートデータをペーストするコマンド
 class PasteCommand : public ICommand
 {
 public:

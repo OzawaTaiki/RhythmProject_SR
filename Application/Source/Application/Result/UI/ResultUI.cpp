@@ -38,7 +38,7 @@ void ResultUI::Initialize(ResultData _resultData)
     }
 #endif // _DEBUG
 
-
+    // アニメーションシーケンスの初期化
     animationSequence_ = std::make_unique<AnimationSequence>("ResultUISeq");
     animationSequence_->Initialize("Resources/Data/Result/");
     animationSequence_->SetLooping(false);
@@ -194,26 +194,25 @@ void ResultUI::InitUIGroup()
     uiGroup_ = std::make_unique<UIGroup>();
     uiGroup_->Initialize();
 
+    // 背景スプライトの作成
     auto mainBg = uiGroup_->CreateSprite("main_bg");
 
     TextParam param;
     param.SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 
+    // タイトルへボタン初期化
     auto toTitleButton = uiGroup_->CreateButton("To_Title",L"タイトルへ");
-
     toTitleButton->SetOnClickEnd([this]()
         {
             transitionToTitle_ = true;
         });
-    //toTitleButton->SetTextParam(param);
 
+    // リトライボタン初期化
     auto retryButton = uiGroup_->CreateButton("Retry", L"リトライ");
-
     retryButton->SetOnClickEnd([this]()
         {
             replay_ = true;
         });
-    //retryButton->SetTextParam(param);
 
     UIGroup::LinkHorizontal({ toTitleButton.get(), retryButton.get() });
 
@@ -255,9 +254,7 @@ void ResultUI::InitTextParams()
         param.animationValue.scale = param.textParam.scale; // アニメーション用の初期スケール
         param.animationValue.alpha = param.textParam.topColor.w; // アニメーション用の初期アルファ値
         param.animationValue.timer = -param.animationValue.delay; // アニメーション用の初期タイマー
-
     }
-
 }
 
 std::string ResultUI::GetKeyString(TextType _textType) const

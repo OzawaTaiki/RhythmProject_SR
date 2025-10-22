@@ -2,6 +2,7 @@
 
 #include <Features/Effect/Modifier/ParticleModifier.h>
 
+// ヒットエフェクト用パーティクルモディファイア
 class HitParticleModifier : public ParticleModifier
 {
 public:
@@ -12,7 +13,7 @@ public:
     void Apply(Particle* _particle, float _deltaTime) override;
 };
 
-
+// ヒットサークルエフェクト用パーティクルモディファイア
 class HitCircleParticleModifier : public ParticleModifier
 {
 public:

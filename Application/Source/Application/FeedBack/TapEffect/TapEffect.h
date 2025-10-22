@@ -2,20 +2,16 @@
 
 #include <cstdint>
 
+// タップエフェクトクラス
 class TapEffect
 {
 public:
     TapEffect() = default;
     ~TapEffect() = default;
 
+    // 初期化
     void Initialize();
 
-    /// <summary>
-    /// エフェクトを再生
-    /// </summary>
+    // エフェクトを再生
     void Play(int32_t _laneIndex);
-
-private:
-
-
 };

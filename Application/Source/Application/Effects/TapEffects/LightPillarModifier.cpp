@@ -5,6 +5,7 @@ void LightPillarModifier::Apply(Particle* _particle, float _deltaTime)
     if (_particle == nullptr)
         return;
 
+    // サイズの最大値と最小値を定義
     const Vector3 maxSize = { 0.7f, 0.7f, 0.7f };
     const Vector3 minSize = { 0.5f, 0.5f, 0.5f };
 

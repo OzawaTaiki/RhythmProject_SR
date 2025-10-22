@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-
+// ノーツ基底クラス
 class Note
 {
 public:
@@ -43,7 +43,7 @@ protected:
     NoteType noteType_ = NoteType::Normal; // ノーツのタイプ
 };
 
-
+// 通常ノーツクラス
 class NomalNote : public Note
 {
 public:
@@ -55,13 +55,9 @@ public:
     void Update(float _elapseTime, float _speed) override;
     void Draw(const Camera* _camera) override;
 
-
-private:
-
-
-
 };
 
+// ロングノーツクラス
 class LongNote : public Note
 {
 public:

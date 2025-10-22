@@ -7,6 +7,7 @@
 
 class BeatMapEditor;
 
+// ノート配置コマンドクラス
 class PlaceNoteCommand : public ICommand
 {
 public:

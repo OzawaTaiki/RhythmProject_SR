@@ -12,7 +12,7 @@ EditorCoordinate::EditorCoordinate() :
     laneMargin_(0.0f),
     zoom_(1.0f),
     scrollOffset_(0.0f),
-    pixelsPerSecond_(1000.0f),  // 1秒=100ピクセル（基準値
+    pixelsPerSecond_(1000.0f),  // 1秒あたりのピクセル数 (デフォルト1000)
     cachedVisibleStartTime_(0.0f),
     cachedVisibleEndTime_(0.0f),
     visibleRangeDirty_(true),
@@ -29,6 +29,7 @@ void EditorCoordinate::Initialize(const Vector2& _screenSize, const Vector2& _ar
 
     areaCenter_ = _areaCenter;
 
+    // レイアウト更新
     UpdateLayout();
     InvalidateVisibleRange();
 }
@@ -142,9 +143,6 @@ void EditorCoordinate::GetVisibleTimeRange(float& _startTime, float& _endTime) c
         cachedVisibleStartTime_ = ScreenYToTime(screenSize_.y - bottomMargin_);
         cachedVisibleEndTime_ = ScreenYToTime(topMargin_); // 上端は0.0f
 
-        //Debug::Log(std::format("Visible Time Range: Start = {:.2f}, End = {:.2f}\n", cachedVisibleStartTime_, cachedVisibleEndTime_));
-        //Debug::Log(std::format("startPosY = {:.2f}, endPosY = {:.2f}\n", TimeToScreenY(cachedVisibleStartTime_), TimeToScreenY(cachedVisibleEndTime_)));
-
         visibleRangeDirty_ = false; // 可視範囲が更新されたのでフラグをリセット
     }
 
@@ -223,32 +221,6 @@ std::vector<std::pair<float, int32_t>>  EditorCoordinate::GetGridLinesY(float _b
             }
         }
     }
-
-    //累積誤差の影響でうまく動作しない
-    // // 可視範囲の開始時間から終了時間までのグリッドラインを計算
-    //float firstGridTime = std::floorf(start / gridInterval) * gridInterval; // 最初のグリッド時間を計算
-    //
-    //const float epsilon = 1.0e-3f; // 浮動小数点の誤差を考慮
-    //for (float time = firstGridTime; time <= end; time += gridInterval)
-    //{
-    //    float screenY = TimeToScreenY(time);
-    //    if (screenY >= topMargin_ && screenY <= screenSize_.y - bottomMargin_ ) // 画面内に収まるかチェック
-    //    {
-    //        for (int32_t i = 0; i < divisions.size(); ++i)
-    //        {
-    //            // 誤差のせいで描画されない
-    //            int32_t d = divisions[i];
-    //            float gridUnit = beatInterval / static_cast<float>(d); // 1/n拍の時間（秒）
-    //            float val = time / gridUnit; // グリッド単位での時間
-    //            // 分割数が一致するかチェック
-    //            if (std::abs(val - std::roundf(val)) < epsilon)
-    //            {
-    //                gridLines.push_back({ screenY, i }); // Y座標と分割数をペアで保存
-    //                break; // 一度見つけたらループを抜ける
-    //            }
-    //        }
-    //    }
-    //}
 
     return gridLines;
 }

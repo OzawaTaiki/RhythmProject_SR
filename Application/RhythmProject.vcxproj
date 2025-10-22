@@ -110,7 +110,10 @@
     <ClCompile Include="Source\Application\Core\GameCore.cpp" />
     <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp" />
-    <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp" />
+    <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp" />
     <ClCompile Include="Source\Application\FeedBack\FeedbackEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.cpp" />
@@ -172,7 +175,10 @@
     <ClInclude Include="Source\Application\Core\GameCore.h" />
     <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h" />
-    <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h" />
+    <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h" />
     <ClInclude Include="Source\Application\EventData\PauseActionData.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

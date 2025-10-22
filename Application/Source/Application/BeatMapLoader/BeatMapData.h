@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdint>
 
+// ノートデータ構造体
 struct NoteData
 {
     uint32_t laneIndex; // 流れるレーンインデックス

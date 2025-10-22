@@ -132,51 +132,53 @@ public:
     std::map<JudgeType, uint32_t> GetJudgeResult() const { return judgeResult_->GetJudgeResult(); }
 
 private:
-
-    void JudgeNotes(const std::vector<InputDate>& _inputData);
-
-    JudgeType ProcessNormalNote(Note* _note, const InputDate& _inputData);
-
-    JudgeType ProcessHoldNote(Note* _note, const InputDate& _inputData);
-
-    JudgeType ProcessHoldEndNote(Note* _note, const InputDate& _inputData);
-
-    void UpdateCombo(JudgeType _result);
-
-    void RecordJudgeResult(JudgeType _result, Note* _note);
-
-    /// <summary>
-    /// ノーツを生成する
-    /// </summary>
-    /// <param name="_beatMapData">譜面データ</param>
+    // 譜面データを解析する
     void ParseBeatMapData(const BeatMapData& _beatMapData);
-
+    // ノーツを作成する
     void CreateBeatMapNotes();
 
+    // ノーツの判定
+    void JudgeNotes(const std::vector<InputDate>& _inputData);
+    // 通常ノーツの判定
+    JudgeType ProcessNormalNote(Note* _note, const InputDate& _inputData);
+    // ホールドノーツの判定
+    JudgeType ProcessHoldNote(Note* _note, const InputDate& _inputData);
+    // ホールドエンドノーツの判定
+    JudgeType ProcessHoldEndNote(Note* _note, const InputDate& _inputData);
+    // コンボの更新
+    void UpdateCombo(JudgeType _result);
+    // 判定結果の記録
+    void RecordJudgeResult(JudgeType _result, Note* _note);
+
+
 private:
+    // ホールド状態
     struct HoldState
     {
-        bool isHolding = false;
-        int32_t laneIndex = -1;
+        bool isHolding = false;// ホールド中かどうか
+        int32_t laneIndex = -1;// ホールド中のレーンインデックス
 
-        void StartHold(int32_t lane) {
+        // ホールド開始
+        void StartHold(int32_t lane)
+        {
             isHolding = true;
             laneIndex = lane;
         }
 
-        void EndHold() {
+        void EndHold()
+        {
             isHolding = false;
             laneIndex = -1;
         }
 
-        bool IsHoldingLane(int32_t lane) const {
+        bool IsHoldingLane(int32_t lane) const
+        {
+            // ホールド中かつレーンが一致するかどうか
             return isHolding && laneIndex == lane;
         }
     };
 
 private:
-
-    // note
 
     // lane
     float noteSpeed_ = 30.0f; // ノーツの移動速度
@@ -187,9 +189,6 @@ private:
     // judge
     std::unique_ptr<NoteJudge> noteJudge_; // ノーツの判定を行うクラス
     std::unique_ptr<JudgeResult> judgeResult_; // 判定結果を保持するクラス
-
-    // score あとまわし
-
 
     // コンボ
     int32_t combo_ = 0; // 現在のコンボ数
@@ -217,9 +216,8 @@ private:
     float musicLatencyMs_ = 0.0f; // 音楽の遅延
 
 
-    // ホールド中
+    // ホールド状態
     HoldState holdState_ = {};
-
 
     std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス 弱参照
 

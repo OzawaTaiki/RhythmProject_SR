@@ -2,20 +2,16 @@
 
 #include <cstdint>
 
+// 判定時にエフェクト
 class JudgeEffect
 {
 public:
     JudgeEffect() = default;
     ~JudgeEffect() = default;
 
+    // 初期化
     void Initialize();
 
-    /// <summary>
-    /// エフェクトを再生
-    /// </summary>
+    // エフェクトを再生
     void Play(int32_t _laneIndex);
-
-private:
-
-
 };

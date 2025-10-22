@@ -4,6 +4,9 @@
 
 #include <Application/BeatMapEditor/BeatMapEditor.h>
 
+/// <summary>
+/// ノートの持続時間を変更するコマンド
+/// </summary>
 class ChangeHoldDurationCommand : public ICommand
 {
 public:

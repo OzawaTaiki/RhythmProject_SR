@@ -1,6 +1,9 @@
 #pragma once
 #include <Features/Event/EventData.h>
 
+/// <summary>
+/// ポーズメニューでのアクションを表す列挙型。
+/// </summary>
 enum class PauseActions
 {
     None,
@@ -14,6 +17,9 @@ enum class PauseActions
     Max
 };
 
+/// <summary>
+/// ポーズアクションを表すイベントデータ。
+/// </summary>
 struct PauseActionData : EventData
 {
     PauseActions pauseAction = PauseActions::None;

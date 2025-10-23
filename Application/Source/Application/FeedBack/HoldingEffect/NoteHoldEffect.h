@@ -7,16 +7,31 @@
 #include <cstdint>
 
 // ホールドエフェクトクラス
+/// <summary>
+/// ホールドノート中に再生するエフェクト（サウンドやパーティクル）を管理するクラス。
+/// </summary>
 class NoteHoldEffect
 {
 public:
+    /// <summary>
+    /// デフォルトコンストラクタ
+    /// </summary>
     NoteHoldEffect() = default;
+
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
     ~NoteHoldEffect() = default;
 
-    // 初期化
+    /// <summary>
+    /// エフェクトの初期化処理。
+    /// </summary>
     void Initialize();
 
-    // 再生
+    /// <summary>
+    /// ホールドエフェクトを再生する。
+    /// </summary>
+    /// <param name="_laneIndex">対象レーンのインデックス</param>
     void Play(int32_t _laneIndex);
 
 private:
@@ -24,7 +39,7 @@ private:
     std::shared_ptr<SoundInstance> soundInstance_; // ホールド中のサウンド
     std::shared_ptr<VoiceInstance> voiceInstance_; // 音声インスタンス
 
-    // TODO : エミッター名謎
-    ParticleEmitter emitter_; // パーティクルエミッター
-    ParticleEmitter emitter2_; // パーティクルエミッター
+    // TODO : エミッタ名要確認
+    ParticleEmitter emitter_; // パーティクルエミッタ
+    ParticleEmitter emitter2_; // パーティクルエミッタ
 };

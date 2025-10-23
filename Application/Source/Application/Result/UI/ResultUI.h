@@ -15,6 +15,9 @@
 #include <cstdint>
 
 // リザルト画面のUIクラス
+/// <summary>
+/// リザルト画面の UI を担当するクラス。スコア表示やボタン等の描画・更新を行う。
+/// </summary>
 class ResultUI
 {
 public:

@@ -18,6 +18,9 @@ struct NoteData
 };
 
 // 譜面データ構造体
+/// <summary>
+/// 譜面（BeatMap）データを表す構造体。譜面のメタ情報とノート列を保持する。
+/// </summary>
 struct BeatMapData
 {
     std::string title = "None"; // 曲のタイトル

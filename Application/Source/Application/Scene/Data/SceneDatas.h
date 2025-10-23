@@ -5,6 +5,9 @@
 #include <Application/Result/ResultData.h>
 
 // シーン間でデータを受け渡すための構造体群
+/// <summary>
+/// シーン間で受け渡すデータ構造体群を定義するファイル。
+/// </summary>
 // セレクトシーンからゲームシーンへ渡すデータ
 struct SelectToGameData : SceneData
 {

@@ -9,32 +9,57 @@
 
 class Camera;
 
-// 背景等のオブジェクトに関するクラス
+/// <summary>
+/// 背景等のオブジェクトに関するクラス。
+/// </summary>
 class GameEnvironment
 {
-
 public:
 
     GameEnvironment() = default;
     ~GameEnvironment() = default;
 
-    // 初期化
+    /// <summary>
+    /// 初期化処理を行う。
+    /// </summary>
+    /// <param name="_filePath">環境設定ファイルのパス（省略可）</param>
     void Initialize(const std::string& _filePath = "Resources/Data/Game/Environment.json");
-    // 更新
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update(float _deltaTime);
-    // 描画
+
+    /// <summary>
+    /// 描画処理を行う。
+    /// </summary>
+    /// <param name="_camera">描画用カメラ</param>
     void Draw(const Camera* _camera);
-    // BPM設定
+
+    /// <summary>
+    /// BPMを設定して環境に反映する。
+    /// </summary>
     void SetBPM(float _bpm);
-    // スピーカーオブジェクトの取得
+
+    /// <summary>
+    /// 指定レーンのスピーカーオブジェクトを取得する。
+    /// </summary>
     ObjectModel* GetSpeaker(uint32_t _laneIndex);
-    // アニメーション開始
+
+    /// <summary>
+    /// アニメーションを開始する。
+    /// </summary>
     void StartAnimation();
+
 private:
-    // シリアライズ
-    // Blenderで作成したシーンデータを読み込み
+    /// <summary>
+    /// シーンデータの読み込み（内部処理）。
+    /// </summary>
     void Serialize(const std::string& _filePath);
-    // スピーカーマップの構築
+
+    /// <summary>
+    /// スピーカーマップを構築する（内部処理）。
+    /// </summary>
     void BuildSpeakerMap(const std::string& _objName,ObjectModel* _model, const std::string& _filepath);
 
 private:

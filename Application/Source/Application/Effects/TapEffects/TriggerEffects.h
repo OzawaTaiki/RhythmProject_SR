@@ -8,18 +8,37 @@
 #include <cstdint>
 
 // トリガーエフェクト
+/// <summary>
+/// トリガー（タップ）時に複数のパーティクルやエフェクトを発生させるユーティリティクラス。
+/// </summary>
 class TriggerEffects
 {
 public:
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     TriggerEffects() {};
+
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
     ~TriggerEffects() {};
 
-    // 初期化
+    /// <summary>
+    /// エフェクトシステム全体の初期化を行う。
+    /// </summary>
     static void Initialize();
 
-    // 中心の円を発生させる
+    /// <summary>
+    /// 指定位置に中心の円形エフェクトを発生させる。
+    /// </summary>
+    /// <param name="_pos">発生位置（ワールド座標）</param>
     static void EmitCenterCircles(const Vector3& _pos);
-    // 周囲のパーティクルを発生させる
+
+    /// <summary>
+    /// 指定位置の周囲に散開するパーティクルを発生させる。
+    /// </summary>
+    /// <param name="_pos">発生位置（ワールド座標）</param>
     static void EmitSurroundingParticles(const Vector3& _pos);
 
 private:
@@ -34,8 +53,8 @@ private:
     static uint32_t gradationTexture_;  // グラデーション用のテクスチャ
 
 
-    static ParticleEmitter emitter_;            // ほぞ長いのを出すエミッター
-    static ParticleEmitter lightPillarEmitter_; // 光の柱を出すエミッター
-    static ParticleEmitter triangleEmitter_;    // 三角形を出すエミッター
+    static ParticleEmitter emitter_;            // ほそ長いのを出すエミッタ
+    static ParticleEmitter lightPillarEmitter_; // 光の柱を出すエミッタ
+    static ParticleEmitter triangleEmitter_;    // 三角形を出すエミッタ
 
 };

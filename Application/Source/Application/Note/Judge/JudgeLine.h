@@ -5,6 +5,9 @@
 #include <Math/Vector/Vector4.h>
 
 // 判定ラインクラス
+/// <summary>
+/// 判定ライン（ジャッジライン）を描画・管理するクラス。
+/// </summary>
 class JudgeLine
 {
 public:

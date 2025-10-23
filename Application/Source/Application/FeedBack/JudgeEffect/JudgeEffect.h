@@ -3,15 +3,30 @@
 #include <cstdint>
 
 // 判定時にエフェクト
+/// <summary>
+/// 判定時に表示するパーティクル等のエフェクトを管理するクラス。
+/// </summary>
 class JudgeEffect
 {
 public:
+    /// <summary>
+    /// デフォルトコンストラクタ
+    /// </summary>
     JudgeEffect() = default;
+
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
     ~JudgeEffect() = default;
 
-    // 初期化
+    /// <summary>
+    /// エフェクトの初期化処理。
+    /// </summary>
     void Initialize();
 
-    // エフェクトを再生
+    /// <summary>
+    /// 指定レーンでエフェクトを再生する。
+    /// </summary>
+    /// <param name="_laneIndex">レーンのインデックス</param>
     void Play(int32_t _laneIndex);
 };

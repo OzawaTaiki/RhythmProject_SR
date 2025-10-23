@@ -15,6 +15,9 @@
 class Camera;
 
 // 設定プレビュー用パネルクラス
+/// <summary>
+/// 設定画面のプレビュー表示を行うパネルクラス。ノーツや音声のプレビューを描画する。
+/// </summary>
 class SettingsPreviewPanel
 {
 public:

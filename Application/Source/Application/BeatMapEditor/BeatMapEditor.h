@@ -51,18 +51,38 @@ public:
     BeatMapEditor() = default;
     ~BeatMapEditor() = default;
 
-    // 初期化
+    /// <summary>
+    /// 初期化処理を行う。
+    /// </summary>
+    /// <param name="_beatMapData">初期化時に読み込む譜面データ（省略可）</param>
     void Initialize(const BeatMapData& _beatMapData = {});
-    // 更新
+
+    /// <summary>
+    /// 毎フレームの更新処理を行う。
+    /// </summary>
     void Update();
-    // 描画
+
+    /// <summary>
+    /// 描画処理を行う。
+    /// </summary>
+    /// <param name="_camera">描画用カメラ（2D/3Dの情報を含む）</param>
     void Draw(const Camera* _camera);
-    // 終了処理
+
+    /// <summary>
+    /// 終了処理を行う。
+    /// </summary>
     void Finalize();
 
 public:
 
+    /// <summary>
+    /// テストモードへ移行するフラグを取得する。
+    /// </summary>
     bool ToTestMode() const { return toTest_; }
+
+    /// <summary>
+    /// 現在の譜面データを取得する。
+    /// </summary>
     BeatMapData GetBeatMapData() const { return currentBeatMapData_; }
 
     /// <summary>

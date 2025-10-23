@@ -12,64 +12,72 @@
 class Camera; // 前方宣言
 
 // 判定テキスト表示クラス
+/// <summary>
+/// 判定時に表示するテキスト（例：Perfect、Great）を管理するクラス。
+/// </summary>
 class JudgeText
 {
 public:
-    // コンストラクタ
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     JudgeText();
-    // デストラクタ
+
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
     ~JudgeText() = default;
 
     /// <summary>
-    /// 初期化処理
+    /// 初期化処理。
     /// </summary>
     /// <param name="_judgeType">判定タイプ</param>
     /// <param name="_laneIndex">レーンインデックス</param>
     void Initialize(JudgeType _judgeType, int32_t _laneIndex, const Camera* _camera);
 
     /// <summary>
-    /// 更新処理
+    /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_deltaTime">デルタタイム</param>
+    /// <param name="_deltaTime">経過時間（秒）</param>
     void Update(float _deltaTime);
 
     /// <summary>
-    /// 描画処理
+    /// 描画処理。
     /// </summary>
     void Draw();
 
 
     /// <summary>
-    /// 描画時間が経過したかどうかを判定
+    /// 描画が完了したかどうかを判定する。
     /// </summary>
-    /// <returns>true: 経過した, false: 経過していない</returns>
+    /// <returns>true: 表示完了、false: 表示中</returns>
     bool IsFinished() const { return timer_ >= displayDuration_; }
 
 private:
 
     /// <summary>
-    /// テキストアニメーション処理
+    /// テキストのアニメーション処理（内部）
     /// </summary>
     void AnimateText();
 
 private:
 
     /// <summary>
-    /// 判定タイプに応じたテキストを取得
+    /// 判定タイプに対応するテキストを返す（内部ユーティリティ）。
     /// </summary>
     /// <param name="_judgeType">判定タイプ</param>
-    /// <returns>判定テキスト</returns>
+    /// <returns>判定用のテキスト</returns>
     static std::wstring GetJudgeText(JudgeType _judgeType);
 
     /// <summary>
-    /// 判定タイプに応じたテキストの色を取得
+    /// 判定タイプに応じたテキストの色を決定する（内部ユーティリティ）。
     /// </summary>
     /// <param name="_judgeType">判定タイプ</param>
-    /// <param name="_topColor">上頂点の色</param>
-    /// <param name="_bottomColor">下頂点の色</param>
+    /// <param name="_topColor">上端の色（出力）</param>
+    /// <param name="_bottomColor">下端の色（出力）</param>
     static void GetJudgeTextColor(JudgeType _judgeType, Vector4& _topColor, Vector4& _bottomColor);
 
-    // テキストパラメータの更新
+    // テキストパラメータの更新（内部）
     void UpdateTextParam();
 
     static float displayYOffset_; // Y軸のオフセット
@@ -81,8 +89,8 @@ private:
 
     TextParam textParam_; // テキストパラメータ
 
-    Vector4 topColor_       = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 上頂点の色
-    Vector4 bottomColor_    = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // 下頂点の色
+    Vector4 topColor_       = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 上端点の色
+    Vector4 bottomColor_    = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // 下端点の色
 
     Vector2 scale_      = { 1.0f, 1.0f };   // テキストのスケール
     Vector2 movement_   = { 0.0f, 0.0f };   // テキストの移動量

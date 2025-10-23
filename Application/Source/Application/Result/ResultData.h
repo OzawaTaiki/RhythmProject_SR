@@ -6,7 +6,9 @@
 #include <cstdint>
 #include <string>
 
-// 結果データを保持する構造体
+/// <summary>
+/// 結果データを保持する構造体。
+/// </summary>
 struct ResultData
 {
     // 楽曲のタイトル

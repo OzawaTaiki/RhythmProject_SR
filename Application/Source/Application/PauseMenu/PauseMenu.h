@@ -7,7 +7,9 @@
 
 #include <memory>
 
-// ポーズメニュー
+/// <summary>
+/// ポーズメニュークラス。
+/// </summary>
 class PauseMenu
 {
 public:
@@ -15,15 +17,24 @@ public:
     PauseMenu();
     ~PauseMenu();
 
-    // 初期化
+    /// <summary>
+    /// 初期化処理。
+    /// </summary>
     void Initialize();
-    // 更新
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update();
-    // 描画
+
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw();
 
-    // ポーズメニューがアクティブならゲームは止まっている
-    // アクティブか否か
+    /// <summary>
+    /// ポーズメニューがアクティブかどうかを返す。
+    /// </summary>
     bool IsActive() const { return isActive_; }
 
 private:

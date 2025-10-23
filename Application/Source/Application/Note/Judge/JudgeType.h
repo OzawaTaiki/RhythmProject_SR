@@ -3,6 +3,9 @@
 #include <string>
 
 // 判定タイプ
+/// <summary>
+/// ノーツ判定の種類を表す列挙型。
+/// </summary>
 enum class JudgeType
 {
     None = 0,

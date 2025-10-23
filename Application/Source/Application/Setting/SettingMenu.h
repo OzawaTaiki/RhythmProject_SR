@@ -17,24 +17,43 @@ struct ValueChangedEventData : EventData
     float value;        // スライダーの値
 };
 
-// 設定メニュークラス
+/// <summary>
+/// 設定メニュークラス。
+/// </summary>
 class SettingMenu : public iEventListener
 {
 public:
     SettingMenu();
     ~SettingMenu();
-    // 初期化
+
+    /// <summary>
+    /// 初期化処理。
+    /// </summary>
     void Initialize();
-    // 更新
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update();
-    // 描画
+
+    /// <summary>
+    /// UI の描画処理。
+    /// </summary>
     void Draw();
-    // メニューがアクティブかどうか
+
+    /// <summary>
+    /// メニューがアクティブかどうかを返す。
+    /// </summary>
     bool IsActive() const { return isActive_; }
 
-    // UIグループを取得
+    /// <summary>
+    /// 内部の UI グループを取得する。
+    /// </summary>
     UIGroup* GetUIGroup() const { return uiGroup_.get(); }
-    // イベント受信
+
+    /// <summary>
+    /// イベントを受信するハンドラ。
+    /// </summary>
     void OnEvent(const GameEvent& _event) override;
 
 private:

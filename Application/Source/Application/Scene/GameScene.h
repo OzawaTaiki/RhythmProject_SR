@@ -39,14 +39,42 @@ enum class GameMode
 };
 // TODO : だいぶ肥大化しているので分割することを検討する
 // ゲームシーン
+/// <summary>
+/// ゲームのメインプレイシーンを表すクラス。ゲームの初期化、更新、描画、イベント処理を行う。
+/// </summary>
 class GameScene : public BaseScene, public iEventListener
 {
 public:
+    /// <summary>
+    /// コンストラクタ。
+    /// </summary>
++    
     GameScene();
+
+    /// <summary>
+    /// デストラクタ。
+    /// </summary>
     ~GameScene() override;
+
+    /// <summary>
+    /// シーンの初期化処理。
+    /// </summary>
+    /// <param name="_sceneData">シーンに渡す初期データ</param>
     void Initialize(SceneData* _sceneData) override;
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update() override;
+
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw() override;
+
+    /// <summary>
+    /// シャドウ用の描画処理。
+    /// </summary>
     void DrawShadow() override;
 
 private:

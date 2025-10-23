@@ -11,17 +11,34 @@
 
 #include <Features/UI/UIButton.h>
 
+/// <summary>
+/// 選曲画面のシーンクラス。
+/// </summary>
 class SelectScene : public BaseScene
 {
 public:
     SelectScene() = default;
     ~SelectScene() override = default;
 
+
+    /// <summary>
+    /// シーンの初期化処理。
+    /// </summary>
     void Initialize(SceneData* _sceneData) override;
 
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update() override;
 
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw() override;
+
+    /// <summary>
+    /// シャドウ描画処理。
+    /// </summary>
     void DrawShadow() override;
 
 

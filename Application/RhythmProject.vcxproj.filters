@@ -295,7 +295,6 @@
     <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp">
       <Filter>Application\SettingMenu</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\SpectrumRing\SpectrumRing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -480,9 +479,6 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h">
       <Filter>Application\SettingMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h">
-      <Filter>Application\SpecturmRing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

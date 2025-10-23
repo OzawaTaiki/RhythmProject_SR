@@ -147,7 +147,6 @@
     <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
     <ClCompile Include="Source\Application\Setting\Setting.cpp" />
     <ClCompile Include="Source\Application\Setting\SettingMenu.cpp" />
-    <ClCompile Include="Source\Application\SpectrumRing\SpectrumRing.cpp" />
     <ClCompile Include="Source\Essential\ParticleModifierFactory.cpp" />
     <ClCompile Include="Source\Essential\SampleFramework.cpp" />
     <ClCompile Include="Source\Essential\SampleScene.cpp" />
@@ -221,7 +220,6 @@
     <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h" />
     <ClInclude Include="Source\Application\Setting\Setting.h" />
     <ClInclude Include="Source\Application\Setting\SettingMenu.h" />
-    <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h" />
     <ClInclude Include="Source\Essential\ParticleModifierFactory.h" />
     <ClInclude Include="Source\Essential\SampleFramework.h" />
     <ClInclude Include="Source\Essential\SampleScene.h" />

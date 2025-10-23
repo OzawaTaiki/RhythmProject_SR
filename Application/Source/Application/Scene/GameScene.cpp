@@ -124,7 +124,6 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
-    settingMenu_->SetCamera(&SceneCamera_);
     //pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
 
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });

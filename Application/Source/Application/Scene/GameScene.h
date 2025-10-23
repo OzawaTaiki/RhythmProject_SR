@@ -48,7 +48,6 @@ public:
     /// <summary>
     /// コンストラクタ。
     /// </summary>
-+    
     GameScene();
 
     /// <summary>

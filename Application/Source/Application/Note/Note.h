@@ -1,4 +1,13 @@
 #pragma once
+
+#include <Features/Camera/Camera/Camera.h>
+#include <Features/Model/ObjectModel.h>
+
+#include <Application/Note/NoteType.h>
+
+
+#include <cstdint>
+
 /// <summary>
 /// ノーツの基底クラス。
 /// </summary>
@@ -60,15 +69,7 @@ protected:
     Vector3 targetPosition_ = { 0,0,0 }; // ノーツの目標位置
     bool isJudged_ = false;
     NoteType noteType_ = NoteType::Normal; // ノーツのタイプ
-};
 
-    float targetTime_ = 0.0f;
-
-    Vector3 targetPosition_ = { 0,0,0 }; // ノーツの目標位置
-
-    bool isJudged_ = false;
-
-    NoteType noteType_ = NoteType::Normal; // ノーツのタイプ
 };
 
 // 通常ノーツクラス

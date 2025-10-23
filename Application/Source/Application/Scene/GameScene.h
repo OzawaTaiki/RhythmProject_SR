@@ -41,11 +41,35 @@ enum class GameMode
 class GameScene : public BaseScene, public iEventListener
 {
 public:
+    /// <summary>
+    /// コンストラクタ。
+    /// </summary>
     GameScene();
+
+    /// <summary>
+    /// デストラクタ。
+    /// </summary>
     ~GameScene() override;
+
+    /// <summary>
+    /// シーンの初期化処理。
+    /// </summary>
+    /// <param name="_sceneData">シーンに渡す初期データ</param>
     void Initialize(SceneData* _sceneData) override;
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update() override;
+
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw() override;
+
+    /// <summary>
+    /// シャドウ用の描画処理。
+    /// </summary>
     void DrawShadow() override;
 
 private:
@@ -67,11 +91,11 @@ private:
 
     // 曲の再生が終わったか
     bool IsMusicEnd() const;
-
+    // リトライ処理
     void Retry();
-
+    //  タイトルへ戻る処理
     void ToTitle();
-
+    // イベント受信処理
     void OnEvent(const GameEvent& _event) override;
 private:
 

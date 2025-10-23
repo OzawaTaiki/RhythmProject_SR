@@ -47,7 +47,6 @@ void SampleScene::Initialize(SceneData* _sceneData)
     // カメラのポイントを設定する
     ParticleSystem::GetInstance()->SetCamera(&SceneCamera_);
 
-
     // ライトの設定
     // ライトグループの初期化 (関数内でDLは初期化される)
     lights_ = std::make_shared<LightGroup>();
@@ -72,20 +71,8 @@ void SampleScene::Initialize(SceneData* _sceneData)
     LightingSystem::GetInstance()->SetActiveGroup(lights_);
 
 
-
     // --------------------------------------------------
     // シーン固有の初期化
-
-    human_ = std::make_unique<ObjectModel>("human");
-    // モデルのを読み込む
-    human_->Initialize("human/walk.gltf");
-    // アニメーション読み込み
-    // 任意の名前を設定できる
-    human_->LoadAnimation("human/walk.gltf", "walk");
-
-    bool loop = true;
-    // アニメーションを再生する
-    human_->SetAnimation("walk", loop);
 
 
     // 地面ようのいたポリを生成する
@@ -102,51 +89,20 @@ void SampleScene::Initialize(SceneData* _sceneData)
     Ring ring(1.0f, 3.0f);
     ring.SetDivide(512);
 
-    // 地面を生成する
-    ground_ = std::make_unique<ObjectModel>("Ring");
-    // 生成した板ポリを使用する (生成時に設定した名前を渡す)
-    //ground_->Initialize("terrain.obj");
-    // UV変換を設定する
-    //ground_->GetUVTransform().SetScale({ 10,10 });
-
-    // 地面のテクスチャを読み込む 描画時に使用する
-    groundTextureHandle_ = TextureManager::GetInstance()->Load("white.png");
-
-    ground_->Initialize(ring.Generate("Ring"));
-    ground_->GetMaterial()->SetEnableLighting(false);
-
-    // 2Dスプライトの初期化
-    uint32_t textureHandle = TextureManager::GetInstance()->Load("uvChecker.png");
-    sprite_ = Sprite::Create("uvChecker", textureHandle);
-    sprite_->translate_ ={ 640,360 };
-
     // 音声データの読み込み
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
     //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
     //soundInstance_ = AudioSystem::GetInstance()->Load("C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav");
 
-    //skyBox_ = std::make_unique<SkyBox>();
-    //skyBox_->Initialize(30.0f);
-    //skyBox_->SetTexture("rosendal_plains_2_2k.dds");
-
-    emitter_ = std::make_unique<ParticleEmitter>();
-    emitter_->Initialize("ring_01");
-
-    emitter2_ = std::make_unique<ParticleEmitter>();
-    emitter2_->Initialize("speaker_particle");
-
 
     LayerSystem::CreateLayer("Model", 0);
     LayerSystem::CreateLayer("Main", 1);
 
-
     textGenerator_.Initialize(FontConfig());
 
-    textureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
-    textureGenerator_->Initialize({ 0.0f,0.0f ,0.0f ,0.3f });
+    //textureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
+    //textureGenerator_->Initialize({ 0.0f,0.0f ,0.0f ,0.3f });
 
-    slider_ = std::make_shared<UISlider>();
-    slider_->Initialize("TestSlider");
 }
 
 void SampleScene::Update()
@@ -208,16 +164,6 @@ void SampleScene::Update()
     }
 
 
-    //ImGui::Begin("Emitter");
-    //emitter_->ShowDebugWindow();
-    //ImGui::End();
-
-    //ImGui::Begin("Emitter2");
-    //emitter2_->ShowDebugWindow();
-    //ImGui::End();
-
-    sprite_->ImGui();
-
 
     static auto audioData = soundInstance_->GetAudioData();
 
@@ -251,27 +197,26 @@ void SampleScene::Update()
     }
 
     {
-        AudioSpectrum audioSpectrum(1024, 0.5f);
-        const int sampleRate = 44100;
-        const float duration = 5.0f;
+        //AudioSpectrum audioSpectrum(1024, 0.5f);
+        //const int sampleRate = 44100;
+        //const float duration = 5.0f;
 
-        //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
-        audioSpectrum.SetAudioData(audioData);
-        audioSpectrum.SetSampleRate(sampleRate);
-        float curentTime = 0.0f;
-        if (voiceInstance_ && voiceInstance_->IsPlaying())
-            curentTime = voiceInstance_->GetElapsedTime();
-        float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
+        //audioSpectrum.SetAudioData(audioData);
+        //audioSpectrum.SetSampleRate(sampleRate);
+        //float curentTime = 0.0f;
+        //if (voiceInstance_ && voiceInstance_->IsPlaying())
+        //    curentTime = voiceInstance_->GetElapsedTime();
+        //float rms = WaveformAnalyzer::GetRMSAtTime(soundInstance_.get(), curentTime, 50.0f);
 
-        auto spectrum = audioSpectrum.GetSpectrumAtTime(curentTime);
-        if (changed)
-            textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
-                                             barCount,
-                                             kminHz,
-                                             kmaxHz,
-                                             sampleRate, static_cast<int32_t>(spectrum.size() * 2));
-        textureGenerator_->Generate(spectrum, rms, barCount);
-        sprite_->SetTextureHandle(textureGenerator_->GetTextureHandle());
+        //auto spectrum = audioSpectrum.GetSpectrumAtTime(curentTime);
+        //if (changed)
+        //    textureGenerator_->MakeLogRanges(static_cast<int32_t>(spectrum.size()),
+        //                                     barCount,
+        //                                     kminHz,
+        //                                     kmaxHz,
+        //                                     sampleRate,
+        //                                     static_cast<int32_t>(spectrum.size() * 2));
+        //textureGenerator_->Generate(spectrum, rms, barCount);
     }
 
 #endif // _DEBUG
@@ -305,17 +250,6 @@ void SampleScene::Update()
     //end = std::chrono::steady_clock::now();
     //Debug::Log(std::format("IterativeFFT: {} ms", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()) + "\n");
 
-
-
-    // モデルの更新
-    human_->Update();
-    //ground_->euler_.z += 0.1f;
-    ground_->Update();
-    emitter_->Update(0.016f);
-    slider_->Update();
-
-    //textGenerator_.Draw(L"← → でグレースケールの強度変化", Vector2(200, 300), Vector4(1, 0, 0, 1));
-    //textGenerator_.Draw(L"Space でシーンチェンジ", Vector2(200, 500), Vector4(1, 0, 0, 1));
     // --------------------------------
     // シーン共通更新処理
 
@@ -337,29 +271,15 @@ void SampleScene::Update()
 
 void SampleScene::Draw()
 {
-    // skyBooxの描画
-    //skyBox_->Draw(&SceneCamera_);
 
     // Model描画用のPSO等をセット
     ModelManager::GetInstance()->PreDrawForObjectModel();
 
-    // SkyBoxのキューブマップを描画キューに追加(任意)
-    //skyBox_->QueueCmdCubeTexture();
     LayerSystem::SetLayer("Model");
-    // groundの描画
-    ground_->Draw(&SceneCamera_, textureGenerator_->GetTextureHandle(), drawColor_);
-    //ground_->Draw(&SceneCamera_,  drawColor_);
-    // humanの描画
-    //human_->Draw(&SceneCamera_, drawColor_);
-
-    //LayerSystem::ApplyPostEffect("Model", "BoxFilter", boxFilter_);
 
     // Sprite用のPSO等をセット
     Sprite::PreDraw();
     // スプライトの描画
-    //sprite_->Draw(Vector4(1, 1, 1, 1));
-    sprite_->Draw();
-    slider_->Draw();
 
     ParticleSystem::GetInstance()->DrawParticles();
 
@@ -367,12 +287,10 @@ void SampleScene::Draw()
 
 void SampleScene::DrawShadow()
 {
-    //human_->DrawShadow();
 }
 
 #ifdef _DEBUG
 void SampleScene::ImGui()
 {
-
 }
 #endif // _DEBUG

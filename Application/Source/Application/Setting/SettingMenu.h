@@ -6,6 +6,7 @@
 #include <Features/Event/EventListener.h>
 #include <Application/Setting/Preview/SettingsPreviewPanel.h>
 
+// スライダーの値が変更されたときのイベントデータ
 struct ValueChangedEventData : EventData
 {
     ValueChangedEventData(const std::string& _name, float _value)
@@ -16,26 +17,44 @@ struct ValueChangedEventData : EventData
     float value;        // スライダーの値
 };
 
+/// <summary>
+/// 設定メニュークラス。
+/// </summary>
 class SettingMenu : public iEventListener
 {
 public:
     SettingMenu();
     ~SettingMenu();
-    // 初期化
+
+    /// <summary>
+    /// 初期化処理。
+    /// </summary>
     void Initialize();
-    // 更新
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update();
-    // 描画
+
+    /// <summary>
+    /// UI の描画処理。
+    /// </summary>
     void Draw();
-    // メニューがアクティブかどうか
+
+    /// <summary>
+    /// メニューがアクティブかどうかを返す。
+    /// </summary>
     bool IsActive() const { return isActive_; }
 
-    // UIグループを取得
+    /// <summary>
+    /// 内部の UI グループを取得する。
+    /// </summary>
     UIGroup* GetUIGroup() const { return uiGroup_.get(); }
 
+    /// <summary>
+    /// イベントを受信するハンドラ。
+    /// </summary>
     void OnEvent(const GameEvent& _event) override;
-
-    void SetCamera(const Camera* _camera) { camera_ = _camera; }
 
 private:
 
@@ -49,6 +68,4 @@ private:
     std::vector<std::shared_ptr<UISlider>> sliders_; // スライダー   のリスト
 
     std::unique_ptr<SettingsPreviewPanel> previewPanel_ = nullptr; // 設定プレビュー
-
-    const Camera* camera_ = nullptr; // プレビュー用カメラ
 };

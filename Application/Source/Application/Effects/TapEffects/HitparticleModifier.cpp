@@ -6,6 +6,7 @@ void HitParticleModifier::Initialize()
 
 void HitParticleModifier::Apply(Particle* _particle, float _deltaTime)
 {
+    // フェードアウト
     float t = _particle->GetCurrentTime() / _particle->GetLifeTime();
 
     float easedt = Easing::Func(Easing::EasingFunc::EaseInOutCirc)(t);
@@ -29,8 +30,8 @@ void HitCircleParticleModifier::Initialize()
 
 void HitCircleParticleModifier::Apply(Particle* _particle, float _deltaTime)
 {
+    // フェードアウト
     float t = _particle->GetCurrentTime() / _particle->GetLifeTime();
-
     float easedt = Easing::Func(Easing::EasingFunc::EaseInQuart)(t);
 
     Vector4 color = _particle->GetColor();
@@ -38,7 +39,7 @@ void HitCircleParticleModifier::Apply(Particle* _particle, float _deltaTime)
 
     _particle->SetColor(color);
 
-
+    // サイズ縮小
     float easedTSize = 1.0f - Easing::Func(Easing::EasingFunc::EaseInExpo)(t);
 
     Vector3 size = _particle->GetScale();

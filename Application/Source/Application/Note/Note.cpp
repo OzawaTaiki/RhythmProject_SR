@@ -12,6 +12,7 @@ void Note::Initilize(float _targetTime, const Vector3& _targetPosition)
     model_->translate_ = Vector3(0, 0, 0);
     model_->useQuaternion_ = true;
 
+    // TODO : 専用のモデルを用意する
     model_->scale_.x = 0.7f;
     model_->scale_.z = 0.5f;
     model_->scale_.y = 0.1f;
@@ -88,10 +89,11 @@ void LongNote::Update(float _elapseTime, float _speed)
 
     if (noteBridge_)
     {
+        // ブリッジの長さを更新する
         Vector3 spos = model_->translate_;
         Vector3 epos = spos;
-        epos.z -= _speed * (holdDuration_);
-        Vector3 direction = epos - spos;
+        epos.z -= _speed * (holdDuration_); // ホールド時間分手前に伸ばす
+        Vector3 direction = epos - spos; // ブリッジの方向ベクトル
 
         // レーンマタギを実装したら必要
         /*const Vector3 downVector = Vector3(0, 0, -1);// 下向きベクトル
@@ -99,9 +101,9 @@ void LongNote::Update(float _elapseTime, float _speed)
 
         noteBridge_->quaternion_ = Quaternion::FromToRotation(downVector, direction);*/
 
-        noteBridge_->scale_.z = direction.Length();
+        noteBridge_->scale_.z = direction.Length(); // ブリッジの長さを設定
 
-        noteBridge_->translate_ = spos;
+        noteBridge_->translate_ = spos; // ブリッジの位置をノーツの位置に設定
 
         noteBridge_->Update();
 

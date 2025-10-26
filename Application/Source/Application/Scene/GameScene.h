@@ -37,7 +37,11 @@ enum class GameMode
     Normal,
     EditorTest
 };
-
+// TODO : だいぶ肥大化しているので分割することを検討する
+// ゲームシーン
+/// <summary>
+/// ゲームのメインプレイシーンを表すクラス。ゲームの初期化、更新、描画、イベント処理を行う。
+/// </summary>
 class GameScene : public BaseScene, public iEventListener
 {
 public:

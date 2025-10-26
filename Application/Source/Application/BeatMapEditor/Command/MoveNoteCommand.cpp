@@ -10,6 +10,7 @@ MoveNoteCommand::MoveNoteCommand(BeatMapEditor* _beatMapEditor, const std::vecto
     originalTimes_.reserve(noteIndices_.size());
     noteIdentifiers_.reserve(noteIndices_.size());
 
+    // 元のノートの時間と識別子を保存
     for (const auto& index : noteIndices_)
     {
         const NoteData& note = _beatMapEditor->GetNoteAt(index);

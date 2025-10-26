@@ -35,44 +35,50 @@ void PauseMenu::Initialize()
 
     auto sprite = uiGroup_->CreateSprite("PauseMenu_back", L"Pause");
 
+    // 再開ボタンの初期化
     auto resumeButton   = uiGroup_->CreateButton("PauseMenu_ResumeButton",  L"Resume");
     {
         resumeButton->SetOnClickEnd([&]()
                                     {
-                                        EventManager::GetInstance()->DispatchEvent(GameEvent("RequestResume", nullptr));
-                                        isActive_ = false;
-                                        isDraw_ = false;
+                                        EventManager::GetInstance()->DispatchEvent(GameEvent("RequestResume", nullptr));// ポーズ解除イベントを送信
+                                        isActive_ = false; // ポーズメニューを非アクティブに
+                                        isDraw_ = false; // 描画を停止
                                         Debug::Log("Resume button clicked\n");
                                     });
     }
+    // リトライボタンの初期化
     auto retryButton    = uiGroup_->CreateButton("PauseMenu_RetryButton",   L"Retry");
     {
         retryButton->SetOnClickEnd([&]()
                                    {
-                                       EventManager::GetInstance()->DispatchEvent(GameEvent("RequestRetry", nullptr));
-                                       isActive_ = false;
-                                       isDraw_ = false;
+                                       EventManager::GetInstance()->DispatchEvent(GameEvent("RequestRetry", nullptr));// リトライイベントを送信
+                                       isActive_ = false;// ポーズメニューを非アクティブに
+                                       isDraw_ = false;// 描画を停止
                                        Debug::Log("Retry button clicked\n");
                                    });
     }
+    // タイトルへ戻るボタンの初期化
     auto toTitleButton  = uiGroup_->CreateButton("PauseMenu_ToTitleButton", L"Title");
     {
         toTitleButton->SetOnClickEnd([&]()
                                      {
-                                         EventManager::GetInstance()->DispatchEvent(GameEvent("RequestToTitle", nullptr));
-                                         isActive_ = false;
-                                         isDraw_ = false;
+                                         EventManager::GetInstance()->DispatchEvent(GameEvent("RequestToTitle", nullptr));// タイトルへ戻るイベントを送信
+                                         isActive_ = false; // ポーズメニューを非アクティブに
+                                         isDraw_ = false;// 描画を停止
                                          Debug::Log("ToTitle button clicked\n");
                                      });
     }
+    // オプションボタンの初期化
     auto toOptionButton = uiGroup_->CreateButton("PauseMenu_OptionButton",  L"Option");
     {
+        // オプションアイコン用のスプライトの初期化
         auto optionButtonBack = std::make_shared<UISprite>();
         optionButtonBack->Initialize("PauseMenu_OptionButtonIcon");
         toOptionButton->AddChild(optionButtonBack);
 
         toOptionButton->SetOnClickEnd([&]()
                                       {
+                                          // オプションメニューを開くイベントを送信
                                           EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
                                           isDraw_ = false;
                                           Debug::Log("Option button clicked\n");
@@ -80,6 +86,7 @@ void PauseMenu::Initialize()
 
     }
 
+    // ボタンをポーズメニュースプライトの子として追加
     sprite->AddChild(resumeButton);
     sprite->AddChild(retryButton);
     sprite->AddChild(toTitleButton);
@@ -89,7 +96,7 @@ void PauseMenu::Initialize()
         { resumeButton.get(), retryButton.get(), toTitleButton.get() }
     );
 
-    // 下押してオプションへ
+    // ナビゲーション設定
     toOptionButton->SetNavigationTarget(resumeButton.get(), Direction::Down);
     toOptionButton->SetNavigationTarget(retryButton.get(), Direction::Down);
     toOptionButton->SetNavigationTarget(toTitleButton.get(), Direction::Down);
@@ -99,7 +106,7 @@ void PauseMenu::Update()
 {
     if (!isActive_ || !isDraw_)
     {
-        if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
+        if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))// ESCキーでポーズメニューを開く
         {
             isActive_ = true;
             isDraw_ = true;

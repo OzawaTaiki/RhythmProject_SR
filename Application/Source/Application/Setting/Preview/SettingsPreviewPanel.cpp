@@ -13,7 +13,7 @@
 
 void SettingsPreviewPanel::Initialize()
 {
-    camera_.Initialize(CameraType::Perspective, Vector2(320, 720));
+    camera_.Initialize(CameraType::Perspective, Vector2(320, 720));  // プレビュー用に縦長 3Dカメラ
     camera_.aspectRatio_ = 0.7f;
     camera_.farClip_ = 100.0f;
     camera_.translate_= { 0.0f,5.0f,-13.0f };
@@ -23,6 +23,7 @@ void SettingsPreviewPanel::Initialize()
 
     const float bpm = 120.0f;
     const float spb = 60.0f / bpm * 4; // 秒/拍
+
     // 4分音符の間隔でノーツを生成
     std::list<NoteData> notes;
     const size_t numNotes = 16; // 16個のノーツを生成
@@ -37,7 +38,6 @@ void SettingsPreviewPanel::Initialize()
         notes.push_back(note);
     }
 
-    // TODO : れーんを4つ それとノーツをいくつか生成
     for (int i = 0; i < 4; ++i)
     {
         auto lane = std::make_unique<Lane>();
@@ -45,6 +45,7 @@ void SettingsPreviewPanel::Initialize()
         lanes_.push_back(std::move(lane));
     }
 
+    // 音楽再生トグルボタンの作成
     musicToggleButton_ = std::make_shared<UIButton>();
     musicToggleButton_->Initialize("MusicToggleButton", L"Play");
     musicToggleButton_->SetOnClick([&]()
@@ -52,16 +53,16 @@ void SettingsPreviewPanel::Initialize()
                                        if (voiceInstance_ && voiceInstance_->IsPlaying())
                                        {
                                            voiceInstance_->Stop();
-                                           musicToggleButton_->SetText(L"Play");
+                                           musicToggleButton_->SetText(L"Play"); // ボタンテキストを変更
                                        }
                                        else
                                        {
                                            voiceInstance_ = soundInstance_->Play(0.5f);//  masterを調整しているから音源ごとのvolumeは固定
-                                           musicToggleButton_->SetText(L"Stop");
+                                           musicToggleButton_->SetText(L"Stop"); // ボタンテキストを変更
                                        }
                                    });
 
-
+    // 音源の読み込み
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/120bpm_16beats.wav");
 
     // レンダーターゲットの作成
@@ -73,11 +74,13 @@ void SettingsPreviewPanel::Initialize()
         true);
     // 取得
     renderTexture_ = RTVManager::GetInstance()->GetRenderTexture("SettingsPreviewPanelRT");
+    // スプライト用テクスチャハンドル取得
     previewTextureHandle_= TextureManager::GetInstance()->GetTextureHandle(
         "SettingsPreviewPanelRT",
         renderTexture_->GetSRVIndex(),
         renderTexture_->GetGPUHandleofRTV());
 
+    // プレビュー表示用スプライトの作成
     previewSprite_ = std::make_shared<UISprite>();
     previewSprite_->Initialize("SettingsPreviewPanel");
     previewSprite_->SetTextureHandle(previewTextureHandle_);
@@ -86,7 +89,7 @@ void SettingsPreviewPanel::Initialize()
 
 void SettingsPreviewPanel::Update()
 {
-    if(Input::GetInstance()->IsKeyTriggered(DIK_SPACE))
+    if (Input::GetInstance()->IsKeyTriggered(DIK_SPACE)) // スペースキーで再生/停止切り替え
     {
         if (voiceInstance_ && voiceInstance_->IsPlaying())
         {
@@ -108,7 +111,6 @@ void SettingsPreviewPanel::Update()
         lane->Update(elapsedTime, Setting::current_.noteSpeed);
     }
 
-
     musicToggleButton_->Update();
 
     camera_.ImGui();
@@ -116,11 +118,13 @@ void SettingsPreviewPanel::Update()
 
 void SettingsPreviewPanel::Draw()
 {
+    // レンダーテクスチャを設定
     renderTexture_->SetRenderTexture();
-
     ModelManager::GetInstance()->PreDrawForObjectModel();
+    // 専用描画テクスチャに描画
     for (auto& lane : lanes_)
         lane->Draw(&camera_);
+    // spriteに張るためにSRV状態に変更
     renderTexture_->ChangeRTVState(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
     LayerSystem::SetLayer("PauseMenu");

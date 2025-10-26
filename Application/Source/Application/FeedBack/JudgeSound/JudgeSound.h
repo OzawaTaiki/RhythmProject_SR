@@ -9,41 +9,56 @@
 #include <string>
 
 // 判定時にサウンドを鳴らすためのクラス
+/// <summary>
+/// ジャッジ時の効果音を管理するクラス。
+/// </summary>
 class JudgeSound
 {
 public:
-    // コンストラクタ
+    /// <summary>
+    /// デフォルトコンストラクタ
+    /// </summary>
     JudgeSound() = default;
-    // デストラクタ
+
+    /// <summary>
+    /// デストラクタ（再生中のリソースを解放する）
+    /// </summary>
     ~JudgeSound();
 
     /// <summary>
-    /// 初期化処理
+    /// 初期化処理。
     /// </summary>
-    /// <param name="_soundFilePath">SEファイルパス</param>
+    /// <param name="_volume">初期音量（0.0 - 1.0）</param>
+    /// <param name="_soundFilePath">SEファイルパス（省略時はデフォルトパス）</param>
     void Initialize(float _volume = 0.5f , const std::string& _soundFilePath = "Resources/Sounds/SE/JudgeSound.wav");
 
     /// <summary>
-    /// 音声を再生
+    /// 効果音を再生する。
     /// </summary>
     void Play();
 
     /// <summary>
-    /// 再生されていない音声インスタンスを削除
+    /// 再生が終了した音声インスタンスをクリーンアップする。
     /// </summary>
     void CleanupStoppedVoices();
 
     /// <summary>
-    /// 全ての音声を停止
+    /// 全ての効果音を停止する。
     /// </summary>
     void StopAllSounds();
 
 
-    /// -----------------------------------------------------
-    void SetVolume(float _volume) { volume_ = _volume; }
-    float GetVolume() const { return volume_; }
+    // ゲッター・セッター
 
-private: // メンバ関数
+    /// <summary>
+    /// 音量を設定する。
+    /// </summary>
+    void SetVolume(float _volume) { volume_ = _volume; }
+
+    /// <summary>
+    /// 現在の音量を取得する。
+    /// </summary>
+    float GetVolume() const { return volume_; }
 
 
 private: // メンバ変数

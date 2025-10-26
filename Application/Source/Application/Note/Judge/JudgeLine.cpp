@@ -5,6 +5,7 @@
 JudgeLine::JudgeLine()
 {
 #ifdef _DEBUG
+    // デバッグウィンドウの登録
     ImGuiDebugManager::GetInstance()->AddDebugWindow("JudgeLine", [&]() { DebugWindow(); });
 #endif // _DEBUG
 }
@@ -12,6 +13,7 @@ JudgeLine::JudgeLine()
 JudgeLine::~JudgeLine()
 {
 #ifdef _DEBUG
+    // デバッグウィンドウの登録解除
     ImGuiDebugManager::GetInstance()->RemoveDebugWindow("JudgeLine");
 #endif // _DEBUG
 }
@@ -24,12 +26,14 @@ void JudgeLine::Initialize()
 void JudgeLine::Draw()
 {
     CalculateLine();
+    // TODO : ラインじゃない描画 モデルやスプライトなど
 
     lineDrawer_->RegisterPoint(linePoints_[0], linePoints_[1], color_);
 }
 
 void JudgeLine::CalculateLine()
 {
+    // 変更がなければ計算しない
     if(!dirty_)
         return;
 

@@ -8,11 +8,10 @@
 #include <Application/Note/Note.h>
 
 
-// STL
-
 NoteJudge::NoteJudge()
 {
 #ifdef _DEBUG
+    // デバッグウィンドウの登録
     ImGuiDebugManager::GetInstance()->AddDebugWindow("JudgeLine", [this]() { ImGui::Checkbox("DrawLine", &isDrawLine); });
 #endif // _DEBUG
 }
@@ -20,6 +19,7 @@ NoteJudge::NoteJudge()
 NoteJudge::~NoteJudge()
 {
 #ifdef _DEBUG
+    // デバッグウィンドウの削除
     ImGuiDebugManager::GetInstance()->RemoveDebugWindow("JudgeLine");
 #endif // _DEBUG
 }
@@ -37,9 +37,12 @@ void NoteJudge::Initialize()
 
 void NoteJudge::DrawJudgeLine()
 {
+#ifdef _DEBUG
+    /// debug用
+    // 判定ラインと判定範囲の描画
+
     if (!isDrawLine) return;
 
-    /// debug用
 
 
     float halfWidth = laneTotalWidth_ / 2.0f;
@@ -68,6 +71,7 @@ void NoteJudge::DrawJudgeLine()
 
         LineDrawer::GetInstance()->RegisterPoint(start, end, Vector4(1, 1, 0, 1));
     }
+#endif // DEBUG
 
 }
 
@@ -82,6 +86,7 @@ JudgeType NoteJudge::ProcessNoteJudge(Note* _note, float _elapsedTime)
 
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
+        // 判定範囲内かチェック
         if (targetTime >= _elapsedTime - timingThresholds_[i] &&
             targetTime <= _elapsedTime + timingThresholds_[i])
         {

@@ -23,39 +23,66 @@
 #include <vector>
 #include <memory>
 
-
+// 前方宣言
 class Input;
 class LineDrawer;
-
 class BeatMapLoader;
 
+/// <summary>
+/// ビートマップエディター
+/// </summary>
 class BeatMapEditor
 {
 private:
+    // エディターモード
     enum class EditorMode
     {
-        Select,
-        PlaceNormalNote,
-        PlaceLongNote,
-        Delete,
-        LiveMapping,
-        BPMSetting,
+        Select, // 選択
+        PlaceNormalNote,// ノーマルノート配置
+        PlaceLongNote, // ロングノート配置
+        Delete,// ノート削除
+        LiveMapping,// ライブマッピング
+        BPMSetting,// BPM設定
 
-        Count // モードの数
+        Count // モード数
     };
 public:
+
     BeatMapEditor() = default;
     ~BeatMapEditor() = default;
 
-
+    /// <summary>
+    /// 初期化処理を行う。
+    /// </summary>
+    /// <param name="_beatMapData">初期化時に読み込む譜面データ（省略可）</param>
     void Initialize(const BeatMapData& _beatMapData = {});
+
+    /// <summary>
+    /// 毎フレームの更新処理を行う。
+    /// </summary>
     void Update();
+
+    /// <summary>
+    /// 描画処理を行う。
+    /// </summary>
+    /// <param name="_camera">描画用カメラ（2D/3Dの情報を含む）</param>
     void Draw(const Camera* _camera);
+
+    /// <summary>
+    /// 終了処理を行う。
+    /// </summary>
     void Finalize();
 
 public:
 
+    /// <summary>
+    /// テストモードへ移行するフラグを取得する。
+    /// </summary>
     bool ToTestMode() const { return toTest_; }
+
+    /// <summary>
+    /// 現在の譜面データを取得する。
+    /// </summary>
     BeatMapData GetBeatMapData() const { return currentBeatMapData_; }
 
     /// <summary>
@@ -512,7 +539,7 @@ private:
     TapBPMCounter tapBPMCounter_;
 
 
-    bool toTest_ = false;
+    bool toTest_ = false; // テストモードへ移行フラグ
     TextParam textParam_;
 };
 

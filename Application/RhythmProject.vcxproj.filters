@@ -55,15 +55,6 @@
     <Filter Include="Application\Result\Judge">
       <UniqueIdentifier>{c7db6b80-829a-4785-839a-06cd65fe6f5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene">
-      <UniqueIdentifier>{6ff9434d-5779-4bf7-92c0-840b550980a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\SceneTransition">
-      <UniqueIdentifier>{30c8c9a1-4a23-4e0e-99d2-b0dd0e1f73b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Scene\Data">
-      <UniqueIdentifier>{b70322d9-5112-44a6-ac87-505f780bc756}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Result\Score">
       <UniqueIdentifier>{e9b0c341-6a49-49f5-a30c-c6e8b68d119d}</UniqueIdentifier>
     </Filter>
@@ -124,14 +115,25 @@
     <Filter Include="Application\EffectModifiers">
       <UniqueIdentifier>{f8b0cbaf-7add-44ed-9b8e-438fd2a0bd01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Input\Judge">
-      <UniqueIdentifier>{a73bc968-3077-4492-9411-9cafd32a5298}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\OptionMenu">
       <UniqueIdentifier>{87155632-38d6-44b4-8ca1-719a77c6d3c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\SpectrumRing">
       <UniqueIdentifier>{551460db-cd58-4510-a293-db026b2598be}</UniqueIdentifier>
+    <Filter Include="Application\Judge">
+      <UniqueIdentifier>{a73bc968-3077-4492-9411-9cafd32a5298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\SpecturmRing">
+      <UniqueIdentifier>{211d5d54-bed1-4a05-aca6-205cb03f108b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene">
+      <UniqueIdentifier>{6ff9434d-5779-4bf7-92c0-840b550980a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\SceneTransition">
+      <UniqueIdentifier>{30c8c9a1-4a23-4e0e-99d2-b0dd0e1f73b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Data">
+      <UniqueIdentifier>{b70322d9-5112-44a6-ac87-505f780bc756}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,10 +154,10 @@
       <Filter>Application\Note</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeLine.cpp">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\NoteJudge.cpp">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeResult.cpp">
       <Filter>Application\Result\Judge</Filter>
@@ -224,7 +226,7 @@
       <Filter>Application\ResultUI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeType.cpp">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\GameUI\GameUI.cpp">
       <Filter>Application\GameUI</Filter>
@@ -316,10 +318,10 @@
       <Filter>Application\Note</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\JudgeLine.h">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\NoteJudge.h">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\JudgeResult.h">
       <Filter>Application\Result\Judge</Filter>
@@ -370,7 +372,7 @@
       <Filter>Application\Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\Judge\JudgeType.h">
-      <Filter>Application\Input\Judge</Filter>
+      <Filter>Application\Judge</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Note\NoteType.h">
       <Filter>Application\Note</Filter>

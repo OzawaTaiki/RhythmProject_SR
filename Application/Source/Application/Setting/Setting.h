@@ -2,6 +2,9 @@
 
 #include <string>
 
+/// <summary>
+/// ゲーム設定データ構造体。
+/// </summary>
 struct GameSettings
 {
     float masterVolume = 1.0f; // マスター音量
@@ -13,12 +16,24 @@ struct GameSettings
 
 };
 
+/// <summary>
+/// 設定管理クラス。
+/// </summary>
 class Setting
 {
 public:
-    static GameSettings current_;
-    static GameSettings default_;
+    static GameSettings current_; // 現在の設定
+    static GameSettings default_; // デフォルト設定
 
+    /// <summary>
+    /// 設定をファイルから読み込む。
+    /// </summary>
+    /// <param name="_filePath">読み込むファイルパス（デフォルト値あり）</param>
     static void Load(const std::string& _filePath = "Resources/Data/Setting/setting.json");
+
+    /// <summary>
+    /// 設定をファイルへ保存する。
+    /// </summary>
+    /// <param name="_filePath">保存先ファイルパス（デフォルト値あり）</param>
     static void Save(const std::string& _filePath = "Resources/Data/Setting/setting.json");
 };

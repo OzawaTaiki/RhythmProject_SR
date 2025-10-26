@@ -16,17 +16,33 @@
 
 #include <Features/PostEffects/BoxFilter.h>
 
+/// <summary>
+/// リザルト画面のシーンクラス。
+/// </summary>
 class ResultScene : public BaseScene
 {
 public:
     ResultScene() = default;
     ~ResultScene() override = default;
 
+    /// <summary>
+    /// シーンの初期化処理。
+    /// </summary>
     void Initialize(SceneData* _sceneData) override;
 
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update() override;
 
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw() override;
+
+    /// <summary>
+    /// シャドウ描画処理。
+    /// </summary>
     void DrawShadow() override;
 
 

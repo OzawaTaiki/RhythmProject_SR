@@ -4,6 +4,10 @@
 
 #include <Features/Sprite/Sprite.h>
 
+// シーン遷移クラス フェードイン・アウト
+/// <summary>
+/// フェードイン・フェードアウトによるシーン遷移を実装するクラス。
+/// </summary>
 class SceneTrans : public ISceneTransition
 {
 public:

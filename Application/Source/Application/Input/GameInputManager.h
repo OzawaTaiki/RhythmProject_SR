@@ -10,58 +10,66 @@
 #include <memory>
 #include <stdexcept>
 
-
+/// <summary>
+/// アプリ用の入力管理クラス。
+/// </summary>
 class GameInputManager
 {
 public:
+    /// <summary>
     /// コンストラクタ
+    /// </summary>
     GameInputManager() = default;
+
+    /// <summary>
     /// デストラクタ
+    /// </summary>
     ~GameInputManager() = default;
 
     /// <summary>
-    /// 初期化
+    /// 初期化処理を行う。
     /// </summary>
-    /// <param name="_input"> Inputのインスタンス </param>
+    /// <param name="_input">Input のインスタンス</param>
     void Initialize(Input* _input);
 
-
     /// <summary>
-    /// 更新処理
+    /// 毎フレームの更新処理。
     /// </summary>
     void Update();
 
     /// <summary>
-    /// 入力データを取得する
+    /// 入力データを取得する。
     /// </summary>
-    /// <returns>入力データのベクター </returns>
+    /// <returns>入力データのベクター</returns>
     const std::vector<InputDate>& GetInputData() const { return inputData_; }
 
-
     /// <summary>
-    /// キーバインドの設定
+    /// キーバインドの設定（マップで一括設定）。
     /// </summary>
     /// <param name="_keyBindings">キーとレーンのバインディングのマップ</param>
     void SetKeyBinding(std::map<int8_t, int32_t> _keyBindings) { keyBindings_ = _keyBindings; }
 
     /// <summary>
-    /// キーとレーンのバインディングを設定
+    /// 個別のキーとレーンのバインディングを設定する。
     /// </summary>
-    /// <param name="_key"> キーコード (DIK_Aなど)</param>
-    /// <param name="_lane"> レーン番号</param>
+    /// <param name="_key">キーコード (DIK_A など)</param>
+    /// <param name="_lane">レーン番号</param>
     void SetKeyBinding(int8_t _key, int32_t _lane) { keyBindings_[_key] = _lane; }
 
     /// <summary>
-    /// 音楽の音声インスタンスを設定
+    /// 音楽のボイスインスタンスを設定する。
     /// </summary>
-    /// <param name="_voiceInstance">音声インスタンスのポインタ </param>
+    /// <param name="_voiceInstance">音声インスタンスの共有ポインタ</param>
     void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> _voiceInstance) { musicVoiceInstance_ = _voiceInstance; }
 
-    void SetGameMusic(const GameMusic* _gameMusic) { gameMusic_ = _gameMusic; }
-private:
-
     /// <summary>
-    /// デフォルトのキー設定を行う
+    /// ゲーム音楽の情報を設定する。
+    /// </summary>
+    void SetGameMusic(const GameMusic* _gameMusic) { gameMusic_ = _gameMusic; }
+
+private:
+    /// <summary>
+    /// デフォルトのキー設定を行う。
     /// </summary>
     void SetDefaultKeyBindings();
 

@@ -28,6 +28,8 @@ public:
     bool IsMusicEnd() const { return isMusicEnd_; }
 
     float GetDuration()const;
+
+    std::shared_ptr<VoiceInstance> GetVoiceInstance();
 private:
 
     void MusicEnd() { isMusicEnd_ = true; };

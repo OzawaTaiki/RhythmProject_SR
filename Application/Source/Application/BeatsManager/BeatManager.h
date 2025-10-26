@@ -60,7 +60,8 @@ public:
 
     void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
-    void SetGameMusic(const GameMusic* _gameMusic) { gameMusic_ = _gameMusic; }
+    // 1拍あたりの秒数を計算
+    float GetSecondsPerBeat() const { return 60.0f / bpm_; }
 private:
     Stopwatch* stopwatch_;
     float bpm_ = 120.0f;       // 1分あたりの拍数
@@ -74,11 +75,7 @@ private:
 
     std::shared_ptr<VoiceInstance> musicVoiceInstance_; // 音楽のボイスインスタンス
 
-    const GameMusic* gameMusic_; // 音楽の管理
-
     float volume_ = 0.5f;
     bool soundEnabled_ = true;
 
-    // 1拍あたりの秒数を計算
-    float GetSecondsPerBeat() const { return 60.0f / bpm_; }
 };

@@ -130,6 +130,9 @@
     <Filter Include="Application\OptionMenu">
       <UniqueIdentifier>{87155632-38d6-44b4-8ca1-719a77c6d3c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\SpectrumRing">
+      <UniqueIdentifier>{551460db-cd58-4510-a293-db026b2598be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -291,6 +294,9 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp">
       <Filter>Application\SettingMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\SpectrumRing\SpectrumRing.cpp">
+      <Filter>Application\SpectrumRing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,6 +482,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h">
       <Filter>Application\SettingMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h">
+      <Filter>Application\SpectrumRing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

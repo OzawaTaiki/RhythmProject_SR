@@ -393,7 +393,6 @@ bool GameScene::IsComplateLoadBeatMap()
 
         if (gameMusic_)
         {
-            beatManager_->SetGameMusic(gameMusic_.get());
             gameCore_->SetGameMusic(gameMusic_.get());
             gameInputManager_->SetGameMusic(gameMusic_.get()); // 入力管理に音声インスタンスを設定
 
@@ -431,6 +430,7 @@ void GameScene::UpdateGameStartOffset()
         isWatingForStart_ = false;
         waitTimer_ = 0.0f;
         // ゲーム開始
+        beatManager_->SetMusicVoiceInstance(gameMusic_->GetVoiceInstance());
         beatManager_->Start();
         gameCore_->Start();
 

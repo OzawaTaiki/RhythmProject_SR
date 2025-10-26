@@ -10,6 +10,9 @@
 
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Application/Setting/SettingMenu.h>
+#include <Application/SpectrumRing/SpectrumRing.h>
+#include <Application/BeatsManager/BeatManager.h>
+#include <Features/BPMDetector/BPMDetector.h>
 
 class TitleScene : public BaseScene
 {
@@ -41,8 +44,15 @@ private:
     /// ---------------------------------
     ///     application
 
+    std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
+    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
 
     TextGenerator textGenerator_;
+
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
+    std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
+
+    std::unique_ptr<BeatManager> beatManager_ = nullptr;
+    std::unique_ptr<BPMDetector> bpmDetector_ = nullptr; // BPM検出器
 
 };

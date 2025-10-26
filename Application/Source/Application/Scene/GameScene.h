@@ -29,6 +29,8 @@
 #include <Application/BeatMapLoader/BeatMapLoader.h>
 #include <Application/PauseMenu/PauseMenu.h>
 #include <Application/Setting/SettingMenu.h>
+#include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
 
 
 
@@ -131,6 +133,8 @@ private:
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
     std::future<bool> beatMapLoadFuture_ = {};
 
+    std::unique_ptr<SpectrumTextureGenerator> spectrumTextureGenerator_ = nullptr;
+    AudioSpectrum audioSpectrum_;
 
     bool isBeatMapLoaded_ = false;
 

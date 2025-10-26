@@ -51,6 +51,8 @@ public:
     /// </summary>
     void StartAnimation();
 
+    void SetSpectrumTextureHandle(uint32_t _handle) { spectrumTextureHandle_ = _handle; }
+
 private:
     /// <summary>
     /// シーンデータの読み込み（内部処理）。
@@ -61,12 +63,15 @@ private:
     /// スピーカーマップを構築する（内部処理）。
     /// </summary>
     void BuildSpeakerMap(const std::string& _objName,ObjectModel* _model, const std::string& _filepath);
-
 private:
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;
 
+
     std::map<uint32_t, ObjectModel*> speakerMap_;
+
+    std::unique_ptr<ObjectModel> screen_ = nullptr;
+    uint32_t spectrumTextureHandle_ = 0;
 
     SpriteSheetAnimation spriteSheetAnimation_; // 連番画像アニメーション
 

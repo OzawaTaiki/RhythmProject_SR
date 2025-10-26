@@ -121,11 +121,11 @@ void SpectrumRing::CreateTextureGenerators()
         generator = std::make_unique<SpectrumTextureGenerator>();
         generator->Initialize(clearColor);
         generator->MakeLogRanges(
-            fftsize / 2,
-            barCount,
+            musicInstance_->GetSampleRate(),
             minHz,
             maxHz,
-            musicInstance_->GetSampleRate(),
+            barCount,
+            fftsize / 2,
             fftsize
         );
 

@@ -32,7 +32,7 @@ void BeatManager::Update()
 {
     // 再生中か確認
     if (!playing_) return;
-    if (!gameMusic_ || !gameMusic_->IsPlaying())return;
+    if (!musicVoiceInstance_ || !musicVoiceInstance_->IsPlaying())return;
 
 
     // 新しい拍かチェック
@@ -82,7 +82,10 @@ void BeatManager::Reset()
 
 float BeatManager::GetCurrentBeat() const
 {
-    float currentTime = gameMusic_->GetElapsedTime() - offset_;
+    if(!musicVoiceInstance_)
+        return 0.0f;
+
+    float currentTime = musicVoiceInstance_->GetElapsedTime() - offset_;
     return currentTime / GetSecondsPerBeat();
 }
 

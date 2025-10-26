@@ -102,3 +102,11 @@ float GameMusic::GetDuration() const
 
     return 0.0f; // soundInstanceがない場合は0を返す
 }
+
+std::shared_ptr<VoiceInstance> GameMusic::GetVoiceInstance()
+{
+    if (voiceInstance_)
+        return voiceInstance_;
+
+    return nullptr;
+}

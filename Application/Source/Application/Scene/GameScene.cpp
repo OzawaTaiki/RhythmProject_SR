@@ -124,7 +124,6 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
-    //pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
 
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
@@ -394,7 +393,6 @@ bool GameScene::IsComplateLoadBeatMap()
 
         if (gameMusic_)
         {
-            beatManager_->SetGameMusic(gameMusic_.get());
             gameCore_->SetGameMusic(gameMusic_.get());
             gameInputManager_->SetGameMusic(gameMusic_.get()); // 入力管理に音声インスタンスを設定
 
@@ -432,6 +430,7 @@ void GameScene::UpdateGameStartOffset()
         isWatingForStart_ = false;
         waitTimer_ = 0.0f;
         // ゲーム開始
+        beatManager_->SetMusicVoiceInstance(gameMusic_->GetVoiceInstance());
         beatManager_->Start();
         gameCore_->Start();
 

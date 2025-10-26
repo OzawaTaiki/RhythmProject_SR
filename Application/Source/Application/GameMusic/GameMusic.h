@@ -70,6 +70,8 @@ public:
     /// 音楽の長さを取得する。
     /// </summary>
     float GetDuration()const;
+
+    std::shared_ptr<VoiceInstance> GetVoiceInstance();
 private:
 
     void MusicEnd() { isMusicEnd_ = true; };

@@ -72,6 +72,8 @@ public:
     float GetDuration()const;
 
     std::shared_ptr<VoiceInstance> GetVoiceInstance();
+
+    std::shared_ptr<SoundInstance> GetSoundInstance();
 private:
 
     void MusicEnd() { isMusicEnd_ = true; };

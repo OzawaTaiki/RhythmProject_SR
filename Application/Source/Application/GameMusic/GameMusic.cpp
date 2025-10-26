@@ -110,3 +110,10 @@ std::shared_ptr<VoiceInstance> GameMusic::GetVoiceInstance()
 
     return nullptr;
 }
+
+std::shared_ptr<SoundInstance> GameMusic::GetSoundInstance()
+{
+    if (soundInstance_)
+        return soundInstance_;
+    return nullptr;
+}

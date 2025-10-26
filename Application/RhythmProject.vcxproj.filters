@@ -124,9 +124,6 @@
     <Filter Include="Application\Judge">
       <UniqueIdentifier>{a73bc968-3077-4492-9411-9cafd32a5298}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\SpecturmRing">
-      <UniqueIdentifier>{211d5d54-bed1-4a05-aca6-205cb03f108b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scene">
       <UniqueIdentifier>{6ff9434d-5779-4bf7-92c0-840b550980a2}</UniqueIdentifier>
     </Filter>

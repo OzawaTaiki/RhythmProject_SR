@@ -16,7 +16,6 @@ void GameEnvironment::Initialize(const std::string& _filePath)
     spriteSheetAnimation_.SetLooping(true);
 }
 
-//TODO : 終わりメモ スピーカーのゲッターを作成した これをBGEffectで使用しtrasnformをエミッターの親ないし座標としてパーティクルをだす
 void GameEnvironment::Update(float _deltaTime)
 {
     spriteSheetAnimation_.Update(_deltaTime);
@@ -29,7 +28,7 @@ void GameEnvironment::Update(float _deltaTime)
         }
     }
     overFloor_->Update();
-
+    screen_->Update();
 }
 
 void GameEnvironment::Draw(const Camera* _camera)
@@ -41,9 +40,9 @@ void GameEnvironment::Draw(const Camera* _camera)
             obj->Draw(_camera);
         }
     }
+    screen_->Draw(_camera, spectrumTextureHandle_, Vector4(1, 1, 1, 1));
 
     overFloor_->Draw(_camera, Vector4(1, 1, 1, 1));
-
 }
 
 void GameEnvironment::SetBPM(float _bpm)
@@ -147,6 +146,11 @@ void GameEnvironment::Serialize(const std::string& _filePath)
         if (obj["name"] == "overFloor")
         {
             overFloor_ = std::move(object);
+            continue;
+        }
+        if (obj["name"] == "screen")
+        {
+            screen_ = std::move(object);
             continue;
         }
         // スピーカーオブジェクトの検出

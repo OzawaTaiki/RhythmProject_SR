@@ -1,20 +1,23 @@
 #pragma once
 
+// Engine
 #include <Math/Vector/Vector2.h>
 #include <Features/UI/UISprite.h>
 #include <Features/UI/UIGroup.h>
-
 #include <Features/Animation/Sequence/AnimationSequence.h>
 #include <Features/Json/JsonBinder.h>
-
 #include <Features/TextRenderer/TextGenerator.h>
 
+// Application
 #include <Application/Result/ResultData.h>
 
-
-
+// STL
 #include <cstdint>
 
+// リザルト画面のUIクラス
+/// <summary>
+/// リザルト画面の UI を担当するクラス。スコア表示やボタン等の描画・更新を行う。
+/// </summary>
 class ResultUI
 {
 public:
@@ -28,11 +31,14 @@ public:
     // 描画
     void Draw();
 
+    // タイトルへ遷移するかどうか
     bool IsTransitionToTitle() const { return transitionToTitle_; }
+    // リプレイするかどうか
     bool IsReplay() const { return replay_; }
 
 private:
 
+    // UIの種類
     enum class UIs
     {
         MainBackground, // メイン背景
@@ -43,7 +49,7 @@ private:
         ReplayButton, // リプレイボタン
 
     };
-
+    // テキストの種類
     enum class TextType
     {
         Title, // タイトル
@@ -71,22 +77,23 @@ private:
 
 private:
 
+    // UIグループの初期化
     void InitUIGroup();
-
+    // テキストパラメータの初期化
     void InitTextParams();
-
+    // テキストタイプからキー文字列を取得
     std::string GetKeyString(TextType _textType) const;
-
+    // テキストタイプからラベルを取得
     std::wstring GetTextLabel(TextType _textType) const;
-
+    // テキストタイプからジャッジタイプを取得
     JudgeType GetJudgeTypeFromTextType(TextType _textType) const;
-
+    // ジャッジタイプからテキストタイプを取得
     TextType GetTextTypeFromJudgeType(JudgeType _judgeType) const;
 
 private:
 
     std::string musicTitle_ = ""; // 楽曲のタイトル
-
+    // アニメーション用の値
     struct AnimationValue
     {
         Vector2 position = { 0, 0 }; // 座標

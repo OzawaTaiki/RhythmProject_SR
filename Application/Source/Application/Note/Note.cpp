@@ -12,6 +12,7 @@ void Note::Initilize(float _targetTime, const Vector3& _targetPosition)
     model_->translate_ = Vector3(0, 0, 0);
     model_->useQuaternion_ = true;
 
+    // TODO : 専用のモデルを用意する
     model_->scale_.x = 0.7f;
     model_->scale_.z = 0.5f;
     model_->scale_.y = 0.1f;
@@ -87,6 +88,7 @@ void LongNote::Update(float _elapseTime, float _speed)
     Note::Update(_elapseTime, _speed);
     if (noteBridge_)
     {
+        // ブリッジの長さを更新する
         Vector3 spos = model_->translate_;
         Vector3 epos = spos;
         // TODO : ホールド中のみ判定ラインで切れるようにする
@@ -106,9 +108,9 @@ void LongNote::Update(float _elapseTime, float _speed)
 
         noteBridge_->quaternion_ = Quaternion::FromToRotation(downVector, direction);*/
 
-        noteBridge_->scale_.z = direction.Length();
+        noteBridge_->scale_.z = direction.Length(); // ブリッジの長さを設定
 
-        noteBridge_->translate_ = spos;
+        noteBridge_->translate_ = spos; // ブリッジの位置をノーツの位置に設定
 
         noteBridge_->Update();
 

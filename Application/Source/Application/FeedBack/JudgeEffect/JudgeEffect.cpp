@@ -14,7 +14,4 @@ void JudgeEffect::Play(int32_t _laneIndex)
 
     // 周囲のパーティクルを発生させる
     TriggerEffects::EmitSurroundingParticles(lanePos);
-
-    // 光の柱を発生させる
-    //TriggerEffects::EmitLightPillar(Vector3(0, 0, 0), Vector3(0, 1, 0), 1.0f);
 }

@@ -10,17 +10,33 @@
 
 #include <Application/BeatMapEditor/BeatMapEditor.h>
 
+/// <summary>
+/// エディタ用シーン。
+/// </summary>
 class EditorScene : public BaseScene
 {
 public:
     EditorScene() = default;
     ~EditorScene() override = default;
 
+    /// <summary>
+    /// シーンの初期化処理。
+    /// </summary>
     void Initialize(SceneData* _sceneData) override;
 
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update() override;
 
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw() override;
+
+    /// <summary>
+    /// シャドウ用の描画処理。
+    /// </summary>
     void DrawShadow() override;
 
 

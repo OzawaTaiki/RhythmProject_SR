@@ -16,7 +16,6 @@ void GameEnvironment::Initialize(const std::string& _filePath)
     spriteSheetAnimation_.SetLooping(true);
 }
 
-//TODO : 終わりメモ スピーカーのゲッターを作成した これをBGEffectで使用しtrasnformをエミッターの親ないし座標としてパーティクルをだす
 void GameEnvironment::Update(float _deltaTime)
 {
     spriteSheetAnimation_.Update(_deltaTime);
@@ -29,7 +28,7 @@ void GameEnvironment::Update(float _deltaTime)
         }
     }
     overFloor_->Update();
-
+    screen_->Update();
 }
 
 void GameEnvironment::Draw(const Camera* _camera)
@@ -41,9 +40,9 @@ void GameEnvironment::Draw(const Camera* _camera)
             obj->Draw(_camera);
         }
     }
+    screen_->Draw(_camera, spectrumTextureHandle_, Vector4(1, 1, 1, 1));
 
     overFloor_->Draw(_camera, Vector4(1, 1, 1, 1));
-
 }
 
 void GameEnvironment::SetBPM(float _bpm)
@@ -59,6 +58,7 @@ void GameEnvironment::SetBPM(float _bpm)
     else
         timeScale_ *= 0.25f;
 
+    // 時間スケールをゲームタイムチャネルに設定 アニメーション速度を調整
     GameTime::GetChannel("GameEnvironment").SetGameSpeed(timeScale_);
 
 }
@@ -82,11 +82,11 @@ void GameEnvironment::Serialize(const std::string& _filePath)
     json data = JsonFileIO::Load(_filePath, "");
 
     if (!data.contains("name"))
-        return;
+        return; // 名前がない場合は終了
     if (data["name"] != "scene")
-        return;
+        return; // シーンデータでない場合は終了
     if (!data.contains("objects"))
-        return;
+        return; // オブジェクトデータがない場合は終了
 
     int32_t objectCount = 0;
 
@@ -105,14 +105,16 @@ void GameEnvironment::Serialize(const std::string& _filePath)
 
         auto object = std::make_unique<ObjectModel>(obj["name"].get<std::string>());
         std::string filepath = "";
-
+        // モデルファイル名の取得
         if (obj.contains("file_name") && !obj["file_name"].empty())
             filepath = obj["file_name"].get<std::string>();
 
         if (filepath.empty())
-            filepath = "cube/cube.obj";
+            filepath = "cube/cube.obj"; // デフォルトのモデルファイルパス
+
         object->Initialize(filepath); // モデルの初期化
 
+        // Transformの設定
         Vector3 scale, rotation, translation;
         if (obj.contains("transform"))
         {
@@ -131,7 +133,7 @@ void GameEnvironment::Serialize(const std::string& _filePath)
             rotation = Vector3(0.0f, 0.0f, 0.0f); // デフォルトの回転
             translation = Vector3(0.0f, 0.0f, 0.0f); // デフォルトの位置
         }
-            
+
         object->scale_ = scale;
         object->quaternion_ = Quaternion::EulerToQuaternion(rotation); // 回転をクォータニオンに変換
         object->translate_ = translation;
@@ -146,6 +148,12 @@ void GameEnvironment::Serialize(const std::string& _filePath)
             overFloor_ = std::move(object);
             continue;
         }
+        if (obj["name"] == "screen")
+        {
+            screen_ = std::move(object);
+            continue;
+        }
+        // スピーカーオブジェクトの検出
         if (StringUtils::Contains(obj["name"].get<std::string>(), "Speaker")||
             StringUtils::Contains(obj["name"].get<std::string>(), "speaker"))
         {

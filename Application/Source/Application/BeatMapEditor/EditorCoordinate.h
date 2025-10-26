@@ -128,8 +128,14 @@ public:
     /// <returns>画面内にある場合true</returns>
     bool IsNoteVisible(float _noteTime) const;
 
-    void SetOffsetTime(float _offsetTime) { offsetTime_ = _offsetTime; InvalidateVisibleRange(); }
 
+    // ========================================
+    // 設定変更
+    // =======================================
+    // 時間0位置のオフセット比率設定
+    void SetTimeZeroOffsetRatio(float _ratio);
+    // / 時間オフセット設定
+    void SetOffsetTime(float _offsetTime) { offsetTime_ = _offsetTime; InvalidateVisibleRange(); }
 
     // ========================================
     // 設定取得
@@ -153,12 +159,13 @@ public:
 
     float GetEditAreaHeight() const { return screenSize_.y - topMargin_ - bottomMargin_; }
 
-    void SetTimeZeroOffsetRatio(float _ratio);
 
 
-private:
-    // 内部計算用
+private:    // 内部計算用
+
+    // レイアウト更新
     void UpdateLayout();
+    // 表示範囲キャッシュ無効化
     void InvalidateVisibleRange();
 
     Vector2 screenSize_; // 画面サイズ
@@ -185,6 +192,6 @@ private:
     mutable float cachedVisibleEndTime_;
     mutable bool visibleRangeDirty_;
 
-    float timeZeroOffsetRatio_;
-    float offsetTime_ = 0.0f;
+    float timeZeroOffsetRatio_; // 時間0位置のオフセット比率(0.0~1.0)
+    float offsetTime_ = 0.0f; // 時間オフセット(秒)
 };

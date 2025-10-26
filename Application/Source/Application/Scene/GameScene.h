@@ -29,6 +29,8 @@
 #include <Application/BeatMapLoader/BeatMapLoader.h>
 #include <Application/PauseMenu/PauseMenu.h>
 #include <Application/Setting/SettingMenu.h>
+#include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
 
 
 
@@ -37,15 +39,43 @@ enum class GameMode
     Normal,
     EditorTest
 };
-
+// TODO : だいぶ肥大化しているので分割することを検討する
+// ゲームシーン
+/// <summary>
+/// ゲームのメインプレイシーンを表すクラス。ゲームの初期化、更新、描画、イベント処理を行う。
+/// </summary>
 class GameScene : public BaseScene, public iEventListener
 {
 public:
+    /// <summary>
+    /// コンストラクタ。
+    /// </summary>
     GameScene();
+
+    /// <summary>
+    /// デストラクタ。
+    /// </summary>
     ~GameScene() override;
+
+    /// <summary>
+    /// シーンの初期化処理。
+    /// </summary>
+    /// <param name="_sceneData">シーンに渡す初期データ</param>
     void Initialize(SceneData* _sceneData) override;
+
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
     void Update() override;
+
+    /// <summary>
+    /// 描画処理。
+    /// </summary>
     void Draw() override;
+
+    /// <summary>
+    /// シャドウ用の描画処理。
+    /// </summary>
     void DrawShadow() override;
 
 private:
@@ -67,11 +97,11 @@ private:
 
     // 曲の再生が終わったか
     bool IsMusicEnd() const;
-
+    // リトライ処理
     void Retry();
-
+    //  タイトルへ戻る処理
     void ToTitle();
-
+    // イベント受信処理
     void OnEvent(const GameEvent& _event) override;
 private:
 
@@ -103,6 +133,8 @@ private:
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
     std::future<bool> beatMapLoadFuture_ = {};
 
+    std::unique_ptr<SpectrumTextureGenerator> spectrumTextureGenerator_ = nullptr;
+    AudioSpectrum audioSpectrum_;
 
     bool isBeatMapLoaded_ = false;
 

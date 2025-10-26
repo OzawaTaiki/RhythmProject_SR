@@ -2,6 +2,9 @@
 
 #include <cstdint>
 
+/// <summary>
+/// キーの状態を表す列挙型。
+/// </summary>
 enum class KeyState
 {
     None,      // 何も押されていない
@@ -12,6 +15,9 @@ enum class KeyState
     MAX // キー状態の最大値
 };
 
+/// <summary>
+/// 入力データを表す構造体。
+/// </summary>
 struct InputDate
 {
     KeyState state = KeyState::None; // キーの状態

@@ -4,25 +4,35 @@
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/Json/JsonBinder.h>
 
+/// <summary>
+/// ゲームUIクラス。
+/// </summary>
 class GameUI
 {
 public:
-
     GameUI() = default;
     ~GameUI() = default;
 
-    // 初期化
+    /// <summary>
+    /// 初期化処理を行う。
+    /// </summary>
     void Initialize();
 
-    // 更新処理
+    /// <summary>
+    /// 毎フレームの更新処理。
+    /// </summary>
+    /// <param name="_combo">現在のコンボ数</param>
     void Update(int32_t _combo);
 
-    // 描画処理
+    /// <summary>
+    /// 描画処理を行う。
+    /// </summary>
     void Draw();
 
-
 private:
-
+    /// <summary>
+    /// デバッグ用の ImGui 表示。
+    /// </summary>
     void ImGui();
 
 private:

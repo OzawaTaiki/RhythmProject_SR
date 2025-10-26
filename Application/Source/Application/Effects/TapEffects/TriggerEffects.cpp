@@ -5,13 +5,13 @@
 #include <Features/Model/Model.h>
 #include <Features/Model/Primitive/Plane.h>
 #include <Features/Model/Primitive/Triangle.h>
-
-#include <numbers>
 #include <Features/Effect/Manager/ParticleSystem.h>
 
+#include <numbers>
+
 uint32_t TriggerEffects::countPerEmit_ = 16; // 一度に発生するパーティクルの数
-float TriggerEffects::baseSize = 0.3f;
-float TriggerEffects::centerSize = 1.0f;
+float TriggerEffects::baseSize_ = 0.3f;
+float TriggerEffects::centerSize_ = 1.0f;
 uint32_t TriggerEffects::textureHandle_ = 0;
 uint32_t TriggerEffects::gradationTexture_ = 0; // グラデーション用のテクスチャ
 Vector4 TriggerEffects::commonColor_ = Vector4(0.3f, 0.6f, 1.0f, 0.7f); // 共通の色
@@ -22,19 +22,17 @@ ParticleEmitter TriggerEffects::lightPillarEmitter_; // 光の柱を出すエミ
 
 void TriggerEffects::Initialize()
 {
+    // テクスチャ読み込み
     textureHandle_ = TextureManager::GetInstance()->Load("circle.png");
     gradationTexture_ = TextureManager::GetInstance()->Load("guradation.png");
 
-
-
-    // ほそ長いのを出すエミッター
+    // エミッター初期化
     emitter_.Initialize("TapEffect_01");
-
     triangleEmitter_.Initialize("TapEffect_Triangle");
-
     lightPillarEmitter_.Initialize("tap_light_pillar");
 }
 
+// TODO : マジックナンバー多すぎ
 void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
 {
     ParticleRenderSettings settings;
@@ -48,7 +46,7 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
         param.lifeTime = 0.2f;
         param.position = _pos;
         param.position.y += 0.01f;
-        param.size = Vector3(centerSize, centerSize * 0.4f, centerSize);
+        param.size = Vector3(centerSize_, centerSize_ * 0.4f, centerSize_);
         param.color = commonColor_;
         //param.rotate.x = std::numbers::pi_v<float> / 6.0f;
         param.speed = 0.0f;
@@ -58,7 +56,7 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
         particle->Initialize(param);
         circleParticle.push_back(particle);
 
-        param.size = Vector3(centerSize, centerSize * 0.4f, centerSize) * 1.3f;
+        param.size = Vector3(centerSize_, centerSize_* 0.4f, centerSize_) * 1.3f;
         param.color = Vector4(0.6f, 0.8f, 1.0f, 0.7f);
 
         Particle* particle2 = new Particle();
@@ -72,10 +70,12 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
 
 void TriggerEffects::EmitSurroundingParticles(const Vector3& _pos)
 {
+    // 座標設定
     emitter_.SetPosition(_pos);
     triangleEmitter_.SetPosition(_pos);
     lightPillarEmitter_.SetPosition(_pos);
 
+    // 生成
     emitter_.GenerateParticles();
     triangleEmitter_.GenerateParticles();
     lightPillarEmitter_.GenerateParticles();

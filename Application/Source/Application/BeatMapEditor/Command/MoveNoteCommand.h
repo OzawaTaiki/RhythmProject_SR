@@ -7,6 +7,8 @@
 #include <cstdint>
 
 class BeatMapEditor; // 前方宣言
+
+// ノートを移動するコマンド
 class MoveNoteCommand : public ICommand
 {
 public:

@@ -22,6 +22,7 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Features/ColorMask/ColorMask.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
+#include <Features/WaveformDisplay/WaveformAnalyzer.h>
 
 
 GameScene::GameScene()
@@ -124,8 +125,6 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
-    settingMenu_->SetCamera(&SceneCamera_);
-    //pauseMenu_->SetSeetingMenu(settingMenu_.get()); // ポーズメニューに設定メニューをセット
 
     gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
@@ -174,6 +173,10 @@ void GameScene::Initialize(SceneData* _sceneData)
     depthBasedOutLine_->SetCamera(&SceneCamera_);
     depthBasedOutLine_->SetData(&depthBasedOutLineData_);
 
+    spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
+    spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
+
+    audioSpectrum_ = AudioSpectrum();
 }
 
 void GameScene::Update()
@@ -229,6 +232,11 @@ void GameScene::Update()
     gameEnvironment_->Update(deltaTime);
     gameUI_->Update(gameCore_->GetCombo()); // コンボ値をUIに渡す
     settingMenu_->Update();
+
+    float elapsedTime = gameMusic_->GetElapsedTime();
+    float scale = WaveformAnalyzer::GetRMSAtTime(gameMusic_->GetSoundInstance().get(), elapsedTime);
+    spectrumTextureGenerator_->Generate(audioSpectrum_.GetSpectrumAtTime(elapsedTime), scale, 48);
+    spectrumTextureGenerator_->ReserveClear();
 
 #pragma endregion // Application
 
@@ -396,15 +404,12 @@ bool GameScene::IsComplateLoadBeatMap()
 
         if (gameMusic_)
         {
-            beatManager_->SetGameMusic(gameMusic_.get());
             gameCore_->SetGameMusic(gameMusic_.get());
             gameInputManager_->SetGameMusic(gameMusic_.get()); // 入力管理に音声インスタンスを設定
-
-            //pauseMenu_->SetCallBacks(
-            //    [this]() { gameMusic_->ResumeWithRewind(Setting::current_.musicVolume); }, // 一時停止コールバック
-            //    [this]() { Retry(); }, // リトライコールバック
-            //    [this]() { ToTitle(); } // タイトルに戻るコールバック
-            //);
+            spectrumTextureGenerator_->MakeLogRanges(gameMusic_->GetSoundInstance()->GetSampleRate(), 60.0f, 6000.0f);
+            gameEnvironment_->SetSpectrumTextureHandle(spectrumTextureGenerator_->GetTextureHandle());
+            audioSpectrum_.SetAudioData(gameMusic_->GetSoundInstance()->GetAudioData());
+            audioSpectrum_.SetSampleRate(gameMusic_->GetSoundInstance()->GetSampleRate());
         }
         else
         {
@@ -434,6 +439,7 @@ void GameScene::UpdateGameStartOffset()
         isWatingForStart_ = false;
         waitTimer_ = 0.0f;
         // ゲーム開始
+        beatManager_->SetMusicVoiceInstance(gameMusic_->GetVoiceInstance());
         beatManager_->Start();
         gameCore_->Start();
 

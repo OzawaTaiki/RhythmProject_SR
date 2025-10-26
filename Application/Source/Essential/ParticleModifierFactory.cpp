@@ -18,7 +18,6 @@ ParticleModifierFactory::ParticleModifierFactory()
     modifierCreators_["HitParticleModifier"]        = []() { return std::make_unique<HitParticleModifier>(); };
     modifierCreators_["HitCircleParticleModifier"]  = []() { return std::make_unique<HitCircleParticleModifier>(); };
     modifierCreators_["RotationBasedMovementModifier"] = []() { return std::make_unique<RotationBasedMovementModifier>(); };
-    modifierCreators_["LightPillarModifier"]        = []() { return std::make_unique<LightPillarModifier>(); };
     modifierCreators_["SpeakerRingModifier"]        = []() { return std::make_unique<SpeakerRingModifier>(); };
     modifierCreators_["SpeakerParticleModifier"]    = []() { return std::make_unique<SpeakerParticleModifier>(); };
 }

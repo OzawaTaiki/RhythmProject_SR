@@ -20,6 +20,7 @@
 #include <System/Audio/AudioSystem.h>
 #include <System/Audio/SoundInstance.h>
 #include <system/Audio/VoiceInstance.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
 
 #include <Features/Model/SkyBox.h>
 #include <Features/PostEffects/GrayScale.h>
@@ -72,13 +73,9 @@ private:
     // テキストジェネレータ
     TextGenerator textGenerator_;
 
-    struct SpectrumRing
-    {
-        std::unique_ptr<SpectrumTextureGenerator> textureGenerator_;
-        uint32_t textureHandle_ = UINT32_MAX;
-    };
-    std::vector<SpectrumRing> spectrumRings_;
-    std::map<uint32_t, uint32_t> spectrumTextureHandles_;
+    AudioSpectrum audioSpectrum_; 
+
+    std::unique_ptr<SpectrumTextureGenerator> textureGenerator_;
 
 #ifdef _DEBUG
     void ImGui();

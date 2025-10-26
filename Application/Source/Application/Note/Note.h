@@ -102,6 +102,8 @@ public:
     void SetHoldEnd(bool _isHoldEnd);
     bool IsHoldEnd() const { return isHoldEnd_; }
 
+    void SetJudgePosition(const Vector3& _judgePosition) { judgePosition_ = _judgePosition; }
+
     void SetHoldDuration(float _holdDuration) { holdDuration_ = _holdDuration; }
     float GetHoldDuration() const { return holdDuration_; }
 
@@ -109,6 +111,7 @@ private:
 
     std::unique_ptr<ObjectModel> noteBridge_ = nullptr; // ノーツブリッジ
 
+    Vector3 judgePosition_ = { 0,0,0 }; // 判定位置
     bool isHoldEnd_ = false; // ロングノート終端かどうか
     float holdDuration_ = 0.0f; // ホールド時間
 

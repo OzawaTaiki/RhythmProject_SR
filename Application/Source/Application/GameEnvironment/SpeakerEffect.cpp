@@ -31,8 +31,11 @@ void SpeakerEffect::PlaySpeakerEffect(ObjectModel* _parent)
     triangleParticleEmitter_.SetParentTransform(worldTransform);
     rectanglleParticleEmitter_.SetParentTransform(worldTransform);
 
-    // 生成
-    ringEmitter_.GenerateParticles();
+    ringEmitter_.SetParentTransform(_parent->GetWorldTransform());
+    triangleParticleEmitter_.SetParentTransform(_parent->GetWorldTransform());
+    rectanglleParticleEmitter_.SetParentTransform(_parent->GetWorldTransform());
+
+    //ringEmitter_.GenerateParticles();
     triangleParticleEmitter_.GenerateParticles();
     rectanglleParticleEmitter_.GenerateParticles();
 }

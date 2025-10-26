@@ -304,13 +304,14 @@ void GameScene::Draw()
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("FeedbackEffect");
     feedbackEffect_->Draw();
-    particleSystem_->DrawParticles();
 
     LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
 
     LayerSystem::SetLayer("PauseMenu");
     pauseMenu_->Draw();
     settingMenu_->Draw();
+
+    LayerSystem::SetLayer("FeedbackEffect");
 
 }
 

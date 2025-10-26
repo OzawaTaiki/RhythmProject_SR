@@ -1,6 +1,7 @@
 #include "TitleScene.h"
 #include <Features/Scene/Manager/SceneManager.h>
 #include <Features/Event/EventManager.h>
+#include <Framework/LayerSystem/LayerSystem.h>
 #include <System/Audio/AudioSystem.h>
 #include <Features/Model/Manager/ModelManager.h>
 
@@ -40,6 +41,8 @@ void TitleScene::Initialize(SceneData* _sceneData)
 
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
+    LayerSystem::CreateLayer("main", 0);
+    LayerSystem::CreateLayer("option", 1);
 
     // BPM検出器の初期化
     //bpmDetector_ = std::make_unique<BPMDetector>();
@@ -74,6 +77,9 @@ void TitleScene::Update()
 
 #endif // _DEBUG
 
+    particleSystem_->Update();
+    settingMenu_->Update();
+
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
     else //そうじゃないときは0
@@ -85,6 +91,11 @@ void TitleScene::Update()
         input_->IsKeyTriggered(DIK_O))
     {
         EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
+    }
+    if (input_->IsKeyTriggered(DIK_F10) &&
+        input_->IsKeyPressed(DIK_F1))
+    {
+        SceneManager::ReserveScene("Sample", nullptr);
     }
     if (input_->IsKeyTriggered(DIK_RETURN))
     {
@@ -104,13 +115,12 @@ void TitleScene::Update()
         SceneCamera_.UpdateMatrix();
     }
 
-    particleSystem_->Update();
-    settingMenu_->Update();
 
 }
 
 void TitleScene::Draw()
 {
+    LayerSystem::SetLayer("main");
     ModelManager::GetInstance()->PreDrawForObjectModel();
 
     spectrumRing_->Draw(&SceneCamera_);
@@ -119,6 +129,9 @@ void TitleScene::Draw()
     settingMenu_->Draw();
     textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
     textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
+
+    LayerSystem::SetLayer("option");
+    settingMenu_->Draw();
 }
 
 void TitleScene::DrawShadow(){}

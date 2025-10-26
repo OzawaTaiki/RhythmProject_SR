@@ -42,17 +42,17 @@ void TitleScene::Initialize(SceneData* _sceneData)
 
 
     // BPM検出器の初期化
-    bpmDetector_ = std::make_unique<BPMDetector>();
-    bpmDetector_->SetMinBPM(60.0f);
-    bpmDetector_->SetMaxBPM(200.0f);
+    //bpmDetector_ = std::make_unique<BPMDetector>();
+    //bpmDetector_->SetMinBPM(60.0f);
+    //bpmDetector_->SetMaxBPM(200.0f);
 
     // 譜面データを読み込んでBPMを持ってくるがいいかもしれない
     // SoundInstanceからBPMを検出  精度はあまり高くない(要検討)
-    float detectedBPM = bpmDetector_->DetectBPM(soundInstance_.get());
+    //float detectedBPM = bpmDetector_->DetectBPM(soundInstance_.get());
 
     // ビートマネージャーの初期化（検出されたBPMを使用）
     beatManager_ = std::make_unique<BeatManager>();
-    beatManager_->Initialize(detectedBPM);
+    beatManager_->Initialize(100.0f);
     beatManager_->SetMusicVoiceInstance(voiceInstance_);
 
     spectrumRing_ = std::make_unique<SpectrumRing>();

@@ -54,7 +54,7 @@ void SpectrumRing::Update(float _elapsedTime)
     cycleTextureIndices_.push_front(index);
 
     auto spectrum = audioSpectrum_.GetSpectrumAtTime(_elapsedTime);
-    float min, max;
+    //float min, max;
     //WaveformAnalyzer::GetRawWaveformMaxMin(musicInstance_.get(), _elapsedTime, 5.0f, max, min);
     float scale =
         //(std::abs(max) + std::abs(min)) / 2.0f;

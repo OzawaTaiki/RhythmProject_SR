@@ -12,7 +12,7 @@
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
 #include <Application/BeatsManager/BeatManager.h>
-#include <Features/BPMDetector/BPMDetector.h>
+//#include <Features/BPMDetector/BPMDetector.h>
 
 /// <summary>
 /// タイトル画面のシーンクラス。
@@ -69,11 +69,7 @@ private:
     std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
 
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
-    std::unique_ptr<BPMDetector> bpmDetector_ = nullptr; // BPM検出器
+    //std::unique_ptr<BPMDetector> bpmDetector_ = nullptr; // BPM検出器
 
-    //std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
-
-    std::shared_ptr<SoundInstance> soundInstance_ = nullptr; // 楽曲のサウンドインスタンス
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr; // ボイスインスタンス
 
 };

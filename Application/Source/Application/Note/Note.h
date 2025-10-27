@@ -107,6 +107,8 @@ public:
     void SetHoldDuration(float _holdDuration) { holdDuration_ = _holdDuration; }
     float GetHoldDuration() const { return holdDuration_; }
 
+    void HeadPressed() { isHeadPressed_ = true; }
+
 private:
 
     std::unique_ptr<ObjectModel> noteBridge_ = nullptr; // ノーツブリッジ
@@ -114,5 +116,7 @@ private:
     Vector3 judgePosition_ = { 0,0,0 }; // 判定位置
     bool isHoldEnd_ = false; // ロングノート終端かどうか
     float holdDuration_ = 0.0f; // ホールド時間
+    bool isHeadPressed_ = false; // ヘッド(始端ノーツ)が押されているか
+
 
 };

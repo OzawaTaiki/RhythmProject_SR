@@ -142,9 +142,9 @@ private:
     // 通常ノーツの判定
     JudgeType ProcessNormalNote(Note* _note, const InputDate& _inputData);
     // ホールドノーツの判定
-    JudgeType ProcessHoldNote(Note* _note, const InputDate& _inputData);
+    JudgeType ProcessHoldNote(Note* _note, const InputDate& _inputData,Lane* _lane);
     // ホールドエンドノーツの判定
-    JudgeType ProcessHoldEndNote(Note* _note, const InputDate& _inputData);
+    JudgeType ProcessHoldEndNote(Note* _note, const InputDate& _inputData, Lane* _lane);
     // コンボの更新
     void UpdateCombo(JudgeType _result);
     // 判定結果の記録
@@ -152,31 +152,31 @@ private:
 
 
 private:
-    // ホールド状態
-    struct HoldState
-    {
-        bool isHolding = false;// ホールド中かどうか
-        int32_t laneIndex = -1;// ホールド中のレーンインデックス
+    //// ホールド状態
+    //struct HoldState
+    //{
+    //    bool isHolding = false;// ホールド中かどうか
+    //    int32_t laneIndex = -1;// ホールド中のレーンインデックス
 
-        // ホールド開始
-        void StartHold(int32_t lane)
-        {
-            isHolding = true;
-            laneIndex = lane;
-        }
+    //    // ホールド開始
+    //    void StartHold(int32_t lane)
+    //    {
+    //        isHolding = true;
+    //        laneIndex = lane;
+    //    }
 
-        void EndHold()
-        {
-            isHolding = false;
-            laneIndex = -1;
-        }
+    //    void EndHold()
+    //    {
+    //        isHolding = false;
+    //        laneIndex = -1;
+    //    }
 
-        bool IsHoldingLane(int32_t lane) const
-        {
-            // ホールド中かつレーンが一致するかどうか
-            return isHolding && laneIndex == lane;
-        }
-    };
+    //    bool IsHoldingLane(int32_t lane) const
+    //    {
+    //        // ホールド中かつレーンが一致するかどうか
+    //        return isHolding && laneIndex == lane;
+    //    }
+    //};
 
 private:
 
@@ -217,7 +217,7 @@ private:
 
 
     // ホールド状態
-    HoldState holdState_ = {};
+    //HoldState holdState_ = {};
 
     std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス 弱参照
 

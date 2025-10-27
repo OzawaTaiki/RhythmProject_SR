@@ -256,7 +256,6 @@ void GameScene::Update()
 
     if (IsMusicEnd())
     {
-
         if (isTransitionToResultScene_)
         {
             auto data = std::make_unique<GameToResultData>();

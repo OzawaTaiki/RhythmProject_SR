@@ -1,5 +1,5 @@
 {
-    "newTap_NewEmitter": {
+    "hold_cube": {
         "BoxOffset_Max": {
             "x": 0.0,
             "y": 0.0,
@@ -46,7 +46,7 @@
         "blendMode": 1,
         "boxSize": {
             "x": 2.0,
-            "y": 4.0,
+            "y": 2.0,
             "z": 0.0
         },
         "cullBack": false,

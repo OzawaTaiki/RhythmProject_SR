@@ -99,7 +99,9 @@ void LongNote::Update(float _elapseTime, float _speed)
         else
             epos.z = targetPosition_.z + _speed * (targetTime_ - _elapseTime); // ホールド終了後は自分の位置まで
         */
-        float bridgeLength = std::min(holdDuration_, targetTime_ - _elapseTime);
+        float bridgeLength = holdDuration_;
+        if (isHeadPressed_ && holdDuration_ > targetTime_ - _elapseTime)
+            bridgeLength = targetTime_ - _elapseTime;
         epos.z -= _speed * (bridgeLength);
         Vector3 direction = epos - spos;
         // レーンマタギを実装したら必要
@@ -146,6 +148,8 @@ void LongNote::SetHoldEnd(bool _isHoldEnd)
         noteBridge_ = std::make_unique<ObjectModel>("noteBridge");
         noteBridge_->Initialize("pY1x1p01Plane");// y+向きpivot(010)
         noteBridge_->useQuaternion_ = true;
+
+        isHeadPressed_ = false;
 
         noteType_ = NoteType::HoldEnd; // ノーツタイプを設定
     }

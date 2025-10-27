@@ -51,6 +51,17 @@ public:
     /// /// <returns>削除したノーツの数</returns>
     int32_t DeleteNotesOutOfScreen(float _noteDeletePos);
 
+    /// <summary>
+    /// ホールド開始
+    /// </summary>
+    void StartHold();
+
+    /// <summary>
+    /// ホールド終了
+    /// </summary>
+    void EndHold();
+
+
 public: // 静的メンバ関数
 
     static void SetTotalWidth(float width) { totalWidth_ = width; }
@@ -85,7 +96,7 @@ private:
     Vector3 startPosition_; // レーンの開始位置 手前
     Vector3 endPosition_; // レーンの終了位置 奥
 
-
+    bool isHolding_ = false; // ホールド中かどうか
 private:
     static float laneLength_; // レーンの長さ
     static float totalWidth_; // レーンの合計幅

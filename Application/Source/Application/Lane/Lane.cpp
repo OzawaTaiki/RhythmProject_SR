@@ -29,7 +29,20 @@ void Lane::Initialize(const std::list<NoteData>& _noteDataList, int32_t _laneInd
 
 void Lane::Update(float _elapseTime, float _speed)
 {
-    for (auto it = notes_.begin(); it != notes_.end();)
+    auto it = notes_.begin();
+    if (isHolding_)
+    {
+        // ホールド中なら最初のノーツがホールド終端か確認してヘッドを押したことにする
+        if (it != notes_.end() && (*it)->GetNoteType() == NoteType::HoldEnd)
+        {
+            auto holdNote = std::dynamic_pointer_cast<LongNote>(*it);
+            if (holdNote)
+            {
+                holdNote->HeadPressed();
+            }
+        }
+    }
+    for (; it != notes_.end();)
     {
         auto& note = *it;
         if (note->IsJudged())
@@ -41,6 +54,7 @@ void Lane::Update(float _elapseTime, float _speed)
         note->Update(_elapseTime,_speed);
         ++it; // 次のノーツへ
     }
+
 }
 
 
@@ -87,6 +101,16 @@ int32_t Lane::DeleteNotesOutOfScreen(float _noteDeletePos)
     }
     return deleteCount; // 削除したノーツの数を返す
 
+}
+
+void Lane::StartHold()
+{
+    isHolding_ = true;
+}
+
+void Lane::EndHold()
+{
+    isHolding_ = false;
 }
 
 Vector3 Lane::GetLaneEndPosition(int32_t _laneIndex, float _judgeLine)

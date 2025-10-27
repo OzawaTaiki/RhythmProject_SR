@@ -139,10 +139,10 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
                 result = ProcessNormalNote(note, inputdata);
                 break;
             case NoteType::Hold:
-                result = ProcessHoldNote(note, inputdata);
+                result = ProcessHoldNote(note, inputdata, lane.get());
                 break;
             case NoteType::HoldEnd:
-                result = ProcessHoldEndNote(note, inputdata);
+                result = ProcessHoldEndNote(note, inputdata, lane.get());
                 break;
             default:
                 break;
@@ -172,7 +172,7 @@ JudgeType GameCore::ProcessNormalNote(Note* _note, const InputDate& _inputData)
     return JudgeType::None;
 }
 
-JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData)
+JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData, Lane* _lane)
 {
     // 押した瞬間だけ判定
     if (_inputData.state == KeyState::trigger)
@@ -181,7 +181,8 @@ JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData)
 
         if (result != JudgeType::None && result != JudgeType::Miss)
         {
-            holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
+            //holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
+            _lane->StartHold();
             Debug::Log("Hold Enable\n");
         }
 
@@ -191,13 +192,13 @@ JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData)
     return JudgeType::None;
 }
 
-JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData)
+JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData, Lane* _lane)
 {
     if (_inputData.state == KeyState::trigger)
     {
-        holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
+        _lane->StartHold();
     }
-    else if (holdState_.IsHoldingLane(_inputData.laneIndex))
+    else if (_lane->IsHolding()&&/*holdState_.IsHoldingLane(_inputData.laneIndex)*/true)
     {
         Debug::Log("Hold State is holding lane: " + std::to_string(_inputData.laneIndex) + "\n");
 
@@ -208,7 +209,8 @@ JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData)
         {
             JudgeType result = noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
 
-            holdState_.EndHold(); // ホールド状態を終了
+            _lane->EndHold();
+            //holdState_.EndHold(); // ホールド状態を終了
             // noneてことはブリッジ内なので
             if (result == JudgeType::None)
             {

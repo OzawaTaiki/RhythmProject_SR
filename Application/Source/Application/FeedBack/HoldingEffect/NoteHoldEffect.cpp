@@ -8,7 +8,7 @@ void NoteHoldEffect::Initialize()
 {
     emitter_.Initialize("PopEffect");
     emitter2_.Initialize("PopEffect2");
-    risingparticlesEmitter_.Initialize("newTap_NewEmitter");
+    risingparticlesEmitter_.Initialize("hold_cube");
 
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/SE/NoteHolding.wav");
 }
@@ -24,10 +24,10 @@ void NoteHoldEffect::Play(int32_t _laneIndex)
 
     emitter_.SetPosition(lanePos);
     emitter2_.SetPosition(lanePos);
-    risingparticlesEmitter_.SetPosition(lanePos);
+    Vector3 offset = { 0.0f, 1.0f, 0.0f };
+    risingparticlesEmitter_.SetPosition(lanePos + offset);
 
     emitter_.GenerateParticles();
     emitter2_.GenerateParticles(); // パーティクルを生成
     risingparticlesEmitter_.GenerateParticles();
-
 }

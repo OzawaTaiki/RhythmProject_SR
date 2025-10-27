@@ -42,4 +42,7 @@ private:
     // TODO : エミッタ名要確認
     ParticleEmitter emitter_; // パーティクルエミッタ
     ParticleEmitter emitter2_; // パーティクルエミッタ
+    ParticleEmitter risingparticlesEmitter_;
+
+
 };

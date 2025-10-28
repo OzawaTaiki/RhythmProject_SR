@@ -61,6 +61,8 @@ public:
     /// </summary>
     void EndHold();
 
+    bool IsHolding() const { return isHolding_; }
+
 
 public: // 静的メンバ関数
 

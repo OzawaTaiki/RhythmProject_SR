@@ -1,0 +1,55 @@
+{
+    "TitleCameraAnimation": {
+        "IsLooping": false,
+        "MaxPlayTime": 1.0,
+        "SequenceSize": 1,
+        "labels": [
+            "translate"
+        ],
+        "translate_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": -10.0
+                    }
+                }
+            },
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 0.4000000059604645,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": -7.0
+                    }
+                }
+            },
+            {
+                "easingType": 26,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 1.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 2.5,
+                        "y": 0.0,
+                        "z": -11.5
+                    }
+                }
+            }
+        ],
+        "translate_variableType": 2
+    }
+}

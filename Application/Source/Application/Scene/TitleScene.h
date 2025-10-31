@@ -8,20 +8,23 @@
 #include <System/Time/Stopwatch.h>
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <Features/TextRenderer/TextGenerator.h>
+#include <Features/Event/EventListener.h>
 
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
 #include <Application/BeatsManager/BeatManager.h>
+#include <Application/TitileUI.h>
+#include <Application/TItileCamera/TitleCamera.h>
 //#include <Features/BPMDetector/BPMDetector.h>
 
 /// <summary>
 /// タイトル画面のシーンクラス。
 /// </summary>
-class TitleScene : public BaseScene
+class TitleScene : public BaseScene, public iEventListener
 {
 public:
-    TitleScene() = default;
-    ~TitleScene() override = default;
+    TitleScene();
+    ~TitleScene() override;
 
     /// <summary>
     /// シーンの初期化処理。
@@ -44,9 +47,11 @@ public:
     void DrawShadow() override;
 
 
+    void OnEvent(const GameEvent& _event) override;
 private:
     // シーン関連
     Camera SceneCamera_ = {};
+    Camera camera2d_ = {};
     DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 
@@ -60,6 +65,8 @@ private:
     /// ---------------------------------
     ///     application
 
+    TitleCamera titleCamera_;
+
     std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
     std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
 
@@ -69,7 +76,9 @@ private:
     std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
 
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
-    //std::unique_ptr<BPMDetector> bpmDetector_ = nullptr; // BPM検出器
+
+    std::unique_ptr<TitileUI> titleUI_;
+
 
 
 };

@@ -107,6 +107,7 @@ private:
 
     // シーン関連
     Camera SceneCamera_ = {};
+    Camera camera2d_ = {};
     DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 

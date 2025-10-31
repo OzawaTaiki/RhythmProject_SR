@@ -63,21 +63,22 @@ void SpectrumRing::Update(float _elapsedTime)
     uint32_t nextIndex = cycleTextureIndices_.back();
     textureGenerators_[nextIndex]->ReserveClear();
 
-
-    if (beatManager_)
-    {
-        if(beatManager_->IsBeatTriggered())
-        {
-            for (size_t i = 1; i < rings_.size() - 1; ++i)
-            {
-                rings_[i]->euler_.z = rings_[i - 1]->euler_.z;
-            }
-        }
-    }
+    // 棒の位置は変わらない rot速度は一定間隔
+    // 1箇所当たり三本
+    // 1は最新 2，3は過去
+    // 過去は徐々に短くなる
+    // 過去は毎フレームは更新されない
+    // じゃあどのタイミングで更新するか
+    // TODO : わからん
+    //
 
      //TODO : リングの回転
-    const float rotationSpeedPerSec = std::numbers::pi_v<float>;
-    //rings_[0]->euler_.z = rotationSpeedPerSec * _elapsedTime;
+    const float rotationSpeedPerFrame = std::numbers::pi_v<float> *2.0f / static_cast<float>(barCount * 3);
+    rings_[0]->euler_.z += rotationSpeedPerFrame;
+    for (size_t i = 1; i < rings_.size(); ++i)
+    {
+        rings_[i]->euler_.z = rings_[i - 1]->euler_.z + (rotationSpeedPerFrame * static_cast<float>(barCount * 3 / numRings));
+    }
 
     for (auto& ring : rings_)
     {
@@ -87,11 +88,12 @@ void SpectrumRing::Update(float _elapsedTime)
 
 void SpectrumRing::Draw(Camera* camera)
 {
-    for (size_t i = 0; i < 1; ++i)
+    for (size_t i = 0; i < numRings; ++i)
     {
         uint32_t handleIndex = cycleTextureIndices_[i];
         rings_[i]->Draw(camera, textureHandles_[handleIndex], Vector4(1, 1, 1, 0.1f));
     }
+    rings_[numRings]->Draw(camera);
 }
 
 void SpectrumRing::CreateRings()
@@ -108,8 +110,17 @@ void SpectrumRing::CreateRings()
         auto model = std::make_unique<ObjectModel>(name);
         model->Initialize(priRing.Generate(name));
         model->GetMaterial()->SetEnableLighting(false);
+        model->GetMaterial()->GetUVTransform().SetUScale(3.0f);
         rings_.emplace_back(std::move(model));
     }
+
+    //  中のリング
+    Ring innerRing(0.0f, innerRadius);
+    innerRing.SetDivide(256);
+    auto innerModel = std::make_unique<ObjectModel>("spectrumInnerRing");
+    innerModel->Initialize(innerRing.Generate("spectrumInnerRing"));
+    innerModel->GetMaterial()->SetEnableLighting(false);
+    rings_.emplace_back(std::move(innerModel));
 }
 
 void SpectrumRing::CreateTextureGenerators()

@@ -330,3 +330,5 @@ FodyWeavers.xsd
 # VSCode settings
 .vscode/
 nul
+
+.claude/

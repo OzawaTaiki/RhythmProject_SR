@@ -133,6 +133,9 @@
     <Filter Include="Application\Scene\Data">
       <UniqueIdentifier>{b70322d9-5112-44a6-ac87-505f780bc756}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\TitleCamera">
+      <UniqueIdentifier>{cf37f00d-9f3d-4856-8a4d-e13d0325a81d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -297,6 +300,12 @@
     </ClCompile>
     <ClCompile Include="Source\Application\SpectrumRing\SpectrumRing.cpp">
       <Filter>Application\SpectrumRing</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\TitileUI.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\TItileCamera\TitleCamera.cpp">
+      <Filter>Application\TitleCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -485,6 +494,12 @@
     </ClInclude>
     <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h">
       <Filter>Application\SpectrumRing</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\TitileUI.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">
+      <Filter>Application\TitleCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

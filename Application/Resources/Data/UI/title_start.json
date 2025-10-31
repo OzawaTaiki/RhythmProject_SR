@@ -1,0 +1,60 @@
+{
+    "title_start": {
+        "collider": {
+            "parameters": {
+                "localCorners": [
+                    {
+                        "x": -270.0,
+                        "y": -100.0
+                    },
+                    {
+                        "x": 100.0,
+                        "y": -100.0
+                    },
+                    {
+                        "x": 50.0,
+                        "y": 100.0
+                    },
+                    {
+                        "x": -270.0,
+                        "y": 100.0
+                    }
+                ]
+            },
+            "transformMode": "Independent",
+            "type": "Quad"
+        },
+        "colliderType": 4,
+        "title_start_anchor": {
+            "x": 0.0,
+            "y": 0.5
+        },
+        "title_start_color": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        },
+        "title_start_directoryPath": "Resources/images/",
+        "title_start_isActive": 3452764417,
+        "title_start_isVisible": 265145601,
+        "title_start_label": "title_start",
+        "title_start_order": 10,
+        "title_start_pos": {
+            "x": 100.0,
+            "y": 0.0
+        },
+        "title_start_rotate": 0.0,
+        "title_start_size": {
+            "x": 200.0,
+            "y": 200.0
+        },
+        "title_start_textureName": "trapezoid.png",
+        "title_startbackgroundColor": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        }
+    }
+}

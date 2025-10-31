@@ -291,7 +291,7 @@ void SampleScene::Draw()
     Sprite::PreDraw();
     // スプライトの描画
     //sprite_->Draw(Vector4(1, 1, 1, 1));
-    textGenerator_.Draw(std::format(L"FPS: {:.2f}", Time::GetFramerate()), Vector2(10, 10), Vector4(1, 0, 0, 1));
+    //textGenerator_.Draw(std::format(L"FPS: {:.2f}", Time::GetFramerate()), Vector2(10, 10), Vector4(1, 0, 0, 1));
 
 }
 

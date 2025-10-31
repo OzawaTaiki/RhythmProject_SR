@@ -32,6 +32,7 @@
         "VolumeSlider_label": "VolumeSlider",
         "VolumeSlider_maxValue": 1.0,
         "VolumeSlider_minValue": 0.0,
+        "VolumeSlider_order": 10000,
         "VolumeSlider_pos": {
             "x": -128.0,
             "y": -64.0
@@ -51,6 +52,20 @@
         },
         "VolumeSlider_trackHeight": 10.0,
         "VolumeSlider_useStep": false,
-        "VolumeSlider_value": 0.5199999809265137
+        "VolumeSlider_value": 0.4350000023841858,
+        "collider": {
+            "parameters": {
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "localSize": {
+                    "x": 100.0,
+                    "y": 100.0
+                }
+            },
+            "transformMode": "UIDependent",
+            "type": "Rectangle"
+        }
     }
 }

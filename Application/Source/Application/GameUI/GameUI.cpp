@@ -21,6 +21,10 @@ void GameUI::Update(int32_t _combo)
 
 void GameUI::Draw()
 {
+    // コンボが0のときは表示しない
+    if (comboValue_ == 0)
+        return;
+
     textGenerator_.Draw(std::format(L"{}", comboValue_), comboValueParam_);
     textGenerator_.Draw(L"Combo", comboTextParam_);
 }

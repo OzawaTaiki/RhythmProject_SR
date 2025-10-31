@@ -1,0 +1,29 @@
+{
+    "title_optionsParent": {
+        "title_optionsParent_anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "title_optionsParent_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 0.35135138034820557,
+            "z": 0.35135138034820557
+        },
+        "title_optionsParent_directoryPath": "Resources/images/",
+        "title_optionsParent_isActive": 257,
+        "title_optionsParent_isVisible": 1,
+        "title_optionsParent_label": "title_optionsParent",
+        "title_optionsParent_order": 0,
+        "title_optionsParent_pos": {
+            "x": 200.0,
+            "y": 0.0
+        },
+        "title_optionsParent_rotate": 0.0,
+        "title_optionsParent_size": {
+            "x": 200.0,
+            "y": 200.0
+        },
+        "title_optionsParent_textureName": "white.png"
+    }
+}

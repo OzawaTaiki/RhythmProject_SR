@@ -100,9 +100,11 @@ void GameCore::Draw(const Camera* _camera)
         }
     }
     // 判定ラインの描画
+#ifdef _DEBUG
     LineDrawer::GetInstance()->RegisterPoint(Vector3(-4, 0, 0), Vector3(4, 0, 0));
 
     noteJudge_->DrawJudgeLine();
+#endif // _DEBUG
 
 }
 

@@ -23,6 +23,7 @@
 #include <Features/ColorMask/ColorMask.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
+#include <Features/UI/Collider/UICollisionManager.h>
 
 
 GameScene::GameScene()
@@ -54,10 +55,14 @@ void GameScene::Initialize(SceneData* _sceneData)
     SceneCamera_.UpdateMatrix();
     debugCamera_.Initialize();
 
+    camera2d_.Initialize(CameraType::Orthographic);
+
+
 
     lineDrawer_ = LineDrawer::GetInstance();
     lineDrawer_->Initialize();
     lineDrawer_->SetCameraPtr(&SceneCamera_);
+    lineDrawer_->SetCameraPtr2D(&camera2d_);
 
     input_ = Input::GetInstance();
 
@@ -66,7 +71,6 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     lightGroup_ = std::make_shared<LightGroup>();
     lightGroup_->Initialize();
-
 
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
@@ -201,8 +205,6 @@ void GameScene::Update()
             gameMusic_->Pause(); // ノート更新が無効なら音楽を一時停止
     }
 
-    //depthBasedOutLineData_.ImGui();
-
 #endif // _DEBUG
 
 #pragma region Application
@@ -239,6 +241,7 @@ void GameScene::Update()
     spectrumTextureGenerator_->ReserveClear();
 
 #pragma endregion // Application
+    UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
 
     if (enableDebugCamera_)
     {
@@ -285,30 +288,36 @@ void GameScene::Draw()
     ModelManager::GetInstance()->PreDrawForObjectModel();
 
     LayerSystem::SetLayer("GameEnvironment");
+    {
 
-    gameEnvironment_->Draw(&SceneCamera_);
+        gameEnvironment_->Draw(&SceneCamera_);
 
-    //LayerSystem::ApplyPostEffect("GameEnvironment", "effect", boxFilter_.get());
-    feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+        feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+    }
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("GameCore");
-    gameCore_->Draw(&SceneCamera_);
+    {
+        gameCore_->Draw(&SceneCamera_);
 
-    Sprite::PreDraw();
+        Sprite::PreDraw();
 
-    gameUI_->Draw(); // UIの描画
+        gameUI_->Draw(); // UIの描画
+        LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
+    }
 
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
-    LayerSystem::SetLayer("FeedbackEffect");
-    feedbackEffect_->Draw();
+    {
+        LayerSystem::SetLayer("FeedbackEffect");
+        feedbackEffect_->Draw();
 
-    LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
-
-    LayerSystem::SetLayer("PauseMenu");
-    pauseMenu_->Draw();
-    settingMenu_->Draw();
+    }
+    {
+        LayerSystem::SetLayer("PauseMenu");
+        pauseMenu_->Draw();
+        settingMenu_->Draw();
+    }
 
     LayerSystem::SetLayer("FeedbackEffect");
 

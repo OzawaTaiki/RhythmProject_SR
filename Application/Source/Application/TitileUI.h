@@ -69,6 +69,8 @@ private:
 
 private:
     bool isActive_ = true;
+    bool isExpanding_ = false; // ボタンが展開中かどうか
+    float currentTime_ = 0.0f;
 
     EventManager* eventManager_;
 
@@ -78,6 +80,8 @@ private:
     std::map<TitleUIElement, AnimationUIElement> animationUIElements_;
 
     std::unique_ptr<AnimationSequence> titleAnimationSequence_;
+    // ボタンが展開されるアニメーション
+    std::unique_ptr<AnimationSequence> buttonExpandAnimationSequence_;
 
     TitleUIElement animationTarget_ = TitleUIElement::StartButton;
 

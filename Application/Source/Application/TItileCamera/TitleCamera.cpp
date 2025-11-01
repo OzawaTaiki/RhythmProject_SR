@@ -1,6 +1,7 @@
 #include "TitleCamera.h"
 #include <Debug/ImguITools.h>
 #include <Features/Event/EventManager.h>
+#include <System/Input/Input.h>
 
 void TitleCamera::Initialize()
 {
@@ -9,10 +10,12 @@ void TitleCamera::Initialize()
     cameraAnimationSequence_ = std::make_unique<AnimationSequence>("TitleCameraAnimation");
     cameraAnimationSequence_->Initialize("Resources/Data/AnimSeq/");
 
+    camera_.translate_ = cameraAnimationSequence_->GetValueAtTime<Vector3>("translate", 0.0f);
 }
 
 void TitleCamera::Update(float _deltaTime)
 {
+#ifdef _DEBUG
     ImGuiTool::TimeLine("TitleCameraAnimation", cameraAnimationSequence_.get());
     ImGui::Begin("TitleCameraDebug", nullptr, ImGuiWindowFlags_NoTitleBar);
     if(ImGui::Checkbox("isAnimationPlaying", &isAnimationPlaying_))
@@ -23,6 +26,13 @@ void TitleCamera::Update(float _deltaTime)
         }
     }
     ImGui::End();
+#endif // _DEBUG
+
+    if(Input::GetInstance()->IsKeyTriggered(DIK_SPACE)||
+       Input::GetInstance()->IsKeyTriggered(DIK_RETURN))
+    {
+        PlayCameraAnimation();
+    }
 
     if (isAnimationPlaying_)
     {
@@ -30,6 +40,7 @@ void TitleCamera::Update(float _deltaTime)
         camera_.translate_ = cameraAnimationSequence_->GetValue<Vector3>("translate");
         if (cameraAnimationSequence_->IsEnd())
         {
+            isAnimationPlaying_ = false;
             EventManager::GetInstance()->DispatchEvent(GameEvent("TitleCameraAnimationEnd", nullptr));
         }
     }

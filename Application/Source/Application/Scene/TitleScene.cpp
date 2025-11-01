@@ -9,11 +9,13 @@
 TitleScene::TitleScene()
 {
     EventManager::GetInstance()->AddEventListener("RequestStartGame", this);
+    EventManager::GetInstance()->AddEventListener("RequestExitGame", this);
 }
 
 TitleScene::~TitleScene()
 {
     EventManager::GetInstance()->RemoveEventListener("RequestStartGame", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestExitGame", this);
 }
 
 void TitleScene::Initialize(SceneData* _sceneData)
@@ -157,8 +159,9 @@ void TitleScene::OnEvent(const GameEvent& _event)
     {
         SceneManager::ReserveScene("GameScene", nullptr);
     }
-    if (_event.GetEventType() == "PlayCameraAnimation")
+    else if (_event.GetEventType() == "RequestExitGame")
     {
-        titleCamera_.PlayCameraAnimation();
+        PostQuitMessage(0);  // Windows APIでアプリ終了
     }
+
 }

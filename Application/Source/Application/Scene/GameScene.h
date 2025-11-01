@@ -80,8 +80,6 @@ public:
 
 private:
 
-    void GenerateModels();
-
     /// <summary>
     /// 譜面データの読み込みを待機する
     /// </summary>

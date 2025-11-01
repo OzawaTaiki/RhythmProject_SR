@@ -34,10 +34,13 @@ void SampleFramework::Initialize(const std::wstring& _winTitle)
 
     Setting::Load();
 
+    GenerateModels();
+
     AudioSystem::GetInstance()->SetMasterVolume(Setting::current_.masterVolume);
 
+
     // 最初のシーンで初期化
-    sceneManager_->Initialize("GameScene");
+    sceneManager_->Initialize("TitleScene");
 }
 
 void SampleFramework::Update()
@@ -101,4 +104,55 @@ void SampleFramework::Finalize()
 
     Time_MT::GetInstance()->Finalize();
     Framework::Finalize();
+}
+
+void SampleFramework::GenerateModels()
+{// 2x2 y+向き
+    Plane plane;
+    plane.SetSize(Vector2(1.0f, 1.0f) * 2);
+    plane.SetNormal(Vector3(0, 1, 0));
+    plane.SetPivot(Vector3(0, 0, 0));
+
+    plane.Generate("pY1x1Plane");
+
+
+    Plane plane_nz1x1;
+    plane.SetSize(Vector2(1.0f, 1.0f));
+    plane.SetNormal(Vector3(0, 1, 0));
+    plane.SetPivot(Vector3(0, 0, 0));
+
+    plane.Generate("pZ1x1Plane");
+
+    Plane plane_py0n1;
+    plane_py0n1.SetSize(Vector2(1.0f, 1.0f) * 2);
+    plane_py0n1.SetNormal(Vector3(0, 0, -1));
+    plane_py0n1.SetPivot(Vector3(0, -1, 0));
+    plane_py0n1.SetFlipV(true);
+
+    plane_py0n1.Generate("plane_py0n1");
+
+    Plane plane_py01;
+    plane_py01.SetSize(Vector2(1.0f, 1.0f));
+    plane_py01.SetNormal(Vector3(0, 1, 0));
+    plane_py01.SetPivot(Vector3(0, 1, 0));
+    plane_py01.SetFlipV(true);
+    plane_py01.Generate("pY1x1p01Plane");// y+向き 1x1 pivot(0,1,0)
+
+    // ほそ長いやつ
+    Plane plane2;
+    plane2.SetSize(Vector2(0.1f, 0.7f) * 5.0f);
+    plane2.SetNormal(Vector3(0, 0, -1));
+    plane2.SetPivot(Vector3(0, 0, 0));
+
+    plane2.Generate("nZ0.1x0.7Plane");
+
+
+    Triangle triangle;
+    triangle.SetNormal(Vector3(0, 0, -1));
+    triangle.SetVertices({
+        Vector3(0, 0.5f, 0),
+        Vector3(0.5f, -0.5f, 0),
+        Vector3(-0.5f, -0.5f, 0)
+                         });
+    triangle.Generate("nZ1_1Triangle");
 }

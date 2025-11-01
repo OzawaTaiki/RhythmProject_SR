@@ -1,0 +1,77 @@
+{
+    "title_dummyButton": {
+        "collider": {
+            "parameters": {
+                "independentRadius": 140.0,
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "transformMode": "Independent",
+            "type": "Circle"
+        },
+        "colliderType": 1,
+        "defaultColor": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "focusedColor": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 0.800000011920929
+        },
+        "hoverColor": {
+            "w": 1.0,
+            "x": 0.8999999761581421,
+            "y": 0.8999999761581421,
+            "z": 0.8999999761581421
+        },
+        "pressedColor": {
+            "w": 1.0,
+            "x": 0.699999988079071,
+            "y": 0.699999988079071,
+            "z": 0.699999988079071
+        },
+        "selectedColor": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 1.0
+        },
+        "title_dummyButton_anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "title_dummyButton_color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "title_dummyButton_directoryPath": "Resources/images/",
+        "title_dummyButton_isActive": 3452764417,
+        "title_dummyButton_isVisible": 13487361,
+        "title_dummyButton_label": "title_dummyButton",
+        "title_dummyButton_order": 55,
+        "title_dummyButton_pos": {
+            "x": 292.0,
+            "y": -5.0
+        },
+        "title_dummyButton_rotate": 0.0,
+        "title_dummyButton_size": {
+            "x": 10.0,
+            "y": 10.0
+        },
+        "title_dummyButton_textureName": "white.png",
+        "title_dummyButtonbackgroundColor": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        }
+    }
+}

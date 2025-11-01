@@ -21,29 +21,62 @@ void TitileUI::Initialize()
     titleAnimationSequence_  = std::make_unique<AnimationSequence>("TitleUIAnimation");
     titleAnimationSequence_->Initialize("Resources/Data/AnimSeq/");
 
+    buttonExpandAnimationSequence_ = std::make_unique<AnimationSequence>("TitleUIExpand");
+    buttonExpandAnimationSequence_->Initialize("Resources/Data/AnimSeq/");
+
     uiGroup_ = std::make_unique<UIGroup>();
     uiGroup_->Initialize();
 
     InitializeUIElements();
-    isActive_ = true;
+    isActive_ = false;
+    isExpanding_= false;
+    currentTime_ = 0.0f;
 }
 
 void TitileUI::Update()
 {
-    if (!isActive_)
-        return;
-#ifdef _DEBUG
-    ImGuiTool::TimeLine("TitleUIAnimation", titleAnimationSequence_.get());
-#endif // _DEBUG
 
     float delta = 0.016f;
-    for (auto& [key, element] : animationUIElements_)
+    if (isExpanding_)
     {
-        UpdateAnimationUI(key, delta);
+        isActive_ = true;
+        currentTime_ += delta;
+        if (buttonExpandAnimationSequence_->GetMaxPlayTime() < currentTime_)
+        {
+            currentTime_ = buttonExpandAnimationSequence_->GetMaxPlayTime();
+            isExpanding_ = false;
+        }
+
+        auto ui = uiElements_[TitleUIElement::Background];
+        Vector2 size = buttonExpandAnimationSequence_->GetValueAtTime<Vector2>("backgroundScale", currentTime_);
+        ui->SetSize(size);
+        Vector2 pos = buttonExpandAnimationSequence_->GetValueAtTime<Vector2>("buttonPos", currentTime_);
+        auto button = animationUIElements_[TitleUIElement::StartParent];
+        button.uiElement->SetPos(button.basePos + pos);
     }
 
+    if (!isActive_)
+        return;
 
-    uiGroup_->Update();
+//#ifdef _DEBUG
+//    ImGuiTool::TimeLine("TitleUIAnimation", titleAnimationSequence_.get());
+//    ImGuiTool::TimeLine("TitleUIExpand", buttonExpandAnimationSequence_.get());
+//    ImGui::Begin("TitleUI::", nullptr, ImGuiWindowFlags_NoTitleBar);
+//    if (ImGui::Button("Init"))
+//        Initialize();
+//    ImGui::End();
+//
+//#endif // _DEBUG
+
+    if(!isExpanding_)
+    {
+        for (auto& [key, element] : animationUIElements_)
+        {
+            UpdateAnimationUI(key, delta);
+        }
+
+        uiGroup_->Update();
+    }
 }
 
 void TitileUI::Draw()
@@ -62,13 +95,13 @@ void TitileUI::OnEvent(const GameEvent& _event)
     }
     if (_event.GetEventType() == "TitleCameraAnimationEnd")
     {
+        isExpanding_ = true;
     }
 
 }
 
 void TitileUI::InitializeUIElements()
 {
-    //TODO : デフォコライダーとイベント時こらいだ―を用意してイベント発生時に入れ替える
     auto background = uiGroup_->CreateSprite("title_background");
 
     auto startParent = uiGroup_->CreateElement<UISprite>("title_startParent");
@@ -171,6 +204,11 @@ void TitileUI::InitializeUIElements()
     background->AddChild(startParent);
     startParent->AddChild(optionParent);
     optionParent->AddChild(exitParent);
+
+    // スタートボタンとリングの重なっている部分を無効化するためのダミーボタン
+    // なのでコールバックは設定しない
+    auto dummyButton = uiGroup_->CreateButton("title_dummyButton");
+    background->AddChild(dummyButton);
 
     uiElements_[TitleUIElement::Background]     = background;
     uiElements_[TitleUIElement::StartButton]    = startButton;

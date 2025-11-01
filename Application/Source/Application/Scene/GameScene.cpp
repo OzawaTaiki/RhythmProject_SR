@@ -23,6 +23,7 @@
 #include <Features/ColorMask/ColorMask.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
+#include <Features/UI/Collider/UICollisionManager.h>
 
 
 GameScene::GameScene()
@@ -54,10 +55,14 @@ void GameScene::Initialize(SceneData* _sceneData)
     SceneCamera_.UpdateMatrix();
     debugCamera_.Initialize();
 
+    camera2d_.Initialize(CameraType::Orthographic);
+
+
 
     lineDrawer_ = LineDrawer::GetInstance();
     lineDrawer_->Initialize();
     lineDrawer_->SetCameraPtr(&SceneCamera_);
+    lineDrawer_->SetCameraPtr2D(&camera2d_);
 
     input_ = Input::GetInstance();
 
@@ -67,12 +72,10 @@ void GameScene::Initialize(SceneData* _sceneData)
     lightGroup_ = std::make_shared<LightGroup>();
     lightGroup_->Initialize();
 
-
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
     ///---------------------------------
     /// Application
-    GenerateModels();
 
     std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
     gameMode_ = GameMode::Normal;
@@ -201,8 +204,6 @@ void GameScene::Update()
             gameMusic_->Pause(); // ノート更新が無効なら音楽を一時停止
     }
 
-    //depthBasedOutLineData_.ImGui();
-
 #endif // _DEBUG
 
 #pragma region Application
@@ -239,6 +240,7 @@ void GameScene::Update()
     spectrumTextureGenerator_->ReserveClear();
 
 #pragma endregion // Application
+    UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
 
     if (enableDebugCamera_)
     {
@@ -285,30 +287,36 @@ void GameScene::Draw()
     ModelManager::GetInstance()->PreDrawForObjectModel();
 
     LayerSystem::SetLayer("GameEnvironment");
+    {
 
-    gameEnvironment_->Draw(&SceneCamera_);
+        gameEnvironment_->Draw(&SceneCamera_);
 
-    //LayerSystem::ApplyPostEffect("GameEnvironment", "effect", boxFilter_.get());
-    feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+        feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+    }
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("GameCore");
-    gameCore_->Draw(&SceneCamera_);
+    {
+        gameCore_->Draw(&SceneCamera_);
 
-    Sprite::PreDraw();
+        Sprite::PreDraw();
 
-    gameUI_->Draw(); // UIの描画
+        gameUI_->Draw(); // UIの描画
+        LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
+    }
 
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
-    LayerSystem::SetLayer("FeedbackEffect");
-    feedbackEffect_->Draw();
+    {
+        LayerSystem::SetLayer("FeedbackEffect");
+        feedbackEffect_->Draw();
 
-    LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
-
-    LayerSystem::SetLayer("PauseMenu");
-    pauseMenu_->Draw();
-    settingMenu_->Draw();
+    }
+    {
+        LayerSystem::SetLayer("PauseMenu");
+        pauseMenu_->Draw();
+        settingMenu_->Draw();
+    }
 
     LayerSystem::SetLayer("FeedbackEffect");
 
@@ -316,58 +324,6 @@ void GameScene::Draw()
 
 void GameScene::DrawShadow() {}
 
-void GameScene::GenerateModels()
-{// 2x2 y+向き
-    Plane plane;
-    plane.SetSize(Vector2(1.0f, 1.0f) * 2);
-    plane.SetNormal(Vector3(0, 1, 0));
-    plane.SetPivot(Vector3(0, 0, 0));
-
-    plane.Generate("pY1x1Plane");
-
-
-    Plane plane_nz1x1;
-    plane.SetSize(Vector2(1.0f, 1.0f));
-    plane.SetNormal(Vector3(0, 1, 0));
-    plane.SetPivot(Vector3(0, 0, 0));
-
-    plane.Generate("pZ1x1Plane");
-
-    Plane plane_py0n1;
-    plane_py0n1.SetSize(Vector2(1.0f, 1.0f) * 2);
-    plane_py0n1.SetNormal(Vector3(0, 0, -1));
-    plane_py0n1.SetPivot(Vector3(0, -1, 0));
-    plane_py0n1.SetFlipV(true);
-
-    plane_py0n1.Generate("plane_py0n1");
-
-    Plane plane_py01;
-    plane_py01.SetSize(Vector2(1.0f, 1.0f));
-    plane_py01.SetNormal(Vector3(0, 1, 0));
-    plane_py01.SetPivot(Vector3(0, 1, 0));
-    plane_py01.SetFlipV(true);
-    plane_py01.Generate("pY1x1p01Plane");// y+向き 1x1 pivot(0,1,0)
-
-
-
-    // ほそ長いやつ
-    Plane plane2;
-    plane2.SetSize(Vector2(0.1f, 0.7f) * 5.0f);
-    plane2.SetNormal(Vector3(0, 0, -1));
-    plane2.SetPivot(Vector3(0, 0, 0));
-
-    plane2.Generate("nZ0.1x0.7Plane");
-
-
-    Triangle triangle;
-    triangle.SetNormal(Vector3(0, 0, -1));
-    triangle.SetVertices({
-        Vector3(0, 0.5f, 0),
-        Vector3(0.5f, -0.5f, 0),
-        Vector3(-0.5f, -0.5f, 0)
-        });
-    triangle.Generate("nZ1_1Triangle");
-}
 
 bool GameScene::IsComplateLoadBeatMap()
 {

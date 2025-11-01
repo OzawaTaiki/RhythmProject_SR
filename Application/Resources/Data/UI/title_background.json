@@ -1,0 +1,28 @@
+{
+    "title_background": {
+        "title_background_anchor": {
+            "x": 0.0,
+            "y": 0.5
+        },
+        "title_background_color": {
+            "w": 0.11764705926179886,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "title_background_directoryPath": "Resources/images/",
+        "title_background_isActive": 257,
+        "title_background_isVisible": 1,
+        "title_background_label": "title_background",
+        "title_background_pos": {
+            "x": 0.0,
+            "y": 360.0
+        },
+        "title_background_rotate": 0.0,
+        "title_background_size": {
+            "x": 1280.0,
+            "y": 200.0
+        },
+        "title_background_textureName": "white.png"
+    }
+}

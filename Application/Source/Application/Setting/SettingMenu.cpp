@@ -90,6 +90,7 @@ void SettingMenu::Update()
     if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
     {
         isActive_ = false;
+        EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
         Debug::Log("SettingMenu closed\n");
     }
 

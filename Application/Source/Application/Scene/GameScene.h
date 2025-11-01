@@ -80,8 +80,6 @@ public:
 
 private:
 
-    void GenerateModels();
-
     /// <summary>
     /// 譜面データの読み込みを待機する
     /// </summary>
@@ -107,6 +105,7 @@ private:
 
     // シーン関連
     Camera SceneCamera_ = {};
+    Camera camera2d_ = {};
     DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 

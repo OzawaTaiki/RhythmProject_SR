@@ -84,7 +84,7 @@ void SettingsPreviewPanel::Initialize()
     previewSprite_ = std::make_shared<UISprite>();
     previewSprite_->Initialize("SettingsPreviewPanel");
     previewSprite_->SetTextureHandle(previewTextureHandle_);
-
+    previewSprite_->SetOrder(300);
 };
 
 void SettingsPreviewPanel::Update()
@@ -118,6 +118,8 @@ void SettingsPreviewPanel::Update()
 
 void SettingsPreviewPanel::Draw()
 {
+    LayerID id = LayerSystem::GetCurrentLayerID();
+
     // レンダーテクスチャを設定
     renderTexture_->SetRenderTexture();
     ModelManager::GetInstance()->PreDrawForObjectModel();
@@ -127,7 +129,7 @@ void SettingsPreviewPanel::Draw()
     // spriteに張るためにSRV状態に変更
     renderTexture_->ChangeRTVState(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 
-    LayerSystem::SetLayer("PauseMenu");
+    LayerSystem::SetLayer(id);
     previewSprite_->Draw();
 
     //musicToggleButton_->Draw();

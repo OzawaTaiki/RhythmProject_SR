@@ -37,6 +37,19 @@ void SelectScene::Initialize(SceneData* _sceneData)
     selectButton_->SetSize({ 200, 100 });
     selectButton_->SetAnchor({ 0.5f,0.5f });
     selectButton_->SetColor({ 0,0,0,1 });
+    selectButton_->SetOnClickEnd([]()
+                                 {
+                                     std::string file = FileDialog::OpenFile(FileFilterBuilder::GetFilterString(FileFilterBuilder::FilterType::DataFiles));
+                                     if (!file.empty())
+                                     {
+                                         std::string substr = StringUtils::GetAfterLast(file, "Resources");
+                                         file = "Resources" + substr;
+
+                                         auto data = std::make_unique<SelectToGameData>();
+                                         data->selectedBeatMapFilePath = file;
+                                         SceneManager::ReserveScene("GameScene", std::move(data));
+                                     }
+                                 });
 
 }
 
@@ -66,23 +79,6 @@ void SelectScene::Update()
 
     particleSystem_->Update();
 
-    if (selectButton_->IsMousePointerInside())
-    {
-        if (input_->IsMouseTriggered(0))
-        {
-            std::string file = FileDialog::OpenFile(FileFilterBuilder::GetFilterString(FileFilterBuilder::FilterType::DataFiles));
-            if (!file.empty())
-            {
-                std::string substr = StringUtils::GetAfterLast(file, "Resources");
-                file = "Resources" + substr;
-
-                auto data = std::make_unique<SelectToGameData>();
-                data->selectedBeatMapFilePath = file;
-                SceneManager::ReserveScene("GameScene", std::move(data));
-            }
-        }
-
-    }
 
     TextParam param;
     param.SetColor({ 1,1,1,1 })
@@ -90,10 +86,10 @@ void SelectScene::Update()
         .SetPosition({ 640, 200 })
         .SetScale({ 1.0f, 1.0f });
 
-    text_.Draw(L"せれくとしーん", param);
+    //text_.Draw(L"せれくとしーん", param);
 
     param.SetPosition({ 640, 360 });
-    text_.Draw(L"譜面ファイル選択(仮)", param);
+    //text_.Draw(L"譜面ファイル選択(仮)", param);
 }
 
 void SelectScene::Draw()

@@ -1,0 +1,82 @@
+{
+    "TitleUIExpand": {
+        "IsLooping": false,
+        "MaxPlayTime": 1.0,
+        "SequenceSize": 2,
+        "backgroundScale_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1280.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 18,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 0.9000000357627869,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1280.0,
+                        "y": 200.0
+                    }
+                }
+            }
+        ],
+        "backgroundScale_variableType": 2,
+        "buttonPos_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1500.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 2,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.30000001192092896,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1500.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            }
+        ],
+        "buttonPos_variableType": 2,
+        "labels": [
+            "backgroundScale",
+            "buttonPos"
+        ]
+    }
+}

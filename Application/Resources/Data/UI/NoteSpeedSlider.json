@@ -32,6 +32,7 @@
         "NoteSpeedSlider_label": "NoteSpeedSlider",
         "NoteSpeedSlider_maxValue": 100.0,
         "NoteSpeedSlider_minValue": 5.0,
+        "NoteSpeedSlider_order": 10000,
         "NoteSpeedSlider_pos": {
             "x": -128.0,
             "y": 0.0
@@ -51,6 +52,20 @@
         },
         "NoteSpeedSlider_trackHeight": 10.0,
         "NoteSpeedSlider_useStep": false,
-        "NoteSpeedSlider_value": 25.899999618530273
+        "NoteSpeedSlider_value": 48.70000076293945,
+        "collider": {
+            "parameters": {
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "localSize": {
+                    "x": 100.0,
+                    "y": 100.0
+                }
+            },
+            "transformMode": "UIDependent",
+            "type": "Rectangle"
+        }
     }
 }

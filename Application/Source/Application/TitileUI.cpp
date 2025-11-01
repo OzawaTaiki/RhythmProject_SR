@@ -6,11 +6,13 @@ TitileUI::TitileUI()
 {
     eventManager_=EventManager::GetInstance();
     eventManager_->AddEventListener("CloseOptionMenu", this);
+    eventManager_->AddEventListener("TitleCameraAnimationEnd", this);
 }
 
 TitileUI::~TitileUI()
 {
     eventManager_->RemoveEventListener("CloseOptionMenu", this);
+    eventManager_->RemoveEventListener("TitleCameraAnimationEnd", this);
 }
 
 void TitileUI::Initialize()
@@ -58,6 +60,9 @@ void TitileUI::OnEvent(const GameEvent& _event)
     {
         isActive_ = true;
     }
+    if (_event.GetEventType() == "TitleCameraAnimationEnd")
+    {
+    }
 
 }
 
@@ -94,6 +99,10 @@ void TitileUI::InitializeUIElements()
                                    });
 
         startParent->AddChild(startButton);
+
+        auto startIcon = uiGroup_->CreateSprite("title_startIcon");
+
+        startButton->AddChild(startIcon);
     }
 
     auto optionParent = uiGroup_->CreateElement<UISprite>("title_optionsParent");
@@ -122,18 +131,55 @@ void TitileUI::InitializeUIElements()
                                         isActive_ = false;
                                     });
         optionParent->AddChild(optionButton);
+
+        auto optionIcon = uiGroup_->CreateSprite("title_optionsIcon");
+        optionButton->AddChild(optionIcon);
+
+    }
+
+    auto exitParent = uiGroup_->CreateElement<UISprite>("title_exitParent");
+    auto exitButton = uiGroup_->CreateButton("title_exit");
+    {
+        exitButton->SetOnHoverEnter([this]()
+                                    {
+                                        // TODO : サイズ変更アニメーション
+                                        auto& element = animationUIElements_[TitleUIElement::ExitParent];
+                                        element.animationLabel = "positionOffset";
+                                        element.currentTime = 0.0f;
+                                        element.animating = true;
+                                    });
+
+        exitButton->SetOnHoverExit([this]()
+                                   {
+                                       // TODO : サイズ変更アニメーション戻し
+                                       auto& element = animationUIElements_[TitleUIElement::ExitParent];
+                                       element.animationLabel = "return_posOffset";
+                                       element.currentTime = 0.0f;
+                                       element.animating = true;
+                                   });
+
+        exitButton->SetOnClickEnd([this]()
+                                  {
+                                      eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
+                                  });
+        exitParent->AddChild(exitButton);
+
+        auto exitIcon = uiGroup_->CreateSprite("title_exitIcon");
+        exitButton->AddChild(exitIcon);
     }
 
     background->AddChild(startParent);
-    //background->AddChild(optionParent);
     startParent->AddChild(optionParent);
+    optionParent->AddChild(exitParent);
 
     uiElements_[TitleUIElement::Background]     = background;
     uiElements_[TitleUIElement::StartButton]    = startButton;
     uiElements_[TitleUIElement::OptionsButton]  = optionButton;
+    uiElements_[TitleUIElement::ExitButton]     = exitButton;
 
     animationUIElements_[TitleUIElement::StartParent]   = { startParent, startParent->GetPos() };
     animationUIElements_[TitleUIElement::OptionsParent] = { optionParent, optionParent->GetPos() };
+    animationUIElements_[TitleUIElement::ExitParent]    = { exitParent, exitParent->GetPos() };
 }
 
 void TitileUI::UpdateAnimationUI(TitleUIElement _elem, float _deltaTime)

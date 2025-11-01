@@ -48,7 +48,6 @@ void TitleScene::Initialize(SceneData* _sceneData)
 
     titleCamera_.Initialize();
 
-
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
     voiceInstance_ = soundInstance_->Play(0.5f, false);
 
@@ -143,8 +142,8 @@ void TitleScene::Draw()
     LayerSystem::SetLayer("buttons");
 
     titleUI_->Draw();
-    textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
-    textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
+    //textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
+    //textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
 
     LayerSystem::SetLayer("option");
     settingMenu_->Draw();
@@ -157,5 +156,9 @@ void TitleScene::OnEvent(const GameEvent& _event)
     if (_event.GetEventType() == "RequestStartGame")
     {
         SceneManager::ReserveScene("GameScene", nullptr);
+    }
+    if (_event.GetEventType() == "PlayCameraAnimation")
+    {
+        titleCamera_.PlayCameraAnimation();
     }
 }

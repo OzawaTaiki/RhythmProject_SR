@@ -1,0 +1,29 @@
+{
+    "title_startIcon": {
+        "title_startIcon_anchor": {
+            "x": 0.0,
+            "y": 0.5
+        },
+        "title_startIcon_color": {
+            "w": 1.0,
+            "x": 0.21621620655059814,
+            "y": 0.21621620655059814,
+            "z": 0.21621620655059814
+        },
+        "title_startIcon_directoryPath": "Resources/images/",
+        "title_startIcon_isActive": 257,
+        "title_startIcon_isVisible": 268435457,
+        "title_startIcon_label": "title_startIcon",
+        "title_startIcon_order": 51,
+        "title_startIcon_pos": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "title_startIcon_rotate": 0.0,
+        "title_startIcon_size": {
+            "x": 100.0,
+            "y": 100.0
+        },
+        "title_startIcon_textureName": "playIcon.png"
+    }
+}

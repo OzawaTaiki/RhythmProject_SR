@@ -68,7 +68,7 @@ private:
     bool GetActive() const { return isActive_; }
 
 private:
-    bool isActive_ = false;
+    bool isActive_ = true;
 
     EventManager* eventManager_;
 

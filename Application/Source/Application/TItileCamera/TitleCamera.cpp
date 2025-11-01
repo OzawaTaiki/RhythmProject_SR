@@ -1,5 +1,6 @@
 #include "TitleCamera.h"
 #include <Debug/ImguITools.h>
+#include <Features/Event/EventManager.h>
 
 void TitleCamera::Initialize()
 {
@@ -27,6 +28,10 @@ void TitleCamera::Update(float _deltaTime)
     {
         cameraAnimationSequence_->Update(_deltaTime);
         camera_.translate_ = cameraAnimationSequence_->GetValue<Vector3>("translate");
+        if (cameraAnimationSequence_->IsEnd())
+        {
+            EventManager::GetInstance()->DispatchEvent(GameEvent("TitleCameraAnimationEnd", nullptr));
+        }
     }
 
     camera_.Update();
@@ -35,6 +40,8 @@ void TitleCamera::Update(float _deltaTime)
 
 void TitleCamera::PlayCameraAnimation()
 {
+    if (isAnimationPlaying_) return;
+
     isAnimationPlaying_ = true;
     cameraAnimationSequence_->SetCurrentTime(0.0f);
 }

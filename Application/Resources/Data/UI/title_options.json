@@ -25,21 +25,51 @@
             "type": "Quad"
         },
         "colliderType": 4,
+        "defaultColor": {
+            "w": 1.0,
+            "x": 0.49806952476501465,
+            "y": 1.0,
+            "z": 0.49806952476501465
+        },
+        "focusedColor": {
+            "w": 1.0,
+            "x": 0.49803921580314636,
+            "y": 1.0,
+            "z": 0.49803921580314636
+        },
+        "hoverColor": {
+            "w": 1.0,
+            "x": 0.49803921580314636,
+            "y": 1.0,
+            "z": 0.49803921580314636
+        },
+        "pressedColor": {
+            "w": 1.0,
+            "x": 0.49803921580314636,
+            "y": 1.0,
+            "z": 0.49803921580314636
+        },
+        "selectedColor": {
+            "w": 1.0,
+            "x": 0.49803921580314636,
+            "y": 1.0,
+            "z": 0.49803921580314636
+        },
         "title_options_anchor": {
             "x": 0.0,
             "y": 0.5
         },
         "title_options_color": {
             "w": 1.0,
-            "x": 0.800000011920929,
-            "y": 0.800000011920929,
-            "z": 0.800000011920929
+            "x": 0.49806952476501465,
+            "y": 1.0,
+            "z": 0.49806952476501465
         },
         "title_options_directoryPath": "Resources/images/",
         "title_options_isActive": 3452764417,
         "title_options_isVisible": 265145601,
         "title_options_label": "title_options",
-        "title_options_order": 0,
+        "title_options_order": 30,
         "title_options_pos": {
             "x": 100.0,
             "y": 0.0

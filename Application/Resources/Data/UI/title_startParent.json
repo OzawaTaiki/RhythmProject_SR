@@ -6,9 +6,9 @@
         },
         "title_startParent_color": {
             "w": 1.0,
-            "x": 0.364705890417099,
-            "y": 1.0,
-            "z": 1.0
+            "x": 1.0,
+            "y": 0.49803924560546875,
+            "z": 0.49803924560546875
         },
         "title_startParent_directoryPath": "Resources/images/",
         "title_startParent_isActive": 257,

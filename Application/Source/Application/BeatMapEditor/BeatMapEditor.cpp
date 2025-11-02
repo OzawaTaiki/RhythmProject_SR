@@ -19,6 +19,7 @@
 
 
 #include <fstream>
+#include <Framework/LayerSystem/LayerSystem.h>
 
 // TODO いろいろ
 /// ブリッジに重ねてノーツを置けてしまう
@@ -83,6 +84,9 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(1280.0f - 600.0f, 96.0f)); // 波形の表示範囲を初期化
     waveformBackground_ = std::make_unique<UISprite>();
     waveformBackground_->Initialize("waveformBackground");
+
+    LayerSystem::CreateLayer("main", 0);
+    LayerSystem::CreateLayer("Lines", 2000);
 }
 
 void BeatMapEditor::Update()
@@ -105,12 +109,12 @@ void BeatMapEditor::Draw(const Camera* _camera)
 {
     // エディターの描画処理
 
+    LayerSystem::SetLayer("main");
     Sprite::PreDraw();
 
     // laneの描画
     DrawLanes();
     // グリッドラインの描画
-    DrawGridLines();
 
     // ノートの描画
     DrawNotes();
@@ -125,12 +129,15 @@ void BeatMapEditor::Draw(const Camera* _camera)
 
 
     DrawSelectionArea();
-    DrawTimeline();
 
     DrawUI();
 
-    // 波形の描画
     waveformBackground_->Draw();
+    LayerSystem::SetLayer("Lines");
+
+    DrawGridLines();
+    DrawTimeline();
+    // 波形の描画
     waveformDisplay_.Draw();
 }
 
@@ -252,7 +259,7 @@ void BeatMapEditor::DrawGridLines()
         if (y > timelineSprites_["background"]->GetPos().y)
             continue;
 
-        lineDrawer_->RegisterPoint(Vector2(gridLeftX, y), Vector2(gridRightX, y), gridColors[n]);
+        lineDrawer_->DebugDraw(Vector2(gridLeftX, y), Vector2(gridRightX, y), gridColors[n]);
     }
 }
 
@@ -618,7 +625,7 @@ void BeatMapEditor::DrawSelectionArea()
 
 void BeatMapEditor::DrawTimeline()
 {
-    lineDrawer_->RegisterPoint(timelineSprites_["start"]->GetPos(), timelineSprites_["end"]->GetPos(), { 1,1,1,1 });
+    lineDrawer_->DebugDraw(timelineSprites_["start"]->GetPos(), timelineSprites_["end"]->GetPos(), { 1,1,1,1 });
 
     timelineSprites_["background"]->Draw();
     timelineSprites_["start"]->Draw();

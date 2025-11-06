@@ -14,9 +14,10 @@ float TriggerEffects::baseSize_ = 0.3f;
 float TriggerEffects::centerSize_ = 1.0f;
 uint32_t TriggerEffects::textureHandle_ = 0;
 uint32_t TriggerEffects::gradationTexture_ = 0; // グラデーション用のテクスチャ
-Vector4 TriggerEffects::commonColor_ = Vector4(0.3f, 0.6f, 1.0f, 0.7f); // 共通の色
+Vector4 TriggerEffects::commonColor_ = Vector4(0.3f, 0.6f, 1.0f, 0.5f); // 共通の色
 
-ParticleEmitter TriggerEffects::emitter_; // ほそ長いのを出すエミッター
+ParticleEmitter TriggerEffects::cubePop_; // ほそ長いのを出すエミッター
+ParticleEmitter TriggerEffects::risingParticles_;
 ParticleEmitter TriggerEffects::triangleEmitter_; // 三角形を出すエミッター
 ParticleEmitter TriggerEffects::lightPillarEmitter_; // 光の柱を出すエミッター
 
@@ -27,8 +28,9 @@ void TriggerEffects::Initialize()
     gradationTexture_ = TextureManager::GetInstance()->Load("guradation.png");
 
     // エミッター初期化
-    emitter_.Initialize("TapEffect_01");
+    cubePop_.Initialize("TapEffect_01");
     triangleEmitter_.Initialize("TapEffect_Triangle");
+    risingParticles_.Initialize("tap_risingParticles");
     lightPillarEmitter_.Initialize("tap_light_pillar");
 }
 
@@ -46,7 +48,7 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
         param.lifeTime = 0.2f;
         param.position = _pos;
         param.position.y += 0.01f;
-        param.size = Vector3(centerSize_, centerSize_ * 0.4f, centerSize_);
+        param.size = Vector3(centerSize_, centerSize_ * 0.4f, centerSize_) * 1.3f * 0.5f;
         param.color = commonColor_;
         //param.rotate.x = std::numbers::pi_v<float> / 6.0f;
         param.speed = 0.0f;
@@ -56,14 +58,14 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
         particle->Initialize(param);
         circleParticle.push_back(particle);
 
-        param.size = Vector3(centerSize_, centerSize_* 0.4f, centerSize_) * 1.3f;
-        param.color = Vector4(0.6f, 0.8f, 1.0f, 0.7f);
+        param.size = Vector3(centerSize_, centerSize_ * 0.4f, centerSize_)*0.5f;
+        param.color = Vector4(0.6f, 0.8f, 1.0f, 0.3f);
 
         Particle* particle2 = new Particle();
         particle2->Initialize(param);
         circleParticle.push_back(particle2);
 
-        ParticleSystem::GetInstance()->AddParticles("Hit_circle", "pY1x1Plane",
+        ParticleSystem::GetInstance()->AddParticles("Hit_circle", "i0o1_PlanarRing",
             circleParticle, settings, textureHandle_, { "HitCircleParticleModifier" });
     }
 }
@@ -71,12 +73,14 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
 void TriggerEffects::EmitSurroundingParticles(const Vector3& _pos)
 {
     // 座標設定
-    emitter_.SetPosition(_pos);
+    Vector3 offset = { 0.0f, 1.0f, 0.0f };
+    cubePop_.SetPosition(_pos + offset);
     triangleEmitter_.SetPosition(_pos);
     lightPillarEmitter_.SetPosition(_pos);
-
+    risingParticles_.SetPosition(_pos);
     // 生成
-    emitter_.GenerateParticles();
+    cubePop_.GenerateParticles();
     triangleEmitter_.GenerateParticles();
+    risingParticles_.GenerateParticles();
     lightPillarEmitter_.GenerateParticles();
 }

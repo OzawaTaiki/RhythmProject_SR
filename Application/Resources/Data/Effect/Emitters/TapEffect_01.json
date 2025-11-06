@@ -11,74 +11,77 @@
             "z": 0.0
         },
         "BoxOffset_Random": false,
+        "BoxOffset_Value": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
         "RGB_Max": {
-            "x": 0.3137255012989044,
-            "y": 0.30588236451148987,
-            "z": 1.0
+            "x": 0.1609717160463333,
+            "y": 0.9854364395141602,
+            "z": 0.9950980544090271
         },
         "RGB_Min": {
-            "x": 0.36764705181121826,
-            "y": 1.0,
-            "z": 0.9256054759025574
+            "x": 0.039215683937072754,
+            "y": 0.32114478945732117,
+            "z": 0.4117647111415863
         },
         "RGB_Random": true,
         "RGB_Value": {
-            "x": 1.0,
-            "y": 1.0,
+            "x": 0.18747472763061523,
+            "y": 0.0,
             "z": 1.0
         },
         "SphereOffset_Max": 0.0,
         "SphereOffset_Min": 0.0,
         "SphereOffset_Random": false,
         "SphereOffset_Value": 0.0,
-        "alpha_Max": 1.0,
-        "alpha_Min": 0.0,
-        "alpha_Random": false,
-        "alpha_Value": 0.3199999928474426,
+        "alpha_Max": 0.6000000238418579,
+        "alpha_Min": 0.20000000298023224,
+        "alpha_Random": true,
+        "alpha_Value": 1.0,
         "billboard_x": false,
         "billboard_y": false,
         "billboard_z": false,
         "blendMode": 1,
         "boxSize": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0
+            "x": 2.0,
+            "y": 2.0,
+            "z": 0.0
         },
         "cullBack": false,
         "deceleration_Max": 1.0,
         "deceleration_Min": 0.0,
         "deceleration_Random": false,
-        "deceleration_Value": 0.0,
+        "deceleration_Value": 1.0,
         "delayTime": 0.0,
         "direction_Max": {
-            "x": 0.0,
-            "y": 0.0,
+            "x": 0.5,
+            "y": 1.0,
             "z": 0.0
         },
         "direction_Min": {
-            "x": 0.0,
-            "y": 0.0,
+            "x": -0.5,
+            "y": 1.0,
             "z": 0.0
         },
-        "direction_Random": true,
-        "direction_Type": 2,
+        "direction_Random": false,
+        "direction_Type": 3,
         "direction_Value": {
             "x": 0.0,
-            "y": 0.0,
+            "y": 1.0,
             "z": 0.0
         },
-        "emitCount": 15,
+        "emitCount": 10,
         "emitPerSecond": 10,
-        "isLoop": false,
-        "lifeTime": 0.0,
-        "lifeTime_Max": 2.0,
-        "lifeTime_Min": 0.5,
-        "lifeTime_Random": false,
-        "lifeTime_Type": 2,
+        "isLoop": true,
+        "lifeTime": 3.0,
+        "lifeTime_Max": 0.30000001192092896,
+        "lifeTime_Min": 0.10000000149011612,
+        "lifeTime_Random": true,
+        "lifeTime_Type": 1,
         "lifeTime_Value": 0.30000001192092896,
         "modifiers": [
-            "RotationBasedMovementModifier",
-            "AlphaOverLifetime",
             "DecelerationModifier"
         ],
         "offset": {
@@ -107,51 +110,51 @@
             "y": -3.141590118408203,
             "z": -3.141590118408203
         },
-        "rotationSpeed_Random": false,
+        "rotationSpeed_Random": true,
         "rotationSpeed_Value": {
             "x": 0.0,
             "y": 0.0,
             "z": 0.0
         },
         "rotation_Max": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": 1.5700000524520874
+            "x": 3.1419999599456787,
+            "y": 3.1419999599456787,
+            "z": 3.1419999599456787
         },
         "rotation_Min": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": -1.5700000524520874
+            "x": -3.1419999599456787,
+            "y": -3.1419999599456787,
+            "z": -3.1419999599456787
         },
         "rotation_Random": true,
         "rotation_Value": {
             "x": 0.0,
             "y": 0.0,
-            "z": 1.659999966621399
+            "z": 0.0
         },
-        "shape": 1,
+        "shape": 0,
         "size_Max": {
-            "x": 0.5400000214576721,
-            "y": 1.9299999475479126,
-            "z": 2.0
+            "x": 0.030000001192092896,
+            "y": 0.030000001192092896,
+            "z": 0.030000001192092896
         },
         "size_Min": {
-            "x": 0.5,
-            "y": 0.5400000214576721,
-            "z": 0.5
+            "x": 0.019999999552965164,
+            "y": 0.019999999552965164,
+            "z": 0.019999999552965164
         },
-        "size_Random": false,
+        "size_Random": true,
         "size_Value": {
-            "x": 0.25,
-            "y": 0.25,
-            "z": 0.25
+            "x": 0.20000000298023224,
+            "y": 0.20000000298023224,
+            "z": 0.20000000298023224
         },
-        "speed_Max": 3.0,
-        "speed_Min": 2.0,
+        "speed_Max": 6.0,
+        "speed_Min": 4.0,
         "speed_Random": true,
-        "speed_Value": 3.0,
-        "sphereRadius": 0.0,
-        "texturePath": "circle.png",
-        "useModelName": "nZ0.1x0.7Plane"
+        "speed_Value": 5.0,
+        "sphereRadius": 0.009999999776482582,
+        "texturePath": "white.png",
+        "useModelName": "cube/cube.obj"
     }
 }

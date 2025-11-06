@@ -53,7 +53,8 @@ private:
     static uint32_t gradationTexture_;  // グラデーション用のテクスチャ
 
 
-    static ParticleEmitter emitter_;            // ほそ長いのを出すエミッタ
+    static ParticleEmitter cubePop_;            // キューブを出すエミッタ
+    static ParticleEmitter risingParticles_;    // 上昇するパーティクル
     static ParticleEmitter lightPillarEmitter_; // 光の柱を出すエミッタ
     static ParticleEmitter triangleEmitter_;    // 三角形を出すエミッタ
 

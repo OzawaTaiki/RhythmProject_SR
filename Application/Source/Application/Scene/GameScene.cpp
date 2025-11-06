@@ -310,7 +310,6 @@ void GameScene::Draw()
     {
         LayerSystem::SetLayer("FeedbackEffect");
         feedbackEffect_->Draw();
-
     }
     {
         LayerSystem::SetLayer("PauseMenu");

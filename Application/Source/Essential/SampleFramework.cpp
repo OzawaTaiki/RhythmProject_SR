@@ -155,4 +155,10 @@ void SampleFramework::GenerateModels()
         Vector3(-0.5f, -0.5f, 0)
                          });
     triangle.Generate("nZ1_1Triangle");
+
+    Ring ring(0.0f, 1.0f);
+    ring.SetDivide(64);
+    ring.SetUVMode(RingUVMode::Planar);
+    ring.SetUVRange(0.3f, 0.3f, 0.7f, 0.7f);
+    ring.Generate("i0o1_PlanarRing");
 }

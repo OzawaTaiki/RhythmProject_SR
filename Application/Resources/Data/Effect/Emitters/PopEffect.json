@@ -1,7 +1,7 @@
 {
     "PopEffect": {
         "BoxOffset_Max": {
-            "x": 0.0,
+            "x": 1000.0,
             "y": 0.0,
             "z": 0.0
         },
@@ -43,7 +43,7 @@
         "billboard_x": false,
         "billboard_y": false,
         "billboard_z": false,
-        "blendMode": 8,
+        "blendMode": 1,
         "boxSize": {
             "x": 1.0,
             "y": 0.0,

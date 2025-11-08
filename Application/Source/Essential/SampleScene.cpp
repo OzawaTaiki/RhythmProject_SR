@@ -24,7 +24,7 @@ SampleScene::~SampleScene()
 {
 }
 
-void SampleScene::Initialize(SceneData* _sceneData)
+void SampleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
 {
 
     // --------------------------------------------------
@@ -102,9 +102,8 @@ void SampleScene::Initialize(SceneData* _sceneData)
     //textureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
     //textureGenerator_->Initialize({ 0.0f,0.0f ,0.0f ,0.3f });
 
-    audioSpectrum_= AudioSpectrum(1024, 0.5f);
+    audioSpectrum_= AudioSpectrum(1024);
     const int sampleRate = 44100;
-    const float duration = 5.0f;
 
     //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
     audioSpectrum_.SetAudioData(soundInstance_->GetAudioData());
@@ -115,7 +114,6 @@ void SampleScene::Initialize(SceneData* _sceneData)
 
 void SampleScene::Update()
 {
-
     // シーン関連更新
     static auto audioData = soundInstance_->GetAudioData();
 

@@ -35,19 +35,19 @@ public:
     /// 判定結果を取得する
     /// </summary>
     /// <returns>判定結果のマップ</returns>
-    const std::map<JudgeType, uint32_t>& GetJudgeResult() const { return judgeResult_; }
+    const std::map<JudgeType, int32_t>& GetJudgeResult() const { return judgeResult_; }
 
     /// <summary>
     /// 指定した判定タイプの結果を取得する
     /// </summary>
     /// <param name="_judgeType">判定タイプ</param>
     /// <returns>判定結果の数</returns>
-    uint32_t GetJudgeResult(JudgeType _judgeType) const;
+    int32_t GetJudgeResult(JudgeType _judgeType) const;
 
     void DebugWindow();
 private:
 
-    std::map<JudgeType, uint32_t> judgeResult_; // 判定結果
+    std::map<JudgeType, int32_t> judgeResult_; // 判定結果
 
 
 

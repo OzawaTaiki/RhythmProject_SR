@@ -104,7 +104,7 @@ void EditorScene::Update()
 
 void EditorScene::Draw()
 {
-    beatMapEditor_->Draw(&SceneCamera_);
+    beatMapEditor_->Draw();
 }
 
 void EditorScene::DrawShadow() {}

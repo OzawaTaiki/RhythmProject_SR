@@ -7,7 +7,7 @@
 // ノートデータ構造体
 struct NoteData
 {
-    uint32_t laneIndex; // 流れるレーンインデックス
+    int32_t laneIndex; // 流れるレーンインデックス
     float targetTime; // タイミング
     std::string noteType; // ノートの種類 (normal, long)
     float holdDuration; // ホールドノートの持続時間

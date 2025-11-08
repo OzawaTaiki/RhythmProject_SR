@@ -11,7 +11,7 @@
 
 #include <Features/Model/Primitive/Builder/PrimitiveBuilder.h>
 
-void SampleFramework::Initialize(const std::wstring& _winTitle)
+void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
     Framework::Initialize(L"GameEngine");
 

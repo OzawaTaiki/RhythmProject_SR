@@ -28,7 +28,7 @@ void HitCircleParticleModifier::Initialize()
 {
 }
 
-void HitCircleParticleModifier::Apply(Particle* _particle, float _deltaTime)
+void HitCircleParticleModifier::Apply(Particle* _particle, [[maybe_unused]] float _deltaTime)
 {
     // フェードアウト
     float t = _particle->GetCurrentTime() / _particle->GetLifeTime();

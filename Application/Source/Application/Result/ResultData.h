@@ -15,7 +15,7 @@ struct ResultData
     std::string musicTitle = "";
 
     // 判定結果を保持するマップ
-    std::map<JudgeType, uint32_t> judgeResult;
+    std::map<JudgeType, int32_t> judgeResult;
 
     // コンボ数
     int32_t combo = 0;

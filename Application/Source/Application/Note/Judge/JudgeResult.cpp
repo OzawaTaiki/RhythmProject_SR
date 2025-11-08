@@ -56,7 +56,7 @@ void JudgeResult::AddJudge(JudgeType _judgeType, int32_t _count)
     }
 }
 
-uint32_t JudgeResult::GetJudgeResult(JudgeType _judgeType) const
+int32_t JudgeResult::GetJudgeResult(JudgeType _judgeType) const
 {
     auto it = judgeResult_.find(_judgeType);
     if (it != judgeResult_.end())

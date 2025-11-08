@@ -45,7 +45,6 @@ void MoveNoteCommand::Undo()
     for (uint32_t i = 0; i < noteIndices_.size(); ++i)
     {
         float currentTime = originalTimes_[i] + deltaTime_; // 移動後の時間
-        uint32_t index = noteIdentifiers_[i].laneIndex; // レーンインデックス
 
         int32_t noteIndex = beatMapEditor_->FindNoteAtTime(noteIdentifiers_[i].laneIndex, currentTime);
         if (noteIndex >= 0)

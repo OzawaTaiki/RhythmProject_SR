@@ -34,7 +34,7 @@ private:
     struct NoteIdentifier
     {
         float time; // ノートの時間
-        uint32_t laneIndex; // レーンインデックス
+        int32_t laneIndex; // レーンインデックス
     };
 
     std::vector<NoteIdentifier> noteIdentifiers_; // ノートの識別子リスト

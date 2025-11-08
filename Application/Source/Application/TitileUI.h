@@ -64,7 +64,7 @@ private:
         return static_cast<TitleUIElement>(_index);
     }
 
-    void SetActive(bool _active) { isActive_= true; }
+    void SetActive(bool _active) { isActive_= _active; }
     bool GetActive() const { return isActive_; }
 
 private:

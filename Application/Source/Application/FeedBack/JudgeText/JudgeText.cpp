@@ -101,7 +101,6 @@ std::wstring JudgeText::GetJudgeText(JudgeType _judgeType)
 		break;
 	}
 
-    return L"error";
 }
 
 void JudgeText::GetJudgeTextColor(JudgeType _judgeType, Vector4& _topColor, Vector4& _bottomColor)

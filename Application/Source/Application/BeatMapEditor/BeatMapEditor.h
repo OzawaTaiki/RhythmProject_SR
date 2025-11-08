@@ -65,8 +65,7 @@ public:
     /// <summary>
     /// 描画処理を行う。
     /// </summary>
-    /// <param name="_camera">描画用カメラ（2D/3Dの情報を含む）</param>
-    void Draw(const Camera* _camera);
+    void Draw();
 
     /// <summary>
     /// 終了処理を行う。
@@ -93,7 +92,7 @@ public:
     /// <param name="_noteType">ノートタイプ</param>
     /// <param name="_holdDuration">ホールド時間(ロングノートの場合)</param>
     /// <returns>配置したノートのインデックス</returns>
-    size_t PlaceNote(uint32_t _laneIndex, float _targetTime, const std::string& _noteType, float _holdDuration = 0);
+    size_t PlaceNote(int32_t _laneIndex, float _targetTime, const std::string& _noteType, float _holdDuration = 0);
 
 
     /// <summary>
@@ -109,7 +108,7 @@ public:
     /// <param name="_laneIndex"> レーンインデックス</param>
     /// <param name="_targetTime"> ターゲット時間</param>
     /// <returns> 削除されたノートデータ</returns>
-    NoteData DeleteNote(uint32_t _laneIndex, float _targetTime);
+    NoteData DeleteNote(int32_t _laneIndex, float _targetTime);
 
 
     /// <summary>
@@ -145,7 +144,7 @@ public:
     /// <param name="_targetTime"> ターゲット時間</param>
     /// <param name="_tolerance"> 許容誤差</param>
     /// <returns> 見つかったノートのインデックス(なければ -1)</returns>
-    int32_t FindNoteAtTime(uint32_t _laneIndex, float _targetTime, float _tolerance = 0.05f) const;
+    int32_t FindNoteAtTime(int32_t _laneIndex, float _targetTime, float _tolerance = 0.05f) const;
 
     /// <summary>
     /// ロングノートの持続時間を設定
@@ -278,7 +277,7 @@ private:
     /// <param name="_laneIndex">レーンインデックス</param>
     /// <param name="_targetTime">ターゲットタイム</param>
     /// <returns></returns>
-    int32_t GetNoteIndexFromHoldEnd(uint32_t _laneIndex, float _targetTime) const;
+    int32_t GetNoteIndexFromHoldEnd(int32_t _laneIndex, float _targetTime) const;
 
 
     /// <summary>
@@ -482,7 +481,7 @@ private:
     // ========================================
     uint32_t noteIndex_ = 0;
     uint32_t holdNoteIndex_ = 0;
-    std::vector<uint32_t> drawNoteIndices_;
+    std::vector<int32_t> drawNoteIndices_;
 
     // ========================================
     // ノート色設定

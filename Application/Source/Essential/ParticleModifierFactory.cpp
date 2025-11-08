@@ -30,7 +30,7 @@ std::unique_ptr<ParticleModifier> ParticleModifierFactory::CreateModifier(const 
         return it->second();
     }
 
-    throw std::runtime_error("モディファイアが見つかりませんでした。");
+    assert("モディファイアが見つかりませんでした。");
 
     return nullptr;
 }

@@ -1,7 +1,7 @@
 #include "SpeakerEffectModifier.h"
 
 
-void SpeakerRingModifier::Apply(Particle* _particle, float _deltaTime)
+void SpeakerRingModifier::Apply(Particle* _particle, [[maybe_unused]] float _deltaTime)
 {
     if (_particle == nullptr)
         return;
@@ -36,7 +36,7 @@ void SpeakerRingModifier::Apply(Particle* _particle, float _deltaTime)
 
 }
 
-void SpeakerParticleModifier::Apply(Particle* _particle, float _deltaTime)
+void SpeakerParticleModifier::Apply(Particle* _particle, [[maybe_unused]] float _deltaTime)
 {
     if (_particle == nullptr)
         return;

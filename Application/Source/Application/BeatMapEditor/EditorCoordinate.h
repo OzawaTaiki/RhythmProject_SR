@@ -18,7 +18,7 @@ public:
     /// </summary>
     /// <param name="_screenSize">画面サイズ</param>
     /// <param name="_laneCount">レーン数(デフォルト4)</param>
-    void Initialize(const Vector2& _screenSize, const Vector2& _areaCenter = { 640,360 }, uint32_t _laneCount = 4);
+    void Initialize(const Vector2& _screenSize, const Vector2& _areaCenter = { 640,360 }, int32_t _laneCount = 4);
 
     /// <summary>
     /// 画面サイズを設定
@@ -34,8 +34,8 @@ public:
     void SetScreenSize(float _width, float _height);
 
 
-    float GetLaneLeftX(uint32_t _laneIndex) const;
-    float GetLaneRightX(uint32_t _laneIndex) const;
+    float GetLaneLeftX(int32_t _laneIndex) const;
+    float GetLaneRightX(int32_t _laneIndex) const;
 
 
     // ========================================
@@ -61,7 +61,7 @@ public:
     /// </summary>
     /// <param name="_laneIndex"> レーンインデックス</param>
     /// <returns> スクリーンX座標</returns>
-    float LaneToScreenX(uint32_t _laneIndex) const;
+    float LaneToScreenX(int32_t _laneIndex) const;
 
     /// <summary>
     /// 画面X座標からレーンインデックスに変換
@@ -144,7 +144,7 @@ public:
     float GetZoom() const { return zoom_; }
     float GetScrollOffset() const { return scrollOffset_; }
     float GetLaneWidth() const { return laneWidth_; }
-    uint32_t GetLaneCount() const { return laneCount_; }
+    int32_t GetLaneCount() const { return laneCount_; }
     float GetPixelsPerSecond() const { return pixelsPerSecond_ * zoom_; }
     float GetEditAreaX() const { return editAreaX_; }
     float GetEditAreaWidth() const { return editAreaWidth_; }
@@ -169,7 +169,7 @@ private:    // 内部計算用
     void InvalidateVisibleRange();
 
     Vector2 screenSize_; // 画面サイズ
-    uint32_t laneCount_; // レーン数
+    int32_t laneCount_; // レーン数
 
     Vector2 areaCenter_;
 

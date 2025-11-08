@@ -105,7 +105,7 @@ void BeatMapEditor::Update()
 
 }
 
-void BeatMapEditor::Draw(const Camera* _camera)
+void BeatMapEditor::Draw()
 {
     // エディターの描画処理
 
@@ -718,7 +718,7 @@ void BeatMapEditor::InitLaneSprites()
 { // レーンのスプライトを初期化
     laneSprites_.clear();
     float laneWidth = editorCoordinate_.GetLaneWidth();
-    for (uint32_t i = 0; i < editorCoordinate_.GetLaneCount(); ++i)
+    for (int32_t i = 0; i < editorCoordinate_.GetLaneCount(); ++i)
     {
         auto laneSprite = std::make_unique<UISprite>();
 
@@ -910,7 +910,7 @@ void BeatMapEditor::CreateNewBeatMap(const std::string& _filePath, const std::st
     currentFilePath_ = _filePath;
 }
 
-size_t BeatMapEditor::PlaceNote(uint32_t _laneIndex, float _targetTime, const std::string& _noteType, float _holdDuration)
+size_t BeatMapEditor::PlaceNote(int32_t _laneIndex, float _targetTime, const std::string& _noteType, float _holdDuration)
 {
     if (_laneIndex >= editorCoordinate_.GetLaneCount())
     {
@@ -977,7 +977,7 @@ NoteData BeatMapEditor::DeleteNote(size_t _noteIndex)
     return deletedNote; // 削除したノートのデータを返す
 }
 
-NoteData BeatMapEditor::DeleteNote(uint32_t _laneIndex, float _targetTime)
+NoteData BeatMapEditor::DeleteNote(int32_t _laneIndex, float _targetTime)
 {
     // 指定されたレーンと時間に一致するノートを検索
     for (size_t i = 0; i < currentBeatMapData_.notes.size(); ++i)
@@ -1759,7 +1759,7 @@ void BeatMapEditor::UpdateTimeline()
     }
 }
 
-int32_t BeatMapEditor::FindNoteAtTime(uint32_t _laneIndex, float _targetTime, float _tolerance) const
+int32_t BeatMapEditor::FindNoteAtTime(int32_t _laneIndex, float _targetTime, float _tolerance) const
 {
     for (size_t i = 0; i < currentBeatMapData_.notes.size(); ++i)
     {
@@ -1833,7 +1833,7 @@ size_t BeatMapEditor::FindInsertNoteIndex(const NoteData& _note) const
     return SIZE_MAX; // 見つからなかった場合は最大値を返す
 }
 
-int32_t BeatMapEditor::GetNoteIndexFromHoldEnd(uint32_t _laneIndex, float _targetTime) const
+int32_t BeatMapEditor::GetNoteIndexFromHoldEnd(int32_t _laneIndex, float _targetTime) const
 {
     for (size_t i = 0; i < currentBeatMapData_.notes.size(); ++i)
     {

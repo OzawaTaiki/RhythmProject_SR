@@ -22,7 +22,7 @@ EditorCoordinate::EditorCoordinate() :
 {
 }
 
-void EditorCoordinate::Initialize(const Vector2& _screenSize, const Vector2& _areaCenter, uint32_t _laneCount)
+void EditorCoordinate::Initialize(const Vector2& _screenSize, const Vector2& _areaCenter, int32_t _laneCount)
 {
     screenSize_ = _screenSize;
     laneCount_ = _laneCount;
@@ -48,7 +48,7 @@ void EditorCoordinate::SetScreenSize(float _width, float _height)
     InvalidateVisibleRange();
 }
 
-float EditorCoordinate::GetLaneLeftX(uint32_t _laneIndex) const
+float EditorCoordinate::GetLaneLeftX(int32_t _laneIndex) const
 {
     if (_laneIndex >= laneCount_) {
         return 0.0f;  // 無効なレーン
@@ -58,7 +58,7 @@ float EditorCoordinate::GetLaneLeftX(uint32_t _laneIndex) const
     return laneX;
 }
 
-float EditorCoordinate::GetLaneRightX(uint32_t _laneIndex) const
+float EditorCoordinate::GetLaneRightX(int32_t _laneIndex) const
 {
     if (_laneIndex >= laneCount_) {
         return 0.0f;  // 無効なレーン
@@ -89,7 +89,7 @@ float EditorCoordinate::ScreenYToTime(float _screenY) const
     return adjustedTime + scrollOffset_;
 }
 
-float EditorCoordinate::LaneToScreenX(uint32_t _laneIndex) const
+float EditorCoordinate::LaneToScreenX(int32_t _laneIndex) const
 {
     if (_laneIndex >= laneCount_) {
         return 0.0f;  // 無効なレーン
@@ -199,7 +199,6 @@ std::vector<std::pair<float, int32_t>>  EditorCoordinate::GetGridLinesY(float _b
 
     int32_t startIndex = static_cast<int32_t>(std::floorf(start / gridInterval)); // 開始グリッドのインデックス
     int32_t endIndex = static_cast<int32_t>(std::ceilf(end / gridInterval)); // 終了グリッドのインデックス
-    const float epsilon = 1.0e-3f; // 浮動小数点の許容誤差
 
     for (int32_t i = startIndex; i <= endIndex; ++i)
     {

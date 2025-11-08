@@ -129,7 +129,7 @@ public:
     /// 判定結果を取得する
     /// </summary>
     /// <returns>判定結果のマップ</returns>
-    std::map<JudgeType, uint32_t> GetJudgeResult() const { return judgeResult_->GetJudgeResult(); }
+    std::map<JudgeType, int32_t> GetJudgeResult() const { return judgeResult_->GetJudgeResult(); }
 
 private:
     // 譜面データを解析する

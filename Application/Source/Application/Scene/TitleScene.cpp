@@ -18,7 +18,7 @@ TitleScene::~TitleScene()
     EventManager::GetInstance()->RemoveEventListener("RequestExitGame", this);
 }
 
-void TitleScene::Initialize(SceneData* _sceneData)
+void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,0,-10 };

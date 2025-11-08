@@ -145,7 +145,6 @@ void SpectrumRing::CreateTextureGenerators()
 
     for (uint32_t i = 0; i < numRings; ++i)
     {
-        uint32_t num = static_cast<uint32_t>(numRings - 1) - i;
         cycleTextureIndices_.push_back(i);// 4 3 2 1 0
     }
 

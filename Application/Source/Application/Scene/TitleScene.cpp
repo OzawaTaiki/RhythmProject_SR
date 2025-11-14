@@ -58,7 +58,8 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
 
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
-    LayerSystem::CreateLayer("buttons", 0);
+    LayerSystem::CreateLayer("backGround", 0);
+    LayerSystem::CreateLayer("buttons", 5);
     LayerSystem::CreateLayer("ring", 10);
     LayerSystem::CreateLayer("option", 20);
 
@@ -74,6 +75,10 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
 
     titleUI_ = std::make_unique<TitileUI>();
     titleUI_->Initialize();
+
+    hexagonGrid_ = std::make_unique<HexagonGrid>();
+    Rect area(Vector2(0, 0), Vector2(1280, 720));
+    hexagonGrid_->Initialize(area);
 }
 
 void TitleScene::Update()
@@ -99,7 +104,7 @@ void TitleScene::Update()
     particleSystem_->Update();
     settingMenu_->Update();
     titleUI_->Update();
-
+    //hexagonGrid_->Update();
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
     else //そうじゃないときは0
@@ -136,19 +141,26 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-    ModelManager::GetInstance()->PreDrawForObjectModel();
+    LayerSystem::SetLayer("backGround");
+    {
+        //hexagonGrid_->Draw();
+    }
 
+    ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("ring");
-    spectrumRing_->Draw(&SceneCamera_);
+    {
+        //spectrumRing_->Draw(&SceneCamera_);
+    }
 
     LayerSystem::SetLayer("buttons");
-
-    titleUI_->Draw();
-    //textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
-    //textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
+    {
+        titleUI_->Draw();
+    }
 
     LayerSystem::SetLayer("option");
-    settingMenu_->Draw();
+    {
+        settingMenu_->Draw();
+    }
 }
 
 void TitleScene::DrawShadow(){}

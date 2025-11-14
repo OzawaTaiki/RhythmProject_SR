@@ -193,7 +193,9 @@ void TitileUI::InitializeUIElements()
 
         exitButton->SetOnClickEnd([this]()
                                   {
+#ifndef _DEBUG // デバッグビルド時は終了しない
                                       eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
+#endif // _DEBUG
                                   });
         exitParent->AddChild(exitButton);
 

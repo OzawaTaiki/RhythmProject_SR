@@ -136,6 +136,9 @@
     <Filter Include="Application\TitleCamera">
       <UniqueIdentifier>{cf37f00d-9f3d-4856-8a4d-e13d0325a81d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\HeagonGrid">
+      <UniqueIdentifier>{3d6932f3-4626-4828-aa7c-2c22c0ffcb65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -306,6 +309,9 @@
     </ClCompile>
     <ClCompile Include="Source\Application\TItileCamera\TitleCamera.cpp">
       <Filter>Application\TitleCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\HexagonGrid\HexagonGrid.cpp">
+      <Filter>Application\HeagonGrid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,6 +506,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">
       <Filter>Application\TitleCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\HexagonGrid\HexagonGrid.h">
+      <Filter>Application\HeagonGrid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@
 #include <Application/BeatsManager/BeatManager.h>
 #include <Application/TitileUI.h>
 #include <Application/TItileCamera/TitleCamera.h>
+#include <Application/HexagonGrid/HexagonGrid.h>
 //#include <Features/BPMDetector/BPMDetector.h>
 
 /// <summary>
@@ -79,6 +80,6 @@ private:
 
     std::unique_ptr<TitileUI> titleUI_;
 
-
+    std::unique_ptr<HexagonGrid> hexagonGrid_;
 
 };

@@ -130,6 +130,7 @@
     <ClCompile Include="Source\Application\GameEnvironment\SpeakerEffect.cpp" />
     <ClCompile Include="Source\Application\GameMusic\GameMusic.cpp" />
     <ClCompile Include="Source\Application\GameUI\GameUI.cpp" />
+    <ClCompile Include="Source\Application\HexagonGrid\HexagonGrid.cpp" />
     <ClCompile Include="Source\Application\Input\GameInputManager.cpp" />
     <ClCompile Include="Source\Application\Lane\Lane.cpp" />
     <ClCompile Include="Source\Application\Note\Judge\JudgeLine.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Source\Application\GameEnvironment\SpeakerEffect.h" />
     <ClInclude Include="Source\Application\GameMusic\GameMusic.h" />
     <ClInclude Include="Source\Application\GameUI\GameUI.h" />
+    <ClInclude Include="Source\Application\HexagonGrid\HexagonGrid.h" />
     <ClInclude Include="Source\Application\Input\GameInputManager.h" />
     <ClInclude Include="Source\Application\Input\InputData.h" />
     <ClInclude Include="Source\Application\Lane\Lane.h" />

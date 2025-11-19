@@ -301,7 +301,7 @@
     <ClCompile Include="Source\Application\SpectrumRing\SpectrumRing.cpp">
       <Filter>Application\SpectrumRing</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\TitileUI.cpp">
+    <ClCompile Include="Source\Application\TitleUI.cpp">
       <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\TItileCamera\TitleCamera.cpp">
@@ -495,7 +495,7 @@
     <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h">
       <Filter>Application\SpectrumRing</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\TitileUI.h">
+    <ClInclude Include="Source\Application\TitleUI.h">
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">

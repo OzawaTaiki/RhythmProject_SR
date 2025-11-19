@@ -27,6 +27,6 @@ public:
     /// <summary>
     /// 指定レーンでエフェクトを再生する。
     /// </summary>
-    /// <param name="_laneIndex">レーンのインデックス</param>
-    void Play(int32_t _laneIndex);
+    /// <param name="laneIndex">レーンのインデックス</param>
+    void Play(int32_t laneIndex);
 };

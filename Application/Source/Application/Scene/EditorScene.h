@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// シーンの初期化処理。
     /// </summary>
-    void Initialize(SceneData* _sceneData) override;
+    void Initialize(SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。

@@ -1,13 +1,13 @@
 #include "SpeakerEffectModifier.h"
 
 
-void SpeakerRingModifier::Apply(Particle* _particle, [[maybe_unused]] float _deltaTime)
+void SpeakerRingModifier::Apply(Particle* particle, [[maybe_unused]] float deltaTime)
 {
-    if (_particle == nullptr)
+    if (particle == nullptr)
         return;
 
     // 拡大処理
-    float progress = _particle->GetCurrentTime() / _particle->GetLifeTime() * 2.0f;
+    float progress = particle->GetCurrentTime() / particle->GetLifeTime() * 2.0f;
     float useProgress = progress;
     if (progress > 1.0f)
         useProgress = 2.0f - progress;
@@ -21,30 +21,30 @@ void SpeakerRingModifier::Apply(Particle* _particle, [[maybe_unused]] float _del
     if (progress <= 1.0f)
     {
         Vector3 size = Vector3(easedSize, easedSize, easedSize);
-        _particle->SetScale(size);
+        particle->SetScale(size);
     }
 
     // フェード処理
-    Vector4 color = _particle->GetColor();
+    Vector4 color = particle->GetColor();
 
     // 生成時のalpah
     const float initialAlpha = 0.7f;
     color.w = initialAlpha * useProgress;
 
-    _particle->SetColor(color);
+    particle->SetColor(color);
 
 
 }
 
-void SpeakerParticleModifier::Apply(Particle* _particle, [[maybe_unused]] float _deltaTime)
+void SpeakerParticleModifier::Apply(Particle* particle, [[maybe_unused]] float deltaTime)
 {
-    if (_particle == nullptr)
+    if (particle == nullptr)
         return;
 
     // 縮小処理
-    float progress = _particle->GetCurrentTime() / _particle->GetLifeTime();
+    float progress = particle->GetCurrentTime() / particle->GetLifeTime();
 
-    Vector3 size = _particle->GetScale();
+    Vector3 size = particle->GetScale();
 
     const float kMinSize = 0.001f;
 
@@ -52,16 +52,16 @@ void SpeakerParticleModifier::Apply(Particle* _particle, [[maybe_unused]] float 
     float easedSize = Lerp(size.x, kMinSize, easedProgressForSize);
     size = Vector3(easedSize, easedSize, easedSize);
 
-    _particle->SetScale(size);
+    particle->SetScale(size);
 
     // フェード処理
-    Vector4 color = _particle->GetColor();
+    Vector4 color = particle->GetColor();
 
     progress = Easing::EaseInQuint(progress);
     // 生成時のalpah
     const float initialAlpha = 0.7f;
     color.w = initialAlpha * (1.0f - progress);
 
-    _particle->SetColor(color);
+    particle->SetColor(color);
 
 }

@@ -29,15 +29,15 @@ public:
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_deltaTime">経過時間（秒）</param>
-    void Update(float _deltaTime);
+    /// <param name="deltaTime">経過時間（秒）</param>
+    void Update(float deltaTime);
 
     /// <summary>
     /// 指定レンダーターゲットに対してビネットエフェクトを適用する。
     /// </summary>
-    /// <param name="_input">入力レンダーターゲット名</param>
-    /// <param name="_output">出力レンダーターゲット名</param>
-    void ApplyEffect(const std::string& _input, const std::string& _output);
+    /// <param name="input">入力レンダーターゲット名</param>
+    /// <param name="output">出力レンダーターゲット名</param>
+    void ApplyEffect(const std::string& input, const std::string& output);
 
     /// <summary>
     /// エフェクトを発動させる。

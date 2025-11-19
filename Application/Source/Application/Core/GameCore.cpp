@@ -4,26 +4,26 @@
 #include <Math/MyLib.h>
 #include <Debug/Debug.h>
 
-GameCore::GameCore(int32_t _laneCount) :
-    laneCount_(_laneCount),
+GameCore::GameCore(int32_t laneCount) :
+    laneCount_(laneCount),
     isWaitingForStart_(true),
     waitTimer_(0.0f),
     noteDeletePosition_(0.0f),
     maxCombo_(0),
     combo_(0)
 {
-    lanes_.resize(_laneCount);
+    lanes_.resize(laneCount);
 }
 
 GameCore::~GameCore()
 {
 }
 
-void GameCore::Initialize(float _noteSpeed, float _musicLaytencyMs, float _beginOffset)
+void GameCore::Initialize(float noteSpeed, float musicLaytencyMs, float beginOffset)
 {
-    noteSpeed_ = _noteSpeed;
-    beginOffset_ = _beginOffset;
-    musicLatencyMs_ = _musicLaytencyMs;
+    noteSpeed_ = noteSpeed;
+    beginOffset_ = beginOffset;
+    musicLatencyMs_ = musicLaytencyMs;
     waitTimer_ = 0.0f;
     isWaitingForStart_ = true;
 
@@ -42,7 +42,7 @@ void GameCore::Initialize(float _noteSpeed, float _musicLaytencyMs, float _begin
     judgeResult_->Initialize();
 
     noteJudge_->SetLaneTotalWidth(Lane::GetTotalWidth());
-    noteJudge_->SetSpeed(_noteSpeed);
+    noteJudge_->SetSpeed(noteSpeed);
 
     noteDeletePosition_ = -noteJudge_->GetMissJudgeThreshold() * noteSpeed_; // ノーツを削除する位置を設定
 
@@ -50,7 +50,7 @@ void GameCore::Initialize(float _noteSpeed, float _musicLaytencyMs, float _begin
     maxCombo_ = 0; // 最大コンボの初期化
 }
 
-void GameCore::Update(float  _deltaTime, const std::vector<InputDate>& _inputData)
+void GameCore::Update(float  deltaTime, const std::vector<InputData>& inputData)
 {
     for (auto& lane : lanes_)
     {
@@ -67,12 +67,12 @@ void GameCore::Update(float  _deltaTime, const std::vector<InputDate>& _inputDat
     }
 
     // ノーツの判定処理
-    JudgeNotes(_inputData);
+    JudgeNotes(inputData);
 
     float elapsedTime = 0.0f;
     if (isWaitingForStart_)
     {// 開始前オフセット待機中
-        waitTimer_ += _deltaTime;
+        waitTimer_ += deltaTime;
         elapsedTime = Lerp(-beginOffset_, 0.0f, waitTimer_ / beginOffset_);
     }
     else if (gamemusic_)
@@ -90,13 +90,13 @@ void GameCore::Update(float  _deltaTime, const std::vector<InputDate>& _inputDat
     }
 }
 
-void GameCore::Draw(const Camera* _camera)
+void GameCore::Draw(const Camera* camera)
 {
     for (const auto& lane : lanes_)
     {
         if (lane)
         {
-            lane->Draw(_camera);
+            lane->Draw(camera);
         }
     }
     // 判定ラインの描画
@@ -108,15 +108,15 @@ void GameCore::Draw(const Camera* _camera)
 
 }
 
-void GameCore::GenerateNotes(const BeatMapData& _beatMapData)
+void GameCore::GenerateNotes(const BeatMapData& beatMapData)
 {
     // 譜面データを解析してノーツを生成
-    ParseBeatMapData(_beatMapData);
+    ParseBeatMapData(beatMapData);
 }
 
-void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
+void GameCore::JudgeNotes(const std::vector<InputData>& inputData)
 {
-    for (auto& inputdata : _inputData)
+    for (auto& inputdata : inputData)
     {
         // レーンインデックスの範囲チェック
         int32_t laneIndex = inputdata.laneIndex;
@@ -163,28 +163,28 @@ void GameCore::JudgeNotes(const std::vector<InputDate>& _inputData)
     }
 }
 
-JudgeType GameCore::ProcessNormalNote(Note* _note, const InputDate& _inputData)
+JudgeType GameCore::ProcessNormalNote(Note* note, const InputData& inputData)
 {
     // 押した瞬間だけ判定
-    if (_inputData.state == KeyState::trigger)
+    if (inputData.state == KeyState::Trigger)
     {
-        return noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
+        return noteJudge_->ProcessNoteJudge(note, inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
     }
 
     return JudgeType::None;
 }
 
-JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData, Lane* _lane)
+JudgeType GameCore::ProcessHoldNote(Note* note, const InputData& inputData, Lane* lane)
 {
     // 押した瞬間だけ判定
-    if (_inputData.state == KeyState::trigger)
+    if (inputData.state == KeyState::Trigger)
     {
-        JudgeType result = noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
+        JudgeType result = noteJudge_->ProcessNoteJudge(note, inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
 
         if (result != JudgeType::None && result != JudgeType::Miss)
         {
-            //holdState_.StartHold(_inputData.laneIndex); // ホールド状態を開始
-            _lane->StartHold();
+            //holdState_.StartHold(inputData.laneIndex); // ホールド状態を開始
+            lane->StartHold();
             Debug::Log("Hold Enable\n");
         }
 
@@ -194,24 +194,24 @@ JudgeType GameCore::ProcessHoldNote(Note* _note, const InputDate& _inputData, La
     return JudgeType::None;
 }
 
-JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData, Lane* _lane)
+JudgeType GameCore::ProcessHoldEndNote(Note* note, const InputData& inputData, Lane* lane)
 {
-    if (_inputData.state == KeyState::trigger)
+    if (inputData.state == KeyState::Trigger)
     {
-        _lane->StartHold();
+        lane->StartHold();
     }
-    else if (_lane->IsHolding()&&/*holdState_.IsHoldingLane(_inputData.laneIndex)*/true)
+    else if (lane->IsHolding()&&/*holdState_.IsHoldingLane(inputData.laneIndex)*/true)
     {
-        Debug::Log("Hold State is holding lane: " + std::to_string(_inputData.laneIndex) + "\n");
+        Debug::Log("Hold State is holding lane: " + std::to_string(inputData.laneIndex) + "\n");
 
         if (onHoldCallback_)
-            onHoldCallback_(_inputData.laneIndex); // ホールド時のコールバックを呼び出す
+            onHoldCallback_(inputData.laneIndex); // ホールド時のコールバックを呼び出す
 
-        if (_inputData.state == KeyState::Released)
+        if (inputData.state == KeyState::Released)
         {
-            JudgeType result = noteJudge_->ProcessNoteJudge(_note, _inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
+            JudgeType result = noteJudge_->ProcessNoteJudge(note, inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
 
-            _lane->EndHold();
+            lane->EndHold();
             //holdState_.EndHold(); // ホールド状態を終了
             // noneてことはブリッジ内なので
             if (result == JudgeType::None)
@@ -228,10 +228,10 @@ JudgeType GameCore::ProcessHoldEndNote(Note* _note, const InputDate& _inputData,
     return JudgeType::None;
 }
 
-void GameCore::UpdateCombo(JudgeType _result)
+void GameCore::UpdateCombo(JudgeType result)
 {
-    if (_result == JudgeType::Perfect ||
-        _result == JudgeType::Good)
+    if (result == JudgeType::Perfect ||
+        result == JudgeType::Good)
     {
         ++combo_; // コンボを増やす
         maxCombo_ = (std::max)(maxCombo_, combo_); // 最大コンボを更新
@@ -246,23 +246,23 @@ void GameCore::UpdateCombo(JudgeType _result)
     }
 }
 
-void GameCore::RecordJudgeResult(JudgeType _result, Note* _note)
+void GameCore::RecordJudgeResult(JudgeType result, Note* note)
 {
-    if (_result == JudgeType::None)
+    if (result == JudgeType::None)
         return;
     // 判定結果を記録
-    judgeResult_->AddJudge(_result);
-    _note->Judge();
+    judgeResult_->AddJudge(result);
+    note->Judge();
 }
 
-void GameCore::ParseBeatMapData(const BeatMapData& _beatMapData)
+void GameCore::ParseBeatMapData(const BeatMapData& beatMapData)
 {
     notesPerLane_.clear(); // 既存のデータをクリア
 
     // レーンごとのでーたに分ける
     notesPerLane_.resize(lanes_.size());
 
-    for (const auto& note : _beatMapData.notes)
+    for (const auto& note : beatMapData.notes)
     {
         if (note.laneIndex >= notesPerLane_.size())
         {

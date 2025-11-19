@@ -20,5 +20,5 @@ enum class JudgeType
 namespace Judge
 {
 // 判定タイプを文字列に変換
-std::string ToString(JudgeType _type);
+std::string ToString(JudgeType type);
 }

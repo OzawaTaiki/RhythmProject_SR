@@ -9,8 +9,8 @@
 // スライダーの値が変更されたときのイベントデータ
 struct ValueChangedEventData : EventData
 {
-    ValueChangedEventData(const std::string& _name, float _value)
-        : name(_name), value(_value) {}
+    ValueChangedEventData(const std::string& name, float value)
+        : name(name), value(value) {}
     ~ValueChangedEventData() override = default;
 
     std::string name;   // スライダーの名前
@@ -54,7 +54,7 @@ public:
     /// <summary>
     /// イベントを受信するハンドラ。
     /// </summary>
-    void OnEvent(const GameEvent& _event) override;
+    void OnEvent(const GameEvent& event) override;
 
 private:
 

@@ -20,12 +20,12 @@ void MissedVignette::Initialize()
     startVignetteData_.scale = 50.0f; // ビネットのスケールを設定
 }
 
-void MissedVignette::Update(float _deltaTime)
+void MissedVignette::Update(float deltaTime)
 {
     if(!emit_)
         return;
 
-    elapsedTime_ += _deltaTime;
+    elapsedTime_ += deltaTime;
     if (elapsedTime_ >= duration_)
     {
         emit_ = false; // エフェクトの持続時間が経過したら停止
@@ -40,12 +40,12 @@ void MissedVignette::Update(float _deltaTime)
 
 }
 
-void MissedVignette::ApplyEffect(const std::string& _input, const std::string& _output)
+void MissedVignette::ApplyEffect(const std::string& input, const std::string& output)
 {
     if (!emit_)
         return;
 
-    LayerSystem::ApplyPostEffect(_input, _output, vignette_.get());
+    LayerSystem::ApplyPostEffect(input, output, vignette_.get());
 
 }
 

@@ -60,8 +60,8 @@ public:
     /// <summary>
     /// シーンの初期化処理。
     /// </summary>
-    /// <param name="_sceneData">シーンに渡す初期データ</param>
-    void Initialize(SceneData* _sceneData) override;
+    /// <param name="sceneData">シーンに渡す初期データ</param>
+    void Initialize(SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -85,7 +85,7 @@ private:
     /// </summary>
     /// <param name="_filePath">譜面データのファイルパス</param>
     /// <returns> 読み込み完了 or 読み込み済みなら true </returns>
-    bool IsComplateLoadBeatMap();
+    bool IsCompleteLoadBeatMap();
 
     /// <summary>
     /// ゲーム開始オフセット処理の更新
@@ -100,7 +100,7 @@ private:
     //  タイトルへ戻る処理
     void ToTitle();
     // イベント受信処理
-    void OnEvent(const GameEvent& _event) override;
+    void OnEvent(const GameEvent& event) override;
 private:
 
     // シーン関連

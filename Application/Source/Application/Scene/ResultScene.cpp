@@ -6,7 +6,7 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Features/Model/Manager/ModelManager.h>
 
-void ResultScene::Initialize(SceneData* _sceneData)
+void ResultScene::Initialize(SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };
@@ -38,9 +38,9 @@ void ResultScene::Initialize(SceneData* _sceneData)
     resultData_.judgeResult[JudgeType::Miss] = -1;
 
 
-    if (_sceneData)
+    if (sceneData)
     {
-        auto data = dynamic_cast<GameToResultData*>(_sceneData);
+        auto data = dynamic_cast<GameToResultData*>(sceneData);
         if (data)
         {
             resultData_ = data->resultData;

@@ -31,15 +31,15 @@ public:
     /// <summary>
     /// 初期化処理。
     /// </summary>
-    /// <param name="_judgeType">判定タイプ</param>
-    /// <param name="_laneIndex">レーンインデックス</param>
-    void Initialize(JudgeType _judgeType, int32_t _laneIndex, const Camera* _camera);
+    /// <param name="judgeType">判定タイプ</param>
+    /// <param name="laneIndex">レーンインデックス</param>
+    void Initialize(JudgeType judgeType, int32_t laneIndex, const Camera* camera);
 
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_deltaTime">経過時間（秒）</param>
-    void Update(float _deltaTime);
+    /// <param name="deltaTime">経過時間（秒）</param>
+    void Update(float deltaTime);
 
     /// <summary>
     /// 描画処理。
@@ -65,17 +65,17 @@ private:
     /// <summary>
     /// 判定タイプに対応するテキストを返す（内部ユーティリティ）。
     /// </summary>
-    /// <param name="_judgeType">判定タイプ</param>
+    /// <param name="judgeType">判定タイプ</param>
     /// <returns>判定用のテキスト</returns>
-    static std::wstring GetJudgeText(JudgeType _judgeType);
+    static std::wstring GetJudgeText(JudgeType judgeType);
 
     /// <summary>
     /// 判定タイプに応じたテキストの色を決定する（内部ユーティリティ）。
     /// </summary>
-    /// <param name="_judgeType">判定タイプ</param>
-    /// <param name="_topColor">上端の色（出力）</param>
-    /// <param name="_bottomColor">下端の色（出力）</param>
-    static void GetJudgeTextColor(JudgeType _judgeType, Vector4& _topColor, Vector4& _bottomColor);
+    /// <param name="judgeType">判定タイプ</param>
+    /// <param name="topColor">上端の色（出力）</param>
+    /// <param name="bottomColor">下端の色（出力）</param>
+    static void GetJudgeTextColor(JudgeType judgeType, Vector4& topColor, Vector4& bottomColor);
 
     // テキストパラメータの更新（内部）
     void UpdateTextParam();

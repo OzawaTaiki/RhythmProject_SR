@@ -1,13 +1,13 @@
 #include "BackgroundEffect.h"
 #include <Application/GameEnvironment/SpeakerEffect.h>
 
-void BackgroundEffect::PlaySpeakerEffect(uint32_t _laneIndex)
+void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex)
 {
     if (!gameEnvironment_)
         return;
 
     // スピーカーオブジェクト取得
-    ObjectModel* speaker = gameEnvironment_->GetSpeaker(_laneIndex);
+    ObjectModel* speaker = gameEnvironment_->GetSpeaker(laneIndex);
     if (!speaker)
         return;
 

@@ -7,17 +7,17 @@
 Vector4 LaneEffect::defoultColor_ = { 0.5f, 0.7f, 0.8f, 0.5f }; // デフォルトの色を設定
 uint32_t LaneEffect::textureHandle_ = UINT_MAX; // テクスチャハンドルの初期化
 
-void LaneEffect::Initialize(uint32_t _laneIndex, const std::string& _model)
+void LaneEffect::Initialize(uint32_t laneIndex, const std::string& model)
 {
-    auto model = std::make_unique<ObjectModel>("laneEffectPlane");
-    model->Initialize(_model);
+    auto modelObj = std::make_unique<ObjectModel>("laneEffectPlane");
+    modelObj->Initialize(model);
     Vector3 laneCenter = { 0.0f, 0.0f, 0.0f }; // レーンの中心座標を設定
-    laneCenter = Lane::GetLaneEndPosition(_laneIndex);
+    laneCenter = Lane::GetLaneEndPosition(laneIndex);
     laneCenter.y -= 0.001f; // zファイティング対策で少し下げる
     laneCenter.z += Lane::GetLaneLength();
-    model->translate_ = laneCenter; // レーンの中心位置に移動
+    modelObj->translate_ = laneCenter; // レーンの中心位置に移動
 
-    laneModel_ = std::move(model);
+    laneModel_ = std::move(modelObj);
 
     laneModel_->scale_ = Vector3(Lane::GetLaneWidth() - 0.1f, 1.0f, Lane::GetLaneLength()); // レーンの幅と長さを設定
 
@@ -33,14 +33,14 @@ void LaneEffect::Initialize(uint32_t _laneIndex, const std::string& _model)
 
 }
 
-void LaneEffect::Update(float _deltaTime)
+void LaneEffect::Update(float deltaTime)
 {
     if (!isActive_)
     {
         return; // エフェクトがアクティブでない場合は何もしない
     }
 
-    timer_ += _deltaTime;
+    timer_ += deltaTime;
     if (timer_ > duration_)
     {
         timer_ = duration_; // リセット
@@ -54,7 +54,7 @@ void LaneEffect::Update(float _deltaTime)
     laneModel_->Update();
 }
 
-void LaneEffect::Draw(const Camera* _camera)
+void LaneEffect::Draw(const Camera* camera)
 {
     if (!isActive_)
     {
@@ -64,7 +64,7 @@ void LaneEffect::Draw(const Camera* _camera)
     // laneModels_の各モデルを描画
     if (laneModel_)
     {
-        laneModel_->Draw(_camera, textureHandle_, color_);
+        laneModel_->Draw(camera, textureHandle_, color_);
     }
 }
 

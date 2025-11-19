@@ -28,21 +28,21 @@ public:
     /// <summary>
     /// 初期化処理。
     /// </summary>
-    /// <param name="_laneIndex">レーンのインデックス</param>
-    /// <param name="_model">使用するモデル名</param>
-    void Initialize(uint32_t _laneIndex, const std::string&  _model);
+    /// <param name="laneIndex">レーンのインデックス</param>
+    /// <param name="model">使用するモデル名</param>
+    void Initialize(uint32_t laneIndex, const std::string&  model);
 
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_deltaTime">経過時間（秒）</param>
-    void Update(float _deltaTime);
+    /// <param name="deltaTime">経過時間（秒）</param>
+    void Update(float deltaTime);
 
     /// <summary>
     /// 描画処理。
     /// </summary>
-    /// <param name="_camera">描画に使用するカメラ</param>
-    void Draw(const Camera* _camera);
+    /// <param name="camera">描画に使用するカメラ</param>
+    void Draw(const Camera* camera);
 
     /// <summary>
     /// エフェクトを開始する。
@@ -60,7 +60,7 @@ public:
     /// <summary>
     /// エフェクト持続時間を設定する。
     /// </summary>
-    void SetDuration(float _duration) { duration_ = _duration; }
+    void SetDuration(float duration) { duration_ = duration; }
 
     /// <summary>
     /// 現在設定されている持続時間を取得する。
@@ -70,7 +70,7 @@ public:
     /// <summary>
     /// エフェクトの色を設定する。
     /// </summary>
-    void SetColor(const Vector4& _color) { color_ = _color; }
+    void SetColor(const Vector4& color) { color_ = color; }
 
     /// <summary>
     /// 現在のタイマー値を取得する。

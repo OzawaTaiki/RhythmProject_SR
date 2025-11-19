@@ -28,12 +28,12 @@ public:
     /// <summary>
     /// 設定をファイルから読み込む。
     /// </summary>
-    /// <param name="_filePath">読み込むファイルパス（デフォルト値あり）</param>
-    static void Load(const std::string& _filePath = "Resources/Data/Setting/setting.json");
+    /// <param name="filePath">読み込むファイルパス（デフォルト値あり）</param>
+    static void Load(const std::string& filePath = "Resources/Data/Setting/setting.json");
 
     /// <summary>
     /// 設定をファイルへ保存する。
     /// </summary>
-    /// <param name="_filePath">保存先ファイルパス（デフォルト値あり）</param>
-    static void Save(const std::string& _filePath = "Resources/Data/Setting/setting.json");
+    /// <param name="filePath">保存先ファイルパス（デフォルト値あり）</param>
+    static void Save(const std::string& filePath = "Resources/Data/Setting/setting.json");
 };

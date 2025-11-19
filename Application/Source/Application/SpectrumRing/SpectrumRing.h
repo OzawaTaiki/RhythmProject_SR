@@ -23,11 +23,11 @@ public:
     SpectrumRing() = default;
     ~SpectrumRing() = default;
 
-    void Initialize(std::shared_ptr<SoundInstance> _musicInstance, size_t _numring);
-    void Update(float _elapsedTime);
+    void Initialize(std::shared_ptr<SoundInstance> musicInstance, size_t numring);
+    void Update(float elapsedTime);
     void Draw(class Camera* camera);
 
-    void SetBeatManager(BeatManager* _beatManager) { beatManager_ = _beatManager; }
+    void SetBeatManager(BeatManager* beatManager) { beatManager_ = beatManager; }
 
 private:
 

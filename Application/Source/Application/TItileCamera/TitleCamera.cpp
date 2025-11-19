@@ -13,19 +13,19 @@ void TitleCamera::Initialize()
     camera_.translate_ = cameraAnimationSequence_->GetValueAtTime<Vector3>("translate", 0.0f);
 }
 
-void TitleCamera::Update(float _deltaTime)
+void TitleCamera::Update(float deltaTime)
 {
 #ifdef _DEBUG
-    ImGuiTool::TimeLine("TitleCameraAnimation", cameraAnimationSequence_.get());
-    ImGui::Begin("TitleCameraDebug", nullptr, ImGuiWindowFlags_NoTitleBar);
-    if(ImGui::Checkbox("isAnimationPlaying", &isAnimationPlaying_))
-    {
-        if (isAnimationPlaying_)
-        {
-            cameraAnimationSequence_->SetCurrentTime(0.0f);
-        }
-    }
-    ImGui::End();
+    //ImGuiTool::TimeLine("TitleCameraAnimation", cameraAnimationSequence_.get());
+    //ImGui::Begin("TitleCameraDebug", nullptr, ImGuiWindowFlags_NoTitleBar);
+    //if(ImGui::Checkbox("isAnimationPlaying", &isAnimationPlaying_))
+    //{
+    //    if (isAnimationPlaying_)
+    //    {
+    //        cameraAnimationSequence_->SetCurrentTime(0.0f);
+    //    }
+    //}
+    //ImGui::End();
 #endif // _DEBUG
 
     if(Input::GetInstance()->IsKeyTriggered(DIK_SPACE)||
@@ -36,7 +36,7 @@ void TitleCamera::Update(float _deltaTime)
 
     if (isAnimationPlaying_)
     {
-        cameraAnimationSequence_->Update(_deltaTime);
+        cameraAnimationSequence_->Update(deltaTime);
         camera_.translate_ = cameraAnimationSequence_->GetValue<Vector3>("translate");
         if (cameraAnimationSequence_->IsEnd())
         {

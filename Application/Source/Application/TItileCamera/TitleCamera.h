@@ -11,7 +11,7 @@ public:
     ~TitleCamera() = default;
 
     void Initialize();
-    void Update(float _deltaTime);
+    void Update(float deltaTime);
 
     void PlayCameraAnimation();
 

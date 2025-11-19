@@ -12,9 +12,9 @@ Lane::~Lane()
     notes_.clear(); // 明示的にクリア
 }
 
-void Lane::Initialize(const std::list<NoteData>& _noteDataList, int32_t _laneIndex, float _judgeLine, float  _speed, float _startOffsetTime)
+void Lane::Initialize(const std::list<NoteData>& noteDataList, int32_t laneIndex, float judgeLine, float  speed, float startOffsetTime)
 {
-    endPosition_ = GetLaneEndPosition(_laneIndex, _judgeLine); // レーンの開始位置を取得
+    endPosition_ = GetLaneEndPosition(laneIndex, judgeLine); // レーンの開始位置を取得
 
     startPosition_ = endPosition_;
     startPosition_.z += laneLength_;
@@ -23,11 +23,11 @@ void Lane::Initialize(const std::list<NoteData>& _noteDataList, int32_t _laneInd
     CreateLaneModel();
 
     // ノーツを生成
-    CreateNotes(_noteDataList, _laneIndex, _judgeLine, _speed, _startOffsetTime);
+    CreateNotes(noteDataList, laneIndex, judgeLine, speed, startOffsetTime);
 
 }
 
-void Lane::Update(float _elapseTime, float _speed)
+void Lane::Update(float elapseTime, float speed)
 {
     auto it = notes_.begin();
     if (isHolding_)
@@ -51,23 +51,23 @@ void Lane::Update(float _elapseTime, float _speed)
             continue;
         }
 
-        note->Update(_elapseTime,_speed);
+        note->Update(elapseTime,speed);
         ++it; // 次のノーツへ
     }
 
 }
 
 
-void Lane::Draw(const Camera* _camera) const
+void Lane::Draw(const Camera* camera) const
 {
     if (laneModel_)
     {
-        laneModel_->Draw(_camera, { 0.5f,0.5f,0.5f,0.7f });
+        laneModel_->Draw(camera, { 0.5f,0.5f,0.5f,0.7f });
     }
 
     for (const auto& note : notes_)
     {
-        note->Draw(_camera);
+        note->Draw(camera);
     }
 }
 
@@ -81,13 +81,13 @@ Note* Lane::GetFirstNote() const
     return notes_.front().get(); // 最初のノーツを返す
 }
 
-int32_t Lane::DeleteNotesOutOfScreen(float _noteDeletePos)
+int32_t Lane::DeleteNotesOutOfScreen(float noteDeletePos)
 {
     int32_t deleteCount = 0;
     for (auto it = notes_.begin(); it != notes_.end();)
     {
         auto& note = *it;
-        if (note->GetPosition().z < _noteDeletePos) // 画面外のノーツ
+        if (note->GetPosition().z < noteDeletePos) // 画面外のノーツ
         {
             note->Judge(); // ノーツを判定済みにする 念のため
             it = notes_.erase(it); // ノーツを削除
@@ -113,56 +113,56 @@ void Lane::EndHold()
     isHolding_ = false;
 }
 
-Vector3 Lane::GetLaneEndPosition(int32_t _laneIndex, float _judgeLine)
+Vector3 Lane::GetLaneEndPosition(int32_t laneIndex, float judgeLine)
 {
     // レーンの座標を計算
-    // 基準は(0,0,_judgeLine)
-    static Vector3 basePosition = Vector3(0.0f, 0.0f, _judgeLine);
+    // 基準は(0,0,judgeLine)
+    static Vector3 basePosition = Vector3(0.0f, 0.0f, judgeLine);
     static float laneLeftEdge = basePosition.x - (totalWidth_ / 2.0f);
 
     Vector3 endPosition;
 
-    endPosition.x = laneLeftEdge + (static_cast<float>(_laneIndex) * laneWidth_) + laneWidth_ / 2.0f;
+    endPosition.x = laneLeftEdge + (static_cast<float>(laneIndex) * laneWidth_) + laneWidth_ / 2.0f;
     endPosition.y = 0.0f; // 高さは0
     endPosition.z = basePosition.z; // 奥
 
     return endPosition; // レーンの開始位置を返す
 }
 
-void Lane::CreateNotes(const std::list<NoteData>& _noteDataList, int32_t _laneIndex, float _judgeLine, [[maybe_unused]] float  _speed, [[maybe_unused]] float _startOffsetTime)
+void Lane::CreateNotes(const std::list<NoteData>& noteDataList, int32_t laneIndex, float judgeLine, [[maybe_unused]] float  speed, [[maybe_unused]] float startOffsetTime)
 {
     notes_.clear();
 
     Vector3 noteTargetPosition = endPosition_;
-    startPosition_.z = _judgeLine; // レーンの開始位置のZ座標を判定ラインに合わせる
+    startPosition_.z = judgeLine; // レーンの開始位置のZ座標を判定ラインに合わせる
     startPosition_.y = 0.0f; // 高さは0
     Vector3 noteStartPosition = startPosition_;
 
 
-    // _noteDataListは時間でソート済み
-    for (const auto& noteData : _noteDataList)
+    // noteDataListは時間でソート済み
+    for (const auto& noteData : noteDataList)
     {
-        if (noteData.laneIndex == _laneIndex) // 念のためチェック
+        if (noteData.laneIndex == laneIndex) // 念のためチェック
         {
             // ノーツを生成して追加
             if(noteData.noteType =="normal")
             {
-                auto note = std::make_shared<NomalNote>();
+                auto note = std::make_shared<NormalNote>();
 
-                note->Initilize(noteData.targetTime ,noteTargetPosition);
+                note->Initialize(noteData.targetTime ,noteTargetPosition);
                 notes_.push_back((note));
             }
             else if (noteData.noteType == "hold")
             {
                 // 前のノートを生成
                 auto note = std::make_shared<LongNote>();
-                note->Initilize(noteData.targetTime, noteTargetPosition);
+                note->Initialize(noteData.targetTime, noteTargetPosition);
                 note->SetHoldEnd(false); // ブリッジはまだ生成しない
                 notes_.push_back((note));
 
                 // ホールド終端を生成
                 auto holdEndNote = std::make_shared<LongNote>();
-                holdEndNote->Initilize(noteData.targetTime + noteData.holdDuration, noteTargetPosition);
+                holdEndNote->Initialize(noteData.targetTime + noteData.holdDuration, noteTargetPosition);
                 holdEndNote->SetHoldEnd(true); // ブリッジを生成するフラグを立てる
                 holdEndNote->SetHoldDuration(noteData.holdDuration); // ホールド時間を設定
                 notes_.push_back((holdEndNote));

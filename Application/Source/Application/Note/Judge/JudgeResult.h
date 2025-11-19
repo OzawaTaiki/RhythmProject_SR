@@ -22,14 +22,14 @@ public:
     /// <summary>
     /// 判定結果を反映する
     /// </summary>
-    void AddJudge(JudgeType _judgeType);
+    void AddJudge(JudgeType judgeType);
 
     /// <summary>
     /// 判定結果を反映する（カウントを指定できる）
     /// </summary>
-    /// <param name="_judgeType"> 判定タイプ</param>
-    /// <param name="_count"> カウント</param>
-    void AddJudge(JudgeType _judgeType, int32_t _count);
+    /// <param name="judgeType"> 判定タイプ</param>
+    /// <param name="count"> カウント</param>
+    void AddJudge(JudgeType judgeType, int32_t count);
 
     /// <summary>
     /// 判定結果を取得する
@@ -40,9 +40,9 @@ public:
     /// <summary>
     /// 指定した判定タイプの結果を取得する
     /// </summary>
-    /// <param name="_judgeType">判定タイプ</param>
+    /// <param name="judgeType">判定タイプ</param>
     /// <returns>判定結果の数</returns>
-    int32_t GetJudgeResult(JudgeType _judgeType) const;
+    int32_t GetJudgeResult(JudgeType judgeType) const;
 
     void DebugWindow();
 private:

@@ -1,18 +1,18 @@
 #include "LightPillarModifier.h"
 
-void LightPillarModifier::Apply(Particle* _particle, float _deltaTime)
+void LightPillarModifier::Apply(Particle* particle, float deltaTime)
 {
-    if (_particle == nullptr)
+    if (particle == nullptr)
         return;
 
     // サイズの最大値と最小値を定義
     const Vector3 maxSize = { 0.7f, 0.7f, 0.7f };
     const Vector3 minSize = { 0.5f, 0.5f, 0.5f };
 
-    Vector3 scale = _particle->GetScale();
+    Vector3 scale = particle->GetScale();
 
-    float lifeTime = _particle->GetLifeTime();
-    float currentTime = _particle->GetCurrentTime();
+    float lifeTime = particle->GetLifeTime();
+    float currentTime = particle->GetCurrentTime();
 
     float progress = currentTime / lifeTime;
 
@@ -21,5 +21,5 @@ void LightPillarModifier::Apply(Particle* _particle, float _deltaTime)
 
     scale = Vector3::Lerp(maxSize, minSize, progress);
 
-    _particle->SetScale(scale);
+    particle->SetScale(scale);
 }

@@ -22,47 +22,47 @@ public:
     /// <summary>
     /// 初期化処理を行う。
     /// </summary>
-    /// <param name="_filePath">環境設定ファイルのパス（省略可）</param>
-    void Initialize(const std::string& _filePath = "Resources/Data/Game/Environment.json");
+    /// <param name="filePath">環境設定ファイルのパス（省略可）</param>
+    void Initialize(const std::string& filePath = "Resources/Data/Game/Environment.json");
 
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    void Update(float _deltaTime);
+    void Update(float deltaTime);
 
     /// <summary>
     /// 描画処理を行う。
     /// </summary>
-    /// <param name="_camera">描画用カメラ</param>
-    void Draw(const Camera* _camera);
+    /// <param name="camera">描画用カメラ</param>
+    void Draw(const Camera* camera);
 
     /// <summary>
     /// BPMを設定して環境に反映する。
     /// </summary>
-    void SetBPM(float _bpm);
+    void SetBPM(float bpm);
 
     /// <summary>
     /// 指定レーンのスピーカーオブジェクトを取得する。
     /// </summary>
-    ObjectModel* GetSpeaker(uint32_t _laneIndex);
+    ObjectModel* GetSpeaker(uint32_t laneIndex);
 
     /// <summary>
     /// アニメーションを開始する。
     /// </summary>
     void StartAnimation();
 
-    void SetSpectrumTextureHandle(uint32_t _handle) { spectrumTextureHandle_ = _handle; }
+    void SetSpectrumTextureHandle(uint32_t handle) { spectrumTextureHandle_ = handle; }
 
 private:
     /// <summary>
     /// シーンデータの読み込み（内部処理）。
     /// </summary>
-    void Serialize(const std::string& _filePath);
+    void Serialize(const std::string& filePath);
 
     /// <summary>
     /// スピーカーマップを構築する（内部処理）。
     /// </summary>
-    void BuildSpeakerMap(const std::string& _objName,ObjectModel* _model, const std::string& _filepath);
+    void BuildSpeakerMap(const std::string& objName,ObjectModel* model, const std::string& filepath);
 private:
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;

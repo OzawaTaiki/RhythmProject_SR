@@ -75,20 +75,20 @@ void NoteJudge::DrawJudgeLine()
 
 }
 
-JudgeType NoteJudge::ProcessNoteJudge(Note* _note, float _elapsedTime)
+JudgeType NoteJudge::ProcessNoteJudge(Note* note, float elapsedTime)
 {
-    if (_note == nullptr)
+    if (note == nullptr)
         return JudgeType::None; // nullチェック
 
     JudgeType result = JudgeType::None;
 
-    float targetTime = _note->GetTargetTime();
+    float targetTime = note->GetTargetTime();
 
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
         // 判定範囲内かチェック
-        if (targetTime >= _elapsedTime - timingThresholds_[i] &&
-            targetTime <= _elapsedTime + timingThresholds_[i])
+        if (targetTime >= elapsedTime - timingThresholds_[i] &&
+            targetTime <= elapsedTime + timingThresholds_[i])
         {
             // 判定を行う
             result = static_cast<JudgeType>(i);

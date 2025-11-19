@@ -24,5 +24,5 @@ struct PauseActionData : EventData
 {
     PauseActions pauseAction = PauseActions::None;
 
-    PauseActionData(PauseActions _action) : pauseAction(_action) {}
+    PauseActionData(PauseActions action) : pauseAction(action) {}
 };

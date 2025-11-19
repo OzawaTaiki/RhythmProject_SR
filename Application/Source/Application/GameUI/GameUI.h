@@ -21,8 +21,8 @@ public:
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_combo">現在のコンボ数</param>
-    void Update(int32_t _combo);
+    /// <param name="combo">現在のコンボ数</param>
+    void Update(int32_t combo);
 
     /// <summary>
     /// 描画処理を行う。

@@ -1,8 +1,8 @@
 #include "JudgeType.h"
 
-std::string Judge::ToString(JudgeType _type)
+std::string Judge::ToString(JudgeType type)
 {
-    switch (_type)
+    switch (type)
     {
     case JudgeType::None:       return "None";
     case JudgeType::Perfect:    return "Perfect";

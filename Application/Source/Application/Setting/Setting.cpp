@@ -11,9 +11,9 @@ GameSettings Setting::default_ = {
 };
 GameSettings Setting::current_ = Setting::default_;
 
-void Setting::Load(const std::string& _filePath)
+void Setting::Load(const std::string& filePath)
 {
-    json data = JsonFileIO::Load(_filePath, "");
+    json data = JsonFileIO::Load(filePath, "");
     if (data.is_null())
     {
         current_ = default_;
@@ -28,7 +28,7 @@ void Setting::Load(const std::string& _filePath)
 
 }
 
-void Setting::Save(const std::string& _filePath)
+void Setting::Save(const std::string& filePath)
 {
     json data;
 
@@ -38,5 +38,5 @@ void Setting::Save(const std::string& _filePath)
     data["noteSpeed"] = current_.noteSpeed;
     data["audioLatencyMs"] = current_.audioLatencyMs;
 
-    JsonFileIO::Save(_filePath, "", data);
+    JsonFileIO::Save(filePath, "", data);
 }

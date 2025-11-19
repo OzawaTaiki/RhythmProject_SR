@@ -18,7 +18,7 @@ TitleScene::~TitleScene()
     EventManager::GetInstance()->RemoveEventListener("RequestExitGame", this);
 }
 
-void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
+void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,0,-10 };
@@ -72,8 +72,11 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
     spectrumRing_->Initialize(soundInstance_, 5);
     spectrumRing_->SetBeatManager(beatManager_.get());
 
-    titleUI_ = std::make_unique<TitileUI>();
+    titleUI_ = std::make_unique<TitleUI>();
     titleUI_->Initialize();
+
+    test_textBox = std::make_unique<UITextBox>();
+    test_textBox->Initialize("TitleTestTextBox");
 }
 
 void TitleScene::Update()
@@ -99,6 +102,7 @@ void TitleScene::Update()
     particleSystem_->Update();
     settingMenu_->Update();
     titleUI_->Update();
+    test_textBox->Update();
 
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
@@ -139,27 +143,33 @@ void TitleScene::Draw()
     ModelManager::GetInstance()->PreDrawForObjectModel();
 
     LayerSystem::SetLayer("ring");
-    spectrumRing_->Draw(&SceneCamera_);
+    {
+        spectrumRing_->Draw(&SceneCamera_);
+    }
 
     LayerSystem::SetLayer("buttons");
-
-    titleUI_->Draw();
+    {
+        titleUI_->Draw();
+        test_textBox->Draw();
+    }
     //textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
     //textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
 
     LayerSystem::SetLayer("option");
-    settingMenu_->Draw();
+    {
+        settingMenu_->Draw();
+    }
 }
 
 void TitleScene::DrawShadow(){}
 
-void TitleScene::OnEvent(const GameEvent& _event)
+void TitleScene::OnEvent(const GameEvent& event)
 {
-    if (_event.GetEventType() == "RequestStartGame")
+    if (event.GetEventType() == "RequestStartGame")
     {
         SceneManager::ReserveScene("GameScene", nullptr);
     }
-    else if (_event.GetEventType() == "RequestExitGame")
+    else if (event.GetEventType() == "RequestExitGame")
     {
         PostQuitMessage(0);  // Windows APIでアプリ終了
     }

@@ -8,7 +8,7 @@
 enum class KeyState
 {
     None,      // 何も押されていない
-    trigger,   // 押された
+    Trigger,   // 押された
     Released,  // 離された
     Hold,       // 押し続けている
 
@@ -18,7 +18,7 @@ enum class KeyState
 /// <summary>
 /// 入力データを表す構造体。
 /// </summary>
-struct InputDate
+struct InputData
 {
     KeyState state = KeyState::None; // キーの状態
     float elapsedTime = 0.0f; // 経過時間

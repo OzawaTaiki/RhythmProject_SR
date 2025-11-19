@@ -10,12 +10,12 @@ SpeakerEffect::SpeakerEffect()
     triangleParticleEmitter_.Initialize("Sepaker_Triangle");
 }
 
-void SpeakerEffect::PlaySpeakerEffect(const Vector3& _pos)
+void SpeakerEffect::PlaySpeakerEffect(const Vector3& pos)
 {
     // 座標の設定
-    ringEmitter_.SetPosition(_pos);
-    triangleParticleEmitter_.SetPosition(_pos);
-    rectanglleParticleEmitter_.SetPosition(_pos);
+    ringEmitter_.SetPosition(pos);
+    triangleParticleEmitter_.SetPosition(pos);
+    rectanglleParticleEmitter_.SetPosition(pos);
 
     // 生成
     ringEmitter_.GenerateParticles();
@@ -23,17 +23,17 @@ void SpeakerEffect::PlaySpeakerEffect(const Vector3& _pos)
     rectanglleParticleEmitter_.GenerateParticles();
 }
 
-void SpeakerEffect::PlaySpeakerEffect(ObjectModel* _parent)
+void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent)
 {
     // 親オブジェクトのワールド変換行列設定
-    auto worldTransform = _parent->GetWorldTransform();
+    auto worldTransform = parent->GetWorldTransform();
     ringEmitter_.SetParentTransform(worldTransform);
     triangleParticleEmitter_.SetParentTransform(worldTransform);
     rectanglleParticleEmitter_.SetParentTransform(worldTransform);
 
-    ringEmitter_.SetParentTransform(_parent->GetWorldTransform());
-    triangleParticleEmitter_.SetParentTransform(_parent->GetWorldTransform());
-    rectanglleParticleEmitter_.SetParentTransform(_parent->GetWorldTransform());
+    ringEmitter_.SetParentTransform(parent->GetWorldTransform());
+    triangleParticleEmitter_.SetParentTransform(parent->GetWorldTransform());
+    rectanglleParticleEmitter_.SetParentTransform(parent->GetWorldTransform());
 
     //ringEmitter_.GenerateParticles();
     triangleParticleEmitter_.GenerateParticles();

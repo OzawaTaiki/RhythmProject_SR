@@ -13,9 +13,9 @@ void GameUI::Initialize()
 
 }
 
-void GameUI::Update(int32_t _combo)
+void GameUI::Update(int32_t combo)
 {
-    comboValue_ = _combo;
+    comboValue_ = combo;
     ImGui();
 }
 

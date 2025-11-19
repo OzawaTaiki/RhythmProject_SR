@@ -5,7 +5,7 @@
 #include <Features/Scene/Manager/SceneManager.h>
 #include <Application/Scene/Data/SceneDatas.h>
 
-void SelectScene::Initialize([[maybe_unused]] SceneData* _sceneData)
+void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };

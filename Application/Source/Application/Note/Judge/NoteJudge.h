@@ -25,12 +25,12 @@ public:
     /// <summary>
     /// ノーツの判定を行う
     /// </summary>
-    /// <param name="_note">判定するノート</param>
+    /// <param name="note">判定するノート</param>
     /// <param name="elapsedTime">楽曲の経過時間</param>
-    JudgeType ProcessNoteJudge(Note* _note, float _elapsedTime);
+    JudgeType ProcessNoteJudge(Note* note, float elapsedTime);
 
     // ノーツの速度を設定
-    void SetSpeed(float _speed) { speed_ = _speed; }
+    void SetSpeed(float speed) { speed_ = speed; }
 
     // 各判定の閾値を取得
     float GetGoodJudgeThreshold() { return timingThresholds_[JudgeType::Good]; }
@@ -38,11 +38,11 @@ public:
 
     // === デバッグ用 === //
     // 判定ラインを描画するか
-    void SetIsDrawLine(bool _isDraw) { isDrawLine = _isDraw; }
+    void SetIsDrawLine(bool isDraw) { isDrawLine = isDraw; }
     // ノーツの位置を設定
-    void SetPosition(float _position) { position_ = _position; }
+    void SetPosition(float position) { position_ = position; }
     // レーンの総幅を設定
-    void SetLaneTotalWidth(float _width) { laneTotalWidth_ = _width; }
+    void SetLaneTotalWidth(float width) { laneTotalWidth_ = width; }
 
 private:
     // JSONバインダーの初期化

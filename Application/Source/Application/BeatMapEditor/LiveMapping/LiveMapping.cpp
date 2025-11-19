@@ -1,13 +1,13 @@
 #include "LiveMapping.h"
 
-void LiveMapping::Initialize(int32_t _laneCount)
+void LiveMapping::Initialize(int32_t laneCount)
 {
     input_ = Input::GetInstance(); // 入力管理クラスのインスタンスを取得
 
     // レーン数に応じてキーコードのリストを初期化
-    laneKeyBindings_.resize(_laneCount, 0); // 初期値は0（未設定）
+    laneKeyBindings_.resize(laneCount, 0); // 初期値は0（未設定）
     //デフォルトを設定
-    SetDefaultKeyBindings(_laneCount);
+    SetDefaultKeyBindings(laneCount);
 
     // マッピングデータの初期化
     mappingData_.clear();
@@ -15,7 +15,7 @@ void LiveMapping::Initialize(int32_t _laneCount)
 
 }
 
-void LiveMapping::Update(float _elapsedTime)
+void LiveMapping::Update(float elapsedTime)
 {
     for (uint32_t i = 0; i < laneKeyBindings_.size(); ++i)
     {
@@ -23,7 +23,7 @@ void LiveMapping::Update(float _elapsedTime)
         if (input_->IsKeyTriggered(laneKeyBindings_[i]))
         {
             // マッピングデータに追加
-            mappingData_.emplace_back(i, _elapsedTime);
+            mappingData_.emplace_back(i, elapsedTime);
         }
     }
 }
@@ -33,28 +33,28 @@ void LiveMapping::ResetMappingData()
     mappingData_.clear(); // マッピングデータをクリア
 }
 
-void LiveMapping::SetLaneKeyBinding(int32_t _laneIndex, uint8_t _keyCode)
+void LiveMapping::SetLaneKeyBinding(int32_t laneIndex, uint8_t keyCode)
 {
     // レーンインデックスが範囲内かチェック
-    if (_laneIndex < 0 || _laneIndex >= static_cast<int32_t>(laneKeyBindings_.size()))
+    if (laneIndex < 0 || laneIndex >= static_cast<int32_t>(laneKeyBindings_.size()))
     {
         return;
     }
 
-    laneKeyBindings_[_laneIndex] = _keyCode; // キーコードを設定
+    laneKeyBindings_[laneIndex] = keyCode; // キーコードを設定
 }
 
-void LiveMapping::SetDefaultKeyBindings(int32_t _laneIndex)
+void LiveMapping::SetDefaultKeyBindings(int32_t laneIndex)
 {
      // 使わないかもだけど念のため複数パターン用意しておく
-    if (_laneIndex == 4)
+    if (laneIndex == 4)
     {
         laneKeyBindings_[0] = DIK_D;
         laneKeyBindings_[1] = DIK_F;
         laneKeyBindings_[2] = DIK_J;
         laneKeyBindings_[3] = DIK_K;
     }
-    if (_laneIndex == 5)
+    if (laneIndex == 5)
     {
         laneKeyBindings_[0] = DIK_D;
         laneKeyBindings_[1] = DIK_F;
@@ -62,7 +62,7 @@ void LiveMapping::SetDefaultKeyBindings(int32_t _laneIndex)
         laneKeyBindings_[3] = DIK_J;
         laneKeyBindings_[4] = DIK_K;
     }
-    if (_laneIndex == 6)
+    if (laneIndex == 6)
     {
         laneKeyBindings_[0] = DIK_S;
         laneKeyBindings_[1] = DIK_D;

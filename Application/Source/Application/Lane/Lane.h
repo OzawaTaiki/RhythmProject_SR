@@ -19,23 +19,23 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    /// <param name="_noteDataList">ノーツのデータ</param>
-    /// <param name="_laneIndex">レーンインデックス</param>
-    /// <param name="_judgeLine">判定ラインの座標</param>
-    void Initialize(const std::list<NoteData>& _noteDataList, int32_t _laneIndex, float _judgeLine, float  _speed, float _startOffsetTime);
+    /// <param name="noteDataList">ノーツのデータ</param>
+    /// <param name="laneIndex">レーンインデックス</param>
+    /// <param name="judgeLine">判定ラインの座標</param>
+    void Initialize(const std::list<NoteData>& noteDataList, int32_t laneIndex, float judgeLine, float  speed, float startOffsetTime);
 
     /// <summary>
     /// 更新処理
     /// </summary>
-    /// <param name="_elapseTime">経過時間</param>
-    /// <param name="_speed">ノーツの移動速度</param>
-    void Update(float _elapseTime, float _speed);
+    /// <param name="elapseTime">経過時間</param>
+    /// <param name="speed">ノーツの移動速度</param>
+    void Update(float elapseTime, float speed);
 
     /// <summary>
     /// 描画処理
     /// </summary>
-    /// <param name="_camera">カメラ</param>
-    void Draw(const Camera* _camera) const;
+    /// <param name="camera">カメラ</param>
+    void Draw(const Camera* camera) const;
 
 
     /// <summary>
@@ -47,9 +47,9 @@ public:
     /// <summary>
     /// 画面外のノーツを削除する
     /// </summary>
-    /// <param name="_noteDeletePos">ノーツを削除する位置</param>
+    /// <param name="noteDeletePos">ノーツを削除する位置</param>
     /// /// <returns>削除したノーツの数</returns>
-    int32_t DeleteNotesOutOfScreen(float _noteDeletePos);
+    int32_t DeleteNotesOutOfScreen(float noteDeletePos);
 
     /// <summary>
     /// ホールド開始
@@ -85,7 +85,7 @@ private: // 内部処理用関数たち
     /// <summary>
     /// ノーツを生成する
     /// </summary>
-    void CreateNotes(const std::list<NoteData>& _noteDataList, int32_t _laneIndex, float _judgeLine, float  _speed, float _startOffsetTime);
+    void CreateNotes(const std::list<NoteData>& noteDataList, int32_t laneIndex, float judgeLine, float  speed, float startOffsetTime);
 
     void CreateLaneModel();
 private:

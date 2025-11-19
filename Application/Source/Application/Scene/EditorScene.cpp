@@ -4,7 +4,7 @@
 
 #include <Application/Scene/Data/SceneDatas.h>
 
-void EditorScene::Initialize(SceneData* _sceneData)
+void EditorScene::Initialize(SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };
@@ -34,11 +34,11 @@ void EditorScene::Initialize(SceneData* _sceneData)
     //---------------------------------
 
 
-    if (_sceneData)
+    if (sceneData)
     {
-        if (_sceneData->beforeScene == "GameScene")
+        if (sceneData->beforeScene == "GameScene")
         {
-            auto gameToEditorData = dynamic_cast<SharedBeatMapData*>(_sceneData);
+            auto gameToEditorData = dynamic_cast<SharedBeatMapData*>(sceneData);
             if (gameToEditorData)
             {
                 beatMapEditor_ = std::make_unique<BeatMapEditor>();

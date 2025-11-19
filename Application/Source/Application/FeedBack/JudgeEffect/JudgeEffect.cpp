@@ -8,9 +8,9 @@ void JudgeEffect::Initialize()
     TriggerEffects::Initialize();
 }
 
-void JudgeEffect::Play(int32_t _laneIndex)
+void JudgeEffect::Play(int32_t laneIndex)
 {
-    Vector3  lanePos = Lane::GetLaneEndPosition(_laneIndex); // レーンの開始位置を取得
+    Vector3  lanePos = Lane::GetLaneEndPosition(laneIndex); // レーンの開始位置を取得
 
     // 周囲のパーティクルを発生させる
     TriggerEffects::EmitSurroundingParticles(lanePos);

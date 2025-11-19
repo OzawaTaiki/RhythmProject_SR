@@ -27,9 +27,9 @@ public:
     /// <summary>
     /// パーティクルに対して毎フレーム適用される処理。
     /// </summary>
-    /// <param name="_particle">対象パーティクル</param>
-    /// <param name="_deltaTime">経過時間（秒）</param>
-    void Apply(Particle* _particle, float _deltaTime) override;
+    /// <param name="particle">対象パーティクル</param>
+    /// <param name="deltaTime">経過時間（秒）</param>
+    void Apply(Particle* particle, float deltaTime) override;
 };
 
 /// <summary>
@@ -56,8 +56,8 @@ public:
     /// <summary>
     /// パーティクルへの適用処理。
     /// </summary>
-    /// <param name="_particle">対象パーティクル</param>
-    /// <param name="_deltaTime">経過時間（秒）</param>
-    void Apply(Particle* _particle, float _deltaTime) override;
+    /// <param name="particle">対象パーティクル</param>
+    /// <param name="deltaTime">経過時間（秒）</param>
+    void Apply(Particle* particle, float deltaTime) override;
 
 };

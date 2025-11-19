@@ -1,21 +1,22 @@
-#include "TitileUI.h"
+#include "TitleUI.h"
 #include <Features/Event/EventManager.h>
 #include <Debug/ImguITools.h>
+#include <Features/UI/UITextBox.h>
 
-TitileUI::TitileUI()
+TitleUI::TitleUI()
 {
     eventManager_=EventManager::GetInstance();
     eventManager_->AddEventListener("CloseOptionMenu", this);
     eventManager_->AddEventListener("TitleCameraAnimationEnd", this);
 }
 
-TitileUI::~TitileUI()
+TitleUI::~TitleUI()
 {
     eventManager_->RemoveEventListener("CloseOptionMenu", this);
     eventManager_->RemoveEventListener("TitleCameraAnimationEnd", this);
 }
 
-void TitileUI::Initialize()
+void TitleUI::Initialize()
 {
 
     titleAnimationSequence_  = std::make_unique<AnimationSequence>("TitleUIAnimation");
@@ -33,7 +34,7 @@ void TitileUI::Initialize()
     currentTime_ = 0.0f;
 }
 
-void TitileUI::Update()
+void TitleUI::Update()
 {
 
     float delta = 0.016f;
@@ -79,7 +80,7 @@ void TitileUI::Update()
     }
 }
 
-void TitileUI::Draw()
+void TitleUI::Draw()
 {
     if (!isActive_)
         return;
@@ -87,20 +88,20 @@ void TitileUI::Draw()
     uiGroup_->Draw();
 }
 
-void TitileUI::OnEvent(const GameEvent& _event)
+void TitleUI::OnEvent(const GameEvent& event)
 {
-    if (_event.GetEventType() == "CloseOptionMenu")
+    if (event.GetEventType() == "CloseOptionMenu")
     {
         isActive_ = true;
     }
-    if (_event.GetEventType() == "TitleCameraAnimationEnd")
+    if (event.GetEventType() == "TitleCameraAnimationEnd")
     {
         isExpanding_ = true;
     }
 
 }
 
-void TitileUI::InitializeUIElements()
+void TitleUI::InitializeUIElements()
 {
     auto background = uiGroup_->CreateSprite("title_background");
 
@@ -220,9 +221,9 @@ void TitileUI::InitializeUIElements()
     animationUIElements_[TitleUIElement::ExitParent]    = { exitParent, exitParent->GetPos() };
 }
 
-void TitileUI::UpdateAnimationUI(TitleUIElement _elem, float _deltaTime)
+void TitleUI::UpdateAnimationUI(TitleUIElement elem, float deltaTime)
 {
-    for (size_t i = ToSizeT(_elem); i < ToSizeT(TitleUIElement::Max); ++i)
+    for (size_t i = ToSizeT(elem); i < ToSizeT(TitleUIElement::Max); ++i)
     {
         TitleUIElement current = ToTitleUIElement(i);
 
@@ -236,7 +237,7 @@ void TitileUI::UpdateAnimationUI(TitleUIElement _elem, float _deltaTime)
             return;
         }
 
-        element.currentTime += _deltaTime;
+        element.currentTime += deltaTime;
         if (element.currentTime >= titleAnimationSequence_->GetMaxPlayTime())
         {
             element.currentTime = titleAnimationSequence_->GetMaxPlayTime();

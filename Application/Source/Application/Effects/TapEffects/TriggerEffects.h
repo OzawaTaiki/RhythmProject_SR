@@ -7,7 +7,6 @@
 #include <string>
 #include <cstdint>
 
-// トリガーエフェクト
 /// <summary>
 /// トリガー（タップ）時に複数のパーティクルやエフェクトを発生させるユーティリティクラス。
 /// </summary>
@@ -32,14 +31,14 @@ public:
     /// <summary>
     /// 指定位置に中心の円形エフェクトを発生させる。
     /// </summary>
-    /// <param name="_pos">発生位置（ワールド座標）</param>
-    static void EmitCenterCircles(const Vector3& _pos);
+    /// <param name="pos">発生位置（ワールド座標）</param>
+    static void EmitCenterCircles(const Vector3& pos);
 
     /// <summary>
     /// 指定位置の周囲に散開するパーティクルを発生させる。
     /// </summary>
-    /// <param name="_pos">発生位置（ワールド座標）</param>
-    static void EmitSurroundingParticles(const Vector3& _pos);
+    /// <param name="pos">発生位置（ワールド座標）</param>
+    static void EmitSurroundingParticles(const Vector3& pos);
 
 private:
 

@@ -13,9 +13,9 @@ void NoteHoldEffect::Initialize()
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/SE/NoteHolding.wav");
 }
 
-void NoteHoldEffect::Play(int32_t _laneIndex)
+void NoteHoldEffect::Play(int32_t laneIndex)
 {
-    Vector3 lanePos = Lane::GetLaneEndPosition(_laneIndex); // レーンの開始位置を取得
+    Vector3 lanePos = Lane::GetLaneEndPosition(laneIndex); // レーンの開始位置を取得
 
     if (!voiceInstance_ || !voiceInstance_->IsPlaying())
     {

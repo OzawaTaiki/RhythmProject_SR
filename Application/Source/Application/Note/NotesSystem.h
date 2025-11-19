@@ -18,8 +18,8 @@ public:
     /// <summary>
     /// コンストラクタ。
     /// </summary>
-    /// <param name="_lane">操作対象のレーンポインタ</param>
-    NotesSystem(Lane* _lane);
+    /// <param name="lane">操作対象のレーンポインタ</param>
+    NotesSystem(Lane* lane);
 
     /// <summary>
     /// デストラクタ。
@@ -29,28 +29,28 @@ public:
     /// <summary>
     /// 初期化処理を行う。
     /// </summary>
-    /// <param name="_noteSpeed">ノーツの速度</param>
-    /// <param name="_noteSize">ノーツの表示サイズ</param>
-    /// <param name="_startOffsetTime">再生開始のオフセット時間（秒）</param>
-    void Initialize(float _noteSpeed, float _noteSize, float _startOffsetTime = 2.0f);
+    /// <param name="noteSpeed">ノーツの速度</param>
+    /// <param name="noteSize">ノーツの表示サイズ</param>
+    /// <param name="startOffsetTime">再生開始のオフセット時間（秒）</param>
+    void Initialize(float noteSpeed, float noteSize, float startOffsetTime = 2.0f);
 
     /// <summary>
     /// 毎フレームの更新処理を行う。
     /// </summary>
-    /// <param name="_deltaTime">前フレームからの経過時間（秒）</param>
-    void Update(float _deltaTime);
+    /// <param name="deltaTime">前フレームからの経過時間（秒）</param>
+    void Update(float deltaTime);
 
     /// <summary>
     /// ノーツの描画を行う。
     /// </summary>
-    /// <param name="_camera">描画用カメラ</param>
-    void DrawNotes(const Camera* _camera);
+    /// <param name="camera">描画用カメラ</param>
+    void DrawNotes(const Camera* camera);
 
     /// <summary>
     /// 譜面データを設定して内部的にノーツを生成する。
     /// </summary>
-    /// <param name="_beatMapData">譜面データ</param>
-    void SetBeatMapDataAndCreateNotes(const BeatMapData& _beatMapData);
+    /// <param name="beatMapData">譜面データ</param>
+    void SetBeatMapDataAndCreateNotes(const BeatMapData& beatMapData);
 
     /// <summary>
     /// ノーツの移動速度を取得する。
@@ -60,17 +60,17 @@ public:
     /// <summary>
     /// ジャッジラインの位置を設定する。
     /// </summary>
-    void SetJudgeLinePosition(float _position) { judgeLinePosition_ = _position; }
+    void SetJudgeLinePosition(float position) { judgeLinePosition_ = position; }
 
     /// <summary>
     /// miss判定の閾値を設定する。
     /// </summary>
-    void SetMissJudgeThreshold(float _threshold) { missJudgeThreshold_ = _threshold; }
+    void SetMissJudgeThreshold(float threshold) { missJudgeThreshold_ = threshold; }
 
     /// <summary>
     /// 内部で使用するストップウォッチを設定する。
     /// </summary>
-    void SetStopwatch(Stopwatch* _stopwatch) { stopwatch_ = _stopwatch; }
+    void SetStopwatch(Stopwatch* stopwatch) { stopwatch_ = stopwatch; }
 
     /// <summary>
     /// ノーツデータを再読み込みする。
@@ -80,17 +80,17 @@ public:
     /// <summary>
     /// 再生中かどうかを設定する。
     /// </summary>
-    void playing(bool _playing) { playing_ = _playing; }
+    void playing(bool playing) { playing_ = playing; }
 
     /// <summary>
     /// 自動プレイ設定を行う。
     /// </summary>
-    void SetAutoPlay(bool _autoPlay) { autoPlay_ = _autoPlay; }
+    void SetAutoPlay(bool autoPlay) { autoPlay_ = autoPlay; }
 
     /// <summary>
     /// 音楽のボイスインスタンスを設定する。
     /// </summary>
-    void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> _voiceInstance) { musicVoiceInstance_ = _voiceInstance; }
+    void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
     /// <summary>
     /// ノーツが再生成されたかを返す。
@@ -103,9 +103,9 @@ public:
     void Start() { isStarted_ = true; }
 
 private:
-    void CreateNormalNote(uint32_t _laneIndex, float _speed, float _targetTime);
-    void CreateLongNote(const NoteData& _noteData);
-    std::shared_ptr<Note> CreateNextNoteForLongNote(uint32_t _laneIndex, float _speed, float _targetTime);
+    void CreateNormalNote(uint32_t laneIndex, float speed, float targetTime);
+    void CreateLongNote(const NoteData& noteData);
+    std::shared_ptr<Note> CreateNextNoteForLongNote(uint32_t laneIndex, float speed, float targetTime);
     void DebugWindow();
 
 private:
@@ -135,9 +135,4 @@ private:
 
     // 再生している音楽データ
     std::shared_ptr<VoiceInstance> musicVoiceInstance_ = nullptr;
-};
-
-    // 再生している音楽データ
-    std::shared_ptr<VoiceInstance> musicVoiceInstance_ = nullptr;
-
 };

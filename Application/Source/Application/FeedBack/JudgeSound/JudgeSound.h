@@ -28,9 +28,9 @@ public:
     /// <summary>
     /// 初期化処理。
     /// </summary>
-    /// <param name="_volume">初期音量（0.0 - 1.0）</param>
-    /// <param name="_soundFilePath">SEファイルパス（省略時はデフォルトパス）</param>
-    void Initialize(float _volume = 0.5f , const std::string& _soundFilePath = "Resources/Sounds/SE/JudgeSound.wav");
+    /// <param name="volume">初期音量（0.0 - 1.0）</param>
+    /// <param name="soundFilePath">SEファイルパス（省略時はデフォルトパス）</param>
+    void Initialize(float volume = 0.5f , const std::string& soundFilePath = "Resources/Sounds/SE/JudgeSound.wav");
 
     /// <summary>
     /// 効果音を再生する。
@@ -53,7 +53,7 @@ public:
     /// <summary>
     /// 音量を設定する。
     /// </summary>
-    void SetVolume(float _volume) { volume_ = _volume; }
+    void SetVolume(float volume) { volume_ = volume; }
 
     /// <summary>
     /// 現在の音量を取得する。

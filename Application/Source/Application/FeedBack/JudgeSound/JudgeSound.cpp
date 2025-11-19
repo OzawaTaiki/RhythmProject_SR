@@ -12,10 +12,10 @@ JudgeSound::~JudgeSound()
     soundInstance_.reset(); // 音声インスタンスをリセット
 }
 
-void JudgeSound::Initialize(float _volume ,const std::string& _soundFilePath)
+void JudgeSound::Initialize(float volume ,const std::string& soundFilePath)
 {
-    volume_ = _volume;
-    soundFilePath_ = _soundFilePath;
+    volume_ = volume;
+    soundFilePath_ = soundFilePath;
 
     // 音声インスタンスをロード
     soundInstance_ = AudioSystem::GetInstance()->Load(soundFilePath_);

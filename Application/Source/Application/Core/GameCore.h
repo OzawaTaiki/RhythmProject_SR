@@ -24,7 +24,7 @@ class GameCore
 public:
 
     // コンストラクタ
-    GameCore(int32_t _laneCount = 4);
+    GameCore(int32_t laneCount = 4);
     // デストラクタ
     ~GameCore();
 
@@ -32,38 +32,38 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    void Initialize(float _noteSpeed, float _musicLaytencyMs = 0.0f, float _beginOffset = 2.0f);
+    void Initialize(float noteSpeed, float musicLaytencyMs = 0.0f, float beginOffset = 2.0f);
 
     /// <summary>
     /// 更新処理
     /// </summary>
-    /// <param name="_deltaTime">デルタタイム</param>
-    /// <param name="_inputData">入力データ</param>
-    void Update(float  _deltaTime, const std::vector<InputDate>& _inputData);
+    /// <param name="deltaTime">デルタタイム</param>
+    /// <param name="inputData">入力データ</param>
+    void Update(float  deltaTime, const std::vector<InputData>& inputData);
 
     /// <summary>
     /// 描画処理
     /// </summary>
-    /// <param name="_camera">カメラ</param>
-    void Draw(const Camera* _camera);
+    /// <param name="camera">カメラ</param>
+    void Draw(const Camera* camera);
 
     /// <summary>
     /// 譜面データを受け取り、ノーツを生成する
     /// </summary>
-    /// <param name="_beatMapData">譜面データ</param>
-    void GenerateNotes(const BeatMapData& _beatMapData);
+    /// <param name="beatMapData">譜面データ</param>
+    void GenerateNotes(const BeatMapData& beatMapData);
 
     /// <summary>
     /// 音楽の音声インスタンスを設定する
     /// </summary>
-    /// <param name="_voiceInstance">音声インスタンスを</param>
-    void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> _voiceInstance) { musicVoiceInstance_ = _voiceInstance; }
+    /// <param name="voiceInstance">音声インスタンスを</param>
+    void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
     /// <summary>
     /// GameMusicを設定する
     /// </summary>
-    /// <param name="_gameMusic">GameMusicのインスタンス</param>
-    void SetGameMusic(const GameMusic* _gameMusic) { gamemusic_ = _gameMusic; }
+    /// <param name="gameMusic">GameMusicのインスタンス</param>
+    void SetGameMusic(const GameMusic* gameMusic) { gamemusic_ = gameMusic; }
 
     /// <summary>
     /// 開始
@@ -79,33 +79,33 @@ public:
     /// <summary>
     /// 判定時のコールバック関数を設定する
     /// </summary>
-    /// <param name="_callback">コールバック関数</param>
-    void SetJudgeCallback(const std::function<void(int32_t,JudgeType)>& _callback) { onJudgeCallback_ = _callback; }
+    /// <param name="callback">コールバック関数</param>
+    void SetJudgeCallback(const std::function<void(int32_t,JudgeType)>& callback) { onJudgeCallback_ = callback; }
 
     /// <summary>
     /// ミス時のコールバック関数を設定する
     /// </summary>
-    /// <param name="_callback">コールバック関数</param>
-    void SetMissCallback(const std::function<void(void)>& _callback) { onMissCallback_ = _callback; }
+    /// <param name="callback">コールバック関数</param>
+    void SetMissCallback(const std::function<void(void)>& callback) { onMissCallback_ = callback; }
 
     /// <summary>
     /// ホールド時のコールバック関数を設定する
     /// </summary>
-    /// <param name="_callback">コールバック関数</param>
-    void SetHoldCallback(const std::function<void(int32_t)>& _callback) { onHoldCallback_ = _callback; }
+    /// <param name="callback">コールバック関数</param>
+    void SetHoldCallback(const std::function<void(int32_t)>& callback) { onHoldCallback_ = callback; }
 
 
     /// <summary>
     /// ノーツの移動速度を設定する
     /// </summary>
-    /// <param name="_speed">ノーツの移動速度</param>
-    void SetNoteSpeed(float _speed) { noteSpeed_ = _speed; noteJudge_->SetSpeed(noteSpeed_); }
+    /// <param name="speed">ノーツの移動速度</param>
+    void SetNoteSpeed(float speed) { noteSpeed_ = speed; noteJudge_->SetSpeed(noteSpeed_); }
 
     /// <summary>
     /// 音楽の遅延を設定する
     /// </summary>
-    /// <param name="_latencyMs">遅延時間（ミリ秒）</param>
-    void SetMusicLatency(float _latencyMs) { musicLatencyMs_ = _latencyMs; }
+    /// <param name="latencyMs">遅延時間（ミリ秒）</param>
+    void SetMusicLatency(float latencyMs) { musicLatencyMs_ = latencyMs; }
 
     /// <summary>
     /// 最大コンボ数を取得する
@@ -133,22 +133,22 @@ public:
 
 private:
     // 譜面データを解析する
-    void ParseBeatMapData(const BeatMapData& _beatMapData);
+    void ParseBeatMapData(const BeatMapData& beatMapData);
     // ノーツを作成する
     void CreateBeatMapNotes();
 
     // ノーツの判定
-    void JudgeNotes(const std::vector<InputDate>& _inputData);
+    void JudgeNotes(const std::vector<InputData>& inputData);
     // 通常ノーツの判定
-    JudgeType ProcessNormalNote(Note* _note, const InputDate& _inputData);
+    JudgeType ProcessNormalNote(Note* note, const InputData& inputData);
     // ホールドノーツの判定
-    JudgeType ProcessHoldNote(Note* _note, const InputDate& _inputData,Lane* _lane);
+    JudgeType ProcessHoldNote(Note* note, const InputData& inputData,Lane* lane);
     // ホールドエンドノーツの判定
-    JudgeType ProcessHoldEndNote(Note* _note, const InputDate& _inputData, Lane* _lane);
+    JudgeType ProcessHoldEndNote(Note* note, const InputData& inputData, Lane* lane);
     // コンボの更新
-    void UpdateCombo(JudgeType _result);
+    void UpdateCombo(JudgeType result);
     // 判定結果の記録
-    void RecordJudgeResult(JudgeType _result, Note* _note);
+    void RecordJudgeResult(JudgeType result, Note* note);
 
 
 private:

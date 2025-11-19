@@ -32,33 +32,33 @@ void JudgeResult::Initialize()
 }
 
 
-void JudgeResult::AddJudge(JudgeType _judgeType)
+void JudgeResult::AddJudge(JudgeType judgeType)
 {
-    if (_judgeType == JudgeType::None)
+    if (judgeType == JudgeType::None)
         return; // Noneは除外
 
     // 判定結果が存在する場合のみカウント
-    if (judgeResult_.find(_judgeType) != judgeResult_.end())
+    if (judgeResult_.find(judgeType) != judgeResult_.end())
     {
-        ++judgeResult_[_judgeType]; // 判定結果をカウント
+        ++judgeResult_[judgeType]; // 判定結果をカウント
     }
 }
 
-void JudgeResult::AddJudge(JudgeType _judgeType, int32_t _count)
+void JudgeResult::AddJudge(JudgeType judgeType, int32_t count)
 {
-    if (_judgeType == JudgeType::None || _count <= 0)
+    if (judgeType == JudgeType::None || count <= 0)
         return; // Noneは除外、カウントが0以下の場合は無視
 
     // 判定結果が存在する場合のみカウント
-    if (judgeResult_.find(_judgeType) != judgeResult_.end())
+    if (judgeResult_.find(judgeType) != judgeResult_.end())
     {
-        judgeResult_[_judgeType] += _count; // 判定結果をカウント
+        judgeResult_[judgeType] += count; // 判定結果をカウント
     }
 }
 
-int32_t JudgeResult::GetJudgeResult(JudgeType _judgeType) const
+int32_t JudgeResult::GetJudgeResult(JudgeType judgeType) const
 {
-    auto it = judgeResult_.find(_judgeType);
+    auto it = judgeResult_.find(judgeType);
     if (it != judgeResult_.end())
     {
         return it->second; // 判定結果を返す

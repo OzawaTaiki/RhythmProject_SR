@@ -19,18 +19,18 @@ public:
     /// <summary>
     /// 譜面データを指定パスから非同期でロード
     /// </summary>
-    /// <param name="_beatMapPath">譜面データファイルパス</param>
+    /// <param name="beatMapPath">譜面データファイルパス</param>
     /// <returns>ロード成功ならtrue</returns>
     /// <remarks>ロード中はIsLoading()がtrueを返す</remarks>
-    std::future<bool> LoadBeatMap(const std::string& _beatMapPath);
+    std::future<bool> LoadBeatMap(const std::string& beatMapPath);
 
     /// <summary>
     /// 譜面データを直接非同期でロード
     /// </summary>
-    /// <param name="_beatMapData">譜面データ</param>
+    /// <param name="beatMapData">譜面データ</param>
     /// <returns>ロード成功ならtrue</returns>
     /// <remarks>ロード中はIsLoading()がtrueを返す</remarks>
-    std::future<bool> LoadBeatMap(const BeatMapData& _beatMapData);
+    std::future<bool> LoadBeatMap(const BeatMapData& beatMapData);
 
     /// <summary>
     /// ロードした譜面データを取得
@@ -58,7 +58,7 @@ public:
 private:
 
     // JSONデータをBeatMapDataに変換
-    BeatMapData ParseJsonToBeatMap(const nlohmann::json& _jsonData);
+    BeatMapData ParseJsonToBeatMap(const nlohmann::json& jsonData);
 
 private:
 

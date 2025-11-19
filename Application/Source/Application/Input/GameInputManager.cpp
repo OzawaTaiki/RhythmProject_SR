@@ -2,12 +2,12 @@
 
 #include <Debug/Debug.h>
 
-void GameInputManager::Initialize(Input* _input)
+void GameInputManager::Initialize(Input* input)
 {
-    if (_input == nullptr)
+    if (input == nullptr)
         input_ = Input::GetInstance();
     else
-        input_ = _input;
+        input_ = input;
 
     SetDefaultKeyBindings();
 
@@ -26,13 +26,13 @@ void GameInputManager::Update()
 
     for (const auto& [keycode, laneIndex] : keyBindings_)
     {
-        InputDate inputData;
+        InputData inputData;
         inputData.elapsedTime = gameMusic_->GetElapsedTime();
         inputData.laneIndex = laneIndex;
 
         if (input_->IsKeyTriggered(keycode))
         {
-            inputData.state = KeyState::trigger;
+            inputData.state = KeyState::Trigger;
 
             inputData_.push_back(inputData);
 

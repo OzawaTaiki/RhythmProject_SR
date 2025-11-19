@@ -4,22 +4,22 @@
 
 #include <Application/EventData/PauseActionData.h>
 
-GameMusic::GameMusic(const std::string& _musicFilePath)
+GameMusic::GameMusic(const std::string& musicFilePath)
 {
-    soundInstance_ = AudioSystem::GetInstance()->Load(_musicFilePath);
+    soundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);
 }
 
 GameMusic::~GameMusic()
 {
 }
 
-void GameMusic::Initialize(float _rewindTime)
+void GameMusic::Initialize(float rewindTime)
 {
     // コールバックの設定
     voiceCallBack_ = std::make_unique<VoiceCallBack>();
     voiceCallBack_->SetOnStreamEndCallback([this]() {MusicEnd(); }); // 音楽が終了したときのコールバックを設定
 
-    rewindTime_ = _rewindTime;
+    rewindTime_ = rewindTime;
     pausedAtTime_ = 0.0f;
     isMusicPlaying_ = false;
 
@@ -34,7 +34,7 @@ float GameMusic::GetElapsedTime() const
     return 0.0f; // voiceInstanceがない場合は0を返す
 }
 
-void GameMusic::Play(float _volume)
+void GameMusic::Play(float volume)
 {
     if (isMusicPlaying_)
         return;
@@ -42,7 +42,7 @@ void GameMusic::Play(float _volume)
     if (voiceInstance_)
         voiceInstance_.reset();
 
-    voiceInstance_ = soundInstance_->Play(_volume, 0, false, true, voiceCallBack_.get());
+    voiceInstance_ = soundInstance_->Play(volume, 0, false, true, voiceCallBack_.get());
 
     isMusicPlaying_ = true;
 
@@ -57,7 +57,7 @@ void GameMusic::Resume()
     }
 }
 
-void GameMusic::ResumeWithRewind(float _volume)
+void GameMusic::ResumeWithRewind(float volume)
 {
     if (voiceInstance_ && !isMusicPlaying_)
     {
@@ -69,7 +69,7 @@ void GameMusic::ResumeWithRewind(float _volume)
         startTime = (std::max)(startTime, 0.0f); // 負の値にならないようにする
 
         // 再生を開始
-        voiceInstance_ = soundInstance_->Play(_volume, startTime, false, true, voiceCallBack_.get());
+        voiceInstance_ = soundInstance_->Play(volume, startTime, false, true, voiceCallBack_.get());
         isMusicPlaying_ = true;
     }
 }
@@ -85,11 +85,11 @@ void GameMusic::Pause()
     }
 }
 
-void GameMusic::SetVolume(float _volume)
+void GameMusic::SetVolume(float volume)
 {
     if (voiceInstance_)
     {
-        voiceInstance_->SetVolume(_volume);
+        voiceInstance_->SetVolume(volume);
     }
 }
 

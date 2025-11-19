@@ -41,17 +41,17 @@ public:
     /// <summary>
     /// 初期化を行う。
     /// </summary>
-    /// <param name="_camera">座標変換や表示に用いるカメラ</param>
-    /// <param name="_laneCount">レーン数</param>
-    /// <param name="_gameEnvironment">ゲーム環境オブジェクト</param>
-    void Initialize(Camera* _camera, int32_t _laneCount, GameEnvironment* _gameEnvironment);
+    /// <param name="camera">座標変換や表示に用いるカメラ</param>
+    /// <param name="laneCount">レーン数</param>
+    /// <param name="gameEnvironment">ゲーム環境オブジェクト</param>
+    void Initialize(Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment);
 
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_deltaTime">前フレームからの経過時間（秒）</param>
-    /// <param name="_inputData">入力データの配列</param>
-    void Update(float _deltaTime, const std::vector<InputDate>& _inputData);
+    /// <param name="deltaTime">前フレームからの経過時間（秒）</param>
+    /// <param name="inputData">入力データの配列</param>
+    void Update(float deltaTime, const std::vector<InputData>& inputData);
 
     /// <summary>
     /// 描画処理。
@@ -61,9 +61,9 @@ public:
     /// <summary>
     /// ジャッジエフェクトを再生する（コールバック向け）。
     /// </summary>
-    /// <param name="_laneIndex">対象レーンのインデックス</param>
-    /// <param name="_judgeType">判定種類</param>
-    void PlayJudgeEffect(int32_t _laneIndex, JudgeType _judgeType);
+    /// <param name="laneIndex">対象レーンのインデックス</param>
+    /// <param name="judgeType">判定種類</param>
+    void PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType);
 
     /// <summary>
     /// ミス時のエフェクトを再生する。
@@ -73,15 +73,15 @@ public:
     /// <summary>
     /// ホールドエフェクトを再生する。
     /// </summary>
-    /// <param name="_laneIndex">対象レーンのインデックス</param>
-    void PlayHoldEffect(int32_t _laneIndex);
+    /// <param name="laneIndex">対象レーンのインデックス</param>
+    void PlayHoldEffect(int32_t laneIndex);
 
     /// <summary>
     /// ミス時のビネットエフェクトを適用する（レンダーターゲット指定）。
     /// </summary>
-    /// <param name="_input">入力レンダーターゲット名</param>
-    /// <param name="_output">出力レンダーターゲット名</param>
-    void ApplyMissedVignetteEffect(const std::string& _input, const std::string& _output);
+    /// <param name="input">入力レンダーターゲット名</param>
+    /// <param name="output">出力レンダーターゲット名</param>
+    void ApplyMissedVignetteEffect(const std::string& input, const std::string& output);
 
     /// <summary>
     /// デバッグ用ウィンドウを表示する。
@@ -93,9 +93,9 @@ private:
     /// <summary>
     /// 判定テキストを割り当てる内部ユーティリティ。
     /// </summary>
-    /// <param name="_judgeType">判定タイプ</param>
-    /// <param name="_laneIndex">レーンインデックス</param>
-    void AllocateJudgeText(JudgeType _judgeType, int32_t _laneIndex);
+    /// <param name="judgeType">判定タイプ</param>
+    /// <param name="laneIndex">レーンインデックス</param>
+    void AllocateJudgeText(JudgeType judgeType, int32_t laneIndex);
 
 
 private:

@@ -16,6 +16,7 @@
 #include <Application/TitleUI.h>
 #include <Application/TItileCamera/TitleCamera.h>
 #include <Features/UI/UITextBox.h>
+#include <UISliderWithInput.h>
 //#include <Features/BPMDetector/BPMDetector.h>
 
 /// <summary>
@@ -81,7 +82,7 @@ private:
     std::unique_ptr<UITextBox> test_textBox;
 
     std::unique_ptr<TitleUI> titleUI_;
-
-
+    std::unique_ptr<UISliderWithInput> test;
+    std::unique_ptr<UISliderWithInput> test_int;
 
 };

@@ -21,6 +21,7 @@ private:
     Camera camera_;
 
     bool isAnimationPlaying_ = false;
+    bool isAnimationCompleted_ =false;
 
     std::unique_ptr<AnimationSequence> cameraAnimationSequence_ = nullptr;
 };

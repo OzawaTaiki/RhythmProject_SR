@@ -140,7 +140,6 @@ void FeedbackEffect::PlayHoldEffect(int32_t laneIndex)
     {
         noteHoldEffect_->Play(laneIndex); // ホールドエフェクトを再生
     }
-    // TODO : 音
 }
 
 void FeedbackEffect::ApplyMissedVignetteEffect(const std::string& input, const std::string& output)

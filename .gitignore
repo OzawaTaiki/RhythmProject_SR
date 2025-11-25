@@ -332,3 +332,5 @@ FodyWeavers.xsd
 nul
 
 .claude/
+/find_magic_numbers.py
+/magic_numbers_report.txt

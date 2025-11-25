@@ -77,6 +77,14 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     test_textBox = std::make_unique<UITextBox>();
     test_textBox->Initialize("TitleTestTextBox");
+
+    test = std::make_unique<UISliderWithInput>();
+    test->Initialize("TestSlider", 0.0f, 100.0f, 1.0f);
+
+    test_int = std::make_unique<UISliderWithInput>();
+    test_int->Initialize("TestIntSlider", 0, 100000, 6301);
+
+
 }
 
 void TitleScene::Update()
@@ -103,6 +111,9 @@ void TitleScene::Update()
     settingMenu_->Update();
     titleUI_->Update();
     test_textBox->Update();
+
+    test->Update();
+    test_int->Update();
 
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
@@ -157,6 +168,8 @@ void TitleScene::Draw()
 
     LayerSystem::SetLayer("option");
     {
+        test->Draw();
+        test_int->Draw();
         settingMenu_->Draw();
     }
 }

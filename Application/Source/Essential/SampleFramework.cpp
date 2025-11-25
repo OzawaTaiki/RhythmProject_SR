@@ -13,7 +13,7 @@
 
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
-    Framework::Initialize(L"GameEngine");
+    Framework::Initialize(L"");
 
 
     //rtvManager_->CreateRenderTarget("default", WinApp::kWindowWidth_, WinApp::kWindowHeight_, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, Vector4(0.4625f, 0.925f, 0.4625f, 1.0f), false);

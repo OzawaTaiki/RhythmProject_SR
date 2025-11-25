@@ -41,6 +41,7 @@ void TitleCamera::Update(float deltaTime)
         if (cameraAnimationSequence_->IsEnd())
         {
             isAnimationPlaying_ = false;
+            isAnimationCompleted_ = true;
             EventManager::GetInstance()->DispatchEvent(GameEvent("TitleCameraAnimationEnd", nullptr));
         }
     }
@@ -51,8 +52,9 @@ void TitleCamera::Update(float deltaTime)
 
 void TitleCamera::PlayCameraAnimation()
 {
-    if (isAnimationPlaying_) return;
+    if (isAnimationPlaying_ || isAnimationCompleted_) return;
 
     isAnimationPlaying_ = true;
+    isAnimationCompleted_ = false;
     cameraAnimationSequence_->SetCurrentTime(0.0f);
 }

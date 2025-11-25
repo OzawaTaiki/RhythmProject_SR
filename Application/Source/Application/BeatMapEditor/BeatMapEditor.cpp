@@ -45,14 +45,14 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(120.0f, 0.0f); // 初期BPMとオフセットを設定
 
-    for2dCamera_.Initialize(CameraType::Orthographic, Vector2(1280.0f, 720.0f)); // 2Dカメラの初期化
+    for2dCamera_.Initialize(CameraType::Orthographic, WinApp::kWindowSize_); // 2Dカメラの初期化
     for2dCamera_.matProjection_ = Matrix4x4::Identity();
     for2dCamera_.matView_ = Matrix4x4::Identity();
     for2dCamera_.UpdateMatrix(); // カメラの行列を更新
     lineDrawer_->SetCameraPtr2D(&for2dCamera_); // 2Dカメラをライン描画クラスに設定
 
     //                                       左右UI   マージン
-    Vector2 laneAreaSize = Vector2(1280.0f - 600.0f - 120.0f, 720.0f); // レーンエリアのサイズを設定
+    Vector2 laneAreaSize = Vector2(WinApp::kWindowSize_.x - 600.0f - 120.0f, WinApp::kWindowSize_.y); // レーンエリアのサイズを設定
     editorCoordinate_.Initialize(laneAreaSize); // 初期画面サイズとレーン数を設定
     editorCoordinate_.SetTimeZeroOffsetRatio(0.1f);
 
@@ -81,7 +81,7 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 
     selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
 
-    waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(1280.0f - 600.0f, 96.0f)); // 波形の表示範囲を初期化
+    waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(WinApp::kWindowSize_.x - 600.0f, 96.0f)); // 波形の表示範囲を初期化
     waveformBackground_ = std::make_unique<UISprite>();
     waveformBackground_->Initialize("waveformBackground");
 
@@ -312,7 +312,7 @@ void BeatMapEditor::DrawLeftPanel()
 
     const float menuHeight = 18.0f;
     const float timelineHeight = 100.0f; // タイムラインの高さを設定
-    const ImVec2 panelSize(300.0f, 720.0f - menuHeight-timelineHeight); // 左パネルのサイズを設定
+    const ImVec2 panelSize(300.0f, WinApp::kWindowSize_.y - menuHeight-timelineHeight); // 左パネルのサイズを設定
     const ImVec2 panelPos(0.0f, menuHeight); // 左パネルの位置を設定
 
     ImGui::SetNextWindowPos(panelPos); // パネルの位置を設定
@@ -446,8 +446,8 @@ void BeatMapEditor::DrawRightPanel()
 
     const float menuHeight = 18.0f;
     const float timelineHeight = 100.0f; // タイムラインの高さを設定
-    const ImVec2 panelSize(300.0f, 720.0f - menuHeight - timelineHeight); // 左パネルのサイズを設定
-    const ImVec2 panelPos(1280.0f - panelSize.x, menuHeight); // 左パネルの位置を設定
+    const ImVec2 panelSize(300.0f, WinApp::kWindowSize_.y - menuHeight - timelineHeight); // 左パネルのサイズを設定
+    const ImVec2 panelPos(WinApp::kWindowSize_.x - panelSize.x, menuHeight); // 左パネルの位置を設定
 
     ImGui::SetNextWindowPos(panelPos); // パネルの位置を設定
     ImGui::SetNextWindowSize(panelSize); // パネルのサイズを設定
@@ -800,14 +800,14 @@ void BeatMapEditor::InitDummySprites()
     dummy_editArea_->Initialize("DummyEditAreaSprite", true);
     dummy_editArea_->SetPos(Vector2(300.0f, 0.0f));
     dummy_editArea_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーエディットエリアのアンカーを左上に設定
-    dummy_editArea_->SetSize(Vector2(1280.0f - 600.0f, 720.0f)); // ダミーエディットエリアのサイズを設定
+    dummy_editArea_->SetSize(Vector2(WinApp::kWindowSize_.x - 600.0f, WinApp::kWindowSize_.y)); // ダミーエディットエリアのサイズを設定
 
 
     dummy_window_ = std::make_unique<UISprite>();
     dummy_window_->Initialize("DummyWindowSprite", true);
     dummy_window_->SetPos(Vector2(0, 0));
     dummy_window_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーウィンドウのアンカーを左上に設定
-    dummy_window_->SetSize(Vector2(1280.0f, 720.0f)); // ダミーウィンドウのサイズを設定
+    dummy_window_->SetSize(WinApp::kWindowSize_); // ダミーウィンドウのサイズを設定
 }
 
 void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)

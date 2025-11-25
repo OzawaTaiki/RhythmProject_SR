@@ -58,7 +58,7 @@ void TitleUI::Update()
 
     if (!isActive_)
         return;
-
+//
 //#ifdef _DEBUG
 //    ImGuiTool::TimeLine("TitleUIAnimation", titleAnimationSequence_.get());
 //    ImGuiTool::TimeLine("TitleUIExpand", buttonExpandAnimationSequence_.get());
@@ -111,8 +111,6 @@ void TitleUI::InitializeUIElements()
 
         startButton->SetOnHoverEnter([this]()
                                      {
-                                         // TODO : サイズ変更アニメーション
-                                         //Vector2 val= titleAnimationSequence_->GetValue<Vector2>("positionOffset");
                                          auto& element = animationUIElements_[TitleUIElement::StartParent];
                                          element.animationLabel = "positionOffset";
                                          element.currentTime = 0.0f;
@@ -120,8 +118,6 @@ void TitleUI::InitializeUIElements()
                                      });
         startButton->SetOnHoverExit([this]()
                                     {
-                                        // TODO : サイズ変更アニメーション戻し
-
                                         auto& element = animationUIElements_[TitleUIElement::StartParent];
                                         element.animationLabel = "return_posOffset";
                                         element.currentTime = 0.0f;
@@ -144,8 +140,6 @@ void TitleUI::InitializeUIElements()
     {// オプションボタン
         optionButton->SetOnHoverEnter([this]()
                                       {
-                                          // TODO : サイズ変更アニメーション
-
                                           auto& element = animationUIElements_[TitleUIElement::OptionsParent];
                                           element.animationLabel = "positionOffset";
                                           element.currentTime = 0.0f;
@@ -153,7 +147,6 @@ void TitleUI::InitializeUIElements()
                                       });
         optionButton->SetOnHoverExit([this]()
                                      {
-                                         // TODO : サイズ変更アニメーション戻し
                                          auto& element = animationUIElements_[TitleUIElement::OptionsParent];
                                          element.animationLabel = "return_posOffset";
                                          element.currentTime = 0.0f;
@@ -176,7 +169,6 @@ void TitleUI::InitializeUIElements()
     {
         exitButton->SetOnHoverEnter([this]()
                                     {
-                                        // TODO : サイズ変更アニメーション
                                         auto& element = animationUIElements_[TitleUIElement::ExitParent];
                                         element.animationLabel = "positionOffset";
                                         element.currentTime = 0.0f;
@@ -185,7 +177,6 @@ void TitleUI::InitializeUIElements()
 
         exitButton->SetOnHoverExit([this]()
                                    {
-                                       // TODO : サイズ変更アニメーション戻し
                                        auto& element = animationUIElements_[TitleUIElement::ExitParent];
                                        element.animationLabel = "return_posOffset";
                                        element.currentTime = 0.0f;
@@ -194,7 +185,9 @@ void TitleUI::InitializeUIElements()
 
         exitButton->SetOnClickEnd([this]()
                                   {
+#ifndef _DEBUG
                                       eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
+#endif
                                   });
         exitParent->AddChild(exitButton);
 

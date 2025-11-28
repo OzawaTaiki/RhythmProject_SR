@@ -4,6 +4,10 @@
 
 #include <Application/BeatMapEditor/BeatMapEditor.h>
 
+namespace BME
+{
+class Document;
+
 // コピーしたノートデータをペーストするコマンド
 class PasteCommand : public ICommand
 {
@@ -14,7 +18,7 @@ public:
     /// <param name="_beatMapEditor">編集対象の BeatMapEditor ポインタ</param>
     /// <param name="_notesToPaste">コピーされたノートデータのリスト</param>
     /// <param name="_pasteOffset">ペースト時の時間オフセット（秒）</param>
-    PasteCommand(BeatMapEditor* _beatMapEditor, const std::vector<NoteData>& _notesToPaste, float _pasteOffset = 0.0f);
+    PasteCommand(Document* _beatMapEditor, const std::vector<NoteData>& _notesToPaste, float _pasteOffset = 0.0f);
 
     /// <summary>
     /// ノートをペーストして配置する処理を実行する。
@@ -27,8 +31,9 @@ public:
     void Undo() override;
 private:
 
-    BeatMapEditor* beatMapEditor_ = nullptr; // BeatMapEditorのポインタ
+    Document* document_ = nullptr; // 譜面ドキュメントのポインタ
     std::vector<NoteData> notesToPaste_; // コピーしたノートデータ
     std::vector<size_t> pastedNoteIndices_; // ペーストしたノートのインデックス
     float pasteOffset_ = 0.0f; // ペーストオフセット時間
 };
+}// namespace BME

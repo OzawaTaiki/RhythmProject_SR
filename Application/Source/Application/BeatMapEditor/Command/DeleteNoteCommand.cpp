@@ -1,20 +1,25 @@
 #include "DeleteNoteCommand.h"
 
-DeleteNoteCommand::DeleteNoteCommand(BeatMapEditor* _beatMapEditor, uint32_t _noteIndex):
-    beatMapEditor_(_beatMapEditor),
-    noteIndex_({ _noteIndex })
+#include <Application/BeatMapEditor/BeatMapDocument.h>
+
+namespace BME
+{
+
+DeleteNoteCommand::DeleteNoteCommand(Document* document, size_t noteIndex) :
+    document_(document),
+    noteIndex_({ noteIndex })
 {
 }
 
-DeleteNoteCommand::DeleteNoteCommand(BeatMapEditor* _beatMapEditor, std::vector<uint32_t> _noteIndex) :
-    beatMapEditor_(_beatMapEditor),
-    noteIndex_(_noteIndex)
+DeleteNoteCommand::DeleteNoteCommand(Document* document, const std::vector<size_t>& noteIndex) :
+    document_(document),
+    noteIndex_(noteIndex)
 {
 }
 
 void DeleteNoteCommand::Execute()
 {
-    if (!beatMapEditor_)
+    if (!document_)
     {
         return;
     }
@@ -22,22 +27,15 @@ void DeleteNoteCommand::Execute()
     // 以前の削除データをクリア
     deletedNoteData_.clear();
 
-    std::vector<NoteData> deletedNotes;
-    // ノートを削除
-    for(uint32_t index : noteIndex_)
+    for (size_t index : noteIndex_)
     {
-        deletedNotes.push_back(beatMapEditor_->GetNoteAt(index));
-    }
-    for (NoteData& note : deletedNotes)
-    {
-        // 削除したノートのデータを保存
-        deletedNoteData_.push_back(beatMapEditor_->DeleteNote(note.laneIndex, note.targetTime));
+        deletedNoteData_.push_back(document_->DeleteNote(index));
     }
 }
 
 void DeleteNoteCommand::Undo()
 {
-    if (!beatMapEditor_)
+    if (!document_)
     {
         return;
     }
@@ -45,6 +43,8 @@ void DeleteNoteCommand::Undo()
     for (const auto& note : deletedNoteData_)
     {
         // 削除したノートを元に戻す
-        beatMapEditor_->InsertNote(note);
+        document_->InsertNote(note);
     }
 }
+
+} // namespace BME

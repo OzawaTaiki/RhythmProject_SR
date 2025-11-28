@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <Core/WinApp/WinApp.h>
 
+namespace BME
+{
+
 EditorCoordinate::EditorCoordinate() :
     screenSize_(WinApp::kWindowSize_),
     areaCenter_(WinApp::kWindowSize_ * 0.5f),
@@ -278,3 +281,5 @@ void EditorCoordinate::InvalidateVisibleRange()
 {
     visibleRangeDirty_ = true;
 }
+
+} // namespace BME

@@ -1,0 +1,39 @@
+#pragma once
+#include <map>
+#include <Features/UI/UISprite.h>
+
+namespace BME
+{
+
+class AudioController;
+
+/// <summary>
+/// タイムライン描画クラス
+/// </summary>
+class TimelineRenderer
+{
+public:
+    TimelineRenderer() = default;
+    ~TimelineRenderer() = default;
+
+    void Initialize();
+    void Draw(const AudioController* _audioController, float _currentTime);
+    void Finalize();
+
+private:
+
+    void DataUpdate(const AudioController* _audioController, float _currentTime);
+
+private:
+
+    std::map<std::string, std::unique_ptr<UISprite>> timelineSprites_;
+    std::unique_ptr<UISprite> dummy_timeline_;
+    float timelineStartPosition_ = 0.0f; // タイムラインの開始位置
+    float timelineEndPosition_ = 0.0f; // タイムラインの終了位置
+    float timelineWidth_ = 0.0f; // タイムラインの幅
+
+    bool toTest_ = false; // テストモードへ移行フラグ
+    TextParam textParam_;
+};
+
+} // namespace BME

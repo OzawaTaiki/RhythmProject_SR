@@ -5,6 +5,9 @@
 
 #include <cstdint>
 
+namespace BME
+{
+
 /// <summary>
 /// えぢたー用座標変換システム
 /// </summary>
@@ -196,3 +199,4 @@ private:    // 内部計算用
     float timeZeroOffsetRatio_; // 時間0位置のオフセット比率(0.0~1.0)
     float offsetTime_ = 0.0f; // 時間オフセット(秒)
 };
+} // namespace BME

@@ -5,7 +5,9 @@
 #include <string>
 #include <cstdint>
 
-class BeatMapEditor;
+namespace BME
+{
+class Document;
 
 // ノート配置コマンドクラス
 class PlaceNoteCommand : public ICommand
@@ -19,7 +21,7 @@ public:
     /// <param name="_targetTime">ノートのターゲット時間（秒）</param>
     /// <param name="_noteType">ノート種別（"normal" や "long" など）</param>
     /// <param name="_holdDuration">ホールドノートの持続時間（秒）</param>
-    PlaceNoteCommand(BeatMapEditor* _beatMapEditor, uint32_t _laneIndex, float _targetTime, const std::string& _noteType, float _holdDuration = 0.0f);
+    PlaceNoteCommand(Document* document, uint32_t laneIndex, float targetTime, const std::string& noteType, float holdDuration = 0.0f);
 
     /// <summary>
     /// ノートを配置する処理を実行する。
@@ -32,7 +34,7 @@ public:
     void Undo() override;
 
 private:
-    BeatMapEditor* beatMapEditor_ = nullptr; // BeatMapEditorのポインタ
+    Document* document_ = nullptr; // BeatMapEditorのポインタ
 
     // 配置するノートのデータ
     uint32_t laneIndex_ = 0; // レーンインデックス
@@ -41,6 +43,6 @@ private:
     float holdDuration_ = 0.0f; // ホールドノートの持続時間
 
     size_t placeNoteIndex_ = 0; // 配置したノートのインデックス
-
-
 };
+
+} // namespace BME

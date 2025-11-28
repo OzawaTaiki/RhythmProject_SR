@@ -136,6 +136,9 @@
     <Filter Include="Application\TitleCamera">
       <UniqueIdentifier>{cf37f00d-9f3d-4856-8a4d-e13d0325a81d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\BeatMapEditor\Renderer">
+      <UniqueIdentifier>{d73104ad-f74f-4845-9a94-0d7555e13222}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -306,6 +309,39 @@
     </ClCompile>
     <ClCompile Include="Source\Application\TItileCamera\TitleCamera.cpp">
       <Filter>Application\TitleCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\EditorRenderer.cpp">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\GridRenderer.cpp">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\NoteRenderer.cpp">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\TimelineRenderer.cpp">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\UIRenderer.cpp">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\WaveformRenderer.cpp">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\AudioController.cpp">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\BeatMapDocument.cpp">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\BeatMapFileManager.cpp">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\EditorInputHandler.cpp">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\EditorState.cpp">
+      <Filter>Application\BeatMapEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,6 +536,39 @@
     </ClInclude>
     <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">
       <Filter>Application\TitleCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\EditorRenderer.h">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\GridRenderer.h">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\NoteRenderer.h">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\TimelineRenderer.h">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\UIRenderer.h">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\WaveformRenderer.h">
+      <Filter>Application\BeatMapEditor\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\AudioController.h">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\BeatMapDocument.h">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\BeatMapFileManager.h">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\EditorInputHandler.h">
+      <Filter>Application\BeatMapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\EditorState.h">
+      <Filter>Application\BeatMapEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 
 
     // 最初のシーンで初期化
-    sceneManager_->Initialize("TitleScene");
+    sceneManager_->Initialize("EditorScene");
 }
 
 void SampleFramework::Update()
@@ -71,11 +71,11 @@ void SampleFramework::Draw()
 
     sceneManager_->Draw();
 
-    lineDrawer_->Draw();
-
     ParticleSystem::GetInstance()->DrawParticles();
 
     batch2DRenderer_->Render();
+
+    lineDrawer_->Draw();
     //=============================
 
     textRenderer_->EndFrame();

@@ -81,7 +81,7 @@ private:
 
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
 
-    std::unique_ptr<TitileUI> titleUI_;
+    std::unique_ptr<TitleUI> titleUI_;
 
     std::unique_ptr<HexagonGrid> hexagonGrid_;
 

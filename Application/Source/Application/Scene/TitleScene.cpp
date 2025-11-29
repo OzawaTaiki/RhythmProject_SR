@@ -84,7 +84,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     uvTransform.SetScale(Vector2(10.0f, 10.0f));
     uvAnimation_.AddTransform(&uvTransform);
     uvAnimation_.SetLooping(true);
-    uvAnimation_.SetScrollSpeed(Vector2(0.2f, -0.2f));
+    uvAnimation_.SetScrollSpeed(Vector2(0.2f, -0.1f));
     uvAnimation_.Play();
 
     hexagonGrid_ = std::make_unique<HexagonGrid>();
@@ -117,7 +117,7 @@ void TitleScene::Update()
     particleSystem_->Update();
     settingMenu_->Update();
     titleUI_->Update();
-    //hexagonGrid_->Update();
+    hexagonGrid_->Update();
     titleBack_->Update();
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
@@ -155,9 +155,8 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-    LayerSystem::SetLayer("backGround");
+    LayerSystem::SetLayer("back");
     {
-        //hexagonGrid_->Draw();
     }
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
@@ -165,6 +164,7 @@ void TitleScene::Draw()
     LayerSystem::SetLayer("back");
     {
         titleBack_->Draw();
+        hexagonGrid_->Draw();
     }
 
     LayerSystem::SetLayer("ring");

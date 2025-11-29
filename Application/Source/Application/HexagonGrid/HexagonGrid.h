@@ -26,8 +26,11 @@ private:
 
     void ImGui();
 private:
-    float radius_ = 128.0f; // 外接円の半径
-    float margin_ =  20.0f; // 六角形間の余白
+    float radius_ = 96.0f; // 外接円の半径
+    float margin_ =  5.0f; // 六角形間の余白
+
+    Vector2 moveOffset_;
+    std::vector<Vector2> initialPositions_; // 各六角形の初期位置
 
     std::unique_ptr<UIGroup> uiGroup_;
 };

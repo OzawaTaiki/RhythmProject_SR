@@ -9,6 +9,7 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/Event/EventListener.h>
+#include <Features/UVTransform/UVTransformAnimation.h>
 
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
@@ -79,10 +80,9 @@ private:
 
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
 
-    std::unique_ptr<UITextBox> test_textBox;
-
     std::unique_ptr<TitleUI> titleUI_;
-    std::unique_ptr<UISliderWithInput> test;
-    std::unique_ptr<UISliderWithInput> test_int;
+
+    std::unique_ptr<UIBase> titleBack_;
+    UVTransformAnimation uvAnimation_;
 
 };

@@ -139,6 +139,9 @@
     <Filter Include="Application\BeatMapEditor\Renderer">
       <UniqueIdentifier>{d73104ad-f74f-4845-9a94-0d7555e13222}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\HeagonGrid">
+      <UniqueIdentifier>{3d6932f3-4626-4828-aa7c-2c22c0ffcb65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -342,6 +345,9 @@
     </ClCompile>
     <ClCompile Include="Source\Application\BeatMapEditor\EditorState.cpp">
       <Filter>Application\BeatMapEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\HexagonGrid\HexagonGrid.cpp">
+      <Filter>Application\HeagonGrid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -569,6 +575,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\BeatMapEditor\EditorState.h">
       <Filter>Application\BeatMapEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\HexagonGrid\HexagonGrid.h">
+      <Filter>Application\HeagonGrid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

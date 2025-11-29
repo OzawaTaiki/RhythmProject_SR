@@ -4,7 +4,7 @@
             "parameters": {
                 "localCorners": [
                     {
-                        "x": -250.0,
+                        "x": -300.0,
                         "y": -100.0
                     },
                     {
@@ -16,7 +16,7 @@
                         "y": 100.0
                     },
                     {
-                        "x": -250.0,
+                        "x": -300.0,
                         "y": 100.0
                     }
                 ]
@@ -67,7 +67,7 @@
         },
         "title_exit_directoryPath": "Resources/images/",
         "title_exit_isActive": 3452764417,
-        "title_exit_isVisible": 265145601,
+        "title_exit_isVisible": 164482305,
         "title_exit_label": "title_exit",
         "title_exit_order": 20,
         "title_exit_pos": {

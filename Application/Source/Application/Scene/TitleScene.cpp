@@ -5,6 +5,7 @@
 #include <System/Audio/AudioSystem.h>
 #include <Features/Model/Manager/ModelManager.h>
 #include <Features/UI/Collider/UICollisionManager.h>
+#include <Constants/MathConstants.h>
 
 TitleScene::TitleScene()
 {
@@ -58,12 +59,13 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
-    LayerSystem::CreateLayer("buttons", 0);
-    LayerSystem::CreateLayer("ring", 10);
-    LayerSystem::CreateLayer("option", 20);
+    LayerSystem::CreateLayer("back", 0);
+    LayerSystem::CreateLayer("buttons", 20);
+    LayerSystem::CreateLayer("ring", 40);
+    LayerSystem::CreateLayer("option", 60);
 
 
-    // ビートマネージャーの初期化（検出されたBPMを使用）
+    // ビートマネージャーの初期化
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(100.0f);
     beatManager_->SetMusicVoiceInstance(voiceInstance_);
@@ -75,16 +77,19 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     titleUI_ = std::make_unique<TitleUI>();
     titleUI_->Initialize();
 
-    test_textBox = std::make_unique<UITextBox>();
-    test_textBox->Initialize("TitleTestTextBox");
+    titleBack_ = std::make_unique<UIBase>();
+    titleBack_->Initialize("TitleBack",true);
+    UVTransform& uvTransform = titleBack_->GetUVTransform();
+    uvTransform.SetRotation(MathConstants::kHalfPi / 3.0f);
+    uvTransform.SetScale(Vector2(10.0f, 10.0f));
+    uvAnimation_.AddTransform(&uvTransform);
+    uvAnimation_.SetLooping(true);
+    uvAnimation_.SetScrollSpeed(Vector2(0.2f, -0.1f));
+    uvAnimation_.Play();
 
-    test = std::make_unique<UISliderWithInput>();
-    test->Initialize("TestSlider", 0.0f, 100.0f, 1.0f);
-
-    test_int = std::make_unique<UISliderWithInput>();
-    test_int->Initialize("TestIntSlider", 0, 100000, 6301);
-
-
+    hexagonGrid_ = std::make_unique<HexagonGrid>();
+    Rect area(Vector2(0, 0), Vector2(1280, 720));
+    hexagonGrid_->Initialize(area);
 }
 
 void TitleScene::Update()
@@ -107,14 +112,13 @@ void TitleScene::Update()
         // 譜面フォルダからランダムで曲を流したい
     }
 
+    uvAnimation_.Update(Time::GetDeltaTime<float>());
+
     particleSystem_->Update();
     settingMenu_->Update();
     titleUI_->Update();
-    test_textBox->Update();
-
-    test->Update();
-    test_int->Update();
-
+    hexagonGrid_->Update();
+    titleBack_->Update();
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
     else //そうじゃないときは0
@@ -151,7 +155,17 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
+    LayerSystem::SetLayer("back");
+    {
+    }
+
     ModelManager::GetInstance()->PreDrawForObjectModel();
+
+    LayerSystem::SetLayer("back");
+    {
+        titleBack_->Draw();
+        hexagonGrid_->Draw();
+    }
 
     LayerSystem::SetLayer("ring");
     {
@@ -161,15 +175,10 @@ void TitleScene::Draw()
     LayerSystem::SetLayer("buttons");
     {
         titleUI_->Draw();
-        test_textBox->Draw();
     }
-    //textGenerator_.Draw(L"音ゲー", Vector2(640, 200));
-    //textGenerator_.Draw(L"Press Enter", Vector2(640, 500));
 
     LayerSystem::SetLayer("option");
     {
-        test->Draw();
-        test_int->Draw();
         settingMenu_->Draw();
     }
 }

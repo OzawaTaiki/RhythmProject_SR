@@ -10,6 +10,7 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 
 #include <Features/Model/Primitive/Builder/PrimitiveBuilder.h>
+#include <Features/UI/Collider/UICollisionManager.h>
 
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
@@ -40,7 +41,7 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 
 
     // 最初のシーンで初期化
-    sceneManager_->Initialize("EditorScene");
+    sceneManager_->Initialize("TitleScene");
 }
 
 void SampleFramework::Update()
@@ -54,6 +55,7 @@ void SampleFramework::Update()
 
     sceneManager_->Update();
     //particleManager_->Update(); TODO ; 引数のカメラの回転をなんとかしたい
+    UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
 
     //=============================
 }

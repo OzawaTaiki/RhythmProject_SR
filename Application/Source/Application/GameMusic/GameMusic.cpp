@@ -11,6 +11,10 @@ GameMusic::GameMusic(const std::string& musicFilePath)
 
 GameMusic::~GameMusic()
 {
+    if (voiceInstance_)
+    {
+        voiceInstance_.reset();
+    }
 }
 
 void GameMusic::Initialize(float rewindTime)
@@ -61,8 +65,7 @@ void GameMusic::ResumeWithRewind(float volume)
 {
     if (voiceInstance_ && !isMusicPlaying_)
     {
-        if (voiceInstance_)
-            voiceInstance_.reset();
+        voiceInstance_.reset();
 
         // 巻き戻し再生の開始時間を計算
         float startTime = pausedAtTime_ - rewindTime_;

@@ -4,7 +4,7 @@
             "parameters": {
                 "localCorners": [
                     {
-                        "x": -250.0,
+                        "x": -300.0,
                         "y": -100.0
                     },
                     {
@@ -16,7 +16,7 @@
                         "y": 100.0
                     },
                     {
-                        "x": -250.0,
+                        "x": -300.0,
                         "y": 100.0
                     }
                 ]
@@ -67,7 +67,7 @@
         },
         "title_options_directoryPath": "Resources/images/",
         "title_options_isActive": 3452764417,
-        "title_options_isVisible": 265145601,
+        "title_options_isVisible": 164482305,
         "title_options_label": "title_options",
         "title_options_order": 30,
         "title_options_pos": {

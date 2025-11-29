@@ -55,8 +55,7 @@ public:
     // ボリューム設定
     void SetVolume(float volume) { volume_ = volume; }
 
-    // サウンド有効・無効設定
-    void EnableSound(bool enable) { soundEnabled_ = enable; }
+    bool GetSoundEnabled() const { return soundEnabled_; }
 
     /// ========================================
     /// Setter

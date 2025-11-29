@@ -108,9 +108,9 @@ void SettingMenu::Draw()
     previewPanel_->Draw();
 }
 
-void SettingMenu::OnEvent(const GameEvent& _event)
+void SettingMenu::OnEvent(const GameEvent& event)
 {
-    if (_event.GetEventType() == "OpenOptionMenu")
+    if (event.GetEventType() == "OpenOptionMenu")
     {
         isActive_ = true;
         Debug::Log("SettingMenu opened\n");

@@ -5,10 +5,10 @@
 
 #include <Application/GameEnvironment/GameEnvironment.h>
 
-void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount, GameEnvironment* _gameEnvironment)
+void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment)
 {
-    if (_camera)
-        camera_ = _camera;
+    if (camera)
+        camera_ = camera;
 
     judgeSound_ = std::make_unique<JudgeSound>();
     judgeSound_->Initialize();
@@ -20,7 +20,7 @@ void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount, GameEnviron
     tapEffect_->Initialize();
 
     backgroundEffect_ = std::make_unique<BackgroundEffect>();
-    backgroundEffect_->SetGameEnvironment(_gameEnvironment);
+    backgroundEffect_->SetGameEnvironment(gameEnvironment);
 
     noteHoldEffect_ = std::make_unique<NoteHoldEffect>();
     noteHoldEffect_->Initialize();
@@ -36,7 +36,7 @@ void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount, GameEnviron
     missedVignette_->Initialize();
 
 
-    for (int32_t i = 0; i < _laneCount; ++i)
+    for (int32_t i = 0; i < laneCount; ++i)
     {
         auto laneEffect = std::make_unique<LaneEffect>();
         laneEffect->Initialize(i, "pY1x1p01Plane");
@@ -47,7 +47,7 @@ void FeedbackEffect::Initialize(Camera* _camera, int32_t _laneCount, GameEnviron
 }
 
 
-void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inputData)
+void FeedbackEffect::Update(float deltaTime, const std::vector<InputData>& inputData)
 {
     //DebugWindoow(); // デバッグウィンドウの更新
 
@@ -58,7 +58,7 @@ void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inp
     {
         if (usedJudgeTexts_[i]) // 使用中のテキストのみ更新
         {
-            judgeTextPool_[i]->Update(_deltaTime);
+            judgeTextPool_[i]->Update(deltaTime);
             if (judgeTextPool_[i]->IsFinished()) // 終了したテキストは未使用に戻す
             {
                 usedJudgeTexts_.set(i, false);
@@ -67,14 +67,14 @@ void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inp
     }
 
     if (missedVignette_)
-        missedVignette_->Update(_deltaTime);
+        missedVignette_->Update(deltaTime);
 
-    for (const auto& input : _inputData)
+    for (const auto& input : inputData)
     {
-        if (input.state == KeyState::trigger)
+        if (input.state == KeyState::Trigger)
             tapEffect_->Play(input.laneIndex);
 
-        if (input.state == KeyState::trigger || input.state == KeyState::Hold)
+        if (input.state == KeyState::Trigger || input.state == KeyState::Hold)
             laneEffects_[input.laneIndex]->Start();
     }
 
@@ -82,7 +82,7 @@ void FeedbackEffect::Update(float _deltaTime, const std::vector<InputDate>& _inp
     {
         if (laneEffect)
         {
-            laneEffect->Update(_deltaTime);
+            laneEffect->Update(deltaTime);
         }
     }
 
@@ -109,7 +109,7 @@ void FeedbackEffect::Draw()
     }
 }
 
-void FeedbackEffect::PlayJudgeEffect(int32_t _laneIndex, JudgeType _judgeType)
+void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType)
 {
     // 各エフェクトの再生
 
@@ -117,13 +117,13 @@ void FeedbackEffect::PlayJudgeEffect(int32_t _laneIndex, JudgeType _judgeType)
         judgeSound_->Play();
 
     if (judgeEffect_)
-        judgeEffect_->Play(_laneIndex);
+        judgeEffect_->Play(laneIndex);
 
     if (backgroundEffect_)
-        backgroundEffect_->PlaySpeakerEffect(_laneIndex);
+        backgroundEffect_->PlaySpeakerEffect(laneIndex);
 
 
-    AllocateJudgeText(_judgeType, _laneIndex); // 判定テキストを割り当てる
+    AllocateJudgeText(judgeType, laneIndex); // 判定テキストを割り当てる
 }
 
 void FeedbackEffect::PlayMissedEffect()
@@ -134,31 +134,30 @@ void FeedbackEffect::PlayMissedEffect()
     }
 }
 
-void FeedbackEffect::PlayHoldEffect(int32_t _laneIndex)
+void FeedbackEffect::PlayHoldEffect(int32_t laneIndex)
 {
     if (noteHoldEffect_)
     {
-        noteHoldEffect_->Play(_laneIndex); // ホールドエフェクトを再生
+        noteHoldEffect_->Play(laneIndex); // ホールドエフェクトを再生
     }
-    // TODO : 音
 }
 
-void FeedbackEffect::ApplyMissedVignetteEffect(const std::string& _input, const std::string& _output)
+void FeedbackEffect::ApplyMissedVignetteEffect(const std::string& input, const std::string& output)
 {
     if (missedVignette_)
     {
-        missedVignette_->ApplyEffect(_input, _output); // ビネットエフェクトを適用
+        missedVignette_->ApplyEffect(input, output); // ビネットエフェクトを適用
     }
 }
 
-void FeedbackEffect::AllocateJudgeText(JudgeType _judgeType, int32_t _laneIndex)
+void FeedbackEffect::AllocateJudgeText(JudgeType judgeType, int32_t laneIndex)
 {
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
         if (!usedJudgeTexts_[i]) // 未使用のテキストを探す
         {
             usedJudgeTexts_.set(i); // 使用中に設定
-            judgeTextPool_[i]->Initialize(_judgeType, _laneIndex, camera_);
+            judgeTextPool_[i]->Initialize(judgeType, laneIndex, camera_);
             return; // 割り当て完了
         }
     }

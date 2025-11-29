@@ -18,12 +18,12 @@ JudgeText::JudgeText():
 {
 }
 
-void JudgeText::Initialize(JudgeType _judgeType, int32_t _laneIndex, const Camera* _camera)
+void JudgeText::Initialize(JudgeType judgeType, int32_t laneIndex, const Camera* camera)
 {
-    position_ = _camera->WotldToScreen(Lane::GetLaneEndPosition(_laneIndex));
+    position_ = camera->WotldToScreen(Lane::GetLaneEndPosition(laneIndex));
     position_.y += displayYOffset_; // Y軸のオフセットを適用
 
-    judgeType_ = _judgeType; // 判定タイプを設定
+    judgeType_ = judgeType; // 判定タイプを設定
 
     timer_ = 0.0f; // タイマー初期化
     displayDuration_ = 1.0f; // 表示時間の初期化
@@ -43,9 +43,9 @@ void JudgeText::Initialize(JudgeType _judgeType, int32_t _laneIndex, const Camer
 
 }
 
-void JudgeText::Update(float _deltaTime)
+void JudgeText::Update(float deltaTime)
 {
-    timer_ += _deltaTime;
+    timer_ += deltaTime;
 
     AnimateText();
     UpdateTextParam();
@@ -77,9 +77,9 @@ void JudgeText::AnimateText()
 
 }
 
-std::wstring JudgeText::GetJudgeText(JudgeType _judgeType)
+std::wstring JudgeText::GetJudgeText(JudgeType judgeType)
 {
-	switch (_judgeType)
+	switch (judgeType)
 	{
 	case JudgeType::Perfect:
         return L"PERFECT";
@@ -103,30 +103,30 @@ std::wstring JudgeText::GetJudgeText(JudgeType _judgeType)
 
 }
 
-void JudgeText::GetJudgeTextColor(JudgeType _judgeType, Vector4& _topColor, Vector4& _bottomColor)
+void JudgeText::GetJudgeTextColor(JudgeType judgeType, Vector4& topColor, Vector4& bottomColor)
 {
-    switch (_judgeType)
+    switch (judgeType)
     {
     case JudgeType::Perfect:
         // ピンクから水色
-        _topColor = ColorCodeToVector4(0xff66b8ff); // ピンク色
-        _bottomColor = Vector4(0.0f, 1.0f, 1.0f, 1.0f); // 水色
+        topColor = ColorCodeToVector4(0xff66b8ff); // ピンク色
+        bottomColor = Vector4(0.0f, 1.0f, 1.0f, 1.0f); // 水色
         break;
     case JudgeType::Good:
         // 緑から薄い緑
-        _topColor = Vector4(0.0f, 1.0f, 0.0f, 1.0f); // 緑色
-        _bottomColor = Vector4(0.5f, 1.0f, 0.5f, 1.0f); // 薄い緑色
+        topColor = Vector4(0.0f, 1.0f, 0.0f, 1.0f); // 緑色
+        bottomColor = Vector4(0.5f, 1.0f, 0.5f, 1.0f); // 薄い緑色
         break;
     case JudgeType::Miss:
         // グレー
-        _topColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // グレー
-        _bottomColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // グレー
+        topColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // グレー
+        bottomColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // グレー
         break;
     case JudgeType::None:
     case JudgeType::MAX:
     default:
-        _topColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 白色
-        _bottomColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        topColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 白色
+        bottomColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         break;
     }
 }

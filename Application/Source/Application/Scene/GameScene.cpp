@@ -47,7 +47,7 @@ GameScene::~GameScene()
 // TODO ; やりたいこと にゅうりょく精度アップ
 // 別スレッドで入力取得するように。 それと入力された時間を記録
 
-void GameScene::Initialize(SceneData* _sceneData)
+void GameScene::Initialize(SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };
@@ -79,21 +79,21 @@ void GameScene::Initialize(SceneData* _sceneData)
 
     std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
     gameMode_ = GameMode::Normal;
-    if (_sceneData)
+    if (sceneData)
     {
-        if (_sceneData->beforeScene == "SelectScene")
+        if (sceneData->beforeScene == "SelectScene")
         {
-            auto selectToGameData = dynamic_cast<SelectToGameData*>(_sceneData);
+            auto selectToGameData = dynamic_cast<SelectToGameData*>(sceneData);
             if (selectToGameData)
             {
                 beatMapFilePath = selectToGameData->selectedBeatMapFilePath; // 選択された譜面ファイルパスを取得
                 gameMode_ = GameMode::Normal;
             }
         }
-        else if (_sceneData->beforeScene == "EditorScene")
+        else if (sceneData->beforeScene == "EditorScene")
         {
 
-            auto editorToGameData = dynamic_cast<SharedBeatMapData*>(_sceneData);
+            auto editorToGameData = dynamic_cast<SharedBeatMapData*>(sceneData);
             if (editorToGameData)
             {
                 currentBeatMapData_ = editorToGameData->beatMapData; // エディタから渡された譜面データを取得
@@ -129,9 +129,9 @@ void GameScene::Initialize(SceneData* _sceneData)
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
 
-    gameCore_->SetJudgeCallback([&](int32_t _laneIndex, JudgeType _judgeType) {feedbackEffect_->PlayJudgeEffect(_laneIndex, _judgeType); });
+    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType) {feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType); });
     gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
-    gameCore_->SetHoldCallback([&](int32_t _laneIndex) {feedbackEffect_->PlayHoldEffect(_laneIndex); });
+    gameCore_->SetHoldCallback([&](int32_t laneIndex) {feedbackEffect_->PlayHoldEffect(laneIndex); });
 
     SceneManager::GetInstance()->SetTransition(std::make_unique<SceneTrans>());
 
@@ -185,7 +185,7 @@ void GameScene::Initialize(SceneData* _sceneData)
 void GameScene::Update()
 {
     // ロードが完了してなかったら更新しない
-    if (!IsComplateLoadBeatMap())
+    if (!IsCompleteLoadBeatMap())
         return;
 
     UpdateGameStartOffset();
@@ -324,7 +324,7 @@ void GameScene::Draw()
 void GameScene::DrawShadow() {}
 
 
-bool GameScene::IsComplateLoadBeatMap()
+bool GameScene::IsCompleteLoadBeatMap()
 {
     if (beatMapLoader_->IsLoading())
     {
@@ -423,9 +423,9 @@ void GameScene::ToTitle()
     SceneManager::ReserveScene("TitleScene", nullptr);
 }
 
-void GameScene::OnEvent(const GameEvent& _event)
+void GameScene::OnEvent(const GameEvent& event)
 {
-    std::string eventType = _event.GetEventType();
+    std::string eventType = event.GetEventType();
 
     // ポーズメニューからのイベント
     if(StringUtils::Contains(eventType, "Request"))
@@ -447,7 +447,7 @@ void GameScene::OnEvent(const GameEvent& _event)
     // 値設定イベント
     else  if (eventType == "ValueChanged")
     {
-        auto data = dynamic_cast<ValueChangedEventData*>(_event.GetData());
+        auto data = dynamic_cast<ValueChangedEventData*>(event.GetData());
         if (data)
         {if (data->name == "NoteSpeed")
             {

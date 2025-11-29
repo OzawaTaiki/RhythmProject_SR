@@ -29,6 +29,20 @@
 //      流しながらノート入力したーい
 //      targetTimeをもとに再生を行う
 
+BeatMapEditor::BeatMapEditor()
+{
+#ifdef _DEBUG
+    ImGuiDebugManager::GetInstance()->HideAllWindow();
+#endif
+}
+
+BeatMapEditor::~BeatMapEditor()
+{
+#ifdef _DEBUG
+    ImGuiDebugManager::GetInstance()->ShowAllWindow();
+#endif
+}
+
 void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 {
 
@@ -45,14 +59,14 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(120.0f, 0.0f); // 初期BPMとオフセットを設定
 
-    for2dCamera_.Initialize(CameraType::Orthographic, Vector2(1280.0f, 720.0f)); // 2Dカメラの初期化
+    for2dCamera_.Initialize(CameraType::Orthographic, WinApp::kWindowSize_); // 2Dカメラの初期化
     for2dCamera_.matProjection_ = Matrix4x4::Identity();
     for2dCamera_.matView_ = Matrix4x4::Identity();
     for2dCamera_.UpdateMatrix(); // カメラの行列を更新
     lineDrawer_->SetCameraPtr2D(&for2dCamera_); // 2Dカメラをライン描画クラスに設定
 
     //                                       左右UI   マージン
-    Vector2 laneAreaSize = Vector2(1280.0f - 600.0f - 120.0f, 720.0f); // レーンエリアのサイズを設定
+    Vector2 laneAreaSize = Vector2(WinApp::kWindowSize_.x - 600.0f - 120.0f, WinApp::kWindowSize_.y); // レーンエリアのサイズを設定
     editorCoordinate_.Initialize(laneAreaSize); // 初期画面サイズとレーン数を設定
     editorCoordinate_.SetTimeZeroOffsetRatio(0.1f);
 
@@ -81,64 +95,85 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 
     selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
 
-    waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(1280.0f - 600.0f, 96.0f)); // 波形の表示範囲を初期化
+    waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(WinApp::kWindowSize_.x - 600.0f, 96.0f)); // 波形の表示範囲を初期化
     waveformBackground_ = std::make_unique<UISprite>();
     waveformBackground_->Initialize("waveformBackground");
 
-    LayerSystem::CreateLayer("main", 0);
-    LayerSystem::CreateLayer("Lines", 2000);
+
+    // ========================================
+    // 新アーキテクチャクラスの初期化
+    // ========================================
+    document_ = std::make_unique<BME::Document>();
+    state_ = std::make_unique<BME::State>();
+    audioController_ = std::make_unique<BME::AudioController>();
+    inputHandler_ = std::make_unique<BME::InputHandler>();
+    renderer_ = std::make_unique<BME::EditorRenderer>();
+    fileManager_ = std::make_unique<BME::FileManager>();
+
+    // レンダラー初期化
+    renderer_->Initialize(&editorCoordinate_, for2dCamera_.GetViewProjection());
+
+    // 初期譜面データを新Documentに設定
+    document_->SetData(_beatMapData);
 }
 
 void BeatMapEditor::Update()
 {
+    // ========================================
+    // 新InputHandlerによる入力処理
+    // ========================================
+    auto voice = audioController_->GetVoiceInstance();
+    if (voice && voice->IsPlaying())
+        currentTime_ = voice->GetElapsedTime();
 
-    // 入力処理
-    HandleInput();
+    inputHandler_->HandleInput(
+        state_.get(),
+        document_.get(),
+        audioController_.get(),
+        &commandHistory_,
+        &editorCoordinate_,
+        currentTime_
+    );
 
-
+    // ========================================
+    // 以下は旧コード（段階的に新クラスへ移行予定）
+    // ========================================
     UpdateTimeline();
-
-    // エディター状態の更新
     UpdateEditorState();
-
     waveformDisplay_.SetStartTime(currentTime_);
-
 }
 
 void BeatMapEditor::Draw()
 {
     // エディターの描画処理
 
-    LayerSystem::SetLayer("main");
     Sprite::PreDraw();
 
-    // laneの描画
-    DrawLanes();
-    // グリッドラインの描画
+    // ========================================
+    // 新レンダラーによる描画（グリッド、ノート、波形、タイムライン、UI）
+    // ========================================
+    renderer_->Draw(
+        state_.get(),
+        document_.get(),
+        fileManager_.get(),
+        audioController_.get(),
+        &editorCoordinate_,
+        beatManager_.get(),
+        currentTime_,
+        for2dCamera_.GetViewProjection()
+    );
 
-    // ノートの描画
-    DrawNotes();
+    // ========================================
+    // 以下は旧コード（新レンダラーで未実装の機能）
+    // ========================================
 
-    DrawPreviewNote();
+    // 選択範囲描画（新レンダラー未実装）
+    //DrawSelectionArea();
 
-    // 判定ラインの描画
-    DrawJudgeLine();
-
-    // 再生ヘッドの描画
-    DrawPlayhead();
-
-
-    DrawSelectionArea();
-
+    // UI描画（新レンダラーはスケルトンのみ）
     DrawUI();
 
-    waveformBackground_->Draw();
-    LayerSystem::SetLayer("Lines");
-
-    DrawGridLines();
-    DrawTimeline();
-    // 波形の描画
-    waveformDisplay_.Draw();
+    //waveformBackground_->Draw();
 }
 
 void BeatMapEditor::DrawNotes()
@@ -187,7 +222,6 @@ void BeatMapEditor::DrawNotes()
         // ノートのインデックスを記録
         drawNoteIndices_.push_back(drawNoteIndex);
     }
-
 }
 
 void BeatMapEditor::DrawNote(const NoteData& _note)
@@ -228,7 +262,6 @@ void BeatMapEditor::DrawNote(const NoteData& _note)
 
     ++noteIndex_;
 }
-
 
 void BeatMapEditor::DrawLanes()
 {
@@ -296,12 +329,11 @@ void BeatMapEditor::DrawUI()
 {
 #ifdef _DEBUG
 
-    DrawLeftPanel();
-    DrawRightPanel();
+    //DrawLeftPanel();
+    //DrawRightPanel();
 
 #endif // _DEBUG
 }
-
 
 void BeatMapEditor::DrawLeftPanel()
 {
@@ -310,10 +342,9 @@ void BeatMapEditor::DrawLeftPanel()
     // Modeの表示
     // BPM offset snap
 
-    const float menuHeight = 18.0f;
     const float timelineHeight = 100.0f; // タイムラインの高さを設定
-    const ImVec2 panelSize(300.0f, 720.0f - menuHeight-timelineHeight); // 左パネルのサイズを設定
-    const ImVec2 panelPos(0.0f, menuHeight); // 左パネルの位置を設定
+    const ImVec2 panelSize(300.0f, WinApp::kWindowSize_.y - timelineHeight); // 左パネルのサイズを設定
+    const ImVec2 panelPos(0.0f, 0.0f); // 左パネルの位置を設定
 
     ImGui::SetNextWindowPos(panelPos); // パネルの位置を設定
     ImGui::SetNextWindowSize(panelSize); // パネルのサイズを設定
@@ -324,7 +355,7 @@ void BeatMapEditor::DrawLeftPanel()
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
     {
         ImGui::SeparatorText("Editor Mode");
-        int currentEditorMode = static_cast<int>(currentEditorMode_);
+        int currentEditorMode = static_cast<int>(state_->GetCurrentMode());
         bool hasChanged = false;
         hasChanged |= ImGui::RadioButton("Select", &currentEditorMode, static_cast<int>(EditorMode::Select));
         hasChanged |= ImGui::RadioButton("Note", &currentEditorMode, static_cast<int>(EditorMode::PlaceNormalNote));
@@ -332,15 +363,17 @@ void BeatMapEditor::DrawLeftPanel()
 
         if (hasChanged)
         {
-            ChangeEditorMode(static_cast<EditorMode>(currentEditorMode)); // エディターのモードを変更
+            state_->ChangeEditorMode(static_cast<BME::EditorMode>(currentEditorMode));
+            //ChangeEditorMode(static_cast<EditorMode>(currentEditorMode)); // エディターのモードを変更
         }
 
+        auto& beatMapData = document_->GetMutableData();
 
         ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
 
         ImGui::SeparatorText("BPM");
-        if (ImGui::DragFloat("BPM", &currentBeatMapData_.bpm, 0.1f, 0.1f, 1000.0f, " %.1f")) // BPMの入力フィールド
-            beatManager_->SetBPM(currentBeatMapData_.bpm); // BPMを設定
+        if (ImGui::DragFloat("BPM", &beatMapData.bpm, 0.1f, 0.1f, 1000.0f, " %.1f")) // BPMの入力フィールド
+            beatManager_->SetBPM(beatMapData.bpm); // BPMを設定
 
         static bool bpmCounter = false; // BPMカウンターの状態
         if (ImGui::Checkbox("BPM Counter", &bpmCounter)) // BPMカウンターのチェックボックス
@@ -358,10 +391,10 @@ void BeatMapEditor::DrawLeftPanel()
         ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
 
         ImGui::SeparatorText("Offset");
-        if (ImGui::DragFloat("Offset", &currentBeatMapData_.offset, 0.01f, -100.0f, 100.0f, " %.3f s")) // オフセットの入力フィールド
+        if (ImGui::DragFloat("Offset", &beatMapData.offset, 0.01f, -100.0f, 100.0f, " %.3f s")) // オフセットの入力フィールド
         {
-            beatManager_->SetOffset(currentBeatMapData_.offset); // オフセットを設定
-            editorCoordinate_.SetOffsetTime(currentBeatMapData_.offset); // エディターのオフセットを設定
+            beatManager_->SetOffset(beatMapData.offset); // オフセットを設定
+            editorCoordinate_.SetOffsetTime(beatMapData.offset); // エディターのオフセットを設定
         }
 
         ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
@@ -379,7 +412,7 @@ void BeatMapEditor::DrawLeftPanel()
         ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
 
         ImGui::SeparatorText("Music");
-        ImGui::Text("Music File: %s", currentBeatMapData_.audioFilePath.empty() ? "None" : StringUtils::GetAfterLast(currentBeatMapData_.audioFilePath, "\\").c_str());
+        ImGui::Text("Music File: %s", beatMapData.audioFilePath.empty() ? "None" : StringUtils::GetAfterLast(beatMapData.audioFilePath, "\\").c_str());
 
         ImGui::Text("Music Duration: %.2f seconds", musicSoundInstance_ ? musicSoundInstance_->GetDuration() : 0.0f); // 音楽の再生時間を表示
         if (ImGui::DragFloat("Volume", &volume_, 0.01f, 0.0f, 1.0f, " %.2f")) // 音量の入力フィールド
@@ -392,7 +425,7 @@ void BeatMapEditor::DrawLeftPanel()
             if (!musicFilePath.empty())
             {
                 // 音楽ファイルのパスを設定
-                currentBeatMapData_.audioFilePath = musicFilePath;
+                beatMapData.audioFilePath = musicFilePath;
                 // 音楽をロード
                 musicSoundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);
                 waveformDisplay_.Initialize(musicSoundInstance_.get(), waveformBounds_, for2dCamera_.GetViewProjection());
@@ -444,10 +477,9 @@ void BeatMapEditor::DrawRightPanel()
     // 選択ノートの情報
     // beatMapInfoの情報 noteの総数 楽曲時間
 
-    const float menuHeight = 18.0f;
     const float timelineHeight = 100.0f; // タイムラインの高さを設定
-    const ImVec2 panelSize(300.0f, 720.0f - menuHeight - timelineHeight); // 左パネルのサイズを設定
-    const ImVec2 panelPos(1280.0f - panelSize.x, menuHeight); // 左パネルの位置を設定
+    const ImVec2 panelSize(300.0f, WinApp::kWindowSize_.y -  timelineHeight); // 左パネルのサイズを設定
+    const ImVec2 panelPos(WinApp::kWindowSize_.x - panelSize.x,0.0f); // 左パネルの位置を設定
 
     ImGui::SetNextWindowPos(panelPos); // パネルの位置を設定
     ImGui::SetNextWindowSize(panelSize); // パネルのサイズを設定
@@ -562,8 +594,10 @@ void BeatMapEditor::DrawRightPanel()
 
 void BeatMapEditor::DrawPreviewNote()
 {
-    if (currentEditorMode_ == EditorMode::PlaceNormalNote ||
-        currentEditorMode_ == EditorMode::PlaceLongNote)
+    BME::EditorMode mode = state_->GetCurrentMode();
+
+    if (mode == BME::EditorMode::PlaceNormalNote ||
+        mode == BME::EditorMode::PlaceLongNote)
     {
         Vector2 mousePos = input_->GetMousePosition(); // マウスの位置を取得
 
@@ -577,13 +611,13 @@ void BeatMapEditor::DrawPreviewNote()
         float previewY = mousePos.y;
         previewNoteSprite_->SetPos(Vector2(previewX, previewY));
         Vector4 color;
-        if (currentEditorMode_ == EditorMode::PlaceNormalNote)
+        if (mode == BME::EditorMode::PlaceNormalNote)
         {
             color = normalNoteColor_.defaultColor; // ノーマルノートの色を設定
             color.w = previewAlpha_; // アルファ値を設定
             previewNoteSprite_->SetColor(color);
         }
-        else if (currentEditorMode_ == EditorMode::PlaceLongNote)
+        else if (mode == BME::EditorMode::PlaceLongNote)
         {
             color = longNoteColor_.defaultColor; // ロングノートの色を設定
             color.w = previewAlpha_; // アルファ値を設定
@@ -800,14 +834,14 @@ void BeatMapEditor::InitDummySprites()
     dummy_editArea_->Initialize("DummyEditAreaSprite", true);
     dummy_editArea_->SetPos(Vector2(300.0f, 0.0f));
     dummy_editArea_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーエディットエリアのアンカーを左上に設定
-    dummy_editArea_->SetSize(Vector2(1280.0f - 600.0f, 720.0f)); // ダミーエディットエリアのサイズを設定
+    dummy_editArea_->SetSize(Vector2(WinApp::kWindowSize_.x - 600.0f, WinApp::kWindowSize_.y)); // ダミーエディットエリアのサイズを設定
 
 
     dummy_window_ = std::make_unique<UISprite>();
     dummy_window_->Initialize("DummyWindowSprite", true);
     dummy_window_->SetPos(Vector2(0, 0));
     dummy_window_->SetAnchor(Vector2(0.0f, 0.0f)); // ダミーウィンドウのアンカーを左上に設定
-    dummy_window_->SetSize(Vector2(1280.0f, 720.0f)); // ダミーウィンドウのサイズを設定
+    dummy_window_->SetSize(WinApp::kWindowSize_); // ダミーウィンドウのサイズを設定
 }
 
 void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)
@@ -817,20 +851,21 @@ void BeatMapEditor::InitWithBeatMapData(const BeatMapData& _beatMapData)
     if (_beatMapData.notes.empty())
         return;
 
-    currentBeatMapData_ = _beatMapData; // BeatMapDataを設定
-    currentFilePath_ = currentBeatMapData_.title; // 現在のファイルパスを空に設定
+    document_->SetData(_beatMapData); // BeatMapDataを設定
+    //currentFilePath_ = currentBeatMapData_.title; // 現在のファイルパスを空に設定
 
-    beatManager_->SetBPM(currentBeatMapData_.bpm); // BPMを設定
-    beatManager_->SetOffset(currentBeatMapData_.offset); // オフセットを設定
+    beatManager_->SetBPM(_beatMapData.bpm); // BPMを設定
+    beatManager_->SetOffset(_beatMapData.offset); // オフセットを設定
 
-    editorCoordinate_.SetOffsetTime(currentBeatMapData_.offset); // エディターのオフセットを設定
+    editorCoordinate_.SetOffsetTime(_beatMapData.offset); // エディターのオフセットを設定
 
-    std::string musicFilePath = currentBeatMapData_.audioFilePath;
+    std::string musicFilePath = _beatMapData.audioFilePath;
     if (!musicFilePath.empty())
     {
         // 音声ファイルのパスが設定されている場合は、音声をロード
-        musicSoundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);
-        waveformDisplay_.Initialize(musicSoundInstance_.get(), waveformBounds_, for2dCamera_.GetViewProjection());
+        audioController_->Load(musicFilePath);
+
+        //waveformDisplay_.Initialize(musicSoundInstance_.get(), waveformBounds_, for2dCamera_.GetViewProjection());
     }
 }
 
@@ -994,41 +1029,36 @@ NoteData BeatMapEditor::DeleteNote(int32_t _laneIndex, float _targetTime)
 
 size_t BeatMapEditor::InsertNote(const NoteData& _note)
 {
-    currentBeatMapData_.notes.push_back(_note); // ノートを追加
+    // 新Documentクラスに委譲
+    size_t index = document_->InsertNote(_note);
 
-    SortNotesByTime(); // ノートを時間順にソート
+    // 旧メンバ変数も更新（段階的移行のため）
+    currentBeatMapData_ = document_->GetData();
+    isModified_ = true;
 
-    isModified_ = true; // 譜面が変更されたフラグを立てる
-
-    return FindInsertNoteIndex(_note); // 挿入したノートのインデックスを返す
+    return index;
 }
 
 const NoteData& BeatMapEditor::GetNoteAt(size_t _noteIndex) const
 {
-    static NoteData emptyNote;
-    if (_noteIndex >= currentBeatMapData_.notes.size())
-    {
-        Debug::Log("Invalid note index: " + std::to_string(_noteIndex) + "\n");
-        return emptyNote; // 無効なインデックスの場合は空のNoteDataを返す
-    }
-
-    return currentBeatMapData_.notes[_noteIndex]; // 指定されたインデックスのノートを返す
+    // 新Documentクラスに委譲
+    return document_->GetNoteAt(_noteIndex);
 }
 
 void BeatMapEditor::SetNoteTime(size_t _noteIndex, float _newTime)
 {
-    if (_noteIndex >= currentBeatMapData_.notes.size())
-    {
-        Debug::Log("Invalid note index: " + std::to_string(_noteIndex) + "\n");
-        return; // 無効なインデックスの場合は何もしない
-    }
-    // グリッドスナップ
+    // グリッドスナップ（旧変数使用、段階的移行のため）
     if (gridSnapEnabled_)
     {
         _newTime = editorCoordinate_.SnapTimeToGrid(_newTime, currentBeatMapData_.bpm, static_cast<int>(1.0f / snapInterval_));
     }
-    currentBeatMapData_.notes[_noteIndex].targetTime = _newTime; // ノートの時間を更新
-    isModified_ = true; // 譜面が変更されたフラグを立てる
+
+    // 新Documentクラスに委譲
+    document_->SetNoteTime(_noteIndex, _newTime);
+
+    // 旧メンバ変数も更新（段階的移行のため）
+    currentBeatMapData_ = document_->GetData();
+    isModified_ = true;
 }
 
 void BeatMapEditor::SelectNote(uint32_t _noteIndex, bool _multiSelect)
@@ -1037,6 +1067,10 @@ void BeatMapEditor::SelectNote(uint32_t _noteIndex, bool _multiSelect)
         return;
     }
 
+    // 新Stateクラスに委譲
+    state_->SelectNote(_noteIndex, _multiSelect);
+
+    // 旧メンバ変数も更新（段階的移行のため）
     if (!_multiSelect && !isRangeSelected_) {
         selectedNoteIndices_.clear();
     }
@@ -1046,15 +1080,19 @@ void BeatMapEditor::SelectNote(uint32_t _noteIndex, bool _multiSelect)
         selectedNoteIndices_.push_back(_noteIndex);
     }
 
-    lastSelectedNoteIndex_ = _noteIndex; // 最後に選択されたノートのインデックスを保存
+    lastSelectedNoteIndex_ = _noteIndex;
     Debug::Log("Selected note at index " + std::to_string(_noteIndex) + "\n");
 }
 
 
 void BeatMapEditor::ClearSelection()
 {
-    selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
-    isRangeSelected_ = false; // 範囲選択フラグをリセット
+    // 新Stateクラスに委譲
+    state_->ClearSelection();
+
+    // 旧メンバ変数も更新（段階的移行のため）
+    selectedNoteIndices_.clear();
+    isRangeSelected_ = false;
 }
 
 void BeatMapEditor::MoveSelectedNoteTemporary( float _newTime)
@@ -1077,8 +1115,8 @@ void BeatMapEditor::MoveSelectedNoteTemporary( float _newTime)
         return;
 
     // MoveNoteCommandを使用
-    auto command = std::make_unique<MoveNoteCommand>(this, selectedNoteIndices_, deltaTime);
-    command->Execute();
+    //auto command = std::make_unique<BME::MoveNoteCommand>(document_.get(), selectedNoteIndices_, deltaTime);
+    //command->Execute();
     //commandHistory_.ExecuteCommand(std::move(command));
 
 
@@ -1115,8 +1153,8 @@ void BeatMapEditor::ConfirmMoveSelectedMove()
 
     float deltaTime = currentTimes[0] - moveState_.originalTimes[0]; // 最初のノートの時間を基準にデルタタイムを計算
 
-    auto command = std::make_unique<MoveNoteCommand>(this, moveState_.movingIndices, deltaTime);
-    commandHistory_.ExecuteCommand(std::move(command));
+    //auto command = std::make_unique<BME::MoveNoteCommand>(document_.get(), moveState_.movingIndices, deltaTime);
+    //commandHistory_.ExecuteCommand(std::move(command));
 
 }
 
@@ -1161,7 +1199,7 @@ void BeatMapEditor::PasteCopiedNotes()
     // クリップボードのノートを現在の時間に合わせて配置
     float pasteTimeOffset = currentTime_ - clipboardData_.baseline;
 
-    auto command = std::make_unique<PasteCommand>(this, clipboardData_.notes, pasteTimeOffset);
+    auto command = std::make_unique<BME::PasteCommand>(document_.get(), clipboardData_.notes, pasteTimeOffset);
     commandHistory_.ExecuteCommand(std::move(command));
 }
 
@@ -1217,17 +1255,17 @@ void BeatMapEditor::HandleGlobalInput()
         // 選択されたノートを削除
         if (!selectedNoteIndices_.empty())
         {
-            std::vector<uint32_t> selectedNoteIndices;
+            std::vector<size_t> selectedNoteIndices;
             for (size_t index : selectedNoteIndices_)
             {
                 if (index < currentBeatMapData_.notes.size())
                 {
-                    selectedNoteIndices.push_back(static_cast<uint32_t>(index)); // 有効なノートインデックスのみ追加
+                    selectedNoteIndices.push_back(index); // 有効なノートインデックスのみ追加
                 }
             }
             if (!selectedNoteIndices.empty())
             {
-                auto command = std::make_unique<DeleteNoteCommand>(this, selectedNoteIndices);
+                auto command = std::make_unique<BME::DeleteNoteCommand>(document_.get(), selectedNoteIndices);
                 commandHistory_.ExecuteCommand(std::move(command)); // 選択されたノートを削除コマンドを実行
             }
             selectedNoteIndices_.clear(); // 選択状態をクリア
@@ -1565,7 +1603,7 @@ void BeatMapEditor::HandlePlaceNormalNoteInput()
         float targetTime = editorCoordinate_.ScreenYToTime(mousePos.y); // マウスのY座標を時間に変換
         if (currentEditorMode_ == EditorMode::PlaceNormalNote)
         {
-            auto command = std::make_unique<PlaceNoteCommand>(this, laneIndex, targetTime, "normal", 0.0f);
+            auto command = std::make_unique<BME::PlaceNoteCommand>(document_.get(), laneIndex, targetTime, "normal", 0.0f);
             commandHistory_.ExecuteCommand(std::move(command)); // ノーマルノートを配置
         }
     }
@@ -1597,7 +1635,7 @@ void BeatMapEditor::HandlePlaceLongNoteInput()
 
             if (holdDuration > 0.001f) // ホールド時間が0.001秒以上の場合のみ配置
             {
-                auto command = std::make_unique<PlaceNoteCommand>(this, longNoteStartLane_, longNoteStartTime_, "hold", holdDuration);
+                auto command = std::make_unique<BME::PlaceNoteCommand>(document_.get(), longNoteStartLane_, longNoteStartTime_, "hold", holdDuration);
                 commandHistory_.ExecuteCommand(std::move(command)); // ロングノートを配置
             }
             isCreatingLongNote_ = false; // ロングノートの作成フラグを下ろす
@@ -1614,7 +1652,7 @@ void BeatMapEditor::HandleDeleteModeInput()
             uint32_t actualNoteIndex = drawNoteIndices_[i]; // 実際のノートインデックスを取得
             if (noteSprites_[i]->IsPointInside(input_->GetMousePosition()))
             {
-                auto command = std::make_unique<DeleteNoteCommand>(this, actualNoteIndex);
+                auto command = std::make_unique<BME::DeleteNoteCommand>(document_.get(), actualNoteIndex);
                 commandHistory_.ExecuteCommand(std::move(command)); // ノートを削除コマンドを実行
                 break; // 一つ削除したらループを抜ける
             }

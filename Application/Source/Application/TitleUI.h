@@ -8,12 +8,12 @@
 #include <Features/UI/Collider/UIQuadCollider.h>
 
 class EventManager;
-class TitileUI : public iEventListener
+class TitleUI : public iEventListener
 {
 private:
 public:
-    TitileUI();
-    ~TitileUI();
+    TitleUI();
+    ~TitleUI();
 
 
     void Initialize();
@@ -22,7 +22,7 @@ public:
 
     void Draw();
 
-    void OnEvent(const GameEvent& _event) override;
+    void OnEvent(const GameEvent& event) override;
 
 private:
 
@@ -52,19 +52,19 @@ private:
     };
 
 
-    void UpdateAnimationUI(TitleUIElement _elem, float _deltaTime);
+    void UpdateAnimationUI(TitleUIElement elem, float deltaTime);
 
 
-    size_t ToSizeT(TitleUIElement _element)
+    size_t ToSizeT(TitleUIElement element)
     {
-        return static_cast<size_t>(_element);
+        return static_cast<size_t>(element);
     }
-    TitleUIElement ToTitleUIElement(size_t _index)
+    TitleUIElement ToTitleUIElement(size_t index)
     {
-        return static_cast<TitleUIElement>(_index);
+        return static_cast<TitleUIElement>(index);
     }
 
-    void SetActive(bool _active) { isActive_= _active; }
+    void SetActive(bool active) { isActive_= active; }
     bool GetActive() const { return isActive_; }
 
 private:

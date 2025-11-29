@@ -3,10 +3,10 @@
 #include <Features/Json/Loader/JsonFileIO.h>
 #include <Utility/StringUtils/StringUitls.h>
 
-void GameEnvironment::Initialize(const std::string& _filePath)
+void GameEnvironment::Initialize(const std::string& filePath)
 {
     GameTime::GetChannel("GameEnvironment");
-    Serialize(_filePath);
+    Serialize(filePath);
 
     spriteSheetAnimation_ = SpriteSheetAnimation(4, 1, 4, 1.0f);
     UVTransform& uvTransform = overFloor_->GetMaterial()->GetUVTransform();
@@ -16,9 +16,9 @@ void GameEnvironment::Initialize(const std::string& _filePath)
     spriteSheetAnimation_.SetLooping(true);
 }
 
-void GameEnvironment::Update(float _deltaTime)
+void GameEnvironment::Update(float deltaTime)
 {
-    spriteSheetAnimation_.Update(_deltaTime);
+    spriteSheetAnimation_.Update(deltaTime);
 
     for (auto& obj : environmentObjects_)
     {
@@ -31,29 +31,29 @@ void GameEnvironment::Update(float _deltaTime)
     screen_->Update();
 }
 
-void GameEnvironment::Draw(const Camera* _camera)
+void GameEnvironment::Draw(const Camera* camera)
 {
     for (auto& obj : environmentObjects_)
     {
         if (obj)
         {
-            obj->Draw(_camera);
+            obj->Draw(camera);
         }
     }
-    screen_->Draw(_camera, spectrumTextureHandle_, Vector4(1, 1, 1, 1));
+    screen_->Draw(camera, spectrumTextureHandle_, Vector4(1, 1, 1, 1));
 
-    overFloor_->Draw(_camera, Vector4(1, 1, 1, 1));
+    overFloor_->Draw(camera, Vector4(1, 1, 1, 1));
 }
 
-void GameEnvironment::SetBPM(float _bpm)
+void GameEnvironment::SetBPM(float bpm)
 {
     // BPMに基づいて時間スケールを設定
 
     const float kSpeakerSwingBpmThreshold = 160.0f;// スピーカーのアニメーション速度を変更する閾値
 
-    timeScale_ = 1.0f / (60.0f / _bpm);
+    timeScale_ = 1.0f / (60.0f / bpm);
     // スピーカーのアニメーション速度を調整 早くなりすぎないようにスケーリング。
-    if (_bpm < kSpeakerSwingBpmThreshold)
+    if (bpm < kSpeakerSwingBpmThreshold)
         timeScale_ *= 0.5f;
     else
         timeScale_ *= 0.25f;
@@ -63,9 +63,9 @@ void GameEnvironment::SetBPM(float _bpm)
 
 }
 
-ObjectModel* GameEnvironment::GetSpeaker(uint32_t _laneIndex)
+ObjectModel* GameEnvironment::GetSpeaker(uint32_t laneIndex)
 {
-    auto it = speakerMap_.find(_laneIndex);
+    auto it = speakerMap_.find(laneIndex);
     if (it != speakerMap_.end())
     {
         return it->second; // レーンインデックスに対応するスピーカーオブジェクトを返す
@@ -77,9 +77,9 @@ void GameEnvironment::StartAnimation()
 {
 }
 
-void GameEnvironment::Serialize(const std::string& _filePath)
+void GameEnvironment::Serialize(const std::string& filePath)
 {
-    json data = JsonFileIO::Load(_filePath, "");
+    json data = JsonFileIO::Load(filePath, "");
 
     if (!data.contains("name"))
         return; // 名前がない場合は終了
@@ -165,20 +165,20 @@ void GameEnvironment::Serialize(const std::string& _filePath)
 
 }
 
-void GameEnvironment::BuildSpeakerMap(const std::string& _objName, ObjectModel* _model, const std::string& _filepath)
+void GameEnvironment::BuildSpeakerMap(const std::string& objName, ObjectModel* model, const std::string& filepath)
 {
-    if (!StringUtils::Contains(_objName, "lane"))
+    if (!StringUtils::Contains(objName, "lane"))
         return;
 
 
     // 最後のアンダースコア以降の文字列を取得 数字のはず
-    std::string name = StringUtils::GetAfterLast(_objName, '_'); // '_'以降の文字列を取得
+    std::string name = StringUtils::GetAfterLast(objName, '_'); // '_'以降の文字列を取得
 
     if (name.empty())
         return; // 名前が空の場合はスキップ
 
     uint32_t laneIndex = static_cast<uint32_t>(std::stoi(name)); // 文字列を整数に変換
-    speakerMap_[laneIndex] = _model; // レーンインデックスとモデルをマップに追加
+    speakerMap_[laneIndex] = model; // レーンインデックスとモデルをマップに追加
 
-    _model->LoadAnimation(_filepath,"anim");
+    model->LoadAnimation(filepath,"anim");
 }

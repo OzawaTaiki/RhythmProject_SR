@@ -28,7 +28,7 @@ void PauseMenu::Initialize()
     uiGroup_->Initialize();
 
     auto backSprite = uiGroup_->CreateSprite("PauseMenu_blackback");
-    backSprite->SetSize({ 1280, 720 });
+    backSprite->SetSize(WinApp::kWindowSize_);
     backSprite->SetColor({ 0, 0, 0, 0.8f }); // 半透明の黒背景
     backSprite->SetPos({ 0, 0 });
     backSprite->SetAnchor({ 0,0 });// 左上にアンカーを設定

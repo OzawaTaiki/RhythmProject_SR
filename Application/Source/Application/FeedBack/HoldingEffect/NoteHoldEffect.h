@@ -31,8 +31,8 @@ public:
     /// <summary>
     /// ホールドエフェクトを再生する。
     /// </summary>
-    /// <param name="_laneIndex">対象レーンのインデックス</param>
-    void Play(int32_t _laneIndex);
+    /// <param name="laneIndex">対象レーンのインデックス</param>
+    void Play(int32_t laneIndex);
 
 private:
 

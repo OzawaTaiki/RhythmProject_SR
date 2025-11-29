@@ -1,10 +1,14 @@
 #include "EditorCoordinate.h"
 #include <Debug/Debug.h>
 #include <algorithm>
+#include <Core/WinApp/WinApp.h>
+
+namespace BME
+{
 
 EditorCoordinate::EditorCoordinate() :
-    screenSize_(1280.0f, 720.0f),
-    areaCenter_(640.0f, 360.0f), // 初期エリアセンター
+    screenSize_(WinApp::kWindowSize_),
+    areaCenter_(WinApp::kWindowSize_ * 0.5f),
     laneCount_(4),
     editAreaX_(100.0f),
     editAreaWidth_(400.0f),
@@ -277,3 +281,5 @@ void EditorCoordinate::InvalidateVisibleRange()
 {
     visibleRangeDirty_ = true;
 }
+
+} // namespace BME

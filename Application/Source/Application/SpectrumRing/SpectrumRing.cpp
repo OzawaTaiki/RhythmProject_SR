@@ -19,10 +19,10 @@ float maxHz = 10000.0f;
 
 }
 
-void SpectrumRing::Initialize(std::shared_ptr<SoundInstance> _musicInstance,size_t _numring)
+void SpectrumRing::Initialize(std::shared_ptr<SoundInstance> musicInstance,size_t numring)
 {
-    musicInstance_ = _musicInstance;
-    numRings = _numring;
+    musicInstance_ = musicInstance;
+    numRings = numring;
     audioSpectrum_ = AudioSpectrum();
 
     audioSpectrum_.SetAudioData(musicInstance_->GetAudioData());
@@ -32,7 +32,7 @@ void SpectrumRing::Initialize(std::shared_ptr<SoundInstance> _musicInstance,size
     CreateTextureGenerators();
 }
 
-void SpectrumRing::Update(float _elapsedTime)
+void SpectrumRing::Update(float elapsedTime)
 {
     if (!isInitTextures_)
     {
@@ -53,12 +53,12 @@ void SpectrumRing::Update(float _elapsedTime)
     cycleTextureIndices_.pop_back();
     cycleTextureIndices_.push_front(index);
 
-    auto spectrum = audioSpectrum_.GetSpectrumAtTime(_elapsedTime);
+    auto spectrum = audioSpectrum_.GetSpectrumAtTime(elapsedTime);
     //float min, max;
     //WaveformAnalyzer::GetRawWaveformMaxMin(musicInstance_.get(), _elapsedTime, 5.0f, max, min);
     float scale =
         //(std::abs(max) + std::abs(min)) / 2.0f;
-        WaveformAnalyzer::GetRMSAtTime(musicInstance_.get(),_elapsedTime);
+        WaveformAnalyzer::GetRMSAtTime(musicInstance_.get(),elapsedTime);
     textureGenerators_[index]->Generate(spectrum, scale , barCount);
     uint32_t nextIndex = cycleTextureIndices_.back();
     textureGenerators_[nextIndex]->ReserveClear();

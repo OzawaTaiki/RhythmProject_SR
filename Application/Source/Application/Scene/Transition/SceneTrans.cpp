@@ -2,6 +2,7 @@
 
 #include <System/Time/Time.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
+#include <Core/WinApp/WinApp.h>
 
 void SceneTrans::Initialize()
 {
@@ -15,8 +16,8 @@ void SceneTrans::Initialize()
     uint32_t handle = TextureManager::GetInstance()->Load("white.png");
     // トランジション用のスプライトを初期化
     transitionSprite_ = Sprite::Create("TransitionSprite", handle);
-    transitionSprite_->translate_ = Vector2(640, 360); // 画面中央に配置
-    transitionSprite_->SetSize(Vector2(1280, 720)); // 画面サイズに合わせる
+    transitionSprite_->translate_ = WinApp::kWindowSize_ * 0.5f; // 画面中央に配置
+    transitionSprite_->SetSize(WinApp::kWindowSize_); // 画面全体を覆うサイズに設定
     transitionSprite_->SetColor(Vector4(0, 0, 0, 1)); // 初期は黒色
 }
 

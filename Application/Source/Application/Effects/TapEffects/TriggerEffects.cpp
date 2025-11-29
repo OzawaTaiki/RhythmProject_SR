@@ -35,7 +35,7 @@ void TriggerEffects::Initialize()
 }
 
 // TODO : マジックナンバー多すぎ
-void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
+void TriggerEffects::EmitCenterCircles(const Vector3& pos)
 {
     ParticleRenderSettings settings;
     settings.blendMode = PSOFlags::BlendMode::Add;
@@ -46,7 +46,7 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
         ParticleInitParam param;
 
         param.lifeTime = 0.2f;
-        param.position = _pos;
+        param.position = pos;
         param.position.y += 0.01f;
         param.size = Vector3(centerSize_, centerSize_ * 0.4f, centerSize_) * 1.3f * 0.5f;
         param.color = commonColor_;
@@ -70,14 +70,14 @@ void TriggerEffects::EmitCenterCircles(const Vector3& _pos)
     }
 }
 
-void TriggerEffects::EmitSurroundingParticles(const Vector3& _pos)
+void TriggerEffects::EmitSurroundingParticles(const Vector3& pos)
 {
     // 座標設定
     Vector3 offset = { 0.0f, 1.0f, 0.0f };
-    cubePop_.SetPosition(_pos + offset);
-    triangleEmitter_.SetPosition(_pos);
-    lightPillarEmitter_.SetPosition(_pos);
-    risingParticles_.SetPosition(_pos);
+    cubePop_.SetPosition(pos + offset);
+    triangleEmitter_.SetPosition(pos);
+    lightPillarEmitter_.SetPosition(pos);
+    risingParticles_.SetPosition(pos);
     // 生成
     cubePop_.GenerateParticles();
     triangleEmitter_.GenerateParticles();

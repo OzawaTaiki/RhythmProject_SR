@@ -4,7 +4,7 @@
 
 #include <Debug/Debug.h>
 
-void Note::Initilize(float _targetTime, const Vector3& _targetPosition)
+void Note::Initialize(float targetTime, const Vector3& targetPosition)
 {
     model_ = std::make_unique<ObjectModel>("note");
     model_->Initialize("cube/cube.obj");
@@ -17,23 +17,23 @@ void Note::Initilize(float _targetTime, const Vector3& _targetPosition)
     model_->scale_.z = 0.5f;
     model_->scale_.y = 0.1f;
 
-    targetTime_ = _targetTime;
-    targetPosition_ = _targetPosition;
+    targetTime_ = targetTime;
+    targetPosition_ = targetPosition;
 
     model_->Update();
 }
 
-void Note::Update(float _elapseTime, float _speed)
+void Note::Update(float elapseTime, float speed)
 {
     model_->translate_ = targetPosition_;
-    model_->translate_.z = targetPosition_.z + _speed * (targetTime_ - _elapseTime);
+    model_->translate_.z = targetPosition_.z + speed * (targetTime_ - elapseTime);
 
     model_->Update();
 }
 
-void Note::Draw(const Camera* _camera)
+void Note::Draw(const Camera* camera)
 {
-    model_->Draw(_camera, 0, color_);
+    model_->Draw(camera, 0, color_);
 }
 
 void Note::Judge()
@@ -41,29 +41,29 @@ void Note::Judge()
     isJudged_ = true; // 判定済みにする
 }
 
-NomalNote::NomalNote() :    Note()
+NormalNote::NormalNote() :    Note()
 {
     noteType_ = NoteType::Normal;
     color_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-NomalNote::~NomalNote()
+NormalNote::~NormalNote()
 {
 }
 
-void NomalNote::Initilize(float _targetTime, const Vector3& _targetPosition)
+void NormalNote::Initialize(float targetTime, const Vector3& targetPosition)
 {
-    Note::Initilize(_targetTime, _targetPosition);
+    Note::Initialize(targetTime, targetPosition);
 }
 
-void NomalNote::Update(float _elapseTime, float _speed)
+void NormalNote::Update(float elapseTime, float speed)
 {
-    Note::Update(_elapseTime, _speed);
+    Note::Update(elapseTime, speed);
 }
 
-void NomalNote::Draw(const Camera* _camera)
+void NormalNote::Draw(const Camera* camera)
 {
-    Note::Draw(_camera);
+    Note::Draw(camera);
 }
 
 LongNote::LongNote() : Note()
@@ -78,14 +78,14 @@ LongNote::~LongNote()
 {
 }
 
-void LongNote::Initilize(float _targetTime, const Vector3& _targetPosition)
+void LongNote::Initialize(float targetTime, const Vector3& targetPosition)
 {
-    Note::Initilize(_targetTime, _targetPosition);
+    Note::Initialize(targetTime, targetPosition);
 }
 
-void LongNote::Update(float _elapseTime, float _speed)
+void LongNote::Update(float elapseTime, float speed)
 {
-    Note::Update(_elapseTime, _speed);
+    Note::Update(elapseTime, speed);
     if (noteBridge_)
     {
         // ブリッジの長さを更新する
@@ -97,12 +97,12 @@ void LongNote::Update(float _elapseTime, float _speed)
         if(isHolding)
             epos = judgePosition_; // ホールド中は判定位置まで伸ばす
         else
-            epos.z = targetPosition_.z + _speed * (targetTime_ - _elapseTime); // ホールド終了後は自分の位置まで
+            epos.z = targetPosition_.z + speed * (targetTime_ - elapseTime); // ホールド終了後は自分の位置まで
         */
         float bridgeLength = holdDuration_;
-        if (isHeadPressed_ && holdDuration_ > targetTime_ - _elapseTime)
-            bridgeLength = targetTime_ - _elapseTime;
-        epos.z -= _speed * (bridgeLength);
+        if (isHeadPressed_ && holdDuration_ > targetTime_ - elapseTime)
+            bridgeLength = targetTime_ - elapseTime;
+        epos.z -= speed * (bridgeLength);
         Vector3 direction = epos - spos;
         // レーンマタギを実装したら必要
         /*const Vector3 downVector = Vector3(0, 0, -1);// 下向きベクトル
@@ -119,14 +119,14 @@ void LongNote::Update(float _elapseTime, float _speed)
     }
 }
 
-void LongNote::Draw(const Camera* _camera)
+void LongNote::Draw(const Camera* camera)
 {
-     model_->Draw(_camera,0, Vector4(0.0f, 1.0f, 0.5f, 1.0f));
+     model_->Draw(camera,0, Vector4(0.0f, 1.0f, 0.5f, 1.0f));
 
     // 次のノートが有効な場合はブリッジを描画する
     if (noteBridge_)
     {
-        noteBridge_->Draw(_camera, 0, Vector4(0.5f, 1.0f, 0.5f, 1.0f));
+        noteBridge_->Draw(camera, 0, Vector4(0.5f, 1.0f, 0.5f, 1.0f));
     }
 }
 
@@ -139,9 +139,9 @@ void LongNote::Judge()
     model_->translate_.z = -2; // ノーツを画面外へ
 }
 
-void LongNote::SetHoldEnd(bool _isHoldEnd)
+void LongNote::SetHoldEnd(bool isHoldEnd)
 {
-    isHoldEnd_ = _isHoldEnd;
+    isHoldEnd_ = isHoldEnd;
 
     if (isHoldEnd_)
     {

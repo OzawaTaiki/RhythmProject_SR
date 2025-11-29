@@ -5,7 +5,7 @@
 #include <Features/Scene/Manager/SceneManager.h>
 #include <Application/Scene/Data/SceneDatas.h>
 
-void SelectScene::Initialize([[maybe_unused]] SceneData* _sceneData)
+void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };
@@ -33,7 +33,7 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* _sceneData)
 
     selectButton_ = std::make_unique<UIButton>();
     selectButton_->Initialize("SelectButton");
-    selectButton_->SetPos({ 640, 360 });
+    selectButton_->SetPos(WinApp::kWindowSize_ * 0.5f);
     selectButton_->SetSize({ 200, 100 });
     selectButton_->SetAnchor({ 0.5f,0.5f });
     selectButton_->SetColor({ 0,0,0,1 });
@@ -83,12 +83,12 @@ void SelectScene::Update()
     TextParam param;
     param.SetColor({ 1,1,1,1 })
         .SetPivot({ 0.5f, 0.5f })
-        .SetPosition({ 640, 200 })
+        .SetPosition({ WinApp::kWindowSize_.x, 200 })
         .SetScale({ 1.0f, 1.0f });
 
     //text_.Draw(L"せれくとしーん", param);
 
-    param.SetPosition({ 640, 360 });
+    param.SetPosition({ WinApp::kWindowSize_.x * 0.5f, 300 });
     //text_.Draw(L"譜面ファイル選択(仮)", param);
 }
 

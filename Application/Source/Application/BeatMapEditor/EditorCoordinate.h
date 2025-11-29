@@ -1,8 +1,12 @@
 #pragma once
 
+#include <Core/WinApp/WinApp.h>
 #include <Math/Vector/Vector2.h>
 
 #include <cstdint>
+
+namespace BME
+{
 
 /// <summary>
 /// えぢたー用座標変換システム
@@ -18,7 +22,7 @@ public:
     /// </summary>
     /// <param name="_screenSize">画面サイズ</param>
     /// <param name="_laneCount">レーン数(デフォルト4)</param>
-    void Initialize(const Vector2& _screenSize, const Vector2& _areaCenter = { 640,360 }, int32_t _laneCount = 4);
+    void Initialize(const Vector2& _screenSize, const Vector2& _areaCenter = WinApp::kWindowSize_ * 0.5f, const int32_t _laneCount = 4);
 
     /// <summary>
     /// 画面サイズを設定
@@ -195,3 +199,4 @@ private:    // 内部計算用
     float timeZeroOffsetRatio_; // 時間0位置のオフセット比率(0.0~1.0)
     float offsetTime_ = 0.0f; // 時間オフセット(秒)
 };
+} // namespace BME

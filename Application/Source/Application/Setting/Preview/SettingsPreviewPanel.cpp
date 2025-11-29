@@ -13,7 +13,7 @@
 
 void SettingsPreviewPanel::Initialize()
 {
-    camera_.Initialize(CameraType::Perspective, Vector2(320, 720));  // プレビュー用に縦長 3Dカメラ
+    camera_.Initialize(CameraType::Perspective, Vector2(320, WinApp::kWindowSize_.y));  // プレビュー用に縦長 3Dカメラ
     camera_.aspectRatio_ = 0.7f;
     camera_.farClip_ = 100.0f;
     camera_.translate_= { 0.0f,5.0f,-13.0f };
@@ -68,7 +68,7 @@ void SettingsPreviewPanel::Initialize()
     // レンダーターゲットの作成
     RTVManager::GetInstance()->CreateRenderTarget(
         "SettingsPreviewPanelRT",
-        320, 720,
+        320, WinApp::kWindowHeight_,
         DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
         { 0.0f,0.0f ,0.0f ,1.0f },
         true);

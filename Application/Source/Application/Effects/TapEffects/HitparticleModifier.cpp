@@ -4,45 +4,45 @@ void HitParticleModifier::Initialize()
 {
 }
 
-void HitParticleModifier::Apply(Particle* _particle, float _deltaTime)
+void HitParticleModifier::Apply(Particle* particle, float deltaTime)
 {
     // フェードアウト
-    float t = _particle->GetCurrentTime() / _particle->GetLifeTime();
+    float t = particle->GetCurrentTime() / particle->GetLifeTime();
 
     float easedt = Easing::Func(Easing::EasingFunc::EaseInOutCirc)(t);
-    Vector4 color = _particle->GetColor();
+    Vector4 color = particle->GetColor();
     color.w = 1.0f - easedt;
 
-    _particle->SetColor(color);
+    particle->SetColor(color);
 
     // 減速
     float deceleration = 3.0f;
-    float speed = _particle->GetSpeed();
-    speed -= deceleration * _deltaTime;
+    float speed = particle->GetSpeed();
+    speed -= deceleration * deltaTime;
     if (speed < 0.0f)
         speed = 0.0f;
-    _particle->SetSpeed(speed);
+    particle->SetSpeed(speed);
 }
 
 void HitCircleParticleModifier::Initialize()
 {
 }
 
-void HitCircleParticleModifier::Apply(Particle* _particle, [[maybe_unused]] float _deltaTime)
+void HitCircleParticleModifier::Apply(Particle* particle, [[maybe_unused]] float deltaTime)
 {
     // フェードアウト
-    float t = _particle->GetCurrentTime() / _particle->GetLifeTime();
+    float t = particle->GetCurrentTime() / particle->GetLifeTime();
     float easedt = Easing::Func(Easing::EasingFunc::EaseInQuart)(t);
 
-    Vector4 color = _particle->GetColor();
+    Vector4 color = particle->GetColor();
     color.w = 1.0f - easedt;
 
-    _particle->SetColor(color);
+    particle->SetColor(color);
 
     // サイズ縮小
     float easedTSize = 1.0f - Easing::Func(Easing::EasingFunc::EaseInExpo)(t);
 
-    Vector3 size = _particle->GetScale();
+    Vector3 size = particle->GetScale();
     const float minSize = 0.3f;
 
     size.x *= easedTSize;
@@ -51,5 +51,5 @@ void HitCircleParticleModifier::Apply(Particle* _particle, [[maybe_unused]] floa
     size.x = (std::max)(size.x, minSize);
     size.z = (std::max)(size.z, minSize);
 
-    _particle->SetScale(size);
+    particle->SetScale(size);
 }

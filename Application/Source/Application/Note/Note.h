@@ -20,22 +20,22 @@ public:
     /// <summary>
     /// ノーツを初期化する。
     /// </summary>
-    /// <param name="_targetTime">ノーツのターゲット時間（秒）</param>
-    /// <param name="_targetPosition">ノーツの目標位置（ワールド座標）</param>
-    virtual void Initilize(float _targetTime, const Vector3& _targetPosition);
+    /// <param name="targetTime">ノーツのターゲット時間（秒）</param>
+    /// <param name="targetPosition">ノーツの目標位置（ワールド座標）</param>
+    virtual void Initialize(float targetTime, const Vector3& targetPosition);
 
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    /// <param name="_elapseTime">経過時間（秒）</param>
-    /// <param name="_speed">ノーツの速度係数</param>
-    virtual void Update(float _elapseTime, float _speed);
+    /// <param name="elapseTime">経過時間（秒）</param>
+    /// <param name="speed">ノーツの速度係数</param>
+    virtual void Update(float elapseTime, float speed);
 
     /// <summary>
     /// 描画処理。
     /// </summary>
-    /// <param name="_camera">描画用カメラ</param>
-    virtual void Draw(const Camera* _camera);
+    /// <param name="camera">描画用カメラ</param>
+    virtual void Draw(const Camera* camera);
 
     /// <summary>
     /// ノーツのターゲット時間を取得する。
@@ -73,16 +73,16 @@ protected:
 };
 
 // 通常ノーツクラス
-class NomalNote : public Note
+class NormalNote : public Note
 {
 public:
-    NomalNote();
-    ~NomalNote() override;
+    NormalNote();
+    ~NormalNote() override;
 
 
-    void Initilize(float _targetTime, const Vector3& _targetPosition) override;
-    void Update(float _elapseTime, float _speed) override;
-    void Draw(const Camera* _camera) override;
+    void Initialize(float targetTime, const Vector3& targetPosition) override;
+    void Update(float elapseTime, float speed) override;
+    void Draw(const Camera* camera) override;
 
 };
 
@@ -93,18 +93,18 @@ public:
     LongNote();;
     ~LongNote() override;
 
-    void Initilize(float _targetTime, const Vector3& _targetPosition) override;
-    void Update(float _elapseTime, float _speed) override;
-    void Draw(const Camera* _camera) override;
+    void Initialize(float targetTime, const Vector3& targetPosition) override;
+    void Update(float elapseTime, float speed) override;
+    void Draw(const Camera* camera) override;
 
     virtual void Judge() override;
 
-    void SetHoldEnd(bool _isHoldEnd);
+    void SetHoldEnd(bool isHoldEnd);
     bool IsHoldEnd() const { return isHoldEnd_; }
 
-    void SetJudgePosition(const Vector3& _judgePosition) { judgePosition_ = _judgePosition; }
+    void SetJudgePosition(const Vector3& judgePosition) { judgePosition_ = judgePosition; }
 
-    void SetHoldDuration(float _holdDuration) { holdDuration_ = _holdDuration; }
+    void SetHoldDuration(float holdDuration) { holdDuration_ = holdDuration; }
     float GetHoldDuration() const { return holdDuration_; }
 
     void HeadPressed() { isHeadPressed_ = true; }

@@ -11,8 +11,8 @@ struct MappingData
     int32_t laneIndex; // レーンインデックス
     float targetTime; // ターゲット時間
 
-    MappingData(int32_t _laneIndex = -1, float _targetTime = -1.0f)
-        : laneIndex(_laneIndex), targetTime(_targetTime) {
+    MappingData(int32_t laneIndex = -1, float targetTime = -1.0f)
+        : laneIndex(laneIndex), targetTime(targetTime) {
     }
 
 };
@@ -27,13 +27,13 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    void Initialize(int32_t _laneCount);
+    void Initialize(int32_t laneCount);
 
     /// <summary>
     /// 更新処理
     /// </summary>
-    /// <param name="_elapsedTime">曲の経過時間</param>
-    void Update(float _elapsedTime);
+    /// <param name="elapsedTime">曲の経過時間</param>
+    void Update(float elapsedTime);
 
     /// <summary>
     /// マッピングデータを取得
@@ -49,16 +49,16 @@ public:
     /// <summary>
     /// レーンのキー入力バインディングを設定
     /// </summary>
-    /// <param name="_laneIndex">レーン番号</param>
-    /// <param name="_keyCode">キーコード (DIK_Aなど)</param>
-    void SetLaneKeyBinding(int32_t _laneIndex, uint8_t _keyCode);
+    /// <param name="laneIndex">レーン番号</param>
+    /// <param name="keyCode">キーコード (DIK_Aなど)</param>
+    void SetLaneKeyBinding(int32_t laneIndex, uint8_t keyCode);
 
 private:
 
     /// <summary>
     /// デフォルトのキー入力バインディングを設定
     /// </summary>
-    void SetDefaultKeyBindings(int32_t _laneIndex);
+    void SetDefaultKeyBindings(int32_t laneIndex);
 
 private:
     Input* input_ = nullptr; // 入力管理クラスへのポインタ

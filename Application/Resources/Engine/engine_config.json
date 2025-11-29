@@ -1,0 +1,8 @@
+{
+  "windowTitle": "RhythmGame",
+  "windowWidth": 1280,
+  "windowHeight": 720,
+  "isFullscreen": false,
+  "enableVSync": true,
+  "targetFPS": 60
+}

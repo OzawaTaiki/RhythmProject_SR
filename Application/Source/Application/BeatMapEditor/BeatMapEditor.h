@@ -18,6 +18,14 @@
 #include <Application/BeatMapEditor/LiveMapping/LiveMapping.h>
 #include <Application/BeatMapEditor/BPMCounter/TapBPMCounter.h>
 
+// 新アーキテクチャクラス
+#include <Application/BeatMapEditor/BeatMapDocument.h>
+#include <Application/BeatMapEditor/EditorState.h>
+#include <Application/BeatMapEditor/AudioController.h>
+#include <Application/BeatMapEditor/EditorInputHandler.h>
+#include <Application/BeatMapEditor/BeatMapFileManager.h>
+#include <Application/BeatMapEditor/Render/EditorRenderer.h>
+
 #include <string>
 #include <cstdint>
 #include <vector>
@@ -48,8 +56,8 @@ private:
     };
 public:
 
-    BeatMapEditor() = default;
-    ~BeatMapEditor() = default;
+    BeatMapEditor();
+    ~BeatMapEditor();
 
     /// <summary>
     /// 初期化処理を行う。
@@ -423,7 +431,17 @@ private:
     // コア機能
     // ========================================
     CommandHistory commandHistory_;
-    EditorCoordinate editorCoordinate_;
+    BME::EditorCoordinate editorCoordinate_;
+
+    // ========================================
+    // 新アーキテクチャクラス（リファクタリング中）
+    // ========================================
+    std::unique_ptr<BME::Document> document_;
+    std::unique_ptr<BME::State> state_;
+    std::unique_ptr<BME::AudioController> audioController_;
+    std::unique_ptr<BME::InputHandler> inputHandler_;
+    std::unique_ptr<BME::EditorRenderer> renderer_;
+    std::unique_ptr<BME::FileManager> fileManager_;
 
     // ========================================
     // 譜面データ

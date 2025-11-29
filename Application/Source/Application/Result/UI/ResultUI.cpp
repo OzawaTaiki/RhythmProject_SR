@@ -8,17 +8,17 @@
 
 
 
-void ResultUI::Initialize(ResultData _resultData)
+void ResultUI::Initialize(ResultData resultData)
 {
-    musicTitle_ = _resultData.musicTitle;
+    musicTitle_ = resultData.musicTitle;
 
     textParams_[TextType::Score_value].counterValue = std::make_optional<CounterValue>();
-    textParams_[TextType::Score_value].counterValue->value = _resultData.score;
+    textParams_[TextType::Score_value].counterValue->value = resultData.score;
 
     textParams_[TextType::Combo_value].counterValue = std::make_optional<CounterValue>();
-    textParams_[TextType::Combo_value].counterValue->value = _resultData.combo;
+    textParams_[TextType::Combo_value].counterValue->value = resultData.combo;
 
-    for (auto& [judgeType, count] : _resultData.judgeResult)
+    for (auto& [judgeType, count] : resultData.judgeResult)
     {
         TextType textType = GetTextTypeFromJudgeType(judgeType);
         textParams_[textType].counterValue = std::make_optional<CounterValue>();
@@ -50,7 +50,7 @@ void ResultUI::Initialize(ResultData _resultData)
 }
 
 
-void ResultUI::Update(float _deltaTime)
+void ResultUI::Update(float deltaTime)
 {
     static bool seqUpdate = false;
 
@@ -127,7 +127,7 @@ void ResultUI::Update(float _deltaTime)
         for (auto& [type,textParam] : textParams_)
         {
             auto& animParam = textParam.animationValue;
-            animParam.timer += _deltaTime;
+            animParam.timer += deltaTime;
             if (animParam.timer >= duration)
             {
                 animParam.timer = duration;
@@ -155,7 +155,7 @@ void ResultUI::Update(float _deltaTime)
             {
                 auto& counterValue = textParam.counterValue.value();
 
-                counterValue.animationTimer += _deltaTime;
+                counterValue.animationTimer += deltaTime;
                 if (counterValue.animationTimer >= animationDuration_)
                 {
                     counterValue.animationTimer = animationDuration_;
@@ -257,9 +257,9 @@ void ResultUI::InitTextParams()
     }
 }
 
-std::string ResultUI::GetKeyString(TextType _textType) const
+std::string ResultUI::GetKeyString(TextType textType) const
 {
-    switch (_textType)
+    switch (textType)
     {
     case TextType::Title:
         return "Title";
@@ -292,9 +292,9 @@ std::string ResultUI::GetKeyString(TextType _textType) const
     }
 }
 
-std::wstring ResultUI::GetTextLabel(TextType _textType) const
+std::wstring ResultUI::GetTextLabel(TextType textType) const
 {
-    switch (_textType)
+    switch (textType)
     {
     case TextType::Title:
         return L"None";
@@ -327,9 +327,9 @@ std::wstring ResultUI::GetTextLabel(TextType _textType) const
     }
 }
 
-JudgeType ResultUI::GetJudgeTypeFromTextType(TextType _textType) const
+JudgeType ResultUI::GetJudgeTypeFromTextType(TextType textType) const
 {
-    switch (_textType)
+    switch (textType)
     {
     case TextType::Judge_perfect_value:
         return JudgeType::Perfect;
@@ -344,9 +344,9 @@ JudgeType ResultUI::GetJudgeTypeFromTextType(TextType _textType) const
     }
 }
 
-ResultUI::TextType ResultUI::GetTextTypeFromJudgeType(JudgeType _judgeType) const
+ResultUI::TextType ResultUI::GetTextTypeFromJudgeType(JudgeType judgeType) const
 {
-    switch (_judgeType)
+    switch (judgeType)
     {
     case JudgeType::Perfect:
         return TextType::Judge_perfect_value;

@@ -25,9 +25,9 @@ public:
     ~ResultUI() = default;
 
     // 初期化
-    void Initialize(ResultData _resultData);
+    void Initialize(ResultData resultData);
     // 更新
-    void Update(float _deltaTime);
+    void Update(float deltaTime);
     // 描画
     void Draw();
 
@@ -82,13 +82,13 @@ private:
     // テキストパラメータの初期化
     void InitTextParams();
     // テキストタイプからキー文字列を取得
-    std::string GetKeyString(TextType _textType) const;
+    std::string GetKeyString(TextType textType) const;
     // テキストタイプからラベルを取得
-    std::wstring GetTextLabel(TextType _textType) const;
+    std::wstring GetTextLabel(TextType textType) const;
     // テキストタイプからジャッジタイプを取得
-    JudgeType GetJudgeTypeFromTextType(TextType _textType) const;
+    JudgeType GetJudgeTypeFromTextType(TextType textType) const;
     // ジャッジタイプからテキストタイプを取得
-    TextType GetTextTypeFromJudgeType(JudgeType _judgeType) const;
+    TextType GetTextTypeFromJudgeType(JudgeType judgeType) const;
 
 private:
 

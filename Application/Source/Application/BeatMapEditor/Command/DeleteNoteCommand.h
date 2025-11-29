@@ -2,7 +2,16 @@
 
 #include <Application/BeatMapEditor/Command/ICommand.h>
 
-#include <Application/BeatMapEditor/BeatMapEditor.h>
+#include <Application/BeatMapLoader/BeatMapData.h>
+
+#include <cstdint>
+#include <vector>
+
+namespace BME
+{
+
+class State;
+class Document;
 
 /// <summary>
 /// ノート削除コマンド。
@@ -14,12 +23,12 @@ public:
     /// <summary>
     /// 単一ノート削除用コンストラクタ。
     /// </summary>
-    DeleteNoteCommand(BeatMapEditor* _beatMapEditor, uint32_t _noteIndex);
+    DeleteNoteCommand( Document* document, size_t noteIndex);
 
     /// <summary>
     /// 複数ノート削除用コンストラクタ。
     /// </summary>
-    DeleteNoteCommand(BeatMapEditor* _beatMapEditor, std::vector<uint32_t> _noteIndex);
+    DeleteNoteCommand( Document* document, const std::vector<size_t>& noteIndex);
 
     /// <summary>
     /// ノートを削除する処理を実行する。
@@ -34,7 +43,9 @@ public:
 
 private:
 
-    BeatMapEditor* beatMapEditor_ = nullptr; // BeatMapEditorのポインタ
-    std::vector<uint32_t> noteIndex_; // 削除するノートのインデックス
+    Document* document_ = nullptr; // 譜面ドキュメントのポインタ
+    std::vector<size_t> noteIndex_; // 削除するノートのインデックスリスト
     std::vector<NoteData> deletedNoteData_; // 削除したノートのデータを保存
 };
+
+} // namespace BME

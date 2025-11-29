@@ -5,6 +5,7 @@
 #include <System/Audio/AudioSystem.h>
 #include <Features/Model/Manager/ModelManager.h>
 #include <Features/UI/Collider/UICollisionManager.h>
+#include <Constants/MathConstants.h>
 
 TitleScene::TitleScene()
 {
@@ -18,7 +19,7 @@ TitleScene::~TitleScene()
     EventManager::GetInstance()->RemoveEventListener("RequestExitGame", this);
 }
 
-void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
+void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,0,-10 };
@@ -58,13 +59,13 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
 
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
-    LayerSystem::CreateLayer("backGround", 0);
-    LayerSystem::CreateLayer("buttons", 5);
-    LayerSystem::CreateLayer("ring", 10);
-    LayerSystem::CreateLayer("option", 20);
+    LayerSystem::CreateLayer("back", 0);
+    LayerSystem::CreateLayer("buttons", 20);
+    LayerSystem::CreateLayer("ring", 40);
+    LayerSystem::CreateLayer("option", 60);
 
 
-    // ビートマネージャーの初期化（検出されたBPMを使用）
+    // ビートマネージャーの初期化
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(100.0f);
     beatManager_->SetMusicVoiceInstance(voiceInstance_);
@@ -73,8 +74,18 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
     spectrumRing_->Initialize(soundInstance_, 5);
     spectrumRing_->SetBeatManager(beatManager_.get());
 
-    titleUI_ = std::make_unique<TitileUI>();
+    titleUI_ = std::make_unique<TitleUI>();
     titleUI_->Initialize();
+
+    titleBack_ = std::make_unique<UIBase>();
+    titleBack_->Initialize("TitleBack",true);
+    UVTransform& uvTransform = titleBack_->GetUVTransform();
+    uvTransform.SetRotation(MathConstants::kHalfPi / 3.0f);
+    uvTransform.SetScale(Vector2(10.0f, 10.0f));
+    uvAnimation_.AddTransform(&uvTransform);
+    uvAnimation_.SetLooping(true);
+    uvAnimation_.SetScrollSpeed(Vector2(0.2f, -0.2f));
+    uvAnimation_.Play();
 
     hexagonGrid_ = std::make_unique<HexagonGrid>();
     Rect area(Vector2(0, 0), Vector2(1280, 720));
@@ -101,10 +112,13 @@ void TitleScene::Update()
         // 譜面フォルダからランダムで曲を流したい
     }
 
+    uvAnimation_.Update(Time::GetDeltaTime<float>());
+
     particleSystem_->Update();
     settingMenu_->Update();
     titleUI_->Update();
     //hexagonGrid_->Update();
+    titleBack_->Update();
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
     else //そうじゃないときは0
@@ -147,9 +161,15 @@ void TitleScene::Draw()
     }
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
+
+    LayerSystem::SetLayer("back");
+    {
+        titleBack_->Draw();
+    }
+
     LayerSystem::SetLayer("ring");
     {
-        //spectrumRing_->Draw(&SceneCamera_);
+        spectrumRing_->Draw(&SceneCamera_);
     }
 
     LayerSystem::SetLayer("buttons");
@@ -165,13 +185,13 @@ void TitleScene::Draw()
 
 void TitleScene::DrawShadow(){}
 
-void TitleScene::OnEvent(const GameEvent& _event)
+void TitleScene::OnEvent(const GameEvent& event)
 {
-    if (_event.GetEventType() == "RequestStartGame")
+    if (event.GetEventType() == "RequestStartGame")
     {
         SceneManager::ReserveScene("GameScene", nullptr);
     }
-    else if (_event.GetEventType() == "RequestExitGame")
+    else if (event.GetEventType() == "RequestExitGame")
     {
         PostQuitMessage(0);  // Windows APIでアプリ終了
     }

@@ -9,12 +9,15 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/Event/EventListener.h>
+#include <Features/UVTransform/UVTransformAnimation.h>
 
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
 #include <Application/BeatsManager/BeatManager.h>
-#include <Application/TitileUI.h>
+#include <Application/TitleUI.h>
 #include <Application/TItileCamera/TitleCamera.h>
+#include <Features/UI/UITextBox.h>
+#include <UISliderWithInput.h>
 #include <Application/HexagonGrid/HexagonGrid.h>
 //#include <Features/BPMDetector/BPMDetector.h>
 
@@ -30,7 +33,7 @@ public:
     /// <summary>
     /// シーンの初期化処理。
     /// </summary>
-    void Initialize(SceneData* _sceneData) override;
+    void Initialize(SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -48,7 +51,7 @@ public:
     void DrawShadow() override;
 
 
-    void OnEvent(const GameEvent& _event) override;
+    void OnEvent(const GameEvent& event) override;
 private:
     // シーン関連
     Camera SceneCamera_ = {};
@@ -81,5 +84,8 @@ private:
     std::unique_ptr<TitileUI> titleUI_;
 
     std::unique_ptr<HexagonGrid> hexagonGrid_;
+
+    std::unique_ptr<UIBase> titleBack_;
+    UVTransformAnimation uvAnimation_;
 
 };

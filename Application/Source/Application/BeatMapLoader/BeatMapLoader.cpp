@@ -68,7 +68,7 @@ std::future<bool> BeatMapLoader::LoadBeatMap(const std::string& filePath)
         });
 }
 
-std::future<bool> BeatMapLoader::LoadBeatMap(const BeatMapData& _beatMapData)
+std::future<bool> BeatMapLoader::LoadBeatMap(const BeatMapData& beatMapData)
 {
     // すでにロード中なら拒否
     if (isLoading_) {
@@ -81,10 +81,10 @@ std::future<bool> BeatMapLoader::LoadBeatMap(const BeatMapData& _beatMapData)
     isLoadingSuccess_ = false;
     errorMessage_.clear();
     // 非同期処理を開始
-    return std::async(std::launch::async, [this, _beatMapData]() {
+    return std::async(std::launch::async, [this, beatMapData]() {
         try {
             // 譜面データを直接設定
-            loadedBeatMapdata_ = _beatMapData;
+            loadedBeatMapdata_ = beatMapData;
             // 成功フラグ設定
             isLoadingSuccess_ = true;
         }
@@ -101,14 +101,14 @@ std::future<bool> BeatMapLoader::LoadBeatMap(const BeatMapData& _beatMapData)
 }
 
 
-BeatMapData BeatMapLoader::ParseJsonToBeatMap(const nlohmann::json& _jsonData)
+BeatMapData BeatMapLoader::ParseJsonToBeatMap(const nlohmann::json& jsonData)
 {
     BeatMapData data;
 
     // 曲のタイトル
-    if (_jsonData.contains("title") && _jsonData["title"].is_string())
+    if (jsonData.contains("title") && jsonData["title"].is_string())
     {
-        data.title = _jsonData["title"].get<std::string>();
+        data.title = jsonData["title"].get<std::string>();
     }
     else
     {
@@ -117,14 +117,14 @@ BeatMapData BeatMapLoader::ParseJsonToBeatMap(const nlohmann::json& _jsonData)
     }
 
     // アーティスト名
-    if (_jsonData.contains("artist") && _jsonData["artist"].is_string())
+    if (jsonData.contains("artist") && jsonData["artist"].is_string())
     {
-        data.artist = _jsonData["artist"].get<std::string>();
+        data.artist = jsonData["artist"].get<std::string>();
     }
     // 音声ファイルのパス
-    if (_jsonData.contains("audioFilePath") && _jsonData["audioFilePath"].is_string())
+    if (jsonData.contains("audioFilePath") && jsonData["audioFilePath"].is_string())
     {
-        data.audioFilePath = _jsonData["audioFilePath"].get<std::string>();
+        data.audioFilePath = jsonData["audioFilePath"].get<std::string>();
     }
     else
     {
@@ -132,9 +132,9 @@ BeatMapData BeatMapLoader::ParseJsonToBeatMap(const nlohmann::json& _jsonData)
         return data;
     }
     // BPM
-    if (_jsonData.contains("bpm") && _jsonData["bpm"].is_number())
+    if (jsonData.contains("bpm") && jsonData["bpm"].is_number())
     {
-        data.bpm = _jsonData["bpm"].get<float>();
+        data.bpm = jsonData["bpm"].get<float>();
     }
     else
     {
@@ -142,19 +142,19 @@ BeatMapData BeatMapLoader::ParseJsonToBeatMap(const nlohmann::json& _jsonData)
         return data;
     }
     // オフセット時間
-    if (_jsonData.contains("offset") && _jsonData["offset"].is_number())
+    if (jsonData.contains("offset") && jsonData["offset"].is_number())
     {
-        data.offset = _jsonData["offset"].get<float>();
+        data.offset = jsonData["offset"].get<float>();
     }
     // 難易度レベル
-    if (_jsonData.contains("difficultyLevel") && _jsonData["difficultyLevel"].is_number())
+    if (jsonData.contains("difficultyLevel") && jsonData["difficultyLevel"].is_number())
     {
-        data.difficultyLevel = _jsonData["difficultyLevel"].get<uint32_t>();
+        data.difficultyLevel = jsonData["difficultyLevel"].get<uint32_t>();
     }
     // ノートデータ
-    if (_jsonData.contains("notes") && _jsonData["notes"].is_array())
+    if (jsonData.contains("notes") && jsonData["notes"].is_array())
     {
-        for (const auto& note : _jsonData["notes"])
+        for (const auto& note : jsonData["notes"])
         {
             NoteData noteData;
             if (note.contains("laneIndex") && note["laneIndex"].is_number())

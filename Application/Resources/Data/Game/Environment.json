@@ -90,6 +90,28 @@
             "file_name": "Speaker/Speaker.gltf"
         },
         {
+            "type": "MESH",
+            "name": "overFloor",
+            "transform": {
+                "transform": [
+                    0.0,
+                    -7.7601799964904785,
+                    28.12459945678711
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.8181818723678589,
+                    1.0,
+                    1.3888890743255615
+                ]
+            },
+            "file_name": "OverFloor/tiled_overFloor.obj"
+        },
+        {
             "type": "LIGHT",
             "name": "Light",
             "transform": {
@@ -138,7 +160,7 @@
                 "transform": [
                     0.0,
                     -9.0,
-                    9.602890014648438
+                    9.602887153625488
                 ],
                 "rotation": [
                     -0.0,
@@ -148,7 +170,7 @@
                 "scale": [
                     17.309410095214844,
                     1.0,
-                    7.510000228881836
+                    7.5
                 ]
             },
             "file_name": "BackGrroud/underFloor.obj"
@@ -194,8 +216,7 @@
                     1.0,
                     3.0101025104522705
                 ]
-            },
-            "file_name": "pY1x1Plane"
+            }
         },
         {
             "type": "MESH",
@@ -243,28 +264,6 @@
         },
         {
             "type": "MESH",
-            "name": "overFloor",
-            "transform": {
-                "transform": [
-                    0.0,
-                    -9.0,
-                    28.858449935913086
-                ],
-                "rotation": [
-                    -0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    4.115309715270996,
-                    3.0,
-                    3.960275173187256
-                ]
-            },
-            "file_name": "OverFloor/OverFloor.gltf"
-        },
-        {
-            "type": "MESH",
             "name": "overlayFloor",
             "transform": {
                 "transform": [
@@ -278,9 +277,9 @@
                     0.0
                 ],
                 "scale": [
-                    17.549667358398438,
-                    0.9999999403953552,
-                    14.505824089050293
+                    19.23972511291504,
+                    1.0963014364242554,
+                    15.90275764465332
                 ]
             },
             "file_name": "pY1x1Plane"

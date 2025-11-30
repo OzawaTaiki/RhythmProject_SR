@@ -2,22 +2,29 @@
 
 #include <Features/Model/ObjectModel.h>
 #include <Features/UVTransform/SpriteSheetAnimetion.h>
+#include <System/Time/Stopwatch.h>
+#include <Features/Event/EventListener.h>
 
 
 #include <memory>
 
+
+struct ColorChangeEvent : EventData
+{
+    ObjectModel* targets;
+};
 
 class Camera;
 
 /// <summary>
 /// 背景等のオブジェクトに関するクラス。
 /// </summary>
-class GameEnvironment
+class GameEnvironment : public iEventListener
 {
 public:
 
-    GameEnvironment() = default;
-    ~GameEnvironment() = default;
+    GameEnvironment();
+    ~GameEnvironment();
 
     /// <summary>
     /// 初期化処理を行う。
@@ -53,6 +60,8 @@ public:
 
     void SetSpectrumTextureHandle(uint32_t handle) { spectrumTextureHandle_ = handle; }
 
+    void OnEvent(const GameEvent& event) override;
+
 private:
     /// <summary>
     /// シーンデータの読み込み（内部処理）。
@@ -63,6 +72,11 @@ private:
     /// スピーカーマップを構築する（内部処理）。
     /// </summary>
     void BuildSpeakerMap(const std::string& objName,ObjectModel* model, const std::string& filepath);
+
+    void UpdateSpeakerAnimation(float deltaTime);
+
+    // Wallの初期化
+    void InitializeWall(ObjectModel* wallModel);
 private:
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;
@@ -73,12 +87,13 @@ private:
     std::unique_ptr<ObjectModel> screen_ = nullptr;
     uint32_t spectrumTextureHandle_ = 0;
 
-    SpriteSheetAnimation spriteSheetAnimation_; // 連番画像アニメーション
+    std::map<ObjectModel*, float> speakerColorTimers_; // スピーカーごとの色変化タイマー
 
-    std::vector<Vector4> floorColors_ = {
-        { 0.2f, 0.2f, 0.2f, 1.0f }, // UnderFloor
-        { 0.3f, 0.3f, 0.3f, 1.0f }  // OverFloor
-    };
+    Stopwatch stopwatch_;
+    int32_t currentAnimationStep_ = 0;
+
+    float animationTimer_ = 0.0f;
+    float animationInterval_ = 1.0f; // アニメーションのステップ間隔
 
     float timeScale_ = 1.0f; // アニメーションの時間スケール
 

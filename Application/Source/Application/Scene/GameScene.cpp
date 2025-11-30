@@ -159,10 +159,10 @@ void GameScene::Initialize(SceneData* sceneData)
 
     isMusicPlaying_ = true;
 
-    LayerSystem::CreateLayer("GameEnvironment", 0);
-    LayerSystem::CreateLayer("GameCore", 1);
-    LayerSystem::CreateLayer("FeedbackEffect", 2, PSOFlags::BlendMode::Add);
-    LayerSystem::CreateLayer("PauseMenu", 3);
+    LayerSystem::CreateLayer("GameEnvironment",0);
+    LayerSystem::CreateLayer("GameCore", 10);
+    LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
+    LayerSystem::CreateLayer("PauseMenu", 30);
     LayerSystem::CreateOutputLayer("Vignette");
     LayerSystem::CreateOutputLayer("DepthOutline");
 
@@ -288,9 +288,8 @@ void GameScene::Draw()
 
     LayerSystem::SetLayer("GameEnvironment");
     {
-
+        ModelManager::GetInstance()->PreDrawForObjectModel();
         gameEnvironment_->Draw(&SceneCamera_);
-
         feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
     }
 

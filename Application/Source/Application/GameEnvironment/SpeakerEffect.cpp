@@ -1,6 +1,9 @@
 #include "SpeakerEffect.h"
 
 #include <Features/Model/ObjectModel.h>
+#include <Features/Event/EventManager.h>
+#include <Application/GameEnvironment/GameEnvironment.h>
+
 
 SpeakerEffect::SpeakerEffect()
 {
@@ -38,4 +41,7 @@ void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent)
     //ringEmitter_.GenerateParticles();
     triangleParticleEmitter_.GenerateParticles();
     rectanglleParticleEmitter_.GenerateParticles();
+    ColorChangeEvent eventData;
+    eventData.targets = parent;
+    EventManager::GetInstance()->DispatchEvent(GameEvent("SpeakerEffectColorChange", &eventData));
 }

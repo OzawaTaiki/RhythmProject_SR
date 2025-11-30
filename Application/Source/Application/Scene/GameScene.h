@@ -33,7 +33,6 @@
 #include <Features/AudioSpectrum/AudioSpectrum.h>
 
 
-
 enum class GameMode
 {
     Normal,
@@ -150,7 +149,6 @@ private:
 
     std::unique_ptr<DepthBasedOutLine> depthBasedOutLine_ = nullptr;
     DepthBasedOutLineData depthBasedOutLineData_ = {};
-
     void ImGui();
     // 楽曲終了後遷移するか
     bool isTransitionToResultScene_ = false;

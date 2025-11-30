@@ -32,4 +32,5 @@ private:
     ParticleEmitter ringEmitter_;
     ParticleEmitter triangleParticleEmitter_;
     ParticleEmitter rectanglleParticleEmitter_;
+
 };

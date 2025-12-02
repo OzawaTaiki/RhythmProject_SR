@@ -91,6 +91,7 @@ void SettingMenu::Update()
     {
         isActive_ = false;
         EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
+        previewPanel_->StopMusic();
         Debug::Log("SettingMenu closed\n");
     }
 

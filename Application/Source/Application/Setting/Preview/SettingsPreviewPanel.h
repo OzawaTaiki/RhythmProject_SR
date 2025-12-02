@@ -28,6 +28,7 @@ public:
     void Update();
     void Draw();
 
+    void StopMusic();
 private:
 
     std::vector<std::unique_ptr<Lane>> lanes_; // レーンのリスト

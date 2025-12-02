@@ -104,6 +104,9 @@ public:
     void SetSnapInterval(float interval) { snapInterval_ = interval; }
     float GetSnapInterval() const { return snapInterval_; }
 
+    void SetToTestMode(bool toTest) { toTest_ = toTest; }
+    bool IsToTestMode() const { return toTest_; }
+
 
     TapBPMCounter& GetTapBPMCounter() { return tapBPMCounter_; }
     LiveMapping& GetLiveMapping() { return liveMapping_; }
@@ -135,6 +138,8 @@ private:
 
     LiveMapping liveMapping_;
     TapBPMCounter tapBPMCounter_;
+
+    bool toTest_ = false;
 };
 
 }// namespace BME

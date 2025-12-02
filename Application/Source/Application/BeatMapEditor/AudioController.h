@@ -82,12 +82,17 @@ public:
     /// </summary>
     std::shared_ptr<VoiceInstance> GetVoiceInstance() const { return musicVoiceInstance_; }
 
+    void PlayForBPMSet();
+
+    void StopForBPMSet();
 private:
     AudioSystem* audioSystem_ = nullptr;                        // AudioSystemのポインタ
     std::shared_ptr<SoundInstance> musicSoundInstance_;         // 音声インスタンス
     std::shared_ptr<VoiceInstance> musicVoiceInstance_;         // 再生中の音声インスタンス
     float volume_ = 1.0f;                                       // 音量
     float playSpeed_ = 1.0f;                                    // 再生速度
+
+    std::shared_ptr<VoiceInstance> voiceInstanceForBPMSet_; // BPM設定用の音声インスタンス
 };
 
 } // namespace BME

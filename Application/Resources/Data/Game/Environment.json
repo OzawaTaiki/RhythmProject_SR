@@ -133,27 +133,6 @@
             }
         },
         {
-            "type": "CAMERA",
-            "name": "Camera",
-            "transform": {
-                "transform": [
-                    0.0,
-                    6.0,
-                    -15.0
-                ],
-                "rotation": [
-                    -1.3089967966079712,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            }
-        },
-        {
             "type": "MESH",
             "name": "underFloor",
             "transform": {
@@ -216,7 +195,8 @@
                     1.0,
                     3.0101025104522705
                 ]
-            }
+            },
+            "file_name": "pY1x1Plane"
         },
         {
             "type": "MESH",

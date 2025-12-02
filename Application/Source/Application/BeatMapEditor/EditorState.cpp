@@ -5,7 +5,10 @@
 
 namespace BME
 {
-
+State::State()
+{
+    tapBPMCounter_.Initialize();
+}
 void State::SetCurrentMode(EditorMode mode)
 {
     if (currentMode_ != mode)
@@ -94,6 +97,15 @@ void State::ChangeEditorMode(EditorMode _mode)
     {
         previousMode_ = currentMode_;
         currentMode_ = _mode;
+    }
+
+    if (currentMode_ == EditorMode::BPMSetting)
+    {
+        tapBPMCounter_.Reset();
+    }
+    if (previousMode_ == EditorMode::BPMSetting)
+    {
+        tapBPMCounter_.Reset();
     }
 }
 

@@ -91,6 +91,21 @@ private:
         float currentTime
     );
 
+    // ライブマッピングモード
+    void HandleLiveMappingMode(
+        State* state,
+        Document* document,
+        CommandHistory* commandHistory,
+        EditorCoordinate* coordinate,
+        float currentTime
+    );
+    // BPM設定モード
+    void HandleBPMSettingMode(
+        State* state,
+        AudioController* audioController
+    );
+
+    // マウスホイール入力処理
     void HandleMouseWheelInput(
         EditorCoordinate* coordinate,
         AudioController* audioController,
@@ -120,6 +135,7 @@ private:
 
 private:
     Input* input_ = nullptr;
+
 };
 
 } // namespace BME

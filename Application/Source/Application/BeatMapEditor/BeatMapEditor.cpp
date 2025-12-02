@@ -126,6 +126,8 @@ void BeatMapEditor::Update()
     if (voice && voice->IsPlaying())
         currentTime_ = voice->GetElapsedTime();
 
+    editorCoordinate_.SetScrollOffset(currentTime_);
+
     inputHandler_->HandleInput(
         state_.get(),
         document_.get(),
@@ -135,12 +137,12 @@ void BeatMapEditor::Update()
         currentTime_
     );
 
-    // ========================================
-    // 以下は旧コード（段階的に新クラスへ移行予定）
-    // ========================================
-    UpdateTimeline();
-    UpdateEditorState();
-    waveformDisplay_.SetStartTime(currentTime_);
+    //// ========================================
+    //// 以下は旧コード（段階的に新クラスへ移行予定）
+    //// ========================================
+    //UpdateTimeline();
+    //UpdateEditorState();
+    //waveformDisplay_.SetStartTime(currentTime_);
 }
 
 void BeatMapEditor::Draw()
@@ -163,17 +165,17 @@ void BeatMapEditor::Draw()
         for2dCamera_.GetViewProjection()
     );
 
-    // ========================================
-    // 以下は旧コード（新レンダラーで未実装の機能）
-    // ========================================
+    //// ========================================
+    //// 以下は旧コード（新レンダラーで未実装の機能）
+    //// ========================================
 
-    // 選択範囲描画（新レンダラー未実装）
-    //DrawSelectionArea();
+    //// 選択範囲描画（新レンダラー未実装）
+    ////DrawSelectionArea();
 
-    // UI描画（新レンダラーはスケルトンのみ）
-    DrawUI();
+    //// UI描画（新レンダラーはスケルトンのみ）
+    //DrawUI();
 
-    //waveformBackground_->Draw();
+    ////waveformBackground_->Draw();
 }
 
 void BeatMapEditor::DrawNotes()

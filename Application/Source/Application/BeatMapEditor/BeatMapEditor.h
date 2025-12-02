@@ -15,8 +15,6 @@
 #include <Application/BeatsManager/BeatManager.h>
 #include <Application/BeatMapEditor/Command/CommandHistory.h>
 
-#include <Application/BeatMapEditor/LiveMapping/LiveMapping.h>
-#include <Application/BeatMapEditor/BPMCounter/TapBPMCounter.h>
 
 // 新アーキテクチャクラス
 #include <Application/BeatMapEditor/BeatMapDocument.h>

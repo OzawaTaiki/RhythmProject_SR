@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <vector>
 #include <Application/BeatMapLoader/BeatMapData.h>
+#include <Application/BeatMapEditor/LiveMapping/LiveMapping.h>
+#include <Application/BeatMapEditor/BPMCounter/TapBPMCounter.h>
 #include <Math/Vector/Vector2.h>
 
 
@@ -54,7 +56,7 @@ class State
 {
 public:
 
-    State() = default;
+    State();
     ~State() = default;
 
     EditorMode GetCurrentMode() const { return currentMode_; }
@@ -103,6 +105,9 @@ public:
     float GetSnapInterval() const { return snapInterval_; }
 
 
+    TapBPMCounter& GetTapBPMCounter() { return tapBPMCounter_; }
+    LiveMapping& GetLiveMapping() { return liveMapping_; }
+
 private:
 
     EditorMode currentMode_ = EditorMode::Select;
@@ -126,6 +131,10 @@ private:
     bool isDragging_ = false;
     Vector2 dragStartPosition_{ 0.0f, 0.0f };
     Vector2 dragCurrentPosition_{ 0.0f, 0.0f };
+
+
+    LiveMapping liveMapping_;
+    TapBPMCounter tapBPMCounter_;
 };
 
 }// namespace BME

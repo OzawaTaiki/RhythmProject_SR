@@ -134,3 +134,13 @@ void SettingsPreviewPanel::Draw()
 
     //musicToggleButton_->Draw();
 }
+
+void SettingsPreviewPanel::StopMusic()
+{
+    if (voiceInstance_ && voiceInstance_->IsPlaying())
+    {
+        voiceInstance_->Stop();
+        voiceInstance_ = nullptr;
+        musicToggleButton_->SetText(L"Play");
+    }
+}

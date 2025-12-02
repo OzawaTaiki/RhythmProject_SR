@@ -69,7 +69,7 @@ void EditorRenderer::Draw(
         waveformRenderer_.Draw(_audioController, _currentTime);
 
         // タイムライン描画
-        timelineRenderer_.Draw(_audioController, _currentTime);
+        timelineRenderer_.Draw(_state,_audioController, _currentTime);
 
         // UI描画
         uiRenderer_.Draw(_state, _document, _audioController, _fileManager, beatManager, _coordinate);

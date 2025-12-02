@@ -6,6 +6,7 @@ namespace BME
 {
 
 class AudioController;
+class State;
 
 /// <summary>
 /// タイムライン描画クラス
@@ -17,7 +18,7 @@ public:
     ~TimelineRenderer() = default;
 
     void Initialize();
-    void Draw(const AudioController* _audioController, float _currentTime);
+    void Draw(State* state, const AudioController* _audioController, float _currentTime);
     void Finalize();
 
 private:

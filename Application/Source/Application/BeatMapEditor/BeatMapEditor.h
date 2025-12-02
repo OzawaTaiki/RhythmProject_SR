@@ -76,19 +76,19 @@ public:
     /// <summary>
     /// 終了処理を行う。
     /// </summary>
-    void Finalize();
+    //void Finalize();
 
 public:
 
     /// <summary>
     /// テストモードへ移行するフラグを取得する。
     /// </summary>
-    bool ToTestMode() const { return toTest_; }
+    bool ToTestMode() const { return !document_->GetData().notes.empty() && state_->IsToTestMode(); }
 
     /// <summary>
     /// 現在の譜面データを取得する。
     /// </summary>
-    BeatMapData GetBeatMapData() const { return currentBeatMapData_; }
+    BeatMapData GetBeatMapData() const { return document_->GetData(); }
 
     /// <summary>
     /// ロングノートの持続時間を設定
@@ -98,7 +98,6 @@ public:
     void SetNoteDuration(size_t _noteIndex, float _newDuration);
 private:
 private:
-
     struct NoteColor
     {
         Vector4 defaultColor;

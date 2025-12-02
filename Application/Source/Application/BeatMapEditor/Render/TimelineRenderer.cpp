@@ -1,9 +1,11 @@
 #include "TimelineRenderer.h"
 #include <Application/BeatMapEditor/AudioController.h>
+#include <Application/BeatMapEditor/EditorState.h>
 #include <System/Input/Input.h>
 #include <Features/LineDrawer/LineDrawer.h>
 
-namespace BME {
+namespace BME
+{
 
 void TimelineRenderer::Initialize()
 {
@@ -24,7 +26,6 @@ void TimelineRenderer::Initialize()
 
     timelineSprites_["toTestButton"] = std::make_unique<UISprite>();
     timelineSprites_["toTestButton"]->Initialize("ToTestButtonSprite");
-
     timelineStartPosition_ = timelineSprites_["start"]->GetPos().x; // タイムラインの開始位置を取得
     timelineEndPosition_ = timelineSprites_["end"]->GetPos().x; // タイムラインの終了位置を取得
     timelineWidth_ = timelineEndPosition_ - timelineStartPosition_; // タイムラインの幅を計算
@@ -40,11 +41,11 @@ void TimelineRenderer::Initialize()
         .SetColor({ 0,0,0,1 });
 }
 
-void TimelineRenderer::Draw(const AudioController* _audioController, float _currentTime)
+void TimelineRenderer::Draw(State* state, const AudioController* _audioController, float _currentTime)
 {
     DataUpdate(_audioController, _currentTime);
 
-    LineDrawer::GetInstance()->RegisterPoint(timelineSprites_["start"]->GetPos(), timelineSprites_["end"]->GetPos(), {1,1,1,1});
+    LineDrawer::GetInstance()->RegisterPoint(timelineSprites_["start"]->GetPos(), timelineSprites_["end"]->GetPos(), { 1,1,1,1 });
 
     timelineSprites_["background"]->Draw();
     timelineSprites_["start"]->Draw();
@@ -53,13 +54,11 @@ void TimelineRenderer::Draw(const AudioController* _audioController, float _curr
     timelineSprites_["toTestButton"]->Draw();
     //text_.Draw(L"テスト", textParam_);
 
-    //if (!currentBeatMapData_.notes.empty())
-    //{
-    //    if (timelineSprites_["toTestButton"]->IsPointInside(input->GetMousePosition()) && input->IsMouseTriggered(0))
-    //    {
-    //        toTest_ = true;
-    //    }
-    //}
+    auto input = Input::GetInstance();
+    if (timelineSprites_["toTestButton"]->IsPointInside(input->GetMousePosition()) && input->IsMouseTriggered(0))
+    {
+        state->SetToTestMode(true);
+    }
 }
 
 void TimelineRenderer::Finalize()

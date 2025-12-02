@@ -86,6 +86,7 @@ void UIRenderer::DrawLeftPanel(State* state, Document* document, AudioController
             else
             {
                 state->ChangeEditorMode(state->GetPreviousMode());
+                audioController->StopForBPMSet();
             }
         }
 

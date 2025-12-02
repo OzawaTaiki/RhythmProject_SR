@@ -154,6 +154,9 @@ void InputHandler::HandleModeSpecificInput(
         case EditorMode::Delete:
             HandleDeleteMode(state, document, commandHistory, coordinate, currentTime);
             break;
+        case EditorMode::BPMSetting:
+            HandleBPMSettingMode(state, audioController);
+            break;
         default:
             break;
     }
@@ -377,6 +380,14 @@ void InputHandler::HandleDeleteMode(
             commandHistory->ExecuteCommand(std::move(command));
         }
     }
+}
+
+void InputHandler::HandleBPMSettingMode(
+    State* state,
+    AudioController* audioController)
+{
+    state->GetTapBPMCounter().Update();
+    audioController->PlayForBPMSet();
 }
 
 void InputHandler::HandleMouseWheelInput(EditorCoordinate* coordinate, AudioController* audioController, float& currentTime)

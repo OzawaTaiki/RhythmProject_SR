@@ -187,7 +187,9 @@ void InputHandler::HandleSelectMode(
                 bool multiSelect = input_->IsKeyPressed(DIK_LCONTROL); // Ctrlキーでマルチセレクト
                 state->SelectNote(static_cast<uint32_t>(noteIndex), multiSelect);
 
-                state->StartMove(document->GetData().notes, coordinate->ScreenYToTime(mousePos.y));
+                float mouseTime = coordinate->ScreenYToTime(mousePos.y);
+                mouseTime = SnapTimeToGrid(mouseTime, state, document->GetData(), coordinate);
+                state->StartMove(document->GetData().notes, mouseTime);
             }
         }
         else
@@ -238,17 +240,21 @@ void InputHandler::HandleSelectMode(
         {// 移動開始
             if (input_->IsMouseTriggered(0))
             {
-                state->StartMove(document->GetData().notes, coordinate->ScreenYToTime(mousePos.y));
+                float mouseTime = coordinate->ScreenYToTime(mousePos.y);
+                mouseTime = SnapTimeToGrid(mouseTime, state, document->GetData(), coordinate);
+                state->StartMove(document->GetData().notes, mouseTime);
             }
         }
         else// 移動中
         {
-            float deltaTime = coordinate->ScreenYToTime(mousePos.y);
-            // スナップ適用
             auto moveState = state->GetMoveState();
-            deltaTime = SnapTimeToGrid(deltaTime, state, document->GetData(), coordinate);
-            deltaTime -= moveState.originalTimes.back();
-            deltaTime += moveState.timeOffset;
+            float snapedOriginalTime = SnapTimeToGrid(moveState.originalTimes.back(), state, document->GetData(), coordinate);
+            float mouseTime =coordinate->ScreenYToTime(mousePos.y);
+            float offset = SnapTimeToGrid(mouseTime, state, document->GetData(), coordinate);
+            float deltaTime = offset - moveState.originalTimes.back();
+            // スナップ適用
+            //deltaTime += moveState.timeOffset;
+            //deltaTime = SnapTimeToGrid(deltaTime, state, document->GetData(), coordinate);
             if (input_->IsMousePressed(0))
             {
                 // ノート移動コマンド実行

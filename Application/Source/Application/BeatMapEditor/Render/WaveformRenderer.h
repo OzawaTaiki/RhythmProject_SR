@@ -19,13 +19,12 @@ public:
     WaveformRenderer() = default;
     ~WaveformRenderer() = default;
 
-    void Initialize(const EditorCoordinate* _coordinate, const Matrix4x4& _matVP);
+    void Initialize( const Matrix4x4& _matVP);
     void Draw(const AudioController* _audioController, float _currentTime);
     void DrawBackSprite();
     void Finalize();
 
-    void SetViewProjection(const Matrix4x4& _matVP);
-    void UpdateBounds(const EditorCoordinate* _coordinate);
+    void UpdateBounds();
 
 private:
     WaveformDisplay waveformDisplay_;

@@ -31,8 +31,10 @@ public:
     void Finalize();
 
 private:
+#ifdef _DEBUG
     void DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate_);
     void DrawRightPanel(State* state,Document* document, AudioController* audioController, FileManager* fileManager);
+#endif // _DEBUG
     void DrawDraggingArea(State* state);
 
 private:

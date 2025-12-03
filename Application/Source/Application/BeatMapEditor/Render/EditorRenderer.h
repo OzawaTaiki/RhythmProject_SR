@@ -34,8 +34,7 @@ public:
         AudioController* _audioController,
         EditorCoordinate* _coordinate,
         BeatManager* beatManager,
-        float _currentTime,
-        const Matrix4x4& _matVP
+        float _currentTime
     );
     void Finalize();
 

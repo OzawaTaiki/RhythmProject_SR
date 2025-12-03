@@ -24,20 +24,22 @@ void UIRenderer::Initialize()
 
 void UIRenderer::Draw(
     State* state,
-    Document* document,
-    AudioController* audioController,
-    FileManager* fileManager,
-    BeatManager* beatManager,
-    EditorCoordinate* coordinate)
+    [[maybe_unused]]Document* document,
+    [[maybe_unused]]AudioController* audioController,
+    [[maybe_unused]]FileManager* fileManager,
+    [[maybe_unused]]BeatManager* beatManager,
+    [[maybe_unused]]EditorCoordinate* coordinate)
 {
+#ifdef _DEBUG
     DrawLeftPanel(state, document, audioController, beatManager, coordinate);
     DrawRightPanel(state, document, audioController, fileManager);
+#endif
     DrawDraggingArea(state);
 }
 
+#ifdef _DEBUG
 void UIRenderer::DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate)
 {
-#ifdef _DEBUG
 
     // Modeの表示
     // BPM offset snap
@@ -175,12 +177,10 @@ void UIRenderer::DrawLeftPanel(State* state, Document* document, AudioController
 
     ImGui::End();
 
-#endif // _DEBUG
 }
 
 void UIRenderer::DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager)
 {
-#ifdef _DEBUG
 
     // File 情報
     // 選択ノートの情報
@@ -307,8 +307,8 @@ void UIRenderer::DrawRightPanel(State* state, Document* document, AudioControlle
     }
     ImGui::End();
 
-#endif
 }
+#endif // _DEBUG
 
 void UIRenderer::DrawDraggingArea(State* state)
 {

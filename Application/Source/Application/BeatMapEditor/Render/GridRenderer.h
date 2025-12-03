@@ -25,8 +25,8 @@ public:
 
 private:
 
-    void DrawLanes(const EditorCoordinate* _coordinate);
-    void DrawGridLines(const EditorCoordinate* _coordinate, const State* state, float _bpm, float _currentTime);
+    void DrawLanes();
+    void DrawGridLines(const EditorCoordinate* _coordinate, const State* state, float _bpm);
     void DrawJudgeLine(const EditorCoordinate* _coordinate,float currentTime);
 
     void InitLaneSprites(const EditorCoordinate* coordinate);

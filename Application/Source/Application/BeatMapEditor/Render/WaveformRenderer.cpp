@@ -5,7 +5,7 @@
 
 namespace BME {
 
-void WaveformRenderer::Initialize(const EditorCoordinate* _coordinate, const Matrix4x4& _matVP)
+void WaveformRenderer::Initialize(const Matrix4x4& _matVP)
 {
     // 波形表示範囲を設定（固定値）
     // TODO: EditorCoordinateから動的に計算する方が良い
@@ -27,7 +27,7 @@ void WaveformRenderer::Draw(const AudioController* audioController, float curren
 {
     if (!audioController || !audioController->HasAudio())
         return;
-    // 
+    //
     waveformDisplay_.SetSoundInstance(audioController->GetSoundInstance());
 
     // 現在時刻を設定
@@ -47,13 +47,7 @@ void WaveformRenderer::Finalize()
     // 特に終了処理不要
 }
 
-void WaveformRenderer::SetViewProjection(const Matrix4x4& _matVP)
-{
-    // ViewProjectionが変更された場合、再初期化が必要
-    // TODO: WaveformDisplayにSetViewProjection()メソッドがあれば使う
-}
-
-void WaveformRenderer::UpdateBounds(const EditorCoordinate* _coordinate)
+void WaveformRenderer::UpdateBounds()
 {
     // 表示範囲を更新（将来的にリサイズ対応）
     WaveformBounds bounds(Vector2(300.0f, 0.0f), Vector2(WinApp::kWindowSize_.x - 600.0f, 96.0f));

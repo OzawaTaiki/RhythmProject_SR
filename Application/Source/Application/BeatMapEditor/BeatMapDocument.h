@@ -36,7 +36,7 @@ public:
     /// <summary>
     /// 指定した時間とレーンのノートを検索
     /// </summary>
-    int32_t FindNoteAtTime(uint32_t laneIndex, float time) const;
+    int32_t FindNoteAtTime(int32_t laneIndex, float time) const;
 
     /// <summary>
     /// ノートを取得

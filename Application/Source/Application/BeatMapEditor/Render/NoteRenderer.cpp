@@ -42,7 +42,7 @@ void NoteRenderer::Initialize()
     previewHoldEndSprite_->SetSize(kNoteSize);
 }
 
-void NoteRenderer::Draw(const BeatMapData& _data, const State* _state, const EditorCoordinate* _coordinate, float _currentTime)
+void NoteRenderer::Draw(const BeatMapData& _data, const State* _state, const EditorCoordinate* _coordinate)
 {
     size_t noteIndex = 0; // ノートスプライトのインデックス
     size_t holdNoteIndex = 0; // ロングノートスプライトのインデックス

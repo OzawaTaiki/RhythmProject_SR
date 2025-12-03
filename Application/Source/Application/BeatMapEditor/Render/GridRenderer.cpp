@@ -30,12 +30,12 @@ void GridRenderer::Initialize(const EditorCoordinate* coordinate)
 void GridRenderer::Draw(const EditorCoordinate* coordinate,
                         const State* state, float bpm, float currentTime)
 {
-    DrawLanes(coordinate);
-    DrawGridLines(coordinate,state, bpm, currentTime);
+    DrawLanes();
+    DrawGridLines(coordinate,state, bpm);
     DrawJudgeLine(coordinate,currentTime);
 }
 
-void GridRenderer::DrawLanes(const EditorCoordinate* _coordinate)
+void GridRenderer::DrawLanes()
 {
     for (size_t i = 0; i < laneSprites_.size(); ++i)
     {
@@ -43,7 +43,7 @@ void GridRenderer::DrawLanes(const EditorCoordinate* _coordinate)
     }
 }
 
-void GridRenderer::DrawGridLines(const EditorCoordinate* coordinate, const State* state, float bpm, float currentTime)
+void GridRenderer::DrawGridLines(const EditorCoordinate* coordinate, const State* state, float bpm)
 {
     float snapInterval = state->GetSnapInterval();
 

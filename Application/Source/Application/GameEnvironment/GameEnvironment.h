@@ -53,11 +53,6 @@ public:
     /// </summary>
     ObjectModel* GetSpeaker(uint32_t laneIndex);
 
-    /// <summary>
-    /// アニメーションを開始する。
-    /// </summary>
-    void StartAnimation();
-
     void SetSpectrumTextureHandle(uint32_t handle) { spectrumTextureHandle_ = handle; }
 
     void OnEvent(const GameEvent& event) override;
@@ -77,9 +72,14 @@ private:
 
     // Wallの初期化
     void InitializeWall(ObjectModel* wallModel);
+
+    void InitializeOverlayFloor();
+
+    void CreateEmissivePSO();
 private:
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;
+    std::unique_ptr<ObjectModel> overlayFloor_ = nullptr;
 
 
     std::map<uint32_t, ObjectModel*> speakerMap_;
@@ -97,4 +97,7 @@ private:
 
     float timeScale_ = 1.0f; // アニメーションの時間スケール
 
+    bool enableEmissive_ = true;
+
+    Microsoft::WRL::ComPtr<ID3D12PipelineState> emissivePso_ = nullptr;
 };

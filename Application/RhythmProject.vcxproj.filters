@@ -583,4 +583,9 @@
   <ItemGroup>
     <None Include=".editorconfig" />
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shader\EmissiveModel.PS.hlsl">
+      <Filter>Application</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

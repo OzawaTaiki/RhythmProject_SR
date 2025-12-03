@@ -1,9 +1,11 @@
 #include "GameEnvironment.h"
 
-#include <Features/Json/Loader/JsonFileIO.h>
-#include <Utility/StringUtils/StringUitls.h>
+#include <Core/DXCommon/PSOManager/PSOBuilder.h>
+#include <Core/DXCommon/ShaderCompiler/ShaderCompiler.h>
 #include <Framework/LayerSystem/LayerSystem.h>
+#include <Features/Json/Loader/JsonFileIO.h>
 #include <Features/Event/EventManager.h>
+#include <Utility/StringUtils/StringUitls.h>
 #include <Math/MyLib.h>
 #include <Math/Easing.h>
 
@@ -21,6 +23,8 @@ void GameEnvironment::Initialize(const std::string& filePath)
 {
     GameTime::GetChannel("GameEnvironment");
     Serialize(filePath);
+    InitializeOverlayFloor();
+    CreateEmissivePSO();
 
     stopwatch_.Reset();
     stopwatch_.Start();
@@ -28,7 +32,6 @@ void GameEnvironment::Initialize(const std::string& filePath)
 
 void GameEnvironment::Update(float deltaTime)
 {
-
     stopwatch_.Update();
     const float animateTime = 1.0f;
     if (stopwatch_.GetElapsedTime<float>() > animateTime)
@@ -60,7 +63,7 @@ void GameEnvironment::Update(float deltaTime)
     }
     overFloor_->Update();
     screen_->Update();
-
+    overlayFloor_->Update();
 }
 
 void GameEnvironment::Draw(const Camera* camera)
@@ -73,7 +76,12 @@ void GameEnvironment::Draw(const Camera* camera)
         }
     }
     screen_->Draw(camera, spectrumTextureHandle_, Vector4(1, 1, 1, 1));
-    overFloor_->Draw(camera, Vector4(1, 1, 1, 1));
+    if(enableEmissive_)
+        overFloor_->DrawWithPSO(emissivePso_.Get(), camera);
+    else
+        overFloor_->Draw(camera);
+
+    overlayFloor_->Draw(camera, Vector4(0.3f,0.765f,1.0f,0.25f));
 
 }
 
@@ -92,8 +100,7 @@ void GameEnvironment::SetBPM(float bpm)
 
     animationInterval_ = (60.0f / bpm) * 2.0f; // 二拍に一回
     // 時間スケールをゲームタイムチャネルに設定 アニメーション速度を調整
-    GameTime::GetChannel("GameEnvironment").SetGameSpeed(timeScale_*1.3f);
-
+    GameTime::GetChannel("GameEnvironment").SetGameSpeed(timeScale_ * 1.3f);
 }
 
 ObjectModel* GameEnvironment::GetSpeaker(uint32_t laneIndex)
@@ -104,10 +111,6 @@ ObjectModel* GameEnvironment::GetSpeaker(uint32_t laneIndex)
         return it->second; // レーンインデックスに対応するスピーカーオブジェクトを返す
     }
     return nullptr; // 見つからなかった場合はnullptrを返す
-}
-
-void GameEnvironment::StartAnimation()
-{
 }
 
 void GameEnvironment::OnEvent(const GameEvent& event)
@@ -149,10 +152,6 @@ void GameEnvironment::Serialize(const std::string& filePath)
         if (!obj.contains("name") || obj["name"].empty())
             obj["name"] = "obj" + std::to_string(objectCount++); // 名前がない場合は自動で名前を設定
 
-        if (obj["name"] == "overlayFloor")
-        {
-            continue;
-        }
 
         auto object = std::make_unique<ObjectModel>(obj["name"].get<std::string>());
         std::string filepath = "";
@@ -204,6 +203,11 @@ void GameEnvironment::Serialize(const std::string& filePath)
             screen_ = std::move(object);
             continue;
         }
+        if (obj["name"] == "overlayFloor")
+        {
+            overlayFloor_ = std::move(object);
+            continue;
+        }
         // スピーカーオブジェクトの検出
         if (StringUtils::Contains(obj["name"].get<std::string>(), "Speaker") ||
             StringUtils::Contains(obj["name"].get<std::string>(), "speaker"))
@@ -249,6 +253,7 @@ void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
     ImGui::ColorEdit3("start", &startColor.x);
     ImGui::ColorEdit3("end", &endColor.x);
     ImGui::DragFloat("interval", &animationInterval_, 0.001f);
+    ImGui::Checkbox("Enable Emissive", &enableEmissive_);
     ImGui::End();
 #endif // _DEBUG
     for (auto it = speakerColorTimers_.begin(); it != speakerColorTimers_.end(); )
@@ -323,4 +328,34 @@ void GameEnvironment::InitializeWall(ObjectModel* wallModel)
     {
         material->SetColor(wallColor);
     }
+}
+
+void GameEnvironment::InitializeOverlayFloor()
+{
+    const Vector4 floorColor = Vector4(0.4f, 0.6f, 1.0f, 0.5f);
+    auto& materials = overlayFloor_->GetMaterials();
+    for (auto& material : materials)
+    {
+        material->SetColor(floorColor);
+    }
+}
+
+void GameEnvironment::CreateEmissivePSO()
+{
+    ShaderCompiler::GetInstance()->Register("EmissivePS", L"EmissiveModel.PS.hlsl", L"ps_6_0");
+
+        auto builder = PSOBuilder::Create();
+        emissivePso_=
+
+        builder
+        .SetBlendMode(PSOFlags::BlendMode::Normal)
+        .SetCullMode(PSOFlags::CullMode::Back)
+        .SetDepthMode(PSOFlags::DepthMode::Comb_mAll_fLessEqual)
+        .SetShaders("Model_VS", "EmissivePS")
+        .SetDepthTest(true)
+        .SetDepthWrite(true)
+        .UseModelInputLayout()
+        .SetRootSignature(PSOManager::GetInstance()->GetRootSignature(PSOFlags::Type::Model).value())
+        .Build();
+
 }

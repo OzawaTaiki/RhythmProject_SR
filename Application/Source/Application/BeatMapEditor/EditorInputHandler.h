@@ -51,8 +51,7 @@ private:
         Document* document,
         AudioController* audioController,
         CommandHistory* commandHistory,
-        EditorCoordinate* coordinate,
-        float& currentTime
+        EditorCoordinate* coordinate
     );
 
     // 選択モード
@@ -60,8 +59,7 @@ private:
         State* state,
         Document* document,
         CommandHistory* commandHistory,
-        EditorCoordinate* coordinate,
-        float currentTime
+        EditorCoordinate* coordinate
     );
 
     // 通常ノート配置モード
@@ -69,8 +67,7 @@ private:
         State* state,
         Document* document,
         CommandHistory* commandHistory,
-        EditorCoordinate* coordinate,
-        float currentTime
+        EditorCoordinate* coordinate
     );
 
     // ロングノート配置モード
@@ -78,17 +75,14 @@ private:
         State* state,
         Document* document,
         CommandHistory* commandHistory,
-        EditorCoordinate* coordinate,
-        float currentTime
+        EditorCoordinate* coordinate
     );
 
     // 削除モード
     void HandleDeleteMode(
-        State* state,
         Document* document,
         CommandHistory* commandHistory,
-        EditorCoordinate* coordinate,
-        float currentTime
+        EditorCoordinate* coordinate
     );
 
     // ライブマッピングモード
@@ -116,7 +110,7 @@ private:
     /// <summary>
     /// 時間をグリッドにスナップ
     /// </summary>
-    float SnapTimeToGrid(float time, const State* state, const BeatMapData& data, const EditorCoordinate* coordinate) const;
+    float SnapTimeToGrid(float time, const State* state, const BeatMapData& data) const;
 
     /// <summary>
     /// マウス位置から時間を取得
@@ -131,7 +125,7 @@ private:
     /// <summary>
     /// マウス位置からノートインデックスを取得
     /// </summary>
-    size_t GetNoteIndexFromMousePosition(const Document* document, const EditorCoordinate* coordinate, float currentTime) const;
+    size_t GetNoteIndexFromMousePosition(const Document* document, const EditorCoordinate* coordinate) const;
 
 private:
     Input* input_ = nullptr;

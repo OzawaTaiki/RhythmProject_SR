@@ -28,8 +28,9 @@ void TitleCamera::Update(float deltaTime)
     //ImGui::End();
 #endif // _DEBUG
 
-    if(Input::GetInstance()->IsKeyTriggered(DIK_SPACE)||
-       Input::GetInstance()->IsKeyTriggered(DIK_RETURN))
+    if (Input::GetInstance()->IsKeyTriggered(DIK_SPACE) ||
+        Input::GetInstance()->IsKeyTriggered(DIK_RETURN) ||
+        Input::GetInstance()->IsMouseTriggered(0))
     {
         PlayCameraAnimation();
     }

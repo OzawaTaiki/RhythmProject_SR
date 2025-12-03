@@ -23,7 +23,7 @@ public:
     ~NoteRenderer() = default;
 
     void Initialize();
-    void Draw(const BeatMapData& _data, const State* _state, const EditorCoordinate* _coordinate, float _currentTime);
+    void Draw(const BeatMapData& _data, const State* _state, const EditorCoordinate* _coordinate);
     void DrawPreview(const State* _state, const EditorCoordinate* _coordinate);
     void Finalize();
 

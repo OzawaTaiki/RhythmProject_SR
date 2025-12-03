@@ -14,7 +14,7 @@ void EditorRenderer::Initialize(EditorCoordinate* _coordinate, const Matrix4x4& 
 {
     noteRenderer_.Initialize();
     gridRenderer_.Initialize(_coordinate);
-    waveformRenderer_.Initialize(_coordinate, _matVP);
+    waveformRenderer_.Initialize(_matVP);
     timelineRenderer_.Initialize();
     uiRenderer_.Initialize();
 
@@ -30,8 +30,8 @@ void EditorRenderer::Draw(
     AudioController* _audioController,
     EditorCoordinate* _coordinate,
     BeatManager* beatManager,
-    float _currentTime,
-    const Matrix4x4& _matVP)
+    float _currentTime
+    )
 {
     if (!_state || !_document || !_audioController || !_coordinate)
         return;
@@ -51,7 +51,7 @@ void EditorRenderer::Draw(
         gridRenderer_.Draw(_coordinate, _state, data.bpm, _currentTime);
 
         // ノート描画
-        noteRenderer_.Draw(data, _state, _coordinate, _currentTime);
+        noteRenderer_.Draw(data, _state, _coordinate);
 
         // プレビューノート描画
         noteRenderer_.DrawPreview(_state, _coordinate);

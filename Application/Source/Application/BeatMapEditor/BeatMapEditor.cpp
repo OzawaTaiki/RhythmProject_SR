@@ -54,47 +54,6 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     for2dCamera_.matView_ = Matrix4x4::Identity();
     for2dCamera_.UpdateMatrix(); // カメラの行列を更新
 
-    //input_ = Input::GetInstance();
-
-
-    //text_.Initialize(FontConfig());
-
-    //beatMapLoader_ = BeatMapLoader::GetInstance();
-
-    //tapBPMCounter_.Initialize(); // タップBPMカウンターの初期化
-
-
-
-
-
-    //InitWithBeatMapData(_beatMapData); // 譜面データを初期化
-
-    //isModified_ = false; // 譜面が変更されていない状態に初期化
-    //currentTime_ = 0.0f; // 現在の時間を初期化
-    //isPlaying_ = false; // 再生状態を初期化
-    //snapInterval_ = 1.0f / 4.0f; // グリッドスナップの間隔を1/4拍に設定
-    //gridSnapEnabled_ = true; // グリッドスナップを有効に初期化
-
-
-    //InitNoteSprites();
-    //InitLaneSprites();
-    //InitTimelineSprites();
-    //InitDummySprites();
-
-
-    //areaSelectionSprite_ = std::make_unique<UISprite>();
-    //areaSelectionSprite_->Initialize("AreaSelectionSprite", true);
-    //areaSelectionSprite_->SetAnchor(Vector2(0.0f, 0.0f)); // 範囲選択のアンカーを左上に設定
-    //areaSelectionSprite_->SetColor(Vector4(0.0f, 0.5f, 1.0f, 0.3f)); // 範囲選択の色を設定
-    //areaSelectionSprite_->SetSize(Vector2(0.0f, 0.0f)); // 範囲選択の初期サイズを設定
-
-
-    //selectedNoteIndices_.clear(); // 選択中のノートインデックスをクリア
-
-    //waveformBounds_ = WaveformBounds(Vector2(300.0f, 0.0f), Vector2(WinApp::kWindowSize_.x - 600.0f, 96.0f)); // 波形の表示範囲を初期化
-    //waveformBackground_ = std::make_unique<UISprite>();
-    //waveformBackground_->Initialize("waveformBackground");
-
     //                                       左右UI   マージン
     Vector2 laneAreaSize = Vector2(WinApp::kWindowSize_.x - 600.0f - 120.0f, WinApp::kWindowSize_.y); // レーンエリアのサイズを設定
     editorCoordinate_.Initialize(laneAreaSize); // 初期画面サイズとレーン数を設定
@@ -121,9 +80,6 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
 
 void BeatMapEditor::Update()
 {
-    // ========================================
-    // 新InputHandlerによる入力処理
-    // ========================================
     auto voice = audioController_->GetVoiceInstance();
     if (voice && voice->IsPlaying())
         currentTime_ = voice->GetElapsedTime();
@@ -139,12 +95,6 @@ void BeatMapEditor::Update()
         currentTime_
     );
 
-    //// ========================================
-    //// 以下は旧コード（段階的に新クラスへ移行予定）
-    //// ========================================
-    //UpdateTimeline();
-    //UpdateEditorState();
-    //waveformDisplay_.SetStartTime(currentTime_);
 }
 
 void BeatMapEditor::Draw()
@@ -153,9 +103,6 @@ void BeatMapEditor::Draw()
 
     Sprite::PreDraw();
 
-    // ========================================
-    // 新レンダラーによる描画（グリッド、ノート、波形、タイムライン、UI）
-    // ========================================
     renderer_->Draw(
         state_.get(),
         document_.get(),
@@ -163,21 +110,9 @@ void BeatMapEditor::Draw()
         audioController_.get(),
         &editorCoordinate_,
         beatManager_.get(),
-        currentTime_,
-        for2dCamera_.GetViewProjection()
+        currentTime_
     );
 
-    //// ========================================
-    //// 以下は旧コード（新レンダラーで未実装の機能）
-    //// ========================================
-
-    //// 選択範囲描画（新レンダラー未実装）
-    ////DrawSelectionArea();
-
-    //// UI描画（新レンダラーはスケルトンのみ）
-    //DrawUI();
-
-    ////waveformBackground_->Draw();
 }
 
 

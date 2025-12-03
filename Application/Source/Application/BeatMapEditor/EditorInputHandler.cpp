@@ -35,7 +35,7 @@ void InputHandler::HandleInput(
         return;
 
     HandleGlobalInput(state, document, audioController, commandHistory, currentTime);
-    HandleModeSpecificInput(state, document, audioController, commandHistory, coordinate, currentTime);
+    HandleModeSpecificInput(state, document, audioController, commandHistory, coordinate);
     HandleMouseWheelInput(coordinate, audioController, currentTime);
 }
 
@@ -137,22 +137,21 @@ void InputHandler::HandleModeSpecificInput(
     Document* document,
     AudioController* audioController,
     CommandHistory* commandHistory,
-    EditorCoordinate* coordinate,
-    float& currentTime)
+    EditorCoordinate* coordinate)
 {
     switch (state->GetCurrentMode())
     {
         case EditorMode::Select:
-            HandleSelectMode(state, document, commandHistory, coordinate, currentTime);
+            HandleSelectMode(state, document, commandHistory, coordinate);
             break;
         case EditorMode::PlaceNormalNote:
-            HandlePlaceNormalNoteMode(state, document, commandHistory, coordinate, currentTime);
+            HandlePlaceNormalNoteMode(state, document, commandHistory, coordinate);
             break;
         case EditorMode::PlaceLongNote:
-            HandlePlaceLongNoteMode(state, document, commandHistory, coordinate, currentTime);
+            HandlePlaceLongNoteMode(state, document, commandHistory, coordinate);
             break;
         case EditorMode::Delete:
-            HandleDeleteMode(state, document, commandHistory, coordinate, currentTime);
+            HandleDeleteMode(document, commandHistory, coordinate);
             break;
         case EditorMode::BPMSetting:
             HandleBPMSettingMode(state, audioController);
@@ -170,8 +169,7 @@ void InputHandler::HandleSelectMode(
     State* state,
     Document* document,
     CommandHistory* commandHistory,
-    EditorCoordinate* coordinate,
-    float currentTime)
+    EditorCoordinate* coordinate    )
 {
     const Vector2 mousePos = input_->GetMousePosition();
 
@@ -179,7 +177,7 @@ void InputHandler::HandleSelectMode(
     // - ノートのクリック選択
     {
         // マウス位置のノートを取得
-        size_t noteIndex = GetNoteIndexFromMousePosition(document, coordinate, currentTime);
+        size_t noteIndex = GetNoteIndexFromMousePosition(document, coordinate);
         if (noteIndex != SIZE_MAX)
         {
             if (input_->IsMouseTriggered(0)) // 左クリックで選択
@@ -188,7 +186,7 @@ void InputHandler::HandleSelectMode(
                 state->SelectNote(static_cast<uint32_t>(noteIndex), multiSelect);
 
                 float mouseTime = coordinate->ScreenYToTime(mousePos.y);
-                mouseTime = SnapTimeToGrid(mouseTime, state, document->GetData(), coordinate);
+                mouseTime = SnapTimeToGrid(mouseTime, state, document->GetData());
                 state->StartMove(document->GetData().notes, mouseTime);
             }
         }
@@ -241,20 +239,16 @@ void InputHandler::HandleSelectMode(
             if (input_->IsMouseTriggered(0))
             {
                 float mouseTime = coordinate->ScreenYToTime(mousePos.y);
-                mouseTime = SnapTimeToGrid(mouseTime, state, document->GetData(), coordinate);
+                mouseTime = SnapTimeToGrid(mouseTime, state, document->GetData());
                 state->StartMove(document->GetData().notes, mouseTime);
             }
         }
         else// 移動中
         {
             auto moveState = state->GetMoveState();
-            float snapedOriginalTime = SnapTimeToGrid(moveState.originalTimes.back(), state, document->GetData(), coordinate);
             float mouseTime =coordinate->ScreenYToTime(mousePos.y);
-            float offset = SnapTimeToGrid(mouseTime, state, document->GetData(), coordinate);
+            float offset = SnapTimeToGrid(mouseTime, state, document->GetData());
             float deltaTime = offset - moveState.originalTimes.back();
-            // スナップ適用
-            //deltaTime += moveState.timeOffset;
-            //deltaTime = SnapTimeToGrid(deltaTime, state, document->GetData(), coordinate);
             if (input_->IsMousePressed(0))
             {
                 // ノート移動コマンド実行
@@ -294,8 +288,7 @@ void InputHandler::HandlePlaceNormalNoteMode(
     State* state,
     Document* document,
     CommandHistory* commandHistory,
-    EditorCoordinate* coordinate,
-    float currentTime)
+    EditorCoordinate* coordinate)
 {
     // TODO:OK 通常ノート配置の入力処理実装
     // - マウスクリックでノート配置
@@ -305,7 +298,7 @@ void InputHandler::HandlePlaceNormalNoteMode(
     {
         int32_t laneIndex = GetLaneIndexFromMousePosition(coordinate);
         float noteTime = GetTimeFromMousePosition(coordinate);
-        noteTime = SnapTimeToGrid(noteTime, state, document->GetData(), coordinate);
+        noteTime = SnapTimeToGrid(noteTime, state, document->GetData());
 
         if (laneIndex < 0 || laneIndex >= coordinate->GetLaneCount())
             return;
@@ -324,8 +317,7 @@ void InputHandler::HandlePlaceLongNoteMode(
     State* state,
     Document* document,
     CommandHistory* commandHistory,
-    EditorCoordinate* coordinate,
-    float currentTime)
+    EditorCoordinate* coordinate)
 {
     // TODO:OK ロングノート配置の入力処理実装
 
@@ -342,7 +334,7 @@ void InputHandler::HandlePlaceLongNoteMode(
     if (input_->IsMouseTriggered(0))
     {
         float time = coordinate->ScreenYToTime(mousePos.y);
-        time = SnapTimeToGrid(time, state, document->GetData(), coordinate);
+        time = SnapTimeToGrid(time, state, document->GetData());
         int32_t laneIndex = GetLaneIndexFromMousePosition(coordinate);
 
         state->StartLongNoteCreation(laneIndex, time);
@@ -350,7 +342,7 @@ void InputHandler::HandlePlaceLongNoteMode(
     else if (state->IsCreatingLongNote() && input_->IsMouseReleased(0))
     {
         float endTime = coordinate->ScreenYToTime(mousePos.y);
-        endTime = SnapTimeToGrid(endTime, state, document->GetData(), coordinate);
+        endTime = SnapTimeToGrid(endTime, state, document->GetData());
         int32_t laneIndex = GetLaneIndexFromMousePosition(coordinate);
         float duration = endTime - state->GetLongNoteStartTime();
 
@@ -369,17 +361,15 @@ void InputHandler::HandlePlaceLongNoteMode(
 // ========================================
 
 void InputHandler::HandleDeleteMode(
-    State* state,
     Document* document,
     CommandHistory* commandHistory,
-    EditorCoordinate* coordinate,
-    float currentTime)
+    EditorCoordinate* coordinate)
 {
     // TODO:OK 削除モードの入力処理実装
     // - クリックでノート削除
     if (input_->IsMouseTriggered(0)) // 左クリックでノート削除
     {
-        size_t noteIndex = GetNoteIndexFromMousePosition(document, coordinate, currentTime);
+        size_t noteIndex = GetNoteIndexFromMousePosition(document, coordinate);
         if (noteIndex != SIZE_MAX)
         {
             auto command = std::make_unique<DeleteNoteCommand>(document, noteIndex);
@@ -452,8 +442,6 @@ void InputHandler::HandleMouseWheelInput(EditorCoordinate* coordinate, AudioCont
 
     if (input_->IsMouseTriggered(2))
     {
-        // マウスの位置を取得
-        Vector2 mousePos = input_->GetMousePosition();
         // スクリーン座標から時間に変換
         float targetTime = coordinate->ScreenYToTime(mousePos.y);
         auto musicSoundInstance = audioController->GetSoundInstance();
@@ -473,7 +461,7 @@ void InputHandler::HandleMouseWheelInput(EditorCoordinate* coordinate, AudioCont
 // ヘルパー関数
 // ========================================
 
-float InputHandler::SnapTimeToGrid(float time, const State* state, const BeatMapData& data, const EditorCoordinate* coordinate) const
+float InputHandler::SnapTimeToGrid(float time, const State* state, const BeatMapData& data) const
 {
     if (!state->IsGridSnapEnabled())
         return time;
@@ -501,8 +489,7 @@ int32_t InputHandler::GetLaneIndexFromMousePosition(const EditorCoordinate* coor
 
 size_t InputHandler::GetNoteIndexFromMousePosition(
     const Document* document,
-    const EditorCoordinate* coordinate,
-    float currentTime) const
+    const EditorCoordinate* coordinate) const
 {
     // 座標からのノート検索実装（ロングノート対応）
 

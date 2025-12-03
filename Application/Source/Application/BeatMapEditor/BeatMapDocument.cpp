@@ -49,7 +49,7 @@ void Document::SetNoteTime(size_t noteIndex, float newTime)
     isModified_ = true; // 譜面が変更されたフラグを立てる
 }
 
-int32_t Document::FindNoteAtTime(uint32_t laneIndex, float time) const
+int32_t Document::FindNoteAtTime(int32_t laneIndex, float time) const
 {
     for (size_t i = 0; i < data_.notes.size(); ++i)
     {

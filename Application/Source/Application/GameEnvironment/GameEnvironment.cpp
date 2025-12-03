@@ -81,7 +81,7 @@ void GameEnvironment::Draw(const Camera* camera)
     else
         overFloor_->Draw(camera);
 
-    overlayFloor_->Draw(camera, Vector4(0.3f,0.765f,1.0f,0.25f));
+    overlayFloor_->DrawWithPSO(emissivePso_.Get(),camera, Vector4(0.3f,0.765f,1.0f,0.25f));
 
 }
 

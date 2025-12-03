@@ -464,8 +464,8 @@ void GameScene::ImGui()
 {
 #ifdef _DEBUG
 
-    if (input_->IsKeyTriggered(DIK_SPACE))
-        gameEnvironment_->StartAnimation();
+    //if (input_->IsKeyTriggered(DIK_SPACE))
+    //    gameEnvironment_->StartAnimation();
 
 
     if (input_->IsKeyTriggered(DIK_F1))

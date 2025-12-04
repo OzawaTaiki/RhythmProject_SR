@@ -17,7 +17,6 @@
 #include <Application/TitleUI.h>
 #include <Application/TItileCamera/TitleCamera.h>
 #include <Features/UI/UITextBox.h>
-#include <UISliderWithInput.h>
 #include <Application/HexagonGrid/HexagonGrid.h>
 //#include <Features/BPMDetector/BPMDetector.h>
 

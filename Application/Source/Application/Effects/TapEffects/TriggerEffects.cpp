@@ -42,7 +42,7 @@ void TriggerEffects::EmitCenterCircles(const Vector3& pos)
     settings.cullBack = false;
 
     {// 中心のやつ
-        std::vector<Particle*> circleParticle;
+        std::vector<std::unique_ptr<Particle>> circleParticle;
         ParticleInitParam param;
 
         param.lifeTime = 0.2f;
@@ -54,19 +54,19 @@ void TriggerEffects::EmitCenterCircles(const Vector3& pos)
         param.speed = 0.0f;
         param.isBillboard = { false,false ,true};
 
-        Particle* particle = new Particle();
+        auto particle = std::make_unique<Particle>();
         particle->Initialize(param);
-        circleParticle.push_back(particle);
+        circleParticle.push_back(std::move(particle));
 
         param.size = Vector3(centerSize_, centerSize_ * 0.4f, centerSize_)*0.5f;
         param.color = Vector4(0.6f, 0.8f, 1.0f, 0.3f);
 
-        Particle* particle2 = new Particle();
+        auto particle2 = std::make_unique<Particle>();
         particle2->Initialize(param);
-        circleParticle.push_back(particle2);
+        circleParticle.push_back(std::move(particle2));
 
         ParticleSystem::GetInstance()->AddParticles("Hit_circle", "i0o1_PlanarRing",
-            circleParticle, settings, textureHandle_, { "HitCircleParticleModifier" });
+                                                    std::move(circleParticle), settings, textureHandle_, { "HitCircleParticleModifier" });
     }
 }
 

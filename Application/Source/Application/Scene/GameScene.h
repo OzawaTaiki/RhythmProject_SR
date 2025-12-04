@@ -16,6 +16,7 @@
 #include <Features/PostEffects/BoxFilter.h>
 #include <Features/PostEffects/Vignette.h>
 #include <Features/PostEffects/DepthBasedOutLine.h>
+#include <Features/PostEffects/Bloom.h>
 
 // Application
 #include <Application/Core/GameCore.h>
@@ -134,6 +135,7 @@ private:
     std::unique_ptr<SpectrumTextureGenerator> spectrumTextureGenerator_ = nullptr;
     AudioSpectrum audioSpectrum_;
 
+
     bool isBeatMapLoaded_ = false;
 
     bool isWatingForStart_ = false;
@@ -149,6 +151,11 @@ private:
 
     std::unique_ptr<DepthBasedOutLine> depthBasedOutLine_ = nullptr;
     DepthBasedOutLineData depthBasedOutLineData_ = {};
+
+    std::unique_ptr<Bloom> bloom_ = nullptr;
+    BloomConstantBufferData bloomData_ = {};
+    BloomBlurConstantBufferData bloomBlurData_ = {};
+
     void ImGui();
     // 楽曲終了後遷移するか
     bool isTransitionToResultScene_ = false;

@@ -124,8 +124,9 @@ void SettingsPreviewPanel::Draw()
     renderTexture_->SetRenderTexture();
     ModelManager::GetInstance()->PreDrawForObjectModel();
     // 専用描画テクスチャに描画
+    const Vector4 laneColor =Vector4(0.5f, 0.5f, 0.5f, 1.0f);
     for (auto& lane : lanes_)
-        lane->Draw(&camera_);
+        lane->Draw(&camera_, laneColor);
     // spriteに張るためにSRV状態に変更
     renderTexture_->ChangeRTVState(D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 

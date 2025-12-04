@@ -23,7 +23,7 @@ void Lane::Initialize(const std::list<NoteData>& noteDataList, int32_t laneIndex
     CreateLaneModel();
 
     // ノーツを生成
-    CreateNotes(noteDataList, laneIndex, judgeLine, speed, startOffsetTime);
+    CreateNotes(noteDataList, laneIndex, judgeLine,  speed, startOffsetTime);
 
 }
 
@@ -58,11 +58,13 @@ void Lane::Update(float elapseTime, float speed)
 }
 
 
-void Lane::Draw(const Camera* camera) const
+void Lane::Draw(const Camera* camera, const Vector4& laneColor) const
 {
+    // TODO: カラーをひきすうでもらってくる
+    // プレビューで全く見えないからー
     if (laneModel_)
     {
-        laneModel_->Draw(camera, { 0.5f,0.5f,0.5f,0.7f });
+        laneModel_->Draw(camera, laneColor);
     }
 
     for (const auto& note : notes_)

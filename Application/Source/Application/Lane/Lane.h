@@ -35,7 +35,8 @@ public:
     /// 描画処理
     /// </summary>
     /// <param name="camera">カメラ</param>
-    void Draw(const Camera* camera) const;
+    /// <param name="laneColor">レーンの色</param>
+    void Draw(const Camera* camera, const Vector4& laneColor = Vector4(0.0f, 0.0f, 0.0f, 0.8f)) const;
 
 
     /// <summary>

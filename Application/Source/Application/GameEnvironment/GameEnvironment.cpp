@@ -9,6 +9,12 @@
 #include <Math/MyLib.h>
 #include <Math/Easing.h>
 
+namespace
+{
+Vector4 startColor = Vector4(0.168f, 0.69f, 0.753f, 1.0f);
+Vector4 endColor = Vector4(0.272f, 0.280f, 0.502f, 1.0f);
+}
+
 GameEnvironment::GameEnvironment()
 {
     EventManager::GetInstance()->AddEventListener("SpeakerEffectColorChange", this);
@@ -239,6 +245,17 @@ void GameEnvironment::BuildSpeakerMap(const std::string& objName, ObjectModel* m
     uint32_t laneIndex = static_cast<uint32_t>(std::stoi(name)); // 文字列を整数に変換
     speakerMap_[laneIndex] = model; // レーンインデックスとモデルをマップに追加
 
+
+    auto& materials = model->GetMaterials();
+    for (auto& material : materials)
+    {
+        if (material->GetName() == "diaphragmMaterial") // 振動盤マテリアルのみに適用
+        {
+            material->SetShininess(100.0f);
+            material->SetColor(endColor);
+        }
+    }
+
     model->LoadAnimation(filepath, "anim");
 }
 
@@ -246,8 +263,6 @@ void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
 {
 
     // 色変化の計算
-    static Vector4 startColor = Vector4(0.189f, 0.39f, 1.0f, 1.0f);
-    static Vector4 endColor = Vector4(0.622f, 0.803f, 1.0f, 1.0f);
 #ifdef _DEBUG
     ImGui::Begin("Speaker Color Effect Debug");
     ImGui::ColorEdit3("start", &startColor.x);

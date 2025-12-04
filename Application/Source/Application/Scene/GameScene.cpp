@@ -164,6 +164,7 @@ void GameScene::Initialize(SceneData* sceneData)
     LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
     LayerSystem::CreateLayer("PauseMenu", 30);
     LayerSystem::CreateOutputLayer("Vignette");
+    LayerSystem::CreateOutputLayer("Bloom");
     LayerSystem::CreateOutputLayer("DepthOutline");
 
 
@@ -175,6 +176,19 @@ void GameScene::Initialize(SceneData* sceneData)
     depthBasedOutLineData_.edgeWidth = 1.5f;
     depthBasedOutLine_->SetCamera(&SceneCamera_);
     depthBasedOutLine_->SetData(&depthBasedOutLineData_);
+
+    bloom_ = std::make_unique<Bloom>();
+    bloom_->Initialize();
+    bloomData_ = BloomConstantBufferData();
+    bloomData_.threshold = 0.1f;
+    bloomData_.intensity = 1.2f;
+    bloomData_.softKnee = 0.5f;
+    bloom_->UpdateData(bloomData_);
+    bloomBlurData_ = BloomBlurConstantBufferData();
+    bloomBlurData_.texelSize = Vector2(1.0f / WinApp::kWindowSize_.x, 1.0f / WinApp::kWindowSize_.y);
+    bloomBlurData_.blurRadius = 5.0f;
+    bloom_->UpdateData(bloomBlurData_);
+
 
     spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
     spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
@@ -290,7 +304,8 @@ void GameScene::Draw()
     {
         ModelManager::GetInstance()->PreDrawForObjectModel();
         gameEnvironment_->Draw(&SceneCamera_);
-        feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+        LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom",bloom_.get());
+        //feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
     }
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
@@ -306,8 +321,8 @@ void GameScene::Draw()
 
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
+    LayerSystem::SetLayer("FeedbackEffect");
     {
-        LayerSystem::SetLayer("FeedbackEffect");
         feedbackEffect_->Draw();
     }
     {
@@ -321,7 +336,6 @@ void GameScene::Draw()
 }
 
 void GameScene::DrawShadow() {}
-
 
 bool GameScene::IsCompleteLoadBeatMap()
 {
@@ -471,6 +485,16 @@ void GameScene::ImGui()
     if (input_->IsKeyTriggered(DIK_F1))
     {
         enableDebugCamera_ = !enableDebugCamera_;
+    }
+    if (ImGuiDebugManager::GetInstance()->Begin("Bloom"))
+    {
+        ImGui::DragFloat("Threshold", &bloomData_.threshold, 0.01f);
+        ImGui::DragFloat("Intensity", &bloomData_.intensity, 0.01f);
+        ImGui::DragFloat("BlurSigma", &bloomData_.softKnee, 0.01f);
+        bloom_->UpdateData(bloomData_);
+        ImGui::Separator();
+        ImGui::DragFloat("BlurRadius", &bloomBlurData_.blurRadius, 0.01f);
+        ImGui::End();
     }
     if(ImGuiDebugManager::GetInstance()->Begin("GameScene"))
     {

@@ -219,6 +219,8 @@
     <ClCompile Include="Source\Application\Scene\GameScene.cpp" />
     <ClCompile Include="Source\Application\Scene\ResultScene.cpp" />
     <ClCompile Include="Source\Application\Scene\SelectScene.cpp" />
+    <ClCompile Include="Source\Application\Scene\Text3DTestScene.cpp" />
+    <ClCompile Include="Source\Application\Scene\Text3DTest_Integration.cpp" />
     <ClCompile Include="Source\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\Application\Scene\Transition\SceneTrans.cpp" />
     <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
@@ -373,6 +375,7 @@
     <ClInclude Include="Source\Application\Scene\GameScene.h" />
     <ClInclude Include="Source\Application\Scene\ResultScene.h" />
     <ClInclude Include="Source\Application\Scene\SelectScene.h" />
+    <ClInclude Include="Source\Application\Scene\Text3DTestScene.h" />
     <ClInclude Include="Source\Application\Scene\TitleScene.h" />
     <ClInclude Include="Source\Application\Scene\Transition\SceneTrans.h" />
     <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h" />

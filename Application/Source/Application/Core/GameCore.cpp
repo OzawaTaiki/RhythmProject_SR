@@ -1,8 +1,13 @@
 #include "GameCore.h"
 
 #include <Features/LineDrawer/LineDrawer.h>
+#include <Features/TextRenderer/Text3DRenderer.h>
+#include <System/Input/TextInputManager.h>
+#include <Utility/ConvertString/ConvertString.h>
 #include <Math/MyLib.h>
 #include <Debug/Debug.h>
+#include <Features/TextRenderer/FontCache.h>
+#include <Features/Model/Manager/ModelManager.h>
 
 GameCore::GameCore(int32_t laneCount) :
     laneCount_(laneCount),
@@ -90,13 +95,39 @@ void GameCore::Update(float  deltaTime, const std::vector<InputData>& inputData)
     }
 }
 
-void GameCore::Draw(const Camera* camera)
+void GameCore::Draw(const Camera* camera, const std::map<int32_t, uint8_t>& keyBindings)
 {
-    for (const auto& lane : lanes_)
+    if (keyBindings.size() != lanes_.size())
     {
-        if (lane)
+        Debug::Log("KeyBindings size does not match lane count.\n");
+        assert(false && "KeyBindings size does not match lane count.");
+        return;
+    }
+
+    auto renderer = Text3DRenderer::GetInstance();
+    auto textInputManager = TextInputManager::GetInstance();
+    AtlasData* atlasData = FontCache::GetInstance()->GetAtlasData("Resources/Fonts/NotoSansJP-Regular.ttf", 128);
+    wchar_t wchar;
+    for (size_t i = 0; i < lanes_.size(); ++i)
+    {
+        if (lanes_[i])
         {
-            lane->Draw(camera);
+            ModelManager::GetInstance()->PreDrawForObjectModel();
+            lanes_[i]->Draw(camera);
+            // レーンのキー表示
+            uint8_t kc = keyBindings.at(static_cast<int32_t>(i));
+            textInputManager->ConvertDIKeyToChar(kc, true, wchar);
+            std::wstring wStr(1, wchar);
+            renderer->DrawText3D(
+                wStr,
+                atlasData,
+                camera,
+                lanes_[i]->GetStartPosition(),
+                Vector3::zero,
+                Vector2(1.0f, 1.0f),
+                Vector4(1, 1, 1, 0.5f),
+                Vector2(0.5f, 0.0f)
+            );
         }
     }
     // 判定ラインの描画
@@ -105,8 +136,25 @@ void GameCore::Draw(const Camera* camera)
 
     noteJudge_->DrawJudgeLine();
 #endif // _DEBUG
-
 }
+
+//void GameCore::Draw(const Camera* camera)
+//{
+//    for (const auto& lane : lanes_)
+//    {
+//        if (lane)
+//        {
+//            lane->Draw(camera);
+//        }
+//    }
+//    // 判定ラインの描画
+//#ifdef _DEBUG
+//    LineDrawer::GetInstance()->RegisterPoint(Vector3(-4, 0, 0), Vector3(4, 0, 0));
+//
+//    noteJudge_->DrawJudgeLine();
+//#endif // _DEBUG
+//
+//}
 
 void GameCore::GenerateNotes(const BeatMapData& beatMapData)
 {
@@ -200,7 +248,7 @@ JudgeType GameCore::ProcessHoldEndNote(Note* note, const InputData& inputData, L
     {
         lane->StartHold();
     }
-    else if (lane->IsHolding()&&/*holdState_.IsHoldingLane(inputData.laneIndex)*/true)
+    else if (lane->IsHolding() &&/*holdState_.IsHoldingLane(inputData.laneIndex)*/true)
     {
         Debug::Log("Hold State is holding lane: " + std::to_string(inputData.laneIndex) + "\n");
 

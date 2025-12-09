@@ -45,7 +45,7 @@ public:
     /// 描画処理
     /// </summary>
     /// <param name="camera">カメラ</param>
-    void Draw(const Camera* camera);
+    void Draw(const Camera* camera, const std::map<int32_t, uint8_t>& keyBindings);
 
     /// <summary>
     /// 譜面データを受け取り、ノーツを生成する

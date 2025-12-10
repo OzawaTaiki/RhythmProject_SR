@@ -24,6 +24,7 @@
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Features/UI/Collider/UICollisionManager.h>
+#include <Features/TextRenderer/Text3DRenderer.h>
 
 
 GameScene::GameScene()
@@ -181,7 +182,7 @@ void GameScene::Initialize(SceneData* sceneData)
     bloom_->Initialize();
     bloomData_ = BloomConstantBufferData();
     bloomData_.threshold = 0.1f;
-    bloomData_.intensity = 1.2f;
+    bloomData_.intensity = 2.0f;
     bloomData_.softKnee = 0.5f;
     bloom_->UpdateData(bloomData_);
     bloomBlurData_ = BloomBlurConstantBufferData();
@@ -311,11 +312,14 @@ void GameScene::Draw()
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("GameCore");
     {
-        gameCore_->Draw(&SceneCamera_);
+        auto renderer = Text3DRenderer::GetInstance();
+        renderer->BeginFrame();
+        gameCore_->Draw(&SceneCamera_, gameInputManager_->GetKeyBinds());
 
         Sprite::PreDraw();
 
         gameUI_->Draw(); // UIの描画
+        renderer->EndFrame();
         LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
     }
 

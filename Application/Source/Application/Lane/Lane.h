@@ -52,6 +52,8 @@ public:
     /// /// <returns>削除したノーツの数</returns>
     int32_t DeleteNotesOutOfScreen(float noteDeletePos);
 
+    const Vector3& GetStartPosition() const { return startPosition_; }
+
     /// <summary>
     /// ホールド開始
     /// </summary>

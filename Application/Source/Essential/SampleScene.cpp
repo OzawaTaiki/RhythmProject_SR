@@ -19,6 +19,7 @@
 #include <Features/AudioSpectrum/SpectrumValidator.h>
 
 #include <System/Time/Stopwatch.h>
+#include <Features/TextRenderer/FontCache.h>
 
 SampleScene::~SampleScene()
 {
@@ -110,6 +111,16 @@ void SampleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
     audioSpectrum_.SetSampleRate(sampleRate);
 
     Time::SetDeltaTimeFixed(false);
+
+
+    // Text3DRendererの初期化
+    text3DRenderer_ = Text3DRenderer::GetInstance();
+
+    // フォントアトラスの取得（AtlasManagerから既存のフォントを使用）
+    fontAtlas_ = FontCache::GetInstance()->GetAtlasData("Resources/Fonts/NotoSansJP-Regular.ttf", 64);
+    // または新しいフォントを読み込む場合
+    // fontAtlas_ = AtlasManager::GetInstance()->LoadFont("path/to/font.ttf", 64);
+
 }
 
 void SampleScene::Update()
@@ -287,9 +298,64 @@ void SampleScene::Draw()
 
     // Sprite用のPSO等をセット
     Sprite::PreDraw();
+
+    text3DRenderer_->DrawText3DImmediate(
+        L"Hello, 3D Text!",        // テキスト
+        fontAtlas_,               // フォントアトラス
+        &SceneCamera_,            // カメラ
+        Vector3{ 0, 0, 0 },         // 位置
+        Vector3::zero,            // 回転
+        Vector2{ 1, 1 },            // スケール
+        Vector4{ 0, 1, 0, 1 }       // 色（緑）
+    );
+
     // スプライトの描画
     //sprite_->Draw(Vector4(1, 1, 1, 1));
     //textGenerator_.Draw(std::format(L"FPS: {:.2f}", Time::GetFramerate()), Vector2(10, 10), Vector4(1, 0, 0, 1));
+    // Text3DRendererの描画開始
+    text3DRenderer_->BeginFrame();
+
+    // 3Dテキストの描画例
+    if (fontAtlas_)
+    {
+
+        // 基本的な3Dテキスト
+        text3DRenderer_->DrawText3D(
+            L"SCORE: 12345",          // テキスト
+            fontAtlas_,               // フォントアトラス
+            &SceneCamera_,            // カメラ
+            Vector3{ 0, 3, 0 },         // 位置
+            Vector3::zero,            // 回転
+            Vector2{ 1, 1 },            // スケール
+            Vector4{ 1, 1, 1, 1 }       // 色（白）
+        );
+
+        // グラデーション付きテキスト
+        text3DRenderer_->DrawText3D(
+            L"COMBO x100",
+            fontAtlas_,
+            &SceneCamera_,
+            Vector3{ 0, 5, 0 },
+            Vector3::zero,
+            Vector2{ 1.5f, 1.5f },
+            Vector4{ 1, 1, 0, 1 },      // 上の色（黄色）
+            Vector4{ 1, 0.5f, 0, 1 }    // 下の色（オレンジ）
+        );
+
+        // 回転したテキスト
+        text3DRenderer_->DrawText3D(
+            L"PERFECT!",
+            fontAtlas_,
+            &SceneCamera_,
+            Vector3{ 0, 0, 5 },
+            Vector3{ 0, 0.5f, 0 },      // Y軸回転
+            Vector2{ 2, 2 },
+            Vector4{ 0, 1, 1, 1 }       // シアン
+        );
+    }
+
+    // Text3DRendererの描画終了
+    text3DRenderer_->EndFrame();
 
 }
 

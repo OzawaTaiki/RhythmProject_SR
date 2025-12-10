@@ -29,6 +29,8 @@
 #include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
 #include <Features/UI/UISlider.h>
 
+#include <Features/TextRenderer/Text3DRenderer.h>
+#include <Features/TextRenderer/AtlasData.h>
 class SampleScene : public BaseScene
 {
 public:
@@ -76,6 +78,8 @@ private:
     AudioSpectrum audioSpectrum_; 
 
     std::unique_ptr<SpectrumTextureGenerator> textureGenerator_;
+    Text3DRenderer* text3DRenderer_ = nullptr;
+    AtlasData* fontAtlas_ = nullptr;
 
 #ifdef _DEBUG
     void ImGui();

@@ -2,6 +2,8 @@
 
 #include <Debug/Debug.h>
 
+#include <algorithm>
+
 void GameInputManager::Initialize(Input* input)
 {
     if (input == nullptr)
@@ -24,7 +26,7 @@ void GameInputManager::Update()
 
     inputData_.clear(); // 前回の入力データをクリア
 
-    for (const auto& [keycode, laneIndex] : keyBindings_)
+    for (const auto& [laneIndex, keycode] : keyBindings_)
     {
         InputData inputData;
         inputData.elapsedTime = gameMusic_->GetElapsedTime();
@@ -51,10 +53,33 @@ void GameInputManager::Update()
     }
 }
 
+void GameInputManager::SetKeyBinding(std::map<int32_t,uint8_t> keyBindings)
+{
+    keyBindings_ = keyBindings;
+}
+
+void GameInputManager::SetKeyBinding(uint8_t key, int32_t lane)
+{
+    //keyBindings_からおなじレーンを持つキーを探して削除
+    for (auto it = keyBindings_.begin(); it != keyBindings_.end(); )
+    {
+        if (it->first == lane)
+        {
+            it = keyBindings_.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+    // 新しいバインディングを追加
+    keyBindings_[lane] = key;
+}
+
 void GameInputManager::SetDefaultKeyBindings()
 {
-    keyBindings_[DIK_D] = 0; // レーン0
-    keyBindings_[DIK_F] = 1; // レーン1
-    keyBindings_[DIK_J] = 2; // レーン2
-    keyBindings_[DIK_K] = 3; // レーン3
+    keyBindings_[0] = DIK_D; // レーン0
+    keyBindings_[1] = DIK_F; // レーン1
+    keyBindings_[2] = DIK_J; // レーン2
+    keyBindings_[3] = DIK_K; // レーン3
 }

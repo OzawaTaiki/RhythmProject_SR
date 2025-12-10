@@ -47,14 +47,14 @@ public:
     /// キーバインドの設定（マップで一括設定）。
     /// </summary>
     /// <param name="keyBindings">キーとレーンのバインディングのマップ</param>
-    void SetKeyBinding(std::map<int8_t, int32_t> keyBindings) { keyBindings_ = keyBindings; }
+    void SetKeyBinding(std::map<int32_t,uint8_t> keyBindings);
 
     /// <summary>
     /// 個別のキーとレーンのバインディングを設定する。
     /// </summary>
     /// <param name="key">キーコード (DIK_A など)</param>
     /// <param name="lane">レーン番号</param>
-    void SetKeyBinding(int8_t key, int32_t lane) { keyBindings_[key] = lane; }
+    void SetKeyBinding(uint8_t key, int32_t lane);
 
     /// <summary>
     /// 音楽のボイスインスタンスを設定する。
@@ -67,6 +67,11 @@ public:
     /// </summary>
     void SetGameMusic(const GameMusic* gameMusic) { gameMusic_ = gameMusic; }
 
+    /// <summary>
+    /// キーのバインディングを取得する。
+    /// </summary>
+    const std::map<int32_t, uint8_t>& GetKeyBinds()const { return keyBindings_; }
+
 private:
     /// <summary>
     /// デフォルトのキー設定を行う。
@@ -78,7 +83,7 @@ private:
 
     std::vector<InputData> inputData_; // キーの状態を保持するベクター
 
-    std::map<int8_t, int32_t> keyBindings_; // キーのバインディング
+    std::map<int32_t, uint8_t> keyBindings_; // キーのバインディング
 
     std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス
 

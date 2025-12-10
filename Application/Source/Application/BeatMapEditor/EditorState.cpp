@@ -33,6 +33,7 @@ void State::SelectNote(uint32_t noteIndex, bool multiSelect)
     if (it == selectedNoteIndices_.end())
     {
         selectedNoteIndices_.push_back(noteIndex);
+        // 二つ以上選択されている場合は範囲選択フラグを立てる
         if (selectedNoteIndices_.size() >= 2)
             isRangeSelected_ = true;
     }

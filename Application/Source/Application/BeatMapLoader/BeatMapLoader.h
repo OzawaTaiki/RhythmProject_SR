@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Application/BeatMapLoader/BeatMapData.h>
+#include <Debug/Debug.h>
 
 #include <string>
 #include <future>
@@ -56,6 +57,8 @@ public:
 
 
 private:
+    template<typename T>
+    bool GetIfExists(const std::string& kry, const nlohmann::json& jsonData ,T* out);
 
     // JSONデータをBeatMapDataに変換
     BeatMapData ParseJsonToBeatMap(const nlohmann::json& jsonData);
@@ -75,3 +78,23 @@ private: // Singleton
     BeatMapLoader& operator=(const BeatMapLoader&) = delete;
 
 };
+
+template<typename T>
+inline bool BeatMapLoader::GetIfExists(const std::string& kry, const nlohmann::json& jsonData, T* out)
+{
+    if (!jsonData.contains(name))
+        return false;
+
+    try
+    {
+        jsonData.at(key).get_to(out);
+        return true;
+    }
+    catch
+    {
+        Debug::Log("BeatMapLoader::GetIfExists: Failed to get key " + key);
+        errorMessage_ = "Error: Key " + key + " has invalid type.";
+        return false;
+    }
+
+}

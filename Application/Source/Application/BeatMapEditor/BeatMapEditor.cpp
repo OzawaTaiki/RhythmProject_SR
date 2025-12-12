@@ -72,7 +72,7 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     fileManager_ = std::make_unique<BME::FileManager>();
 
     // レンダラー初期化
-    renderer_->Initialize(&editorCoordinate_, for2dCamera_.GetViewProjection());
+    renderer_->Initialize(&editorCoordinate_,state_.get(), for2dCamera_.GetViewProjection());
 
     // 初期譜面データを新Documentに設定
     document_->SetData(_beatMapData);
@@ -136,12 +136,11 @@ void BeatMapEditor::SetNoteDuration(size_t _noteIndex, float _newDuration)
     float targetTime = note.targetTime + _newDuration;
 
     // グリッドスナップ
-    if (gridSnapEnabled_)
+    if (state_->IsGridSnapEnabled())
     {
-        _newDuration = editorCoordinate_.SnapTimeToGrid(targetTime - note.targetTime, currentBeatMapData_.bpm, static_cast<int>(1.0f / snapInterval_));
+        _newDuration = editorCoordinate_.SnapTimeToGrid(targetTime - note.targetTime, currentBeatMapData_.bpm, static_cast<int>(1.0f / state_->GetSnapInterval()));
         if (_newDuration <= 0.0f)
             return;
     }
     currentBeatMapData_.notes[_noteIndex].holdDuration = _newDuration; // ノートの持続時間を更新
-    isModified_ = true; // 譜面が変更されたフラグを立てる
 }

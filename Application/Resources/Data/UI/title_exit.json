@@ -1,90 +1,149 @@
 {
     "title_exit": {
+        "anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "clipRect": {
+            "leftTop": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0
+            }
+        },
         "collider": {
             "parameters": {
                 "localCorners": [
                     {
-                        "x": -300.0,
-                        "y": -100.0
+                        "x": -400.0,
+                        "y": -200.0
                     },
                     {
-                        "x": 100.0,
-                        "y": -100.0
+                        "x": 0.0,
+                        "y": -200.0
                     },
                     {
-                        "x": 50.0,
-                        "y": 100.0
+                        "x": -50.0,
+                        "y": 0.0
                     },
                     {
-                        "x": -300.0,
-                        "y": 100.0
+                        "x": -400.0,
+                        "y": 0.0
                     }
                 ]
             },
             "transformMode": "Independent",
             "type": "Quad"
         },
-        "colliderType": 4,
-        "defaultColor": {
+        "colliderType": 3,
+        "color": {
             "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
             "z": 1.0
         },
-        "focusedColor": {
-            "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
+        "disabledColor": {
+            "w": 0.501960813999176,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
             "z": 1.0
         },
+        "focusColor": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
+            "z": 1.0
+        },
+        "focusable": true,
+        "fontConfig": {
+            "atlasSize": {
+                "x": 1024.0,
+                "y": 1024.0
+            },
+            "fontFilePath": "Resources/Fonts/NotoSansJP-Regular.ttf",
+            "fontSize": 24.0
+        },
+        "hasRect": false,
         "hoverColor": {
             "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
             "z": 1.0
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "normalColor": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
+            "z": 1.0
+        },
+        "order": 81,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 200.0,
+            "y": 100.0
         },
         "pressedColor": {
             "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
             "z": 1.0
         },
-        "selectedColor": {
-            "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
-            "z": 1.0
-        },
-        "title_exit_anchor": {
-            "x": 0.0,
-            "y": 0.5
-        },
-        "title_exit_color": {
-            "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
-            "z": 1.0
-        },
-        "title_exit_directoryPath": "Resources/images/",
-        "title_exit_isActive": 3452764417,
-        "title_exit_isVisible": 164482305,
-        "title_exit_label": "title_exit",
-        "title_exit_order": 20,
-        "title_exit_pos": {
-            "x": 100.0,
-            "y": 0.0
-        },
-        "title_exit_rotate": 0.0,
-        "title_exit_size": {
+        "size": {
             "x": 200.0,
             "y": 200.0
         },
-        "title_exit_textureName": "trapezoid.png",
-        "title_exitbackgroundColor": {
+        "text": "exit",
+        "textAlignment": 0,
+        "textColor": {
             "w": 1.0,
-            "x": 0.800000011920929,
-            "y": 0.800000011920929,
-            "z": 0.800000011920929
-        }
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "texturePath": "trapezoid.png"
     }
 }

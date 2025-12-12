@@ -5,6 +5,7 @@
 
 #include <Features/UI/UIButton.h>
 #include <Features/UI/UISprite.h>
+#include <Features/UI/UINavigationManager.h>
 
 
 
@@ -26,7 +27,7 @@ void ResultUI::Initialize(ResultData resultData)
     }
 
 #ifdef _DEBUG
-    for (int32_t i = 0; i < static_cast<int32_t>(JudgeType::MAX);++i)
+    for (int32_t i = 0; i < static_cast<int32_t>(JudgeType::MAX); ++i)
     {
         TextType textType = GetTextTypeFromJudgeType(static_cast<JudgeType>(i));
         auto& param = textParams_[textType];
@@ -47,6 +48,8 @@ void ResultUI::Initialize(ResultData resultData)
     InitTextParams();
 
     text_.Initialize(FontConfig());
+
+    UINavigationManager::GetInstance()->SetFocus(buttons_.front());
 }
 
 
@@ -56,13 +59,13 @@ void ResultUI::Update(float deltaTime)
 
 #ifdef _DEBUG
 
-    if(ImGuiDebugManager::GetInstance()->Begin("ResultUI Debug"))
+    if (ImGuiDebugManager::GetInstance()->Begin("ResultUI Debug"))
     {
         if (ImGui::Button("Save"))
             jsonBinder_->Save();
 
         ImGui::Checkbox("Animation Sequence Update", &seqUpdate);
-        if(ImGui::Button("Reset"))
+        if (ImGui::Button("Reset"))
         {
             animationSequence_->SetCurrentTime(0.0f);
             for (auto& [type, textParam] : textParams_)
@@ -98,21 +101,6 @@ void ResultUI::Update(float deltaTime)
             }
         }
 
-        for (auto& sprite : debugSprites_)
-        {
-            if (sprite)
-            {
-                sprite->ImGui();
-            }
-        }
-        for (auto& button : debugButtons_)
-        {
-            if (button)
-            {
-                button->ImGui();
-            }
-        }
-
         ImGui::End();
     }
 
@@ -124,7 +112,7 @@ void ResultUI::Update(float deltaTime)
     {
         float duration = animationSequence_->GetMaxPlayTime();
 
-        for (auto& [type,textParam] : textParams_)
+        for (auto& [type, textParam] : textParams_)
         {
             auto& animParam = textParam.animationValue;
             animParam.timer += deltaTime;
@@ -167,17 +155,14 @@ void ResultUI::Update(float deltaTime)
             }
 
         }
-        uiGroup_->Update();
+        UIElement_->Update();
     }
-
-
-
 }
 
 void ResultUI::Draw()
 {
     Sprite::PreDraw();
-    uiGroup_->Draw();
+    UIElement_->Draw();
 
     for (const auto& [textType, param] : textParams_)
     {
@@ -191,43 +176,77 @@ void ResultUI::Draw()
 
 void ResultUI::InitUIGroup()
 {
-    uiGroup_ = std::make_unique<UIGroup>();
-    uiGroup_->Initialize();
 
-    // 背景スプライトの作成
-    auto mainBg = uiGroup_->CreateSprite("main_bg");
+    auto backgroundSprite = std::make_unique<UIImageElement>("result_main_bg", Vector2(0, 0), Vector2(800, 600));
+    backgroundSprite->Initialize();
 
-    TextParam param;
-    param.SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+    auto toTitleButton = std::make_unique<UIButtonElement>("To_Title", Vector2(-100, 200), Vector2(150, 50), "タイトルへ");
+    toTitleButton->Initialize();
+    toTitleButton->SetOnClickUp([this]()
+                                {
+                                    transitionToTitle_ = true;
+                                });
+    toTitleButton->SetOnClick([this]()
+                              {
+                                  transitionToTitle_ = true;
+                              });
+    auto retryButton = std::make_unique<UIButtonElement>("Retry", Vector2(100, 200), Vector2(150, 50), "リトライ");
+    retryButton->Initialize();
+    retryButton->SetOnClickUp([this]()
+                              {
+                                  replay_ = true;
+                              });
+    retryButton->SetOnClick([this]()
+                            {
+                                replay_ = true;
+                            });
 
-    // タイトルへボタン初期化
-    auto toTitleButton = uiGroup_->CreateButton("To_Title",L"タイトルへ");
-    toTitleButton->SetOnClickEnd([this]()
-        {
-            transitionToTitle_ = true;
-        });
 
-    // リトライボタン初期化
-    auto retryButton = uiGroup_->CreateButton("Retry", L"リトライ");
-    retryButton->SetOnClickEnd([this]()
-        {
-            replay_ = true;
-        });
+    buttons_.push_back(backgroundSprite->AddChild(std::move(toTitleButton)));
+    buttons_.push_back(backgroundSprite->AddChild(std::move(retryButton)));
 
-    UIGroup::LinkHorizontal({ toTitleButton.get(), retryButton.get() });
+    buttons_[0]->GetComponent<UINavigationComponent>()->SetNavigation(NavigationDirection::Left, buttons_[1]);
+    buttons_[1]->GetComponent<UINavigationComponent>()->SetNavigation(NavigationDirection::Right, buttons_[0]);
 
-#ifdef _DEBUG
-    // デバッグ用のスプライトとボタンを追加
-    debugSprites_.push_back(mainBg.get());
-    debugButtons_.push_back(toTitleButton.get());
-    debugButtons_.push_back(retryButton.get());
-#endif // _DEBUG
+    UIElement_ = std::move(backgroundSprite);
+
+    //    uiGroup_ = std::make_unique<UIGroup>();
+    //    uiGroup_->Initialize();
+    //
+    //    // 背景スプライトの作成
+    //    auto mainBg = uiGroup_->CreateSprite("main_bg");
+    //
+    //    TextParam param;
+    //    param.SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+    //
+    //    // タイトルへボタン初期化
+    //    auto toTitleButton = uiGroup_->CreateButton("To_Title",L"タイトルへ");
+    //    toTitleButton->SetOnClickEnd([this]()
+    //        {
+    //            transitionToTitle_ = true;
+    //        });
+    //
+    //    // リトライボタン初期化
+    //    auto retryButton = uiGroup_->CreateButton("Retry", L"リトライ");
+    //    retryButton->SetOnClickEnd([this]()
+    //        {
+    //            replay_ = true;
+    //        });
+    //
+    //    UIGroup::LinkHorizontal({ toTitleButton.get(), retryButton.get() });
+    //
+    //#ifdef _DEBUG
+    //    // デバッグ用のスプライトとボタンを追加
+    //    debugSprites_.push_back(mainBg.get());
+    //    debugButtons_.push_back(toTitleButton.get());
+    //    debugButtons_.push_back(retryButton.get());
+    //#endif // _DEBUG
 
 }
 
 void ResultUI::InitTextParams()
 {
-    jsonBinder_ = std::make_unique<JsonBinder>("ResutUIs","Resources/Data/Result/");
+    jsonBinder_ = std::make_unique<JsonBinder>("ResutUIs", "Resources/Data/Result/");
 
     jsonBinder_->RegisterVariable("animationDuration", &animationDuration_);
 
@@ -261,34 +280,34 @@ std::string ResultUI::GetKeyString(TextType textType) const
 {
     switch (textType)
     {
-    case TextType::Title:
-        return "Title";
-    case TextType::Score_text:
-        return "Score_Text";
-    case TextType::Score_value:
-        return "Score_Value";
-    case TextType::Judge_perfect_text:
-        return "Perfect_Text";
-    case TextType::Judge_perfect_value:
-        return "Perfect_count";
-    case TextType::Judge_good_text:
-        return "Good_Text";
-    case TextType::Judge_good_value:
-        return "Good_count";
-    case TextType::Judge_bad_text:
-        return "Bad_Text";
-    case TextType::Judge_bad_value:
-        return "Bad_count";
-    case TextType::Judge_miss_text:
-        return "Miss_Text";
-    case TextType::Judge_miss_value:
-        return "Miss_count";
-    case TextType::Combo_text:
-        return "Combo_Text";
-    case TextType::Combo_value:
-        return "Combo_count";
-    default:
-        return "";
+        case TextType::Title:
+            return "Title";
+        case TextType::Score_text:
+            return "Score_Text";
+        case TextType::Score_value:
+            return "Score_Value";
+        case TextType::Judge_perfect_text:
+            return "Perfect_Text";
+        case TextType::Judge_perfect_value:
+            return "Perfect_count";
+        case TextType::Judge_good_text:
+            return "Good_Text";
+        case TextType::Judge_good_value:
+            return "Good_count";
+        case TextType::Judge_bad_text:
+            return "Bad_Text";
+        case TextType::Judge_bad_value:
+            return "Bad_count";
+        case TextType::Judge_miss_text:
+            return "Miss_Text";
+        case TextType::Judge_miss_value:
+            return "Miss_count";
+        case TextType::Combo_text:
+            return "Combo_Text";
+        case TextType::Combo_value:
+            return "Combo_count";
+        default:
+            return "";
     }
 }
 
@@ -296,34 +315,34 @@ std::wstring ResultUI::GetTextLabel(TextType textType) const
 {
     switch (textType)
     {
-    case TextType::Title:
-        return L"None";
-    case TextType::Score_text:
-        return L"Score";
-    case TextType::Score_value:
-        return L"0";
-    case TextType::Judge_perfect_text:
-        return L"Perfect";
-    case TextType::Judge_perfect_value:
-        return L"0";
-    case TextType::Judge_good_text:
-        return L"Good";
-    case TextType::Judge_good_value:
-        return L"0";
-    case TextType::Judge_bad_text:
-        return L"Bad";
-    case TextType::Judge_bad_value:
-        return L"0";
-    case TextType::Judge_miss_text:
-        return L"Miss";
-    case TextType::Judge_miss_value:
-        return L"0";
-    case TextType::Combo_text:
-        return L"Combo";
-    case TextType::Combo_value:
-        return L"0";
-    default:
-        return L"";
+        case TextType::Title:
+            return L"None";
+        case TextType::Score_text:
+            return L"Score";
+        case TextType::Score_value:
+            return L"0";
+        case TextType::Judge_perfect_text:
+            return L"Perfect";
+        case TextType::Judge_perfect_value:
+            return L"0";
+        case TextType::Judge_good_text:
+            return L"Good";
+        case TextType::Judge_good_value:
+            return L"0";
+        case TextType::Judge_bad_text:
+            return L"Bad";
+        case TextType::Judge_bad_value:
+            return L"0";
+        case TextType::Judge_miss_text:
+            return L"Miss";
+        case TextType::Judge_miss_value:
+            return L"0";
+        case TextType::Combo_text:
+            return L"Combo";
+        case TextType::Combo_value:
+            return L"0";
+        default:
+            return L"";
     }
 }
 
@@ -331,16 +350,16 @@ JudgeType ResultUI::GetJudgeTypeFromTextType(TextType textType) const
 {
     switch (textType)
     {
-    case TextType::Judge_perfect_value:
-        return JudgeType::Perfect;
-    case TextType::Judge_good_value:
-        return JudgeType::Good;
-    case TextType::Judge_bad_value:
-        return JudgeType::Bad;
-    case TextType::Judge_miss_value:
-        return JudgeType::Miss;
-    default:
-        return JudgeType::None;
+        case TextType::Judge_perfect_value:
+            return JudgeType::Perfect;
+        case TextType::Judge_good_value:
+            return JudgeType::Good;
+        case TextType::Judge_bad_value:
+            return JudgeType::Bad;
+        case TextType::Judge_miss_value:
+            return JudgeType::Miss;
+        default:
+            return JudgeType::None;
     }
 }
 
@@ -348,17 +367,17 @@ ResultUI::TextType ResultUI::GetTextTypeFromJudgeType(JudgeType judgeType) const
 {
     switch (judgeType)
     {
-    case JudgeType::Perfect:
-        return TextType::Judge_perfect_value;
-    case JudgeType::Good:
-        return TextType::Judge_good_value;
-    case JudgeType::Bad:
-        return TextType::Judge_bad_value;
-    case JudgeType::Miss:
-        return TextType::Judge_miss_value;
-    case JudgeType::MAX:
-    case JudgeType::None:
-    default:
-        return TextType::Count;
+        case JudgeType::Perfect:
+            return TextType::Judge_perfect_value;
+        case JudgeType::Good:
+            return TextType::Judge_good_value;
+        case JudgeType::Bad:
+            return TextType::Judge_bad_value;
+        case JudgeType::Miss:
+            return TextType::Judge_miss_value;
+        case JudgeType::MAX:
+        case JudgeType::None:
+        default:
+            return TextType::Count;
     }
 }

@@ -11,6 +11,7 @@
 
 #include <Features/Model/Primitive/Builder/PrimitiveBuilder.h>
 #include <Features/UI/Collider/UICollisionManager.h>
+#include <Features/UI/UINavigationManager.h>
 
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
@@ -55,6 +56,7 @@ void SampleFramework::Update()
 
     sceneManager_->Update();
     //particleManager_->Update(); TODO ; 引数のカメラの回転をなんとかしたい
+    UINavigationManager::GetInstance()->HandleInput();
     UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
 
     //=============================

@@ -9,9 +9,9 @@ void OptionMenu::Initialize()
     settingMenu_->Initialize();
 
     // 閉じるボタンの初期化
-    closeButton_ = std::make_shared<UIButton>();
-    closeButton_->Initialize("CloseButton", L"Close");
-    closeButton_->SetOnClick([&]()
+    closeButton_ = std::make_unique<UIButtonElement>("option_closeButton", Vector2(700, 50), Vector2(80, 30),"Close");
+    closeButton_->Initialize();
+    closeButton_->SetOnClickUp([&]()
                              {
                                  isActive_ = false;
                                  Debug::Log("OptionMenu closed\n");

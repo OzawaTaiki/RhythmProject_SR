@@ -1,8 +1,9 @@
 #pragma once
 
-#include <Features/UI/UIGroup.h>
 #include <Features/Event/EventData.h>
-#include <Features/UI/UISlider.h>
+
+#include <Features/UI/UIElement.h>
+#include <Features/UI/UISliderElement.h>
 #include <Features/Event/EventListener.h>
 #include <Application/Setting/Preview/SettingsPreviewPanel.h>
 
@@ -47,11 +48,6 @@ public:
     bool IsActive() const { return isActive_; }
 
     /// <summary>
-    /// 内部の UI グループを取得する。
-    /// </summary>
-    UIGroup* GetUIGroup() const { return uiGroup_.get(); }
-
-    /// <summary>
     /// イベントを受信するハンドラ。
     /// </summary>
     void OnEvent(const GameEvent& event) override;
@@ -60,12 +56,10 @@ private:
 
     bool isActive_ = false; // メニューがアクティブかどうか
 
-    std::unique_ptr<UIGroup> uiGroup_ = nullptr; // UIグループ
+    std::unique_ptr<UIElement> backSprite_;
 
     std::function<void(float)> speedSetFunc_ = nullptr; // ノーツ速度を設定するコールバック関数
     std::function<void(float)> audioLatencySetFunc_ = nullptr; // 音声遅延を設定するコールバック関数
-
-    std::vector<std::shared_ptr<UISlider>> sliders_; // スライダー   のリスト
 
     std::unique_ptr<SettingsPreviewPanel> previewPanel_ = nullptr; // 設定プレビュー
 };

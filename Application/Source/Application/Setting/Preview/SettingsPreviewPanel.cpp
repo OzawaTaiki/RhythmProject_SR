@@ -46,19 +46,19 @@ void SettingsPreviewPanel::Initialize()
     }
 
     // 音楽再生トグルボタンの作成
-    musicToggleButton_ = std::make_shared<UIButton>();
-    musicToggleButton_->Initialize("MusicToggleButton", L"Play");
+    musicToggleButton_ = std::make_unique<UIButtonElement>("MusicToggleButton", Vector2(10, 10), Vector2(100, 30));
+    musicToggleButton_->Initialize();
     musicToggleButton_->SetOnClick([&]()
                                    {
                                        if (voiceInstance_ && voiceInstance_->IsPlaying())
                                        {
                                            voiceInstance_->Stop();
-                                           musicToggleButton_->SetText(L"Play"); // ボタンテキストを変更
+                                           musicToggleButton_->SetText("Play"); // ボタンテキストを変更
                                        }
                                        else
                                        {
                                            voiceInstance_ = soundInstance_->Play(0.5f);//  masterを調整しているから音源ごとのvolumeは固定
-                                           musicToggleButton_->SetText(L"Stop"); // ボタンテキストを変更
+                                           musicToggleButton_->SetText("Stop"); // ボタンテキストを変更
                                        }
                                    });
 
@@ -81,9 +81,9 @@ void SettingsPreviewPanel::Initialize()
         renderTexture_->GetGPUHandleofRTV());
 
     // プレビュー表示用スプライトの作成
-    previewSprite_ = std::make_shared<UISprite>();
-    previewSprite_->Initialize("SettingsPreviewPanel");
-    previewSprite_->SetTextureHandle(previewTextureHandle_);
+    previewSprite_ = std::make_unique<UIImageElement>("SettingsPreviewPanelSprite", Vector2(0, 0), Vector2(320, WinApp::kWindowSize_.y));
+    previewSprite_->Initialize();
+    previewSprite_->SetTexture(previewTextureHandle_);
     previewSprite_->SetOrder(300);
 };
 
@@ -94,12 +94,12 @@ void SettingsPreviewPanel::Update()
         if (voiceInstance_ && voiceInstance_->IsPlaying())
         {
             voiceInstance_->Stop();
-            musicToggleButton_->SetText(L"Play");
+            musicToggleButton_->SetText("Play");
         }
         else
         {
             voiceInstance_ = soundInstance_->Play(Setting::current_.masterVolume* 0.5f, true);//  masterを調整しているから音源ごとのvolumeは固定
-            musicToggleButton_->SetText(L"Stop");
+            musicToggleButton_->SetText("Stop");
         }
     }
 
@@ -142,6 +142,6 @@ void SettingsPreviewPanel::StopMusic()
     {
         voiceInstance_->Stop();
         voiceInstance_ = nullptr;
-        musicToggleButton_->SetText(L"Play");
+        musicToggleButton_->SetText("Play");
     }
 }

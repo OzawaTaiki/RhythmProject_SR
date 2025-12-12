@@ -5,6 +5,12 @@
 
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Features/Model/Manager/ModelManager.h>
+#include <Features/UI/UINavigationManager.h>
+
+ResultScene::~ResultScene()
+{
+    UINavigationManager::GetInstance()->SetFocus(nullptr);
+}
 
 void ResultScene::Initialize(SceneData* sceneData)
 {
@@ -86,10 +92,12 @@ void ResultScene::Update()
 
     if (resultUI_->IsTransitionToTitle())
     {
+        UINavigationManager::GetInstance()->ClearFocus();
         SceneManager::GetInstance()->ReserveScene("TitleScene", nullptr);
     }
     else if (resultUI_->IsReplay())
     {
+        UINavigationManager::GetInstance()->ClearFocus();
         SceneManager::GetInstance()->ReserveScene("GameScene", nullptr);
     }
 

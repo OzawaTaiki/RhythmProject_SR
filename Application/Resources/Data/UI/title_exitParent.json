@@ -1,29 +1,30 @@
 {
     "title_exitParent": {
-        "title_exitParent_anchor": {
-            "x": 0.5,
+        "anchor": {
+            "x": 0.0,
             "y": 0.5
         },
-        "title_exitParent_color": {
+        "color": {
             "w": 1.0,
-            "x": 0.49803921580314636,
-            "y": 0.49803921580314636,
+            "x": 0.501960813999176,
+            "y": 0.501960813999176,
             "z": 1.0
         },
-        "title_exitParent_directoryPath": "Resources/images/",
-        "title_exitParent_isActive": 257,
-        "title_exitParent_isVisible": 1,
-        "title_exitParent_label": "title_exitParent",
-        "title_exitParent_order": 0,
-        "title_exitParent_pos": {
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 80,
+        "pivot": {
+            "x": 0.0,
+            "y": 0.5
+        },
+        "position": {
             "x": 200.0,
             "y": 0.0
         },
-        "title_exitParent_rotate": 0.0,
-        "title_exitParent_size": {
-            "x": 200.0,
+        "size": {
+            "x": 250.0,
             "y": 200.0
         },
-        "title_exitParent_textureName": "white.png"
+        "texturePath": "white.png"
     }
 }

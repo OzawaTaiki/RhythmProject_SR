@@ -26,7 +26,7 @@ public:
     EditorRenderer() = default;
     ~EditorRenderer() = default;
 
-    void Initialize(EditorCoordinate* _coordinate, const Matrix4x4& _matVP);
+    void Initialize(EditorCoordinate* _coordinate,State* _state ,const Matrix4x4& _matVP);
     void Draw(
         State* _state,
         Document* _document,

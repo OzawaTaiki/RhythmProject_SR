@@ -1,28 +1,139 @@
 {
     "Retry": {
-        "Retry_anchor": {
+        "anchor": {
             "x": 0.5,
             "y": 0.5
         },
-        "Retry_color": {
+        "clipRect": {
+            "leftTop": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0
+            }
+        },
+        "collider": {
+            "parameters": {
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "localSize": {
+                    "x": 100.0,
+                    "y": 100.0
+                }
+            },
+            "transformMode": "UIDependent",
+            "type": "Rectangle"
+        },
+        "colliderType": 0,
+        "color": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        },
+        "disabledColor": {
+            "w": 0.5,
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        },
+        "focusColor": {
             "w": 1.0,
             "x": 1.0,
             "y": 1.0,
-            "z": 1.0
+            "z": 0.6000000238418579
         },
-        "Retry_directoryPath": "Resources/images/",
-        "Retry_isActive": 257,
-        "Retry_isVisible": 1,
-        "Retry_label": "Retry",
-        "Retry_pos": {
-            "x": 920.0,
-            "y": 640.0
+        "focusable": true,
+        "fontConfig": {
+            "atlasSize": {
+                "x": 1024.0,
+                "y": 1024.0
+            },
+            "fontFilePath": "Resources/Fonts/NotoSansJP-Regular.ttf",
+            "fontSize": 24.0
         },
-        "Retry_rotate": 0.0,
-        "Retry_size": {
-            "x": 360.0,
+        "hasRect": false,
+        "hoverColor": {
+            "w": 1.0,
+            "x": 0.8999999761581421,
+            "y": 0.8999999761581421,
+            "z": 0.8999999761581421
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "normalColor": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        },
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": -200.0,
+            "y": 300.0
+        },
+        "pressedColor": {
+            "w": 1.0,
+            "x": 0.6000000238418579,
+            "y": 0.6000000238418579,
+            "z": 0.6000000238418579
+        },
+        "size": {
+            "x": 300.0,
             "y": 50.0
         },
-        "Retry_textureName": "white.png"
+        "text": "リトライ",
+        "textAlignment": 4,
+        "textColor": {
+            "w": 1.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "texturePath": "white.png"
     }
 }

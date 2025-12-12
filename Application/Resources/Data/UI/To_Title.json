@@ -1,28 +1,139 @@
 {
     "To_Title": {
-        "To_Title_anchor": {
+        "anchor": {
             "x": 0.5,
             "y": 0.5
         },
-        "To_Title_color": {
+        "clipRect": {
+            "leftTop": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0
+            }
+        },
+        "collider": {
+            "parameters": {
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "localSize": {
+                    "x": 100.0,
+                    "y": 100.0
+                }
+            },
+            "transformMode": "UIDependent",
+            "type": "Rectangle"
+        },
+        "colliderType": 0,
+        "color": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        },
+        "disabledColor": {
+            "w": 0.5,
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        },
+        "focusColor": {
             "w": 1.0,
             "x": 1.0,
             "y": 1.0,
-            "z": 1.0
+            "z": 0.6000000238418579
         },
-        "To_Title_directoryPath": "Resources/images/",
-        "To_Title_isActive": 257,
-        "To_Title_isVisible": 1,
-        "To_Title_label": "To_Title",
-        "To_Title_pos": {
-            "x": 360.0,
-            "y": 640.0
+        "focusable": true,
+        "fontConfig": {
+            "atlasSize": {
+                "x": 1024.0,
+                "y": 1024.0
+            },
+            "fontFilePath": "Resources/Fonts/NotoSansJP-Regular.ttf",
+            "fontSize": 24.0
         },
-        "To_Title_rotate": 0.0,
-        "To_Title_size": {
-            "x": 360.0,
+        "hasRect": false,
+        "hoverColor": {
+            "w": 1.0,
+            "x": 0.8999999761581421,
+            "y": 0.8999999761581421,
+            "z": 0.8999999761581421
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "normalColor": {
+            "w": 1.0,
+            "x": 0.800000011920929,
+            "y": 0.800000011920929,
+            "z": 0.800000011920929
+        },
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 200.0,
+            "y": 300.0
+        },
+        "pressedColor": {
+            "w": 1.0,
+            "x": 0.6000000238418579,
+            "y": 0.6000000238418579,
+            "z": 0.6000000238418579
+        },
+        "size": {
+            "x": 300.0,
             "y": 50.0
         },
-        "To_Title_textureName": "white.png"
+        "text": "タイトルへ",
+        "textAlignment": 4,
+        "textColor": {
+            "w": 1.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.14671814441680908,
+                "y": 0.14671814441680908,
+                "z": 0.14671814441680908
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.16988414525985718,
+                "y": 0.16988414525985718,
+                "z": 0.16988414525985718
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": true
+        },
+        "texturePath": "white.png"
     }
 }

@@ -15,7 +15,7 @@ void Note::Initialize(float targetTime, const Vector3& targetPosition)
     // TODO : 専用のモデルを用意する
     model_->scale_.x = 0.7f;
     model_->scale_.z = 0.5f;
-    model_->scale_.y = 0.1f;
+    model_->scale_.y = 0.001f;
 
     targetTime_ = targetTime;
     targetPosition_ = targetPosition;

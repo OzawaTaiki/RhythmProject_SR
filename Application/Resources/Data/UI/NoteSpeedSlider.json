@@ -1,71 +1,32 @@
 {
     "NoteSpeedSlider": {
-        "NoteSpeedSlider_anchor": {
+        "anchor": {
             "x": 0.0,
             "y": 0.0
         },
-        "NoteSpeedSlider_color": {
-            "w": 0.0,
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0
-        },
-        "NoteSpeedSlider_directoryPath": "Resources/images/",
-        "NoteSpeedSlider_fillColor": {
+        "handleHoverColor": {
             "w": 1.0,
-            "x": 0.699999988079071,
-            "y": 0.699999988079071,
-            "z": 0.699999988079071
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
         },
-        "NoteSpeedSlider_handleColor": {
-            "w": 1.0,
-            "x": 0.8999999761581421,
-            "y": 0.8999999761581421,
-            "z": 0.8999999761581421
+        "isEnabled": true,
+        "isVisible": true,
+        "maxValue": 150.0,
+        "minValue": 0.0,
+        "order": 120,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
         },
-        "NoteSpeedSlider_handleSize": {
-            "x": 20.0,
-            "y": 40.0
+        "position": {
+            "x": 160.0,
+            "y": 160.0
         },
-        "NoteSpeedSlider_isActive": 257,
-        "NoteSpeedSlider_isVisible": 1,
-        "NoteSpeedSlider_label": "NoteSpeedSlider",
-        "NoteSpeedSlider_maxValue": 100.0,
-        "NoteSpeedSlider_minValue": 5.0,
-        "NoteSpeedSlider_order": 10000,
-        "NoteSpeedSlider_pos": {
-            "x": -128.0,
-            "y": 0.0
-        },
-        "NoteSpeedSlider_rotate": 0.0,
-        "NoteSpeedSlider_size": {
+        "size": {
             "x": 200.0,
             "y": 20.0
         },
-        "NoteSpeedSlider_stepSize": 0.009999999776482582,
-        "NoteSpeedSlider_textureName": "white.png",
-        "NoteSpeedSlider_trackColor": {
-            "w": 1.0,
-            "x": 0.30000001192092896,
-            "y": 0.30000001192092896,
-            "z": 0.30000001192092896
-        },
-        "NoteSpeedSlider_trackHeight": 10.0,
-        "NoteSpeedSlider_useStep": false,
-        "NoteSpeedSlider_value": 48.70000076293945,
-        "collider": {
-            "parameters": {
-                "localOffset": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "localSize": {
-                    "x": 100.0,
-                    "y": 100.0
-                }
-            },
-            "transformMode": "UIDependent",
-            "type": "Rectangle"
-        }
+        "value": 150.0
     }
 }

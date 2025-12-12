@@ -1,7 +1,7 @@
 {
-    "PauseMenu_back": {
+    "VolumeSlider_Value": {
         "anchor": {
-            "x": 0.5,
+            "x": 1.0,
             "y": 0.5
         },
         "clipRect": {
@@ -14,12 +14,6 @@
                 "y": 0.0
             }
         },
-        "color": {
-            "w": 0.9254902005195618,
-            "x": 0.054054081439971924,
-            "y": 0.054054081439971924,
-            "z": 0.054054081439971924
-        },
         "fontConfig": {
             "atlasSize": {
                 "x": 1024.0,
@@ -31,32 +25,32 @@
         "hasRect": false,
         "isEnabled": true,
         "isVisible": true,
-        "order": 10,
+        "order": 123,
         "pivot": {
-            "x": 0.5,
+            "x": 0.0,
             "y": 0.5
         },
         "position": {
-            "x": 0.0,
+            "x": 240.0,
             "y": 0.0
         },
         "size": {
-            "x": 480.0,
-            "y": 300.0
+            "x": 100.0,
+            "y": 50.0
         },
-        "text": "Pause",
+        "text": "0.480000",
         "textParam": {
             "bottomColor": {
                 "w": 1.0,
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "outlineColor": {
                 "w": 1.0,
-                "x": 9.999114263337106e-05,
-                "y": 9.998999303206801e-05,
-                "z": 9.999999747378752e-05
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "outlineScale": 0.029999999329447746,
             "pivot": {
@@ -64,23 +58,22 @@
                 "y": 0.5
             },
             "position": {
-                "x": 8.0,
-                "y": -92.0
+                "x": 0.0,
+                "y": 0.0
             },
             "rotate": 0.0,
             "scale": {
-                "x": 1.100000023841858,
-                "y": 1.100000023841858
+                "x": 1.0,
+                "y": 1.0
             },
             "topColor": {
                 "w": 1.0,
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             },
-            "useGradient": true,
-            "useOutline": true
-        },
-        "texturePath": "white.png"
+            "useGradient": false,
+            "useOutline": false
+        }
     }
 }

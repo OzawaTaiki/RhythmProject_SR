@@ -4,6 +4,7 @@
 
 //#include <Application/EventData/PauseActionData.h>
 #include <Application/Setting/SettingMenu.h>
+#include <Features/UI/UIImageElement.h>
 
 #include <memory>
 
@@ -39,12 +40,24 @@ public:
 
 private:
 
+    enum class EventType
+    {
+        Resume,
+        Restart,
+        ExitToTitle,
+        OpenSettings,
+        Max
+    };
+    void CliclEvent(EventType element);
+
+    std::string GetDispatchEventName(EventType element);
+
+private:
+
     bool isActive_ = false; // 有効フラグ
 
     bool isDraw_ = false; // 描画フラグ
 
-    std::unique_ptr<UIGroup> uiGroup_ = nullptr; // UIグループ
-
-    std::map<std::string, std::shared_ptr<UIButton>> buttons_; // ボタン群
-
+    UIElement* resumeButton_ = nullptr; // レジュームボタン フォーカス要
+    std::unique_ptr<UIImageElement> background_ = nullptr; // 背景画像
 };

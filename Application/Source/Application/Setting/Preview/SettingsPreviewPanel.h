@@ -3,8 +3,8 @@
 
 #include <System/Audio/SoundInstance.h>
 #include <System/Audio/VoiceInstance.h>
-#include <Features/UI/UIButton.h>
-#include <Features/UI/UISprite.h>
+#include <Features/UI/UIButtonElement.h>
+#include <Features/UI/UIImageElement.h>
 
 
 #include <Core/DXCommon/RTV/RenderTexture.h>
@@ -38,8 +38,8 @@ private:
     std::shared_ptr<SoundInstance> soundInstance_ = nullptr; // メトロノーム音源
     std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr; // 再生中の音源
 
-    std::shared_ptr<UIButton> musicToggleButton_ = nullptr; // 音楽再生トグルボタン
-    std::shared_ptr<UISprite> previewSprite_ = nullptr; // プレビュー表示用スプライト
+    std::shared_ptr<UIButtonElement> musicToggleButton_ = nullptr; // 音楽再生トグルボタン
+    std::shared_ptr<UIImageElement> previewSprite_ = nullptr; // プレビュー表示用スプライト
     uint32_t previewTextureHandle_ = 0; // プレビューテクスチャハンドル
     Camera camera_ = {}; // プレビュー用カメラ
 };

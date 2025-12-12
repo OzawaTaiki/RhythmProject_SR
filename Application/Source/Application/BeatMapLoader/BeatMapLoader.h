@@ -82,19 +82,18 @@ private: // Singleton
 template<typename T>
 inline bool BeatMapLoader::GetIfExists(const std::string& key, const nlohmann::json& jsonData, T* out)
 {
-    if (!jsonData.contains(name))
+    if (!jsonData.contains(key))
         return false;
 
     try
     {
-        jsonData.at(key).get_to(out);
+        jsonData.at(key).get_to(*out);
         return true;
     }
-    catch
+    catch (std::exception& e)
     {
-        Debug::Log("BeatMapLoader::GetIfExists: Failed to get key " + key);
+        Debug::Log("BeatMapLoader::GetIfExists: Failed to get key " + key + " Exception: " + e.what());
         errorMessage_ = "Error: Key " + key + " has invalid type.";
         return false;
     }
-
 }

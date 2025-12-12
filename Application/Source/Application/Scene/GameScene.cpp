@@ -309,7 +309,7 @@ void GameScene::Draw()
         ModelManager::GetInstance()->PreDrawForObjectModel();
         gameEnvironment_->Draw(&SceneCamera_);
         LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom",bloom_.get());
-        //feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+        feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
     }
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
@@ -332,8 +332,8 @@ void GameScene::Draw()
     {
         feedbackEffect_->Draw();
     }
+    LayerSystem::SetLayer("PauseMenu");
     {
-        LayerSystem::SetLayer("PauseMenu");
         pauseMenu_->Draw();
         settingMenu_->Draw();
     }

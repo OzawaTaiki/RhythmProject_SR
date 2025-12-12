@@ -84,7 +84,7 @@ private:
 
     std::unique_ptr<HexagonGrid> hexagonGrid_;
 
-    std::unique_ptr<UIBase> titleBack_;
+    std::unique_ptr<UIImageElement> titleBack_;
     UVTransformAnimation uvAnimation_;
 
 };

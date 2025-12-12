@@ -1,6 +1,9 @@
 #pragma once
 #include <map>
-#include <Features/UI/UISprite.h>
+#include <Features/UI/UIImageElement.h>
+#include <functional>
+#include <Features/UI/UIButtonElement.h>
+#include <Features/UI/Collider/UIRecntangleCollider.h>
 
 namespace BME
 {
@@ -17,8 +20,8 @@ public:
     TimelineRenderer() = default;
     ~TimelineRenderer() = default;
 
-    void Initialize();
-    void Draw(State* state, const AudioController* _audioController, float _currentTime);
+    void Initialize(std::function<void()> toTestFunc);
+    void Draw(const AudioController* _audioController, float _currentTime);
     void Finalize();
 
 private:
@@ -27,8 +30,8 @@ private:
 
 private:
 
-    std::map<std::string, std::unique_ptr<UISprite>> timelineSprites_;
-    std::unique_ptr<UISprite> dummy_timeline_;
+    std::map<std::string, std::unique_ptr<UIElement>> timelineSprites_;
+    Rect dummy_timeline_;
     float timelineStartPosition_ = 0.0f; // タイムラインの開始位置
     float timelineEndPosition_ = 0.0f; // タイムラインの終了位置
     float timelineWidth_ = 0.0f; // タイムラインの幅

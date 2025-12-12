@@ -1,6 +1,9 @@
 #include "HexagonGrid.h"
 #include <Features/UI/Collider/UIConvexPolygonCollider.h>
 #include <Debug/ImGuiDebugManager.h>
+#include <Features/UI/Collider/UIColliderComponent.h>
+#include <Features/UI/UISpriteRenderComponent.h>
+#include <numbers>
 
 namespace
 {
@@ -10,7 +13,6 @@ Rect drawArea(Vector2(0, 0), Vector2(1280, 720));
 
 void HexagonGrid::Initialize(const Rect& area)
 {
-    uiGroup_ = std::make_unique<UIGroup>();
     moveOffset_ = Vector2(0.0f, 0.0f); // オフセットを初期化
 
     Vector2 halfSize = area.size;
@@ -24,52 +26,49 @@ void HexagonGrid::Initialize(const Rect& area)
 void HexagonGrid::Update()
 {
     ImGui();
-    if (uiGroup_)
+    // 六角形の幅と高さを計算
+    float width = radius_ * std::sqrtf(3.0f);
+    float height = radius_ * 1.5f;
+
+    // グリッド全体のオフセットを更新
+    moveOffset_ += Vector2(-2.0f, 1.0f) * 0.016f;
+
+    // ループ処理: オフセットが一定値を超えたらリセット
+    // X方向のループ（2列分で1周期）
+    if (moveOffset_.x < -width * 2.0f)
     {
-        // 六角形の幅と高さを計算
-        float width = radius_ * std::sqrtf(3.0f);
-        float height = radius_ * 1.5f;
-
-        // グリッド全体のオフセットを更新
-        moveOffset_ += Vector2(-2.0f, 1.0f) * 0.016f;
-
-        // ループ処理: オフセットが一定値を超えたらリセット
-        // X方向のループ（2列分で1周期）
-        if (moveOffset_.x < -width * 2.0f)
-        {
-            moveOffset_.x += width * 2.0f;
-        }
-        else if (moveOffset_.x > width * 2.0f)
-        {
-            moveOffset_.x -= width * 2.0f;
-        }
-
-        // Y方向のループ（2行分で1周期）
-        if (moveOffset_.y < -height * 2.0f)
-        {
-            moveOffset_.y += height * 2.0f;
-        }
-        else if (moveOffset_.y > height * 2.0f)
-        {
-            moveOffset_.y -= height * 2.0f;
-        }
-
-        // 各六角形の位置を更新（初期位置 + オフセット）
-        auto elements = uiGroup_->GetAllElements();
-        for (size_t i = 0; i < elements.size() && i < initialPositions_.size(); ++i)
-        {
-            elements[i]->SetPos(initialPositions_[i] + moveOffset_);
-        }
-
-        uiGroup_->Update();
+        moveOffset_.x += width * 2.0f;
     }
+    else if (moveOffset_.x > width * 2.0f)
+    {
+        moveOffset_.x -= width * 2.0f;
+    }
+
+    // Y方向のループ（2行分で1周期）
+    if (moveOffset_.y < -height * 2.0f)
+    {
+        moveOffset_.y += height * 2.0f;
+    }
+    else if (moveOffset_.y > height * 2.0f)
+    {
+        moveOffset_.y -= height * 2.0f;
+    }
+
+    // 各六角形の位置を更新（初期位置 + オフセット）
+
+    for (size_t i = 0; i < elements_.size() && i < initialPositions_.size(); ++i)
+    {
+        elements_[i]->SetPosition(initialPositions_[i] + moveOffset_);
+        elements_[i]->Update();
+    }
+
 }
 
 void HexagonGrid::Draw()
 {
-    if (uiGroup_)
+    for (const auto& element : elements_)
     {
-        uiGroup_->Draw();
+        element->Draw();
     }
 }
 
@@ -127,14 +126,16 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
             if (num < 10)
                 label += "0";
 
-            auto hexagon = uiGroup_->CreateButton(label + std::to_string(num));
-            hexagon->SetPos(center);
+            auto hexagon = std::make_unique<UIButtonElement>(label + std::to_string(num), center, Vector2( diameter, diameter ), "", false);
+            hexagon->SetPosition(center);
             hexagon->SetAnchor({ 0.5f,0.5f });
             hexagon->SetSize({ diameter , diameter });
-            hexagon->SetCollider(std::move(collider));
+            hexagon->GetComponent<UIColliderComponent>()->SetCollider(std::move(collider));
             hexagon->SetHoverColor({ 0.15f, 0.26f, 0.3f, 0.5f });
-            hexagon->SetDefaultColor({ 0.125f, 0.125f, 0.19f, 0.5f });
-            hexagon->SetTextureNameAndLoad("hexagon.png");
+            hexagon->SetNormalColor({ 0.125f, 0.125f, 0.19f, 0.5f });
+            hexagon->GetComponent<UISpriteRenderComponent>()->LoadAndSetTexture("Hexagon.png");
+
+            elements_.push_back(std::move(hexagon));
             // Todo: イベント設定 ↓
             // カラーは変化なし
             // ホバー中はビートで拡縮など

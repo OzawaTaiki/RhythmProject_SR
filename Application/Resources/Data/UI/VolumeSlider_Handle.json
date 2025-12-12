@@ -1,0 +1,45 @@
+{
+    "VolumeSlider_Handle": {
+        "anchor": {
+            "x": 0.0,
+            "y": 0.5
+        },
+        "collider": {
+            "parameters": {
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "localSize": {
+                    "x": 100.0,
+                    "y": 100.0
+                }
+            },
+            "transformMode": "UIDependent",
+            "type": "Rectangle"
+        },
+        "colliderType": 0,
+        "color": {
+            "w": 1.0,
+            "x": 0.6627451181411743,
+            "y": 0.6627451181411743,
+            "z": 0.6627451181411743
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 122,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 168.0,
+            "y": 0.0
+        },
+        "size": {
+            "x": 20.0,
+            "y": 30.0
+        },
+        "texturePath": "white.png"
+    }
+}

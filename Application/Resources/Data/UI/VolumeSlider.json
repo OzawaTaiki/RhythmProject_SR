@@ -1,71 +1,32 @@
 {
     "VolumeSlider": {
-        "VolumeSlider_anchor": {
+        "anchor": {
             "x": 0.0,
             "y": 0.0
         },
-        "VolumeSlider_color": {
-            "w": 0.0,
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0
-        },
-        "VolumeSlider_directoryPath": "Resources/images/",
-        "VolumeSlider_fillColor": {
+        "handleHoverColor": {
             "w": 1.0,
-            "x": 0.699999988079071,
-            "y": 0.699999988079071,
-            "z": 0.699999988079071
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
         },
-        "VolumeSlider_handleColor": {
-            "w": 1.0,
-            "x": 0.8999999761581421,
-            "y": 0.8999999761581421,
-            "z": 0.8999999761581421
+        "isEnabled": true,
+        "isVisible": true,
+        "maxValue": 1.0,
+        "minValue": 0.0,
+        "order": 120,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
         },
-        "VolumeSlider_handleSize": {
-            "x": 20.0,
-            "y": 40.0
+        "position": {
+            "x": 160.0,
+            "y": 80.0
         },
-        "VolumeSlider_isActive": 257,
-        "VolumeSlider_isVisible": 1,
-        "VolumeSlider_label": "VolumeSlider",
-        "VolumeSlider_maxValue": 1.0,
-        "VolumeSlider_minValue": 0.0,
-        "VolumeSlider_order": 10000,
-        "VolumeSlider_pos": {
-            "x": -128.0,
-            "y": -64.0
-        },
-        "VolumeSlider_rotate": 0.0,
-        "VolumeSlider_size": {
+        "size": {
             "x": 200.0,
             "y": 20.0
         },
-        "VolumeSlider_stepSize": 0.009999999776482582,
-        "VolumeSlider_textureName": "white.png",
-        "VolumeSlider_trackColor": {
-            "w": 1.0,
-            "x": 0.30000001192092896,
-            "y": 0.30000001192092896,
-            "z": 0.30000001192092896
-        },
-        "VolumeSlider_trackHeight": 10.0,
-        "VolumeSlider_useStep": false,
-        "VolumeSlider_value": 0.4350000023841858,
-        "collider": {
-            "parameters": {
-                "localOffset": {
-                    "x": 0.0,
-                    "y": 0.0
-                },
-                "localSize": {
-                    "x": 100.0,
-                    "y": 100.0
-                }
-            },
-            "transformMode": "UIDependent",
-            "type": "Rectangle"
-        }
+        "value": 0.47999998927116394
     }
 }

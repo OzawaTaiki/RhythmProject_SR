@@ -1,29 +1,30 @@
 {
     "title_optionsIcon": {
-        "title_optionsIcon_anchor": {
-            "x": 0.0,
+        "anchor": {
+            "x": 0.5,
             "y": 0.5
         },
-        "title_optionsIcon_color": {
+        "color": {
             "w": 1.0,
-            "x": 0.21235519647598267,
-            "y": 0.21235519647598267,
-            "z": 0.21235519647598267
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
         },
-        "title_optionsIcon_directoryPath": "Resources/images/",
-        "title_optionsIcon_isActive": 257,
-        "title_optionsIcon_isVisible": 100663297,
-        "title_optionsIcon_label": "title_optionsIcon",
-        "title_optionsIcon_order": 31,
-        "title_optionsIcon_pos": {
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
             "x": 0.0,
             "y": 0.0
         },
-        "title_optionsIcon_rotate": 0.0,
-        "title_optionsIcon_size": {
+        "size": {
             "x": 100.0,
             "y": 100.0
         },
-        "title_optionsIcon_textureName": "GearIcon.png"
+        "texturePath": "white.png"
     }
 }

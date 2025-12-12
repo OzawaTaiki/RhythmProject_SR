@@ -6,6 +6,7 @@
 #include <Features/Model/Manager/ModelManager.h>
 #include <Features/UI/Collider/UICollisionManager.h>
 #include <Constants/MathConstants.h>
+#include <Features/UI/UINavigationManager.h>
 
 TitleScene::TitleScene()
 {
@@ -17,6 +18,8 @@ TitleScene::~TitleScene()
 {
     EventManager::GetInstance()->RemoveEventListener("RequestStartGame", this);
     EventManager::GetInstance()->RemoveEventListener("RequestExitGame", this);
+
+    UINavigationManager::GetInstance()->ClearFocus();
 }
 
 void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
@@ -77,8 +80,8 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     titleUI_ = std::make_unique<TitleUI>();
     titleUI_->Initialize();
 
-    titleBack_ = std::make_unique<UIBase>();
-    titleBack_->Initialize("TitleBack",true);
+    titleBack_ = std::make_unique<UIImageElement>("Title_Background", WinApp::kWindowSize_ * 0.5f, WinApp::kWindowSize_);
+    titleBack_->Initialize();
     UVTransform& uvTransform = titleBack_->GetUVTransform();
     uvTransform.SetRotation(MathConstants::kHalfPi / 3.0f);
     uvTransform.SetScale(Vector2(10.0f, 10.0f));
@@ -123,9 +126,6 @@ void TitleScene::Update()
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
     else //そうじゃないときは0
         spectrumRing_->Update(0.0f);
-
-    UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
-
 
     if (input_->IsKeyPressed(DIK_LCONTROL) &&
         input_->IsKeyTriggered(DIK_O))
@@ -183,7 +183,7 @@ void TitleScene::Draw()
     }
 }
 
-void TitleScene::DrawShadow(){}
+void TitleScene::DrawShadow() {}
 
 void TitleScene::OnEvent(const GameEvent& event)
 {

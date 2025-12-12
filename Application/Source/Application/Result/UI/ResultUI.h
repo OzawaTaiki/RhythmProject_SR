@@ -4,6 +4,8 @@
 #include <Math/Vector/Vector2.h>
 #include <Features/UI/UISprite.h>
 #include <Features/UI/UIGroup.h>
+#include <Features/UI/UIImageElement.h>
+#include <Features/UI/UIButtonElement.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
 #include <Features/Json/JsonBinder.h>
 #include <Features/TextRenderer/TextGenerator.h>
@@ -115,11 +117,12 @@ private:
     float animationDuration_ = 0.25f;
     std::unique_ptr<AnimationSequence> animationSequence_ = nullptr; // アニメーションシーケンス
 
-    std::unique_ptr<UIGroup> uiGroup_ = nullptr; // UIグループ
+    std::unique_ptr<UIElement> UIElement_ = nullptr; // UIグループ
+    std::vector<UIElement*> buttons_; 
 
 #ifdef _DEBUG
-    std::vector<UISprite*> debugSprites_; // デバッグ用スプライト
-    std::vector<UIButton*> debugButtons_; // デバッグ用ボタン
+    std::vector<UIImageElement*> debugSprites_; // デバッグ用スプライト
+    std::vector<UIButtonElement*> debugButtons_; // デバッグ用ボタン
 #endif // _DEBUG
 
 

@@ -3,6 +3,7 @@
 #include <System/Input/Input.h>
 #include <Debug/ImGuiDebugManager.h>
 #include <Features/Event/EventManager.h>
+#include <Features/UI/UITextRenderComponent.h>
 
 #include <Features/UI/UISprite.h>
 #include <Features/UI/UIButton.h>
@@ -10,7 +11,9 @@
 #include <Debug/Debug.h>
 #include <Application/Setting/Setting.h>
 
+
 #include <System/Audio/AudioSystem.h>
+#include <Features/UI/UINavigationManager.h>
 
 
 
@@ -24,82 +27,58 @@ PauseMenu::~PauseMenu()
 
 void PauseMenu::Initialize()
 {
-    uiGroup_ = std::make_unique<UIGroup>();
-    uiGroup_->Initialize();
+    background_ = std::make_unique<UIImageElement>("PauseMenu_background", WinApp::kWindowSize_, WinApp::kWindowSize_);
+    background_->Initialize();
 
-    auto backSprite = uiGroup_->CreateSprite("PauseMenu_blackback");
-    backSprite->SetSize(WinApp::kWindowSize_);
-    backSprite->SetColor({ 0, 0, 0, 0.8f }); // 半透明の黒背景
-    backSprite->SetPos({ 0, 0 });
-    backSprite->SetAnchor({ 0,0 });// 左上にアンカーを設定
+    auto sprite = std::make_unique<UIImageElement>("PauseMenu_back", Vector2(400, 300), Vector2(400, 300));
+    sprite->Initialize();
+    sprite->AddComponent<UITextRenderComponent>(sprite.get());
 
-    auto sprite = uiGroup_->CreateSprite("PauseMenu_back", L"Pause");
+    auto resumeButton = std::make_unique<UIButtonElement>("PauseMenu_ResumeButton", Vector2(150, 200), Vector2(100, 50), "Resume");
+    resumeButton->Initialize();
+    resumeButton->SetOnClickUp([&]() { CliclEvent(EventType::Resume); });
+    resumeButton->SetOnClick([&]() { CliclEvent(EventType::Resume); });
 
-    // 再開ボタンの初期化
-    auto resumeButton   = uiGroup_->CreateButton("PauseMenu_ResumeButton",  L"Resume");
-    {
-        resumeButton->SetOnClickEnd([&]()
-                                    {
-                                        EventManager::GetInstance()->DispatchEvent(GameEvent("RequestResume", nullptr));// ポーズ解除イベントを送信
-                                        isActive_ = false; // ポーズメニューを非アクティブに
-                                        isDraw_ = false; // 描画を停止
-                                        Debug::Log("Resume button clicked\n");
-                                    });
-    }
-    // リトライボタンの初期化
-    auto retryButton    = uiGroup_->CreateButton("PauseMenu_RetryButton",   L"Retry");
-    {
-        retryButton->SetOnClickEnd([&]()
-                                   {
-                                       EventManager::GetInstance()->DispatchEvent(GameEvent("RequestRetry", nullptr));// リトライイベントを送信
-                                       isActive_ = false;// ポーズメニューを非アクティブに
-                                       isDraw_ = false;// 描画を停止
-                                       Debug::Log("Retry button clicked\n");
-                                   });
-    }
-    // タイトルへ戻るボタンの初期化
-    auto toTitleButton  = uiGroup_->CreateButton("PauseMenu_ToTitleButton", L"Title");
-    {
-        toTitleButton->SetOnClickEnd([&]()
-                                     {
-                                         EventManager::GetInstance()->DispatchEvent(GameEvent("RequestToTitle", nullptr));// タイトルへ戻るイベントを送信
-                                         isActive_ = false; // ポーズメニューを非アクティブに
-                                         isDraw_ = false;// 描画を停止
-                                         Debug::Log("ToTitle button clicked\n");
-                                     });
-    }
-    // オプションボタンの初期化
-    auto toOptionButton = uiGroup_->CreateButton("PauseMenu_OptionButton",  L"Option");
-    {
-        // オプションアイコン用のスプライトの初期化
-        auto optionButtonBack = std::make_shared<UISprite>();
-        optionButtonBack->Initialize("PauseMenu_OptionButtonIcon");
-        toOptionButton->AddChild(optionButtonBack);
+    auto retryButton = std::make_unique<UIButtonElement>("PauseMenu_RetryButton", Vector2(150, 270), Vector2(100, 50), "Retry");
+    retryButton->Initialize();
+    retryButton->SetOnClickUp([&]() { CliclEvent(EventType::Restart); });
+    retryButton->SetOnClick([&]() { CliclEvent(EventType::Restart); });
 
-        toOptionButton->SetOnClickEnd([&]()
-                                      {
-                                          // オプションメニューを開くイベントを送信
-                                          EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
-                                          isDraw_ = false;
-                                          Debug::Log("Option button clicked\n");
-                                      });
+    auto toTitleButton = std::make_unique<UIButtonElement>("PauseMenu_ToTitleButton", Vector2(150, 340), Vector2(100, 50), "Title");
+    toTitleButton->Initialize();
+    toTitleButton->SetOnClickUp([&]() { CliclEvent(EventType::ExitToTitle); });
+    toTitleButton->SetOnClick([&]() { CliclEvent(EventType::ExitToTitle); });
 
-    }
+    auto toOptionButton = std::make_unique<UIButtonElement>("PauseMenu_OptionButton", Vector2(150, 410), Vector2(100, 50), "Option");
+    toOptionButton->Initialize();
+    toOptionButton->SetOnClickUp([&]() { CliclEvent(EventType::OpenSettings); });
+    toOptionButton->SetOnClick([&]() { CliclEvent(EventType::OpenSettings); });
 
-    // ボタンをポーズメニュースプライトの子として追加
-    sprite->AddChild(resumeButton);
-    sprite->AddChild(retryButton);
-    sprite->AddChild(toTitleButton);
-    sprite->AddChild(toOptionButton);
+    auto navi1 = resumeButton->GetComponent<UINavigationComponent>();
+    auto navi2 = retryButton->GetComponent<UINavigationComponent>();
+    auto navi3 = toTitleButton->GetComponent<UINavigationComponent>();
+    auto navi4 = toOptionButton->GetComponent<UINavigationComponent>();
 
-    UIGroup::LinkHorizontal(
-        { resumeButton.get(), retryButton.get(), toTitleButton.get() }
-    );
+    navi1->SetNavigation(NavigationDirection::Right, retryButton.get());
+    navi1->SetNavigation(NavigationDirection::Up, toOptionButton.get());
 
-    // ナビゲーション設定
-    toOptionButton->SetNavigationTarget(resumeButton.get(), Direction::Down);
-    toOptionButton->SetNavigationTarget(retryButton.get(), Direction::Down);
-    toOptionButton->SetNavigationTarget(toTitleButton.get(), Direction::Down);
+    navi2->SetNavigation(NavigationDirection::Left, resumeButton.get());
+    navi2->SetNavigation(NavigationDirection::Right, toTitleButton.get());
+    navi2->SetNavigation(NavigationDirection::Up, toOptionButton.get());
+
+    navi3->SetNavigation(NavigationDirection::Left, retryButton.get());
+    navi3->SetNavigation(NavigationDirection::Up, toOptionButton.get());
+
+    navi4->SetNavigation(NavigationDirection::Down, resumeButton.get());
+    navi4->SetNavigation(NavigationDirection::Down, retryButton.get());
+    navi4->SetNavigation(NavigationDirection::Down, toTitleButton.get());
+
+    resumeButton_ = sprite->AddChild(std::move(resumeButton));
+    sprite->AddChild(std::move(retryButton));
+    sprite->AddChild(std::move(toTitleButton));
+    sprite->AddChild(std::move(toOptionButton));
+    background_->AddChild(std::move(sprite));
+
 }
 
 void PauseMenu::Update()
@@ -113,8 +92,11 @@ void PauseMenu::Update()
         }
         return;
     }
-
-    uiGroup_->Update();
+    if(UINavigationManager::GetInstance()->GetFocus() == nullptr)
+    {
+        UINavigationManager::GetInstance()->SetFocus(resumeButton_);
+    }
+    background_->Update();
 }
 
 void PauseMenu::Draw()
@@ -122,6 +104,36 @@ void PauseMenu::Draw()
     if (!isDraw_)
         return;
 
-    uiGroup_->Draw();
+    background_->Draw();
 
+}
+
+void PauseMenu::CliclEvent(EventType element)
+{
+    std::string eventName = GetDispatchEventName(element);
+    if (!eventName.empty())
+    {
+        EventManager::GetInstance()->DispatchEvent(GameEvent(eventName, nullptr));
+        isDraw_ = false; // 描画を停止
+        if (element != EventType::OpenSettings)
+            isActive_ = false; // ポーズメニューを非アクティブに
+        UINavigationManager::GetInstance()->ClearFocus();
+    }
+}
+
+std::string PauseMenu::GetDispatchEventName(EventType element)
+{
+    switch (element)
+    {
+        case EventType::Resume:
+            return "RequestResume";
+        case EventType::Restart:
+            return "RequestRetry";
+        case EventType::ExitToTitle:
+            return "RequestToTitle";
+        case EventType::OpenSettings:
+            return "OpenOptionMenu";
+        default:
+            return "";
+    }
 }

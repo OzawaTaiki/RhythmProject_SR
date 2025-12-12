@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <Features/UI/UIGroup.h>
+#include <Features/UI/UIButtonElement.h>
 #include <Math/Rect/Rect.h>
 
 
@@ -32,5 +32,5 @@ private:
     Vector2 moveOffset_;
     std::vector<Vector2> initialPositions_; // 各六角形の初期位置
 
-    std::unique_ptr<UIGroup> uiGroup_;
+    std::vector<std::unique_ptr<UIButtonElement>> elements_;
 };

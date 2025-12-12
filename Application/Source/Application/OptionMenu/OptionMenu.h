@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Application/Setting/SettingMenu.h>
+#include <Features/UI/UIButtonElement.h>
 
 #include <memory>
 
@@ -36,5 +37,5 @@ private:
 
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
 
-    std::shared_ptr<UIButton> closeButton_ = nullptr; // 閉じるボタン
+    std::unique_ptr<UIButtonElement> closeButton_ = nullptr; // 閉じるボタン
 };

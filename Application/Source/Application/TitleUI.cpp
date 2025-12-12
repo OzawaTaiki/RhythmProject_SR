@@ -2,7 +2,10 @@
 #include <Features/Event/EventManager.h>
 #include <Debug/ImguITools.h>
 #include <Features/UI/UITextBox.h>
-
+#include <Features/UI/UISpriteRenderComponent.h>
+#include <Features/UI/UIElement.h>
+#include <Features/UI/UIButtonElement.h>
+#include <Features/UI/UINavigationManager.h>
 TitleUI::TitleUI()
 {
     eventManager_=EventManager::GetInstance();
@@ -25,13 +28,12 @@ void TitleUI::Initialize()
     buttonExpandAnimationSequence_ = std::make_unique<AnimationSequence>("TitleUIExpand");
     buttonExpandAnimationSequence_->Initialize("Resources/Data/AnimSeq/");
 
-    uiGroup_ = std::make_unique<UIGroup>();
-    uiGroup_->Initialize();
 
     InitializeUIElements();
     isActive_ = false;
     isExpanding_= false;
     currentTime_ = 0.0f;
+
 }
 
 void TitleUI::Update()
@@ -46,6 +48,7 @@ void TitleUI::Update()
         {
             currentTime_ = buttonExpandAnimationSequence_->GetMaxPlayTime();
             isExpanding_ = false;
+            UINavigationManager::GetInstance()->SetFocus(uiElements_[TitleUIElement::StartButton]);
         }
 
         auto ui = uiElements_[TitleUIElement::Background];
@@ -53,30 +56,19 @@ void TitleUI::Update()
         ui->SetSize(size);
         Vector2 pos = buttonExpandAnimationSequence_->GetValueAtTime<Vector2>("buttonPos", currentTime_);
         auto button = animationUIElements_[TitleUIElement::StartParent];
-        button.uiElement->SetPos(button.basePos + pos);
+        button.uiElement->SetPosition(button.basePos + pos);
     }
+    backgroundElement_->Update();
 
     if (!isActive_)
         return;
-//
-//#ifdef _DEBUG
-//    ImGuiTool::TimeLine("TitleUIAnimation", titleAnimationSequence_.get());
-//    ImGuiTool::TimeLine("TitleUIExpand", buttonExpandAnimationSequence_.get());
-//    ImGui::Begin("TitleUI::", nullptr, ImGuiWindowFlags_NoTitleBar);
-//    if (ImGui::Button("Init"))
-//        Initialize();
-//    ImGui::End();
-//
-//#endif // _DEBUG
 
-    if(!isExpanding_)
+    if (!isExpanding_)
     {
         for (auto& [key, element] : animationUIElements_)
         {
             UpdateAnimationUI(key, delta);
         }
-
-        uiGroup_->Update();
     }
 }
 
@@ -85,7 +77,7 @@ void TitleUI::Draw()
     if (!isActive_)
         return;
 
-    uiGroup_->Draw();
+    backgroundElement_->Draw();
 }
 
 void TitleUI::OnEvent(const GameEvent& event)
@@ -101,117 +93,225 @@ void TitleUI::OnEvent(const GameEvent& event)
 
 }
 
+void TitleUI::EnterButtonExpandAnimation(AnimationUIElement& element)
+{
+    element.animationLabel = "positionOffset";
+    element.currentTime = 0.0f;
+    element.animating = true;
+}
+
+void TitleUI::ExitButtonExpandAnimation(AnimationUIElement& element)
+{
+    element.animationLabel = "return_posOffset";
+    element.currentTime = 0.0f;
+    element.animating = true;
+}
+
+void TitleUI::DisPatchEvent(const std::string& event)
+{
+    eventManager_->DispatchEvent(GameEvent(event, nullptr));
+    isActive_ = false;
+}
+
 void TitleUI::InitializeUIElements()
 {
-    auto background = uiGroup_->CreateSprite("title_background");
+    backgroundElement_ = std::make_unique<UIImageElement>("titleUI_background", Vector2(0, 0), Vector2(800, 600));
+    backgroundElement_->Initialize();
 
-    auto startParent = uiGroup_->CreateElement<UISprite>("title_startParent");
-    auto startButton = uiGroup_->CreateButton("title_start");
-    {// スタートボタン
+    auto startButton = std::make_unique<UIButtonElement>("title_start", Vector2(100, 100), Vector2(100, 100), "start", true);
+    startButton->Initialize();
+    startButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
+    startButton->SetOnHoverExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
+    startButton->SetOnFocusEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
+    startButton->SetOnFocusExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
+    startButton->SetOnClickUp([this](){DisPatchEvent("RequestStartGame");});
+    startButton->SetOnClick([this](){DisPatchEvent("RequestStartGame");});
 
-        startButton->SetOnHoverEnter([this]()
-                                     {
-                                         auto& element = animationUIElements_[TitleUIElement::StartParent];
-                                         element.animationLabel = "positionOffset";
-                                         element.currentTime = 0.0f;
-                                         element.animating = true;
-                                     });
-        startButton->SetOnHoverExit([this]()
-                                    {
-                                        auto& element = animationUIElements_[TitleUIElement::StartParent];
-                                        element.animationLabel = "return_posOffset";
-                                        element.currentTime = 0.0f;
-                                        element.animating = true;
-                                    });
-        startButton->SetOnClickEnd([this]()
-                                   {
-                                       eventManager_->DispatchEvent(GameEvent("RequestStartGame", nullptr));
-                                   });
+    auto startParent = std::make_unique<UIImageElement>("title_startParent", Vector2(100, 100), Vector2(120, 120));
+    startParent->Initialize();
 
-        startParent->AddChild(startButton);
+    auto startIcon = std::make_unique<UIImageElement>("title_startIcon", Vector2(0, 0), Vector2(100, 100));
+    startIcon->Initialize();
+    startButton->AddChild(std::move(startIcon));
 
-        auto startIcon = uiGroup_->CreateSprite("title_startIcon");
+    auto optionButton = std::make_unique<UIButtonElement>("title_options", Vector2(100, 250), Vector2(100, 100), "option", true);
+    optionButton->Initialize();
+    optionButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
+    optionButton->SetOnHoverExit([this](){ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]);});
+    optionButton->SetOnFocusEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
+    optionButton->SetOnFocusExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
+    optionButton->SetOnClickUp([this](){DisPatchEvent("OpenOptionMenu");});
+    optionButton->SetOnClick([this]() { DisPatchEvent("OpenOptionMenu"); });
 
-        startButton->AddChild(startIcon);
-    }
+    auto optionParent = std::make_unique<UIImageElement>("title_optionsParent", Vector2(100, 250), Vector2(120, 120));
+    optionParent->Initialize();
 
-    auto optionParent = uiGroup_->CreateElement<UISprite>("title_optionsParent");
-    auto optionButton = uiGroup_->CreateButton("title_options");
-    {// オプションボタン
-        optionButton->SetOnHoverEnter([this]()
-                                      {
-                                          auto& element = animationUIElements_[TitleUIElement::OptionsParent];
-                                          element.animationLabel = "positionOffset";
-                                          element.currentTime = 0.0f;
-                                          element.animating = true;
-                                      });
-        optionButton->SetOnHoverExit([this]()
-                                     {
-                                         auto& element = animationUIElements_[TitleUIElement::OptionsParent];
-                                         element.animationLabel = "return_posOffset";
-                                         element.currentTime = 0.0f;
-                                         element.animating = true;
-                                     });
-        optionButton->SetOnClickEnd([this]()
-                                    {
-                                        eventManager_->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
-                                        isActive_ = false;
-                                    });
-        optionParent->AddChild(optionButton);
+    auto optionIcon = std::make_unique<UIImageElement>("title_optionsIcon", Vector2(0, 0), Vector2(100, 100));
+    optionIcon->Initialize();
+    optionButton->AddChild(std::move(optionIcon));
 
-        auto optionIcon = uiGroup_->CreateSprite("title_optionsIcon");
-        optionButton->AddChild(optionIcon);
+    auto exitButton = std::make_unique<UIButtonElement>("title_exit", Vector2(100, 400), Vector2(100, 100), "exit", true);
+    exitButton->Initialize();
+    exitButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::ExitParent]); });
+    exitButton->SetOnHoverExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::ExitParent]); });
+    exitButton->SetOnFocusEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::ExitParent]); });
+    exitButton->SetOnFocusExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::ExitParent]); });
+#ifndef _DEBUG
+    exitButton->SetOnClickUp([this]()
+                             {
+                                 eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
+                             });
+    exitButton->SetOnClick([this]()
+                           {
+                               eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
+                           });
+#endif
+    auto exitParent = std::make_unique<UIImageElement>("title_exitParent", Vector2(100, 400), Vector2(120, 120));
+    exitParent->Initialize();
+    auto exitIcon = std::make_unique<UIImageElement>("title_exitIcon", Vector2(0, 0), Vector2(100, 100));
+    exitIcon->Initialize();
+    exitButton->AddChild(std::move(exitIcon));
 
-    }
 
-    auto exitParent = uiGroup_->CreateElement<UISprite>("title_exitParent");
-    auto exitButton = uiGroup_->CreateButton("title_exit");
-    {
-        exitButton->SetOnHoverEnter([this]()
-                                    {
-                                        auto& element = animationUIElements_[TitleUIElement::ExitParent];
-                                        element.animationLabel = "positionOffset";
-                                        element.currentTime = 0.0f;
-                                        element.animating = true;
-                                    });
+    uiElements_[TitleUIElement::Background] = backgroundElement_.get();
+    uiElements_[TitleUIElement::StartButton] = startParent->AddChild(std::move(startButton));
+    uiElements_[TitleUIElement::OptionsButton] = optionParent->AddChild(std::move(optionButton));
+    uiElements_[TitleUIElement::ExitButton] = exitParent->AddChild(std::move(exitButton));
 
-        exitButton->SetOnHoverExit([this]()
-                                   {
-                                       auto& element = animationUIElements_[TitleUIElement::ExitParent];
-                                       element.animationLabel = "return_posOffset";
-                                       element.currentTime = 0.0f;
-                                       element.animating = true;
-                                   });
+    auto navi1 = uiElements_[TitleUIElement::StartButton]->GetComponent<UINavigationComponent>();
+    auto navi2 = uiElements_[TitleUIElement::OptionsButton]->GetComponent<UINavigationComponent>();
+    auto navi3 = uiElements_[TitleUIElement::ExitButton]->GetComponent<UINavigationComponent>();
 
-        exitButton->SetOnClickEnd([this]()
-                                  {
-#ifndef _DEBUG // デバッグビルド時は終了しない
-                                      eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
-#endif // _DEBUG
-                                  });
-        exitParent->AddChild(exitButton);
+    navi1->SetNavigation(NavigationDirection::Right, uiElements_[TitleUIElement::OptionsButton]);
+    navi1->SetFocused(true); // 最初はスタートボタンにフォーカス
+    navi2->SetNavigation(NavigationDirection::Left, uiElements_[TitleUIElement::StartButton]);
+    navi2->SetNavigation(NavigationDirection::Right, uiElements_[TitleUIElement::ExitButton]);
 
-        auto exitIcon = uiGroup_->CreateSprite("title_exitIcon");
-        exitButton->AddChild(exitIcon);
-    }
+    navi3->SetNavigation(NavigationDirection::Left, uiElements_[TitleUIElement::OptionsButton]);
 
-    background->AddChild(startParent);
-    startParent->AddChild(optionParent);
-    optionParent->AddChild(exitParent);
+    Vector2 startPos = startParent->GetPosition();
+    Vector2 optionPos = optionParent->GetPosition();
+    Vector2 exitPos = exitParent->GetPosition();
 
-    // スタートボタンとリングの重なっている部分を無効化するためのダミーボタン
-    // なのでコールバックは設定しない
-    auto dummyButton = uiGroup_->CreateButton("title_dummyButton");
-    background->AddChild(dummyButton);
 
-    uiElements_[TitleUIElement::Background]     = background;
-    uiElements_[TitleUIElement::StartButton]    = startButton;
-    uiElements_[TitleUIElement::OptionsButton]  = optionButton;
-    uiElements_[TitleUIElement::ExitButton]     = exitButton;
+    animationUIElements_[TitleUIElement::ExitParent]    = { optionParent->AddChild(std::move(exitParent)), exitPos };
+    animationUIElements_[TitleUIElement::OptionsParent] = { startParent->AddChild(std::move(optionParent)), optionPos };
+    animationUIElements_[TitleUIElement::StartParent]  = { backgroundElement_->AddChild(std::move(startParent)) , startPos };
 
-    animationUIElements_[TitleUIElement::StartParent]   = { startParent, startParent->GetPos() };
-    animationUIElements_[TitleUIElement::OptionsParent] = { optionParent, optionParent->GetPos() };
-    animationUIElements_[TitleUIElement::ExitParent]    = { exitParent, exitParent->GetPos() };
+
+    auto dummyButton = std::make_unique<UIButtonElement>("title_dummyButton", Vector2(0, 0), Vector2(200, 200), "", true);
+    dummyButton->Initialize();
+    backgroundElement_->AddChild(std::move(dummyButton));
+
+
+
+    //    auto startParent = uiGroup_->CreateElement<UISprite>("title_startParent");
+    //    auto startButton = uiGroup_->CreateButton("title_start");
+    //    {// スタートボタン
+    //
+    //        startButton->SetOnHoverEnter([this]()
+    //                                     {
+    //                                         auto& element = animationUIElements_[TitleUIElement::StartParent];
+    //                                         element.animationLabel = "positionOffset";
+    //                                         element.currentTime = 0.0f;
+    //                                         element.animating = true;
+    //                                     });
+    //        startButton->SetOnHoverExit([this]()
+    //                                    {
+    //                                        auto& element = animationUIElements_[TitleUIElement::StartParent];
+    //                                        element.animationLabel = "return_posOffset";
+    //                                        element.currentTime = 0.0f;
+    //                                        element.animating = true;
+    //                                    });
+    //        startButton->SetOnClickEnd([this]()
+    //                                   {
+    //                                       eventManager_->DispatchEvent(GameEvent("RequestStartGame", nullptr));
+    //                                   });
+    //
+    //        startParent->AddChild(startButton);
+    //
+    //        auto startIcon = uiGroup_->CreateSprite("title_startIcon");
+    //
+    //        startButton->AddChild(startIcon);
+    //    }
+    //
+    //    auto optionParent = uiGroup_->CreateElement<UISprite>("title_optionsParent");
+    //    auto optionButton = uiGroup_->CreateButton("title_options");
+    //    {// オプションボタン
+    //        optionButton->SetOnHoverEnter([this]()
+    //                                      {
+    //                                          auto& element = animationUIElements_[TitleUIElement::OptionsParent];
+    //                                          element.animationLabel = "positionOffset";
+    //                                          element.currentTime = 0.0f;
+    //                                          element.animating = true;
+    //                                      });
+    //        optionButton->SetOnHoverExit([this]()
+    //                                     {
+    //                                         auto& element = animationUIElements_[TitleUIElement::OptionsParent];
+    //                                         element.animationLabel = "return_posOffset";
+    //                                         element.currentTime = 0.0f;
+    //                                         element.animating = true;
+    //                                     });
+    //        optionButton->SetOnClickEnd([this]()
+    //                                    {
+    //                                        eventManager_->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
+    //                                        isActive_ = false;
+    //                                    });
+    //        optionParent->AddChild(optionButton);
+    //
+    //        auto optionIcon = uiGroup_->CreateSprite("title_optionsIcon");
+    //        optionButton->AddChild(optionIcon);
+    //
+    //    }
+    //
+    //    auto exitParent = uiGroup_->CreateElement<UISprite>("title_exitParent");
+    //    auto exitButton = uiGroup_->CreateButton("title_exit");
+    //    {
+    //        exitButton->SetOnHoverEnter([this]()
+    //                                    {
+    //                                        auto& element = animationUIElements_[TitleUIElement::ExitParent];
+    //                                        element.animationLabel = "positionOffset";
+    //                                        element.currentTime = 0.0f;
+    //                                        element.animating = true;
+    //                                    });
+    //
+    //        exitButton->SetOnHoverExit([this]()
+    //                                   {
+    //                                       auto& element = animationUIElements_[TitleUIElement::ExitParent];
+    //                                       element.animationLabel = "return_posOffset";
+    //                                       element.currentTime = 0.0f;
+    //                                       element.animating = true;
+    //                                   });
+    //
+    //        exitButton->SetOnClickEnd([this]()
+    //                                  {
+    //#ifndef _DEBUG // デバッグビルド時は終了しない
+    //                                      eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
+    //#endif // _DEBUG
+    //                                  });
+    //        exitParent->AddChild(exitButton);
+    //
+    //        auto exitIcon = uiGroup_->CreateSprite("title_exitIcon");
+    //        exitButton->AddChild(exitIcon);
+    //    }
+    //
+    //    background->AddChild(startParent);
+    //    startParent->AddChild(optionParent);
+    //    optionParent->AddChild(exitParent);
+    //
+    //    // スタートボタンとリングの重なっている部分を無効化するためのダミーボタン
+    //    // なのでコールバックは設定しない
+    //    auto dummyButton = uiGroup_->CreateButton("title_dummyButton");
+    //    background->AddChild(dummyButton);
+    //
+    //    uiElements_[TitleUIElement::Background]     = background;
+    //    uiElements_[TitleUIElement::StartButton]    = startButton;
+    //    uiElements_[TitleUIElement::OptionsButton]  = optionButton;
+    //    uiElements_[TitleUIElement::ExitButton]     = exitButton;
+    //
+    //    animationUIElements_[TitleUIElement::StartParent]   = { startParent, startParent->GetPos() };
+    //    animationUIElements_[TitleUIElement::OptionsParent] = { optionParent, optionParent->GetPos() };
+    //    animationUIElements_[TitleUIElement::ExitParent]    = { exitParent, exitParent->GetPos() };
 }
 
 void TitleUI::UpdateAnimationUI(TitleUIElement elem, float deltaTime)
@@ -238,7 +338,7 @@ void TitleUI::UpdateAnimationUI(TitleUIElement elem, float deltaTime)
         }
 
         Vector2 val = titleAnimationSequence_->GetValueAtTime<Vector2>(element.animationLabel, element.currentTime);
-        element.uiElement->SetPos(element.basePos + val);
+        element.uiElement->SetPosition(element.basePos + val);
     }
 }
 //

@@ -1,34 +1,139 @@
 {
     "PauseMenu_OptionButton": {
-        "PauseMenu_OptionButton_anchor": {
+        "anchor": {
             "x": 0.5,
             "y": 0.5
         },
-        "PauseMenu_OptionButton_color": {
+        "clipRect": {
+            "leftTop": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0
+            }
+        },
+        "collider": {
+            "parameters": {
+                "localOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "localSize": {
+                    "x": 100.0,
+                    "y": 100.0
+                }
+            },
+            "transformMode": "UIDependent",
+            "type": "Rectangle"
+        },
+        "colliderType": 0,
+        "color": {
             "w": 1.0,
             "x": 0.800000011920929,
             "y": 0.800000011920929,
             "z": 0.800000011920929
         },
-        "PauseMenu_OptionButton_directoryPath": "Resources/images/",
-        "PauseMenu_OptionButton_isActive": 3452764417,
-        "PauseMenu_OptionButton_isVisible": 13487361,
-        "PauseMenu_OptionButton_label": "PauseMenu_OptionButton",
-        "PauseMenu_OptionButton_pos": {
-            "x": 202.0,
-            "y": -80.0
+        "disabledColor": {
+            "w": 0.5,
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
         },
-        "PauseMenu_OptionButton_rotate": 0.0,
-        "PauseMenu_OptionButton_size": {
-            "x": 64.0,
-            "y": 64.0
+        "focusColor": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 0.6000000238418579
         },
-        "PauseMenu_OptionButton_textureName": "white.png",
-        "PauseMenu_OptionButtonbackgroundColor": {
+        "focusable": true,
+        "fontConfig": {
+            "atlasSize": {
+                "x": 1024.0,
+                "y": 1024.0
+            },
+            "fontFilePath": "Resources/Fonts/NotoSansJP-Regular.ttf",
+            "fontSize": 24.0
+        },
+        "hasRect": false,
+        "hoverColor": {
+            "w": 1.0,
+            "x": 0.8999999761581421,
+            "y": 0.8999999761581421,
+            "z": 0.8999999761581421
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "normalColor": {
             "w": 1.0,
             "x": 0.800000011920929,
             "y": 0.800000011920929,
             "z": 0.800000011920929
-        }
+        },
+        "order": 30,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 175.0,
+            "y": -75.0
+        },
+        "pressedColor": {
+            "w": 1.0,
+            "x": 0.6000000238418579,
+            "y": 0.6000000238418579,
+            "z": 0.6000000238418579
+        },
+        "size": {
+            "x": 75.0,
+            "y": 75.0
+        },
+        "text": "Option",
+        "textAlignment": 4,
+        "textColor": {
+            "w": 1.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "texturePath": "white.png"
     }
 }

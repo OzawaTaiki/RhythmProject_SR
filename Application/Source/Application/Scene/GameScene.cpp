@@ -25,6 +25,7 @@
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Features/UI/Collider/UICollisionManager.h>
 #include <Features/TextRenderer/Text3DRenderer.h>
+#include <Features/UI/UINavigationManager.h>
 
 
 GameScene::GameScene()
@@ -43,6 +44,7 @@ GameScene::~GameScene()
     EventManager::GetInstance()->RemoveEventListener("RequestResume", this);
     EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
     EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
+
 }
 
 // TODO ; やりたいこと にゅうりょく精度アップ
@@ -255,7 +257,6 @@ void GameScene::Update()
     spectrumTextureGenerator_->ReserveClear();
 
 #pragma endregion // Application
-    UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
 
     if (enableDebugCamera_)
     {
@@ -281,6 +282,7 @@ void GameScene::Update()
             data->resultData.score = gameCore_->GetMaxCombo() * 100; // 仮のスコア計算
             data->resultData.judgeResult = gameCore_->GetJudgeResult();
 
+            UINavigationManager::GetInstance()->ClearFocus();
             SceneManager::ReserveScene("ResultScene", std::move(data)); // 結果シーンにデータを渡す
         }
     }
@@ -291,6 +293,7 @@ void GameScene::Update()
         {
             auto data = std::make_unique<SharedBeatMapData>();
             data->beatMapData = currentBeatMapData_;
+            UINavigationManager::GetInstance()->ClearFocus();
             SceneManager::ReserveScene("EditorScene", std::move(data)); // エディタシーンに譜面データを渡す
         }
     }
@@ -437,6 +440,7 @@ void GameScene::Retry()
 
 void GameScene::ToTitle()
 {
+    UINavigationManager::GetInstance()->ClearFocus();
     SceneManager::ReserveScene("TitleScene", nullptr);
 }
 

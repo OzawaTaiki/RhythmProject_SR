@@ -31,7 +31,7 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
-    selectButton_ = std::make_unique<UIButton>();
+    /*selectButton_ = std::make_unique<UIButton>();
     selectButton_->Initialize("SelectButton");
     selectButton_->SetPos(WinApp::kWindowSize_ * 0.5f);
     selectButton_->SetSize({ 200, 100 });
@@ -49,7 +49,7 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
                                          data->selectedBeatMapFilePath = file;
                                          SceneManager::ReserveScene("GameScene", std::move(data));
                                      }
-                                 });
+                                 });*/
 
 }
 
@@ -96,7 +96,7 @@ void SelectScene::Draw()
 {
 
     Sprite::PreDraw();
-    selectButton_->Draw();
+    //selectButton_->Draw();
 }
 
 void SelectScene::DrawShadow() {}

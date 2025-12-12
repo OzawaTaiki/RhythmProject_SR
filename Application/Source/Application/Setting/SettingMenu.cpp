@@ -6,6 +6,8 @@
 #include <Features/Event/EventManager.h>
 
 #include <Application/Setting/Setting.h>
+#include <Features/UI/UIImageElement.h>
+#include <Features/UI/UITextElement.h>
 
 SettingMenu::SettingMenu()
 {
@@ -21,15 +23,13 @@ SettingMenu::~SettingMenu()
 
 void SettingMenu::Initialize()
 {
-    uiGroup_ = std::make_unique<UIGroup>();
-    uiGroup_->Initialize();
+    backSprite_ = std::make_unique<UIImageElement>("SettingMenu_Fullback", Vector2(100, 100), Vector2(600, 400));
+    backSprite_->Initialize();
 
-    // 背景スプライト作成
-    auto sprite = uiGroup_->CreateSprite("SettingMenu_back", L"Settings");
-
-    // 音量スライダー作成
-    auto volumeSlider = uiGroup_->CreateSlider("VolumeSlider", 0.0f, 1.0f);
-    volumeSlider->SetSize({ 200, 20 });
+    auto back = std::make_unique<UIImageElement>("SettingMenu_back", Vector2(100, 100), Vector2(600, 400));
+    back->Initialize();
+    auto volumeSlider = std::make_unique<UISliderElement>("VolumeSlider", Vector2(150, 150), Vector2(200, 20),true);
+    volumeSlider->Initialize();
     volumeSlider->SetValue(Setting::current_.masterVolume);
     volumeSlider->SetOnValueChanged([](float value)
                                     {
@@ -38,42 +38,48 @@ void SettingMenu::Initialize()
                                         Debug::Log(std::format("Volume changed: {}\n", value));
                                     });
 
-    // ノーツ速度スライダー作成
-    auto noteSpeedSlider = uiGroup_->CreateSlider("NoteSpeedSlider", 5.0f, 100.0f);
-    //noteSpeedSlider->SetPos({ 100, 150 });
-    noteSpeedSlider->SetSize({ 200, 20 });
+    auto label = std::make_unique<UITextElement>("VolumeLabel", Vector2(100, 150),  "Volume");
+    label->Initialize();
+
+    volumeSlider->AddChild(std::move(label));
+
+
+    auto noteSpeedSlider = std::make_unique<UISliderElement>("NoteSpeedSlider", Vector2(150, 200), Vector2(200, 20), true);
+    noteSpeedSlider->Initialize();
     noteSpeedSlider->SetValue(Setting::current_.noteSpeed);
     noteSpeedSlider->SetOnValueChanged([&](float value)
                                        {
                                            Setting::current_.noteSpeed = value; // ノーツ速度を設定に反映
-
                                            ValueChangedEventData eventData("NoteSpeed", value);
                                            EventManager::GetInstance()->DispatchEvent(GameEvent("ValueChanged", &eventData)); // ノーツ速度変更イベントをディスパッチ
                                            Debug::Log(std::format("Note speed changed: {}\n", value));
                                        });
 
-    // 音声遅延スライダー作成
-    auto audioLatencySlider = uiGroup_->CreateSlider("AudioLatencySlider", -1000.0f, 1000.0f);
-    audioLatencySlider->SetSize({ 200, 20 });
+    label = std::make_unique<UITextElement>("NoteSpeedLabel", Vector2(100, 200),  "Speed");
+    label->Initialize();
+    noteSpeedSlider->AddChild(std::move(label));
+
+    auto audioLatencySlider = std::make_unique<UISliderElement>("AudioLatencySlider", Vector2(150, 250), Vector2(200, 20), true);
+    audioLatencySlider->Initialize();
     audioLatencySlider->SetValue(Setting::current_.audioLatencyMs);
     audioLatencySlider->SetOnValueChanged([&](float value)
                                           {
-                                              Setting::current_.audioLatencyMs = value; // 音声遅延を設定に   反映
-
+                                              Setting::current_.audioLatencyMs = value; // 音声遅延を設定に反映
                                               ValueChangedEventData eventData("AudioLatency", value);
                                               EventManager::GetInstance()->DispatchEvent(GameEvent("ValueChanged", &eventData)); // 音声遅延変更イベントをディスパッチ
                                               Debug::Log(std::format("Audio latency changed: {}\n", value));
                                           });
 
-    // スプライトにスライダーを追加
-    sprite->AddChild(volumeSlider);
-    sprite->AddChild(noteSpeedSlider);
-    sprite->AddChild(audioLatencySlider);
+    label = std::make_unique<UITextElement>("AudioLatencyLabel", Vector2(100, 250),  "Latency");
+    label->Initialize();
+    audioLatencySlider->AddChild(std::move(label));
 
-    // スライダーをリストに追加
-    sliders_.push_back(volumeSlider);
-    sliders_.push_back(noteSpeedSlider);
-    sliders_.push_back(audioLatencySlider);
+    back->AddChild(std::move(volumeSlider));
+    back->AddChild(std::move(noteSpeedSlider));
+    back->AddChild(std::move(audioLatencySlider));
+
+    backSprite_->AddChild(std::move(back));
+
 
     previewPanel_ = std::make_unique<SettingsPreviewPanel>();
     previewPanel_->Initialize();
@@ -95,7 +101,7 @@ void SettingMenu::Update()
         Debug::Log("SettingMenu closed\n");
     }
 
-    uiGroup_->Update();
+    backSprite_->Update();
     previewPanel_->Update();
 
 }
@@ -105,7 +111,7 @@ void SettingMenu::Draw()
     if (!isActive_)
         return;
 
-    uiGroup_->Draw();
+    backSprite_->Draw();
     previewPanel_->Draw();
 }
 

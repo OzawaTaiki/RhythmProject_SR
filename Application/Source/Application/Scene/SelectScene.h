@@ -56,6 +56,6 @@ private:
 
     std::shared_ptr<LightGroup> lightGroup_ = nullptr;
 
-    std::unique_ptr<UIButton> selectButton_ = nullptr;
+    //std::unique_ptr<UIButton> selectButton_ = nullptr;
 
 };

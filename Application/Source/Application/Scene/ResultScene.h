@@ -23,7 +23,7 @@ class ResultScene : public BaseScene
 {
 public:
     ResultScene() = default;
-    ~ResultScene() override = default;
+    ~ResultScene()override;
 
     /// <summary>
     /// シーンの初期化処理。

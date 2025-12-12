@@ -10,12 +10,12 @@
 
 namespace BME {
 
-void EditorRenderer::Initialize(EditorCoordinate* _coordinate, const Matrix4x4& _matVP)
+void EditorRenderer::Initialize(EditorCoordinate* _coordinate, State* _state,const Matrix4x4& _matVP)
 {
     noteRenderer_.Initialize();
     gridRenderer_.Initialize(_coordinate);
     waveformRenderer_.Initialize(_matVP);
-    timelineRenderer_.Initialize();
+    timelineRenderer_.Initialize([_state]() { _state->SetToTestMode(true); });
     uiRenderer_.Initialize();
 
     LayerSystem::CreateLayer("main", 0);
@@ -69,7 +69,7 @@ void EditorRenderer::Draw(
         waveformRenderer_.Draw(_audioController, _currentTime);
 
         // タイムライン描画
-        timelineRenderer_.Draw(_state,_audioController, _currentTime);
+        timelineRenderer_.Draw(_audioController, _currentTime);
 
         // UI描画
         uiRenderer_.Draw(_state, _document, _audioController, _fileManager, beatManager, _coordinate);

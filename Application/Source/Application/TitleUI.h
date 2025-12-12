@@ -1,32 +1,16 @@
 #pragma once
 
-#include <Features/UI/UIGroup.h>
+#include <Features/UI/UIImageElement.h>
 #include <Features/Event/EventListener.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
+#include <Features/UI/Collider/UIQuadCollider.h>
 
 #include <memory>
-#include <Features/UI/Collider/UIQuadCollider.h>
 
 class EventManager;
 class TitleUI : public iEventListener
 {
 private:
-public:
-    TitleUI();
-    ~TitleUI();
-
-
-    void Initialize();
-
-    void Update();
-
-    void Draw();
-
-    void OnEvent(const GameEvent& event) override;
-
-private:
-
-    void InitializeUIElements();
 
     enum class TitleUIElement
     {
@@ -43,13 +27,34 @@ private:
     };
     struct AnimationUIElement
     {
-        std::shared_ptr<UIBase> uiElement = nullptr;
+        UIElement* uiElement = nullptr;
 
         Vector2 basePos = {};
         float currentTime = 0.0f;
         std::string animationLabel = "";
         bool animating = false;
     };
+public:
+    TitleUI();
+    ~TitleUI();
+
+
+    void Initialize();
+
+    void Update();
+
+    void Draw();
+
+    void OnEvent(const GameEvent& event) override;
+
+private:
+
+    void EnterButtonExpandAnimation(AnimationUIElement& element);
+    void ExitButtonExpandAnimation(AnimationUIElement& element);
+    void DisPatchEvent(const std::string& event);
+
+    void InitializeUIElements();
+
 
 
     void UpdateAnimationUI(TitleUIElement elem, float deltaTime);
@@ -74,9 +79,9 @@ private:
 
     EventManager* eventManager_;
 
-    std::unique_ptr<UIGroup> uiGroup_;
+    std::unique_ptr<UIImageElement> backgroundElement_;
 
-    std::map<TitleUIElement, std::shared_ptr<UIBase>> uiElements_;
+    std::map<TitleUIElement, UIElement*> uiElements_;
     std::map<TitleUIElement, AnimationUIElement> animationUIElements_;
 
     std::unique_ptr<AnimationSequence> titleAnimationSequence_;

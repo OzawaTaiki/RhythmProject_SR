@@ -58,7 +58,7 @@ public:
 
 private:
     template<typename T>
-    bool GetIfExists(const std::string& kry, const nlohmann::json& jsonData ,T* out);
+    bool GetIfExists(const std::string& key, const nlohmann::json& jsonData ,T* out);
 
     // JSONデータをBeatMapDataに変換
     BeatMapData ParseJsonToBeatMap(const nlohmann::json& jsonData);
@@ -80,7 +80,7 @@ private: // Singleton
 };
 
 template<typename T>
-inline bool BeatMapLoader::GetIfExists(const std::string& kry, const nlohmann::json& jsonData, T* out)
+inline bool BeatMapLoader::GetIfExists(const std::string& key, const nlohmann::json& jsonData, T* out)
 {
     if (!jsonData.contains(name))
         return false;

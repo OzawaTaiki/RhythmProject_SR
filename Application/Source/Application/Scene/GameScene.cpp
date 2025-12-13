@@ -45,7 +45,6 @@ GameScene::~GameScene()
     EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
     EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
 
-    loadingThread_.join();
 }
 
 // TODO ; やりたいこと にゅうりょく精度アップ
@@ -114,10 +113,10 @@ void GameScene::Initialize(SceneData* sceneData)
         }
     }
     isLoadComplete_ = false;
-    loadingThread_ = std::thread(&GameScene::Load, this, beforeScene, beatMapFilePath, editorBeatMapData);
-
+    //loadingThread_ = std::thread(&GameScene::Load, this, beforeScene, beatMapFilePath, editorBeatMapData);
     gameEnvironment_ = std::make_unique<GameEnvironment>();
     gameEnvironment_->Initialize();
+    Load(beforeScene, beatMapFilePath, editorBeatMapData);
 //    gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
 //    gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs); // ノーツの移動速度とオフセット時間を設定
 //

@@ -126,14 +126,14 @@ void GameEnvironment::OnEvent(const GameEvent& event)
         auto data = event.GetData();
         if (!data)
             return;
+
         auto speakerData = dynamic_cast<ColorChangeEvent*>(data);
         if (!speakerData)
             return;
 
         // スピーカーオブジェクトの色変化タイマーをリセット
-        speakerColorTimers_[speakerData->targets] = 0.0f;
+        speakerColorTimers_[speakerData->targets] = -speakerData->delayTime;
 
-        speakerData->targets->ChangeAnimation("anim", 0.1f, false);
     }
 }
 
@@ -277,6 +277,16 @@ void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
         float& timer = it->second;
 
         timer += deltaTime;
+        if (timer < 0.0f)
+        {
+            ++it;
+            continue;
+        }
+
+        if(timer - deltaTime < 0.0f)
+            speaker->ChangeAnimation("anim", 0.1f, false);
+
+
         const float effectDuration = 1.0f; // 色変化の持続時間
         float progress = timer / effectDuration;
         float eased = Easing::EaseInCubic(progress);

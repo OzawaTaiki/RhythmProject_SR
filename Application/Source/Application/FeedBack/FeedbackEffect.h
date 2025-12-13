@@ -9,6 +9,7 @@
 #include <Application/FeedBack/TapEffect/TapEffect.h>
 #include <Application/GameEnvironment/BackgroundEffect.h>
 #include <Application/FeedBack/HoldingEffect/NoteHoldEffect.h>
+#include <APplication/FeedBack/SpeakerSeekEffect.h>
 
 #include <Application/Input/InputData.h>
 
@@ -70,6 +71,8 @@ public:
     /// </summary>
     void PlayMissedEffect();
 
+    void PlaySpeakerSeekEffect(int32_t laneIndex, JudgeType judgeType);
+
     /// <summary>
     /// ホールドエフェクトを再生する。
     /// </summary>
@@ -121,6 +124,8 @@ private:
     std::array<std::unique_ptr<JudgeText>, kMaxJudgeTexts_> judgeTextPool_;
     std::bitset<kMaxJudgeTexts_> usedJudgeTexts_; // 使用中のテキストを管理するビットセット
 
+    const int32_t kMaxSeekEffects_ = 16; // 最大のスピーカーシークエフェクト数
+    std::unique_ptr<SpeakerSeekEffect> speakerSeekEffect_; // スピーカーに向かうエフェクト
 
     /// <summary>
     /// ミス時に表示するビネットエフェクト
@@ -134,4 +139,5 @@ private:
 
     // 座標変換用カメラ
     Camera* camera_ = nullptr; // カメラへのポインタ
+    GameEnvironment* gameEnvironment_ = nullptr; // ゲーム環境へのポインタ
 };

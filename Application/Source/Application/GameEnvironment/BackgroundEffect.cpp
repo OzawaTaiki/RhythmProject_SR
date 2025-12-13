@@ -1,7 +1,7 @@
 #include "BackgroundEffect.h"
 #include <Application/GameEnvironment/SpeakerEffect.h>
 
-void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex)
+void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex, float delayTime)
 {
     if (!gameEnvironment_)
         return;
@@ -16,5 +16,5 @@ void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex)
 
     // スピーカーエフェクト再生
     SpeakerEffect effect;
-    effect.PlaySpeakerEffect(speaker);
+    effect.PlaySpeakerEffect(speaker,delayTime);
 }

@@ -26,7 +26,7 @@ void SpeakerEffect::PlaySpeakerEffect(const Vector3& pos)
     rectanglleParticleEmitter_.GenerateParticles();
 }
 
-void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent)
+void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent, float delayTime)
 {
     // 親オブジェクトのワールド変換行列設定
     auto worldTransform = parent->GetWorldTransform();
@@ -43,5 +43,6 @@ void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent)
     rectanglleParticleEmitter_.GenerateParticles();
     ColorChangeEvent eventData;
     eventData.targets = parent;
+    eventData.delayTime = delayTime;
     EventManager::GetInstance()->DispatchEvent(GameEvent("SpeakerEffectColorChange", &eventData));
 }

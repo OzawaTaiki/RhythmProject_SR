@@ -12,6 +12,7 @@
 struct ColorChangeEvent : EventData
 {
     ObjectModel* targets;
+    float delayTime = 0.0f;
 };
 
 class Camera;

@@ -25,7 +25,7 @@ public:
     /// 指定オブジェクトを親にしてスピーカーエフェクトを再生する。
     /// </summary>
     /// <param name="parent">エフェクトの親オブジェクト</param>
-    void PlaySpeakerEffect(ObjectModel* parent);
+    void PlaySpeakerEffect(ObjectModel* parent,float delayTime);
 
 private:
     // 各種エミッター

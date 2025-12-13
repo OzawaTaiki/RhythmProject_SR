@@ -2,6 +2,7 @@
 
 #include <Features/Camera/Camera/Camera.h>
 #include <Framework/LayerSystem/LayerSystem.h>
+#include <Application/Lane/Lane.h>
 
 #include <Application/GameEnvironment/GameEnvironment.h>
 
@@ -9,6 +10,7 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
 {
     if (camera)
         camera_ = camera;
+    gameEnvironment_ = gameEnvironment;
 
     judgeSound_ = std::make_unique<JudgeSound>();
     judgeSound_->Initialize();
@@ -20,10 +22,14 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
     tapEffect_->Initialize();
 
     backgroundEffect_ = std::make_unique<BackgroundEffect>();
-    backgroundEffect_->SetGameEnvironment(gameEnvironment);
+    backgroundEffect_->SetGameEnvironment(gameEnvironment_);
 
     noteHoldEffect_ = std::make_unique<NoteHoldEffect>();
     noteHoldEffect_->Initialize();
+
+    speakerSeekEffect_ = std::make_unique<SpeakerSeekEffect>();
+    speakerSeekEffect_->Initialize();
+
 
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
@@ -53,6 +59,9 @@ void FeedbackEffect::Update(float deltaTime, const std::vector<InputData>& input
 
     if (judgeSound_)
         judgeSound_->CleanupStoppedVoices(); // 停止した音声をクリーンアップ
+
+    if (speakerSeekEffect_)
+        speakerSeekEffect_->Update(deltaTime);
 
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
@@ -88,7 +97,7 @@ void FeedbackEffect::Update(float deltaTime, const std::vector<InputData>& input
 
 }
 
-void FeedbackEffect::Draw() 
+void FeedbackEffect::Draw()
 {
     LayerSystem::SetLayer("GameCore");
     for (const auto& laneEffect : laneEffects_)
@@ -119,8 +128,9 @@ void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType)
     if (judgeEffect_)
         judgeEffect_->Play(laneIndex);
 
+    PlaySpeakerSeekEffect(laneIndex, judgeType);
     if (backgroundEffect_)
-        backgroundEffect_->PlaySpeakerEffect(laneIndex);
+        backgroundEffect_->PlaySpeakerEffect(laneIndex, speakerSeekEffect_->GetDuration());
 
 
     AllocateJudgeText(judgeType, laneIndex); // 判定テキストを割り当てる
@@ -131,6 +141,17 @@ void FeedbackEffect::PlayMissedEffect()
     if (missedVignette_)
     {
         missedVignette_->Emit(); // ミス時のビネットエフェクトを発動
+    }
+}
+
+void FeedbackEffect::PlaySpeakerSeekEffect(int32_t laneIndex, [[maybe_unused]] JudgeType judgeType)
+//判定によって変更したい
+{
+    static const Vector3 speakerOffset = Vector3(0, 1, 0);
+    if (speakerSeekEffect_)
+    {
+        Vector3 speakerPos = gameEnvironment_->GetSpeaker(laneIndex)->GetWorldTransform()->GetWorldPosition();
+        speakerSeekEffect_->Emit(speakerPos + speakerOffset, Lane::GetLaneEndPosition(laneIndex), kMaxSeekEffects_); // スピーカーに向かうエフェクトを発生
     }
 }
 

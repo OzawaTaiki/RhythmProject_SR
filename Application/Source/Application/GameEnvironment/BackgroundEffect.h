@@ -15,7 +15,7 @@ public:
     /// 指定レーンのスピーカーエフェクトを再生する。
     /// </summary>
     /// <param name="laneIndex">レーンインデックス</param>
-    void PlaySpeakerEffect(uint32_t laneIndex);
+    void PlaySpeakerEffect(uint32_t laneIndex,float delayTime);
 
     /// <summary>
     /// 管理する GameEnvironment を設定する。

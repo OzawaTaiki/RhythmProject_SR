@@ -3,10 +3,11 @@
 #include <System/Time/Time.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 #include <Core/WinApp/WinApp.h>
+#include <Framework/LayerSystem/LayerSystem.h>
 
 void SceneTrans::Initialize()
 {
-    duration_ = 0.5f; // トランジションの持続時間
+    duration_ = 1.0f; // トランジションの持続時間
     elapsedTime_ = 0.0f; // 経過時間
     alpha_ = 0.0f; // トランジションのアルファ値
     isEnd_ = false; // トランジションが終了したか
@@ -19,6 +20,8 @@ void SceneTrans::Initialize()
     transitionSprite_->translate_ = WinApp::kWindowSize_ * 0.5f; // 画面中央に配置
     transitionSprite_->SetSize(WinApp::kWindowSize_); // 画面全体を覆うサイズに設定
     transitionSprite_->SetColor(Vector4(0, 0, 0, 1)); // 初期は黒色
+
+    LayerSystem::CreateLayer("SceneTransition", 100000); // トランジション用のレイヤーを作成
 }
 
 void SceneTrans::Update()
@@ -52,6 +55,7 @@ void SceneTrans::Update()
     if (transitionSprite_)
     {
         transitionSprite_->SetColor(Vector4(0, 0, 0, alpha_)); // 黒色のアルファ値を更新
+        transitionSprite_->Update();
     }
 }
 
@@ -62,6 +66,7 @@ void SceneTrans::Draw()
 
     if (transitionSprite_)
     {
+        LayerSystem::SetLayer("SceneTransition");
         Sprite::PreDraw();
         transitionSprite_->Draw(); // トランジションスプライトを描画
     }

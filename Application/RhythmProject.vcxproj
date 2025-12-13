@@ -217,6 +217,7 @@
     <ClCompile Include="Source\Application\Result\UI\ResultUI.cpp" />
     <ClCompile Include="Source\Application\Scene\EditorScene.cpp" />
     <ClCompile Include="Source\Application\Scene\GameScene.cpp" />
+    <ClCompile Include="Source\Application\Scene\LoadScene.cpp" />
     <ClCompile Include="Source\Application\Scene\ResultScene.cpp" />
     <ClCompile Include="Source\Application\Scene\SelectScene.cpp" />
     <ClCompile Include="Source\Application\Scene\Text3DTestScene.cpp" />
@@ -373,6 +374,7 @@
     <ClInclude Include="Source\Application\Scene\Data\SceneDatas.h" />
     <ClInclude Include="Source\Application\Scene\EditorScene.h" />
     <ClInclude Include="Source\Application\Scene\GameScene.h" />
+    <ClInclude Include="Source\Application\Scene\LoadScene.h" />
     <ClInclude Include="Source\Application\Scene\ResultScene.h" />
     <ClInclude Include="Source\Application\Scene\SelectScene.h" />
     <ClInclude Include="Source\Application\Scene\Text3DTestScene.h" />

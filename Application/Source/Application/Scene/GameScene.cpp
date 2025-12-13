@@ -45,6 +45,7 @@ GameScene::~GameScene()
     EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
     EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
 
+    loadingThread_.join();
 }
 
 // TODO ; やりたいこと にゅうりょく精度アップ
@@ -52,39 +53,47 @@ GameScene::~GameScene()
 
 void GameScene::Initialize(SceneData* sceneData)
 {
-    SceneCamera_.Initialize();
-    SceneCamera_.translate_ = { 0,5,-13 };
-    SceneCamera_.rotate_ = { 0.26f,0,0 };
-    SceneCamera_.UpdateMatrix();
-    debugCamera_.Initialize();
+    auto now = std::chrono::system_clock::now();
 
-    camera2d_.Initialize(CameraType::Orthographic);
+    Debug::Log(std::format("Current TimePoint: {}\n", now.time_since_epoch().count()));
+
+    //SceneCamera_.Initialize();
+    //SceneCamera_.translate_ = { 0,5,-13 };
+    //SceneCamera_.rotate_ = { 0.26f,0,0 };
+    //SceneCamera_.UpdateMatrix();
+    //debugCamera_.Initialize();
+
+    //camera2d_.Initialize(CameraType::Orthographic);
 
 
 
-    lineDrawer_ = LineDrawer::GetInstance();
-    lineDrawer_->Initialize();
-    lineDrawer_->SetCameraPtr(&SceneCamera_);
-    lineDrawer_->SetCameraPtr2D(&camera2d_);
+    //lineDrawer_ = LineDrawer::GetInstance();
+    //lineDrawer_->Initialize();
+    //lineDrawer_->SetCameraPtr(&SceneCamera_);
+    //lineDrawer_->SetCameraPtr2D(&camera2d_);
 
-    input_ = Input::GetInstance();
+    //input_ = Input::GetInstance();
 
-    particleSystem_ = ParticleSystem::GetInstance();
-    particleSystem_->SetCamera(&SceneCamera_);
+    //particleSystem_ = ParticleSystem::GetInstance();
+    //particleSystem_->SetCamera(&SceneCamera_);
 
-    lightGroup_ = std::make_shared<LightGroup>();
-    lightGroup_->Initialize();
+    //lightGroup_ = std::make_shared<LightGroup>();
+    //lightGroup_->Initialize();
 
-    LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
+    //LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
     ///---------------------------------
     /// Application
 
+    std::string beforeScene = "None";
     std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
+    BeatMapData editorBeatMapData = {};
+
     gameMode_ = GameMode::Normal;
     if (sceneData)
     {
-        if (sceneData->beforeScene == "SelectScene")
+        beforeScene = sceneData->beforeScene;
+        if (beforeScene == "SelectScene")
         {
             auto selectToGameData = dynamic_cast<SelectToGameData*>(sceneData);
             if (selectToGameData)
@@ -93,117 +102,133 @@ void GameScene::Initialize(SceneData* sceneData)
                 gameMode_ = GameMode::Normal;
             }
         }
-        else if (sceneData->beforeScene == "EditorScene")
+        else if (beforeScene == "EditorScene")
         {
-
             auto editorToGameData = dynamic_cast<SharedBeatMapData*>(sceneData);
             if (editorToGameData)
             {
-                currentBeatMapData_ = editorToGameData->beatMapData; // エディタから渡された譜面データを取得
-                if (currentBeatMapData_.title == "None")                    currentBeatMapData_.title = "test";
+                editorBeatMapData = editorToGameData->beatMapData; // エディタから渡された譜面データを取得
+                if (editorBeatMapData.title == "None")                    editorBeatMapData.title = "test";
                 gameMode_ = GameMode::EditorTest;
             }
         }
     }
-
-    gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
-    gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs); // ノーツの移動速度とオフセット時間を設定
-
-    gameInputManager_ = std::make_unique<GameInputManager>();
-    gameInputManager_->Initialize(input_);
-
-    beatMapLoader_ = BeatMapLoader::GetInstance();
-
-    beatManager_ = std::make_unique<BeatManager>();
-    beatManager_->Initialize(100);
+    isLoadComplete_ = false;
+    loadingThread_ = std::thread(&GameScene::Load, this, beforeScene, beatMapFilePath, editorBeatMapData);
 
     gameEnvironment_ = std::make_unique<GameEnvironment>();
     gameEnvironment_->Initialize();
+//    gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
+//    gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs); // ノーツの移動速度とオフセット時間を設定
+//
+//    gameInputManager_ = std::make_unique<GameInputManager>();
+//    gameInputManager_->Initialize(input_);
+//
+//    beatMapLoader_ = BeatMapLoader::GetInstance();
+//
+//    beatManager_ = std::make_unique<BeatManager>();
+//    beatManager_->Initialize(100);
+//
+//    gameEnvironment_ = std::make_unique<GameEnvironment>();
+//    gameEnvironment_->Initialize();
+//
+//    feedbackEffect_ = std::make_unique<FeedbackEffect>();
+//    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
+//
+//    gameUI_ = std::make_unique<GameUI>();
+//    gameUI_->Initialize();
+//
+//    pauseMenu_ = std::make_unique<PauseMenu>();
+//    pauseMenu_->Initialize();
+//
+//    settingMenu_ = std::make_unique<SettingMenu>();
+//    settingMenu_->Initialize();
+//
+//    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType) {feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType); });
+//    gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
+//    gameCore_->SetHoldCallback([&](int32_t laneIndex) {feedbackEffect_->PlayHoldEffect(laneIndex); });
+//
+//    SceneManager::GetInstance()->SetTransition(std::make_unique<SceneTrans>());
+//
+//    switch (gameMode_)
+//    {
+//    case GameMode::Normal:
+//        beatMapLoadFuture_ = beatMapLoader_->LoadBeatMap(beatMapFilePath);
+//        break;
+//    case GameMode::EditorTest:
+//        beatMapLoadFuture_ = beatMapLoader_->LoadBeatMap(currentBeatMapData_);
+//        break;
+//    default:
+//        break;
+//    }
+//
+//#ifdef _DEBUG
+//    beatManager_->SetEnableSound(true); // デバッグ時は音を有効にする
+//#else
+//    beatManager_->SetEnableSound(false); // デバッグ時以外は音を無効にする
+//#endif // _DEBUG
+//
+//    isBeatMapLoaded_ = false;
+//
+//    isTransitionToResultScene_ = true;
+//
+//    isMusicPlaying_ = true;
+//
+//    LayerSystem::CreateLayer("GameEnvironment",0);
+//    LayerSystem::CreateLayer("GameCore", 10);
+//    LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
+//    LayerSystem::CreateLayer("PauseMenu", 30);
+//    LayerSystem::CreateOutputLayer("Vignette");
+//    LayerSystem::CreateOutputLayer("Bloom");
+//    LayerSystem::CreateOutputLayer("DepthOutline");
+//
+//
+//    depthBasedOutLine_ = std::make_unique<DepthBasedOutLine>();
+//    depthBasedOutLine_->Initialize();
+//
+//    depthBasedOutLineData_ = DepthBasedOutLineData();
+//    depthBasedOutLineData_.edgeColor.z = 0.8f;
+//    depthBasedOutLineData_.edgeWidth = 1.5f;
+//    depthBasedOutLine_->SetCamera(&SceneCamera_);
+//    depthBasedOutLine_->SetData(&depthBasedOutLineData_);
+//
+//    bloom_ = std::make_unique<Bloom>();
+//    bloom_->Initialize();
+//    bloomData_ = BloomConstantBufferData();
+//    bloomData_.threshold = 0.1f;
+//    bloomData_.intensity = 2.0f;
+//    bloomData_.softKnee = 0.5f;
+//    bloom_->UpdateData(bloomData_);
+//    bloomBlurData_ = BloomBlurConstantBufferData();
+//    bloomBlurData_.texelSize = Vector2(1.0f / WinApp::kWindowSize_.x, 1.0f / WinApp::kWindowSize_.y);
+//    bloomBlurData_.blurRadius = 5.0f;
+//    bloom_->UpdateData(bloomBlurData_);
+//
+//
+//    spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
+//    spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
+//
+//    audioSpectrum_ = AudioSpectrum();
 
-    feedbackEffect_ = std::make_unique<FeedbackEffect>();
-    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
-
-    gameUI_ = std::make_unique<GameUI>();
-    gameUI_->Initialize();
-
-    pauseMenu_ = std::make_unique<PauseMenu>();
-    pauseMenu_->Initialize();
-
-    settingMenu_ = std::make_unique<SettingMenu>();
-    settingMenu_->Initialize();
-
-    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType) {feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType); });
-    gameCore_->SetMissCallback([&]() {feedbackEffect_->PlayMissedEffect(); });
-    gameCore_->SetHoldCallback([&](int32_t laneIndex) {feedbackEffect_->PlayHoldEffect(laneIndex); });
-
-    SceneManager::GetInstance()->SetTransition(std::make_unique<SceneTrans>());
-
-    switch (gameMode_)
-    {
-    case GameMode::Normal:
-        beatMapLoadFuture_ = beatMapLoader_->LoadBeatMap(beatMapFilePath);
-        break;
-    case GameMode::EditorTest:
-        beatMapLoadFuture_ = beatMapLoader_->LoadBeatMap(currentBeatMapData_);
-        break;
-    default:
-        break;
-    }
-
-#ifdef _DEBUG
-    beatManager_->SetEnableSound(true); // デバッグ時は音を有効にする
-#else
-    beatManager_->SetEnableSound(false); // デバッグ時以外は音を無効にする
-#endif // _DEBUG
-
-    isBeatMapLoaded_ = false;
-
-    isTransitionToResultScene_ = true;
-
-    isMusicPlaying_ = true;
-
-    LayerSystem::CreateLayer("GameEnvironment",0);
-    LayerSystem::CreateLayer("GameCore", 10);
-    LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
-    LayerSystem::CreateLayer("PauseMenu", 30);
-    LayerSystem::CreateOutputLayer("Vignette");
-    LayerSystem::CreateOutputLayer("Bloom");
-    LayerSystem::CreateOutputLayer("DepthOutline");
-
-
-    depthBasedOutLine_ = std::make_unique<DepthBasedOutLine>();
-    depthBasedOutLine_->Initialize();
-
-    depthBasedOutLineData_ = DepthBasedOutLineData();
-    depthBasedOutLineData_.edgeColor.z = 0.8f;
-    depthBasedOutLineData_.edgeWidth = 1.5f;
-    depthBasedOutLine_->SetCamera(&SceneCamera_);
-    depthBasedOutLine_->SetData(&depthBasedOutLineData_);
-
-    bloom_ = std::make_unique<Bloom>();
-    bloom_->Initialize();
-    bloomData_ = BloomConstantBufferData();
-    bloomData_.threshold = 0.1f;
-    bloomData_.intensity = 2.0f;
-    bloomData_.softKnee = 0.5f;
-    bloom_->UpdateData(bloomData_);
-    bloomBlurData_ = BloomBlurConstantBufferData();
-    bloomBlurData_.texelSize = Vector2(1.0f / WinApp::kWindowSize_.x, 1.0f / WinApp::kWindowSize_.y);
-    bloomBlurData_.blurRadius = 5.0f;
-    bloom_->UpdateData(bloomBlurData_);
-
-
-    spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
-    spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
-
-    audioSpectrum_ = AudioSpectrum();
 }
 
 void GameScene::Update()
 {
+    static auto begin = std::chrono::system_clock::now();
+
     // ロードが完了してなかったら更新しない
-    if (!IsCompleteLoadBeatMap())
+    /*if (!IsCompleteLoadBeatMap())
+        return;*/
+    float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
+    if (deltaTime > 1.0f)
+        deltaTime = 0.1f;
+    gameEnvironment_->Update(deltaTime);
+
+    if (!isLoadComplete_)
+    {
+        Debug::Log("Waiting for BeatMap Load...\n");
         return;
+    }
 
     UpdateGameStartOffset();
 
@@ -232,8 +257,6 @@ void GameScene::Update()
 
     depthBasedOutLineData_.edgeColor.x = std::sin(static_cast<float>((Time::GetCurrentTime)())) * 0.5f + 0.5f;
 
-    float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
-
     pauseMenu_->Update();
 
     gameInputManager_->Update(); // 入力更新
@@ -247,7 +270,6 @@ void GameScene::Update()
         gameMusic_->Pause();
     }
     feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
-    gameEnvironment_->Update(deltaTime);
     gameUI_->Update(gameCore_->GetCombo()); // コンボ値をUIに渡す
     settingMenu_->Update();
 
@@ -311,6 +333,9 @@ void GameScene::Draw()
         LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom",bloom_.get());
         feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
     }
+
+    if (!isLoadComplete_)
+        return;
 
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("GameCore");
@@ -395,7 +420,6 @@ bool GameScene::IsCompleteLoadBeatMap()
         isBeatMapLoaded_ = true;
         isWatingForStart_ = true; // 譜面読み込み完了したら開始待機状態にする
     }
-
     return isBeatMapLoaded_;
 }
 
@@ -406,7 +430,8 @@ void GameScene::UpdateGameStartOffset()
 
     // 時間になったら 音楽等再生 trueを返す
         // タイマー更新
-    waitTimer_ += static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
+    float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
+    waitTimer_ += deltaTime > 1.0f ? 0.1f : deltaTime;
     // ゲーム開始オフセット時間を超えたら
     if (waitTimer_ >= gameStartOffset_)
     {
@@ -480,6 +505,147 @@ void GameScene::OnEvent(const GameEvent& event)
             }
         }
     }
+}
+
+void GameScene::Load(const std::string& beforeScene, const std::string& filepth, const BeatMapData& data)
+{
+
+    SceneCamera_.Initialize();
+    SceneCamera_.translate_ = { 0,5,-13 };
+    SceneCamera_.rotate_ = { 0.26f,0,0 };
+    SceneCamera_.UpdateMatrix();
+    debugCamera_.Initialize();
+
+    camera2d_.Initialize(CameraType::Orthographic);
+
+
+
+    lineDrawer_ = LineDrawer::GetInstance();
+    lineDrawer_->Initialize();
+    lineDrawer_->SetCameraPtr(&SceneCamera_);
+    lineDrawer_->SetCameraPtr2D(&camera2d_);
+
+    input_ = Input::GetInstance();
+
+    particleSystem_ = ParticleSystem::GetInstance();
+    particleSystem_->SetCamera(&SceneCamera_);
+
+    lightGroup_ = std::make_shared<LightGroup>();
+    lightGroup_->Initialize();
+
+    LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
+
+    ///---------------------------------
+    /// Application
+
+
+    std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
+    gameMode_ = GameMode::Normal;
+    if (beforeScene == "SelectScene")
+    {
+        beatMapFilePath = filepth; // 選択された譜面ファイルパスを取得
+        gameMode_ = GameMode::Normal;
+    }
+    else if (beforeScene == "EditorScene")
+    {
+        currentBeatMapData_ = data; // エディタから渡された譜面データを取得
+        if (currentBeatMapData_.title == "None")                    currentBeatMapData_.title = "test";
+        gameMode_ = GameMode::EditorTest;
+    }
+
+    gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
+    gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs, gameStartOffset_); // ノーツの移動速度とオフセット時間を設定
+
+    gameInputManager_ = std::make_unique<GameInputManager>();
+    gameInputManager_->Initialize(input_);
+
+    beatMapLoader_ = BeatMapLoader::GetInstance();
+
+    beatManager_ = std::make_unique<BeatManager>();
+    beatManager_->Initialize(100);
+
+
+    feedbackEffect_ = std::make_unique<FeedbackEffect>();
+    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
+
+    gameUI_ = std::make_unique<GameUI>();
+    gameUI_->Initialize();
+
+    pauseMenu_ = std::make_unique<PauseMenu>();
+    pauseMenu_->Initialize();
+
+    settingMenu_ = std::make_unique<SettingMenu>();
+    settingMenu_->Initialize();
+
+    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType); });
+    gameCore_->SetMissCallback([&]() { feedbackEffect_->PlayMissedEffect(); });
+    gameCore_->SetHoldCallback([&](int32_t laneIndex) { feedbackEffect_->PlayHoldEffect(laneIndex); });
+
+    SceneManager::GetInstance()->SetTransition(std::make_unique<SceneTrans>());
+
+    switch (gameMode_)
+    {
+        case GameMode::Normal:
+            beatMapLoadFuture_ = beatMapLoader_->LoadBeatMap(beatMapFilePath);
+            break;
+        case GameMode::EditorTest:
+            beatMapLoadFuture_ = beatMapLoader_->LoadBeatMap(currentBeatMapData_);
+            break;
+        default:
+            break;
+    }
+
+#ifdef _DEBUG
+    beatManager_->SetEnableSound(true); // デバッグ時は音を有効にする
+#else
+    beatManager_->SetEnableSound(false); // デバッグ時以外は音を無効にする
+#endif // _DEBUG
+
+    isBeatMapLoaded_ = false;
+
+    isTransitionToResultScene_ = true;
+
+    isMusicPlaying_ = true;
+
+    LayerSystem::CreateLayer("GameEnvironment", 0);
+    LayerSystem::CreateLayer("GameCore", 10);
+    LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
+    LayerSystem::CreateLayer("PauseMenu", 30);
+    LayerSystem::CreateOutputLayer("Vignette");
+    LayerSystem::CreateOutputLayer("Bloom");
+    LayerSystem::CreateOutputLayer("DepthOutline");
+
+
+    depthBasedOutLine_ = std::make_unique<DepthBasedOutLine>();
+    depthBasedOutLine_->Initialize();
+
+    depthBasedOutLineData_ = DepthBasedOutLineData();
+    depthBasedOutLineData_.edgeColor.z = 0.8f;
+    depthBasedOutLineData_.edgeWidth = 1.5f;
+    depthBasedOutLine_->SetCamera(&SceneCamera_);
+    depthBasedOutLine_->SetData(&depthBasedOutLineData_);
+
+    bloom_ = std::make_unique<Bloom>();
+    bloom_->Initialize();
+    bloomData_ = BloomConstantBufferData();
+    bloomData_.threshold = 0.1f;
+    bloomData_.intensity = 2.0f;
+    bloomData_.softKnee = 0.5f;
+    bloom_->UpdateData(bloomData_);
+    bloomBlurData_ = BloomBlurConstantBufferData();
+    bloomBlurData_.texelSize = Vector2(1.0f / WinApp::kWindowSize_.x, 1.0f / WinApp::kWindowSize_.y);
+    bloomBlurData_.blurRadius = 5.0f;
+    bloom_->UpdateData(bloomBlurData_);
+
+
+    spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
+    spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
+
+    audioSpectrum_ = AudioSpectrum();
+
+    while (!IsCompleteLoadBeatMap())
+        continue;
+    isLoadComplete_ = true;
 }
 
 void GameScene::ImGui()

@@ -33,6 +33,7 @@
 #include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
 #include <Features/AudioSpectrum/AudioSpectrum.h>
 
+#include <thread>
 
 enum class GameMode
 {
@@ -101,6 +102,8 @@ private:
     void ToTitle();
     // イベント受信処理
     void OnEvent(const GameEvent& event) override;
+
+    void Load(const std::string& beforeScene,const std::string &filepth,const BeatMapData& data);
 private:
 
     // シーン関連
@@ -139,7 +142,7 @@ private:
     bool isBeatMapLoaded_ = false;
 
     bool isWatingForStart_ = false;
-    float gameStartOffset_ = 2.0f;
+    float gameStartOffset_ = 3.0f;
     float waitTimer_ = 0.0f;
 
     bool isMusicPlaying_ = false; // 音楽が再生中かどうか
@@ -161,4 +164,6 @@ private:
     bool isTransitionToResultScene_ = false;
     bool noteUpdateEnabled_ = true; // ノートの更新を有効にするかどうか
 
+
+    std::thread loadingThread_; std::atomic<bool> isLoadComplete_;
 };

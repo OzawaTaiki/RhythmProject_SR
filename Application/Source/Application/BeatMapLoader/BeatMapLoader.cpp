@@ -93,7 +93,7 @@ std::future<bool> BeatMapLoader::LoadBeatMap(const BeatMapData& beatMapData)
             errorMessage_ = e.what();
             isLoadingSuccess_ = false;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(500)); // .5s待機
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500)); // .5s待機
         // ロード完了
         isLoading_ = false;
         return isLoadingSuccess_;

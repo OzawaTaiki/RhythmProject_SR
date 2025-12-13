@@ -351,6 +351,7 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Scene\Text3DTest_Integration.cpp" />
     <ClCompile Include="Source\Application\Scene\Text3DTestScene.cpp" />
+    <ClCompile Include="Source\Application\Scene\LoadScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -582,6 +583,9 @@
       <Filter>Application\HeagonGrid</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Scene\Text3DTestScene.h" />
+    <ClInclude Include="Source\Application\Scene\LoadScene.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

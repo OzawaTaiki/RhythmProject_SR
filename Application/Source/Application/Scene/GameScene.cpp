@@ -254,8 +254,8 @@ void GameScene::Update()
         Retry();
     }
 
-    depthBasedOutLineData_.edgeColor.x = std::sin(static_cast<float>((Time::GetCurrentTime)())) * 0.5f + 0.5f;
-
+    //depthBasedOutLineData_.edgeColor.x = std::sin(static_cast<float>((Time::GetCurrentTime)())) * 0.5f + 0.5f;
+    laneOutline_->Update(gameCore_->GetCombo());
     pauseMenu_->Update();
 
     gameInputManager_->Update(); // 入力更新
@@ -347,7 +347,7 @@ void GameScene::Draw()
 
         gameUI_->Draw(); // UIの描画
         renderer->EndFrame();
-        LayerSystem::ApplyPostEffect("GameCore", "DepthOutline", depthBasedOutLine_.get());
+        laneOutline_->Apply("GameCore", "DepthOutline");
     }
 
 
@@ -576,7 +576,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
 
-    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType); });
+    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType,int32_t combo) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType, combo); });
     gameCore_->SetMissCallback([&]() { feedbackEffect_->PlayMissedEffect(); });
     gameCore_->SetHoldCallback([&](int32_t laneIndex) { feedbackEffect_->PlayHoldEffect(laneIndex); });
 
@@ -615,14 +615,6 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     LayerSystem::CreateOutputLayer("DepthOutline");
 
 
-    depthBasedOutLine_ = std::make_unique<DepthBasedOutLine>();
-    depthBasedOutLine_->Initialize();
-
-    depthBasedOutLineData_ = DepthBasedOutLineData();
-    depthBasedOutLineData_.edgeColor.z = 0.8f;
-    depthBasedOutLineData_.edgeWidth = 1.5f;
-    depthBasedOutLine_->SetCamera(&SceneCamera_);
-    depthBasedOutLine_->SetData(&depthBasedOutLineData_);
 
     bloom_ = std::make_unique<Bloom>();
     bloom_->Initialize();
@@ -636,6 +628,9 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     bloomBlurData_.blurRadius = 5.0f;
     bloom_->UpdateData(bloomBlurData_);
 
+    laneOutline_ = std::make_unique<LaneOutline>();
+    laneOutline_->Initialize(&SceneCamera_);
+
 
     spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
     spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
@@ -644,6 +639,11 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     while (!IsCompleteLoadBeatMap())
         continue;
+
+    feedbackEffect_->InitComboThresholds(static_cast<int32_t>(beatMapLoader_->GetLoadedBeatMapData().notes.size()));
+    laneOutline_->SetComboThresholds(feedbackEffect_->GetComboThresholds());
+
+
     isLoadComplete_ = true;
 }
 

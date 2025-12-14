@@ -11,6 +11,8 @@
 #include <Application/FeedBack/HoldingEffect/NoteHoldEffect.h>
 #include <APplication/FeedBack/SpeakerSeekEffect.h>
 
+#include <Application/FeedBack/ComboThresholds.h>
+
 #include <Application/Input/InputData.h>
 
 #include <memory>
@@ -64,7 +66,7 @@ public:
     /// </summary>
     /// <param name="laneIndex">対象レーンのインデックス</param>
     /// <param name="judgeType">判定種類</param>
-    void PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType);
+    void PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType,int32_t combo);
 
     /// <summary>
     /// ミス時のエフェクトを再生する。
@@ -85,6 +87,15 @@ public:
     /// <param name="input">入力レンダーターゲット名</param>
     /// <param name="output">出力レンダーターゲット名</param>
     void ApplyMissedVignetteEffect(const std::string& input, const std::string& output);
+
+    const ComboThresholds* GetComboThresholds() { return &comboThresholds_; }
+
+    /// <summary>
+    /// コンボ閾値を初期化する。
+    /// </summary>
+    /// <param name="maxCombo">最大コンボ数</param>
+    void InitComboThresholds(int32_t maxCombo);// 非同期ロードを考慮して後から初期化する
+
 
     /// <summary>
     /// デバッグ用ウィンドウを表示する。
@@ -136,6 +147,9 @@ private:
     /// 各レーンの個別エフェクト
     /// </summary>
     std::vector<std::unique_ptr<LaneEffect>> laneEffects_; // レーンごとのエフェクト
+
+
+    ComboThresholds comboThresholds_; // コンボ閾値管理クラス
 
     // 座標変換用カメラ
     Camera* camera_ = nullptr; // カメラへのポインタ

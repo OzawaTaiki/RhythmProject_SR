@@ -203,11 +203,12 @@ void GameCore::JudgeNotes(const std::vector<InputData>& inputData)
 
         RecordJudgeResult(result, note); // 判定結果を記録
 
-        if (onJudgeCallback_)
-            onJudgeCallback_(laneIndex, result); // 判定時のコールバックを呼び出す
-
-
         UpdateCombo(result);
+
+        if (onJudgeCallback_)
+            onJudgeCallback_(laneIndex, result, combo_); // 判定時のコールバックを呼び出す
+
+
     }
 }
 

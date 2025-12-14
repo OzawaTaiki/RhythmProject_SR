@@ -80,7 +80,7 @@ public:
     /// 判定時のコールバック関数を設定する
     /// </summary>
     /// <param name="callback">コールバック関数</param>
-    void SetJudgeCallback(const std::function<void(int32_t,JudgeType)>& callback) { onJudgeCallback_ = callback; }
+    void SetJudgeCallback(const std::function<void(int32_t,JudgeType,int32_t)>& callback) { onJudgeCallback_ = callback; }
 
     /// <summary>
     /// ミス時のコールバック関数を設定する
@@ -200,7 +200,7 @@ private:
     // コールバック関連
 
     // 判定時のコールバック関数
-    std::function<void(int32_t, JudgeType)> onJudgeCallback_;
+    std::function<void(int32_t, JudgeType,int32_t)> onJudgeCallback_;
     // ミス時のコールバック関数
     std::function<void(void)> onMissCallback_;
     // ホールド時のコールバック関数

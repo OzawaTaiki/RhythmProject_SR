@@ -28,5 +28,6 @@ public:
     /// 指定レーンでエフェクトを再生する。
     /// </summary>
     /// <param name="laneIndex">レーンのインデックス</param>
-    void Play(int32_t laneIndex);
+    /// <param name="combo">コンボ数</param>
+    void Play(int32_t laneIndex,int32_t combo);
 };

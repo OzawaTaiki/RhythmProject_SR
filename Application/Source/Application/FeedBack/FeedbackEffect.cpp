@@ -49,7 +49,6 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
 
         laneEffects_.push_back(std::move(laneEffect)); // レーンエフェクトを追加
     }
-
 }
 
 
@@ -118,7 +117,7 @@ void FeedbackEffect::Draw()
     }
 }
 
-void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType)
+void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType,int32_t combo)
 {
     // 各エフェクトの再生
 
@@ -126,7 +125,10 @@ void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType)
         judgeSound_->Play();
 
     if (judgeEffect_)
-        judgeEffect_->Play(laneIndex);
+    {
+        int32_t comboLevel = comboThresholds_.GetComboLevel(combo);
+        judgeEffect_->Play(laneIndex, comboLevel);
+    }
 
     PlaySpeakerSeekEffect(laneIndex, judgeType);
     if (backgroundEffect_)
@@ -169,6 +171,11 @@ void FeedbackEffect::ApplyMissedVignetteEffect(const std::string& input, const s
     {
         missedVignette_->ApplyEffect(input, output); // ビネットエフェクトを適用
     }
+}
+
+void FeedbackEffect::InitComboThresholds(int32_t maxCombo)
+{
+    comboThresholds_.Initialize(maxCombo);
 }
 
 void FeedbackEffect::AllocateJudgeText(JudgeType judgeType, int32_t laneIndex)

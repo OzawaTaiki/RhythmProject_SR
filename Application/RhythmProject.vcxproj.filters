@@ -91,9 +91,6 @@
     <Filter Include="Application\PauseMenu">
       <UniqueIdentifier>{b4266859-983c-4c23-8e9a-9e38136c7b61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\EventData">
-      <UniqueIdentifier>{7e36b1ac-afc4-4eda-b231-93a52f331f9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\GameMusic">
       <UniqueIdentifier>{7ce16ede-d359-462b-bc37-f072ab67e581}</UniqueIdentifier>
     </Filter>
@@ -105,9 +102,6 @@
     </Filter>
     <Filter Include="Application\FeedBack\Effect\Speaker">
       <UniqueIdentifier>{a918a9b5-dc70-4d6a-8a2f-17d6f572ac4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\FeedBack\Holding">
-      <UniqueIdentifier>{45c47236-7d29-4fc8-ac15-2b05cd2c3d1c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\OptionMenu">
       <UniqueIdentifier>{87155632-38d6-44b4-8ca1-719a77c6d3c0}</UniqueIdentifier>
@@ -141,6 +135,12 @@
     </Filter>
     <Filter Include="Application\Environment\EffectModifiers">
       <UniqueIdentifier>{f8b0cbaf-7add-44ed-9b8e-438fd2a0bd01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\Effect\Holding">
+      <UniqueIdentifier>{45c47236-7d29-4fc8-ac15-2b05cd2c3d1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\FeedBack\ComboThresholds">
+      <UniqueIdentifier>{1ea1208f-02e2-4497-8dc2-bf91ffd2f6ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -247,9 +247,6 @@
     <ClCompile Include="Source\Application\Effects\TapEffects\TriggerEffects.cpp">
       <Filter>Application\FeedBack\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\FeedBack\TapEffect\TapEffect.cpp">
-      <Filter>Application\FeedBack\Tap\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\BeatMapEditor\Command\ChangeHoldDurationCommand.cpp">
       <Filter>Application\BeatMapEditor\Command</Filter>
     </ClCompile>
@@ -287,7 +284,7 @@
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.cpp">
-      <Filter>Application\FeedBack\Holding</Filter>
+      <Filter>Application\FeedBack\Effect\Holding</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp">
       <Filter>Application\Environment\EffectModifiers</Filter>
@@ -356,6 +353,15 @@
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\SpeakerSeekEffect.cpp">
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Lane\LaneOutline.cpp">
+      <Filter>Application\Lane</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\FeedBack\TapEffect\TapEffect.cpp">
+      <Filter>Application\FeedBack\Tap\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\FeedBack\ComboThresholds.cpp">
+      <Filter>Application\FeedBack\ComboThresholds</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -479,9 +485,6 @@
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h">
       <Filter>Application\FeedBack\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\FeedBack\TapEffect\TapEffect.h">
-      <Filter>Application\FeedBack\Tap\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\BeatMapEditor\Command\ChangeHoldDurationCommand.h">
       <Filter>Application\BeatMapEditor\Command</Filter>
     </ClInclude>
@@ -509,9 +512,6 @@
     <ClInclude Include="Source\Application\GameMusic\GameMusic.h">
       <Filter>Application\GameMusic</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\EventData\PauseActionData.h">
-      <Filter>Application\EventData</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\Setting\Setting.h">
       <Filter>Application\Setting</Filter>
     </ClInclude>
@@ -525,7 +525,7 @@
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h">
-      <Filter>Application\FeedBack\Holding</Filter>
+      <Filter>Application\FeedBack\Effect\Holding</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h">
       <Filter>Application\Environment\EffectModifiers</Filter>
@@ -594,13 +594,24 @@
     <ClInclude Include="Source\Application\FeedBack\SpeakerSeekEffect.h">
       <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Application\FeedBack\TapEffect\TapEffect.h">
+      <Filter>Application\FeedBack\Tap\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="Source\Application\FeedBack\ComboThresholds.h">
+      <Filter>Application\FeedBack\ComboThresholds</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shader\EmissiveModel.PS.hlsl">
       <Filter>Application</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\Application\Lane\LaneOutline.h">
+      <Filter>Application\Lane</Filter>
+    </Text>
   </ItemGroup>
 </Project>

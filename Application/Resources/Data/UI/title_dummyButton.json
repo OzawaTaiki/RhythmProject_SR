@@ -16,10 +16,10 @@
         },
         "collider": {
             "parameters": {
-                "independentRadius": 130.0,
+                "independentRadius": 140.0,
                 "localOffset": {
-                    "x": -121.0,
-                    "y": -100.0
+                    "x": 0.0,
+                    "y": 0.0
                 }
             },
             "transformMode": "Independent",
@@ -68,13 +68,13 @@
             "y": 0.800000011920929,
             "z": 0.800000011920929
         },
-        "order": 300,
+        "order": 150,
         "pivot": {
             "x": 0.5,
             "y": 0.5
         },
         "position": {
-            "x": 329.0,
+            "x": 299.0,
             "y": 100.0
         },
         "pressedColor": {
@@ -84,8 +84,8 @@
             "z": 0.6000000238418579
         },
         "size": {
-            "x": 200.0,
-            "y": 200.0
+            "x": 0.0,
+            "y": 0.0
         },
         "text": "",
         "textAlignment": 4,

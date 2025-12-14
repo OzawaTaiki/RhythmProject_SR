@@ -38,7 +38,8 @@ public:
     /// 指定位置の周囲に散開するパーティクルを発生させる。
     /// </summary>
     /// <param name="pos">発生位置（ワールド座標）</param>
-    static void EmitSurroundingParticles(const Vector3& pos);
+    /// <param name="combo">コンボ数（エフェクトの強さに影響）</param>
+    static void EmitSurroundingParticles(const Vector3& pos, int32_t comboLevel);
 
 private:
 

@@ -15,8 +15,10 @@
 
 #include <Features/PostEffects/BoxFilter.h>
 #include <Features/PostEffects/Vignette.h>
-#include <Features/PostEffects/DepthBasedOutLine.h>
 #include <Features/PostEffects/Bloom.h>
+
+#include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
 
 // Application
 #include <Application/Core/GameCore.h>
@@ -30,8 +32,8 @@
 #include <Application/BeatMapLoader/BeatMapLoader.h>
 #include <Application/PauseMenu/PauseMenu.h>
 #include <Application/Setting/SettingMenu.h>
-#include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
-#include <Features/AudioSpectrum/AudioSpectrum.h>
+#include <Application/Lane/LaneOutline.h>
+
 
 #include <thread>
 
@@ -152,8 +154,7 @@ private:
 
     GameMode gameMode_ = GameMode::Normal;
 
-    std::unique_ptr<DepthBasedOutLine> depthBasedOutLine_ = nullptr;
-    DepthBasedOutLineData depthBasedOutLineData_ = {};
+    std::unique_ptr<LaneOutline> laneOutline_ = nullptr;
 
     std::unique_ptr<Bloom> bloom_ = nullptr;
     BloomConstantBufferData bloomData_ = {};

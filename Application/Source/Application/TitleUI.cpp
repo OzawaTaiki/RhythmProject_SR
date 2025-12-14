@@ -21,7 +21,6 @@ TitleUI::~TitleUI()
 
 void TitleUI::Initialize()
 {
-
     titleAnimationSequence_  = std::make_unique<AnimationSequence>("TitleUIAnimation");
     titleAnimationSequence_->Initialize("Resources/Data/AnimSeq/");
 
@@ -33,12 +32,11 @@ void TitleUI::Initialize()
     isActive_ = false;
     isExpanding_= false;
     currentTime_ = 0.0f;
-
+    backgroundElement_->SetEnabled(false);
 }
 
 void TitleUI::Update()
 {
-
     float delta = 0.016f;
     if (isExpanding_)
     {
@@ -85,12 +83,13 @@ void TitleUI::OnEvent(const GameEvent& event)
     if (event.GetEventType() == "CloseOptionMenu")
     {
         isActive_ = true;
+        backgroundElement_->SetEnabled(true);
     }
     if (event.GetEventType() == "TitleCameraAnimationEnd")
     {
         isExpanding_ = true;
+        backgroundElement_->SetEnabled(true);
     }
-
 }
 
 void TitleUI::EnterButtonExpandAnimation(AnimationUIElement& element)
@@ -109,8 +108,9 @@ void TitleUI::ExitButtonExpandAnimation(AnimationUIElement& element)
 
 void TitleUI::DisPatchEvent(const std::string& event)
 {
+    if(event !="RequestStartGame")
+        isActive_ = false;
     eventManager_->DispatchEvent(GameEvent(event, nullptr));
-    isActive_ = false;
 }
 
 void TitleUI::InitializeUIElements()
@@ -118,7 +118,7 @@ void TitleUI::InitializeUIElements()
     backgroundElement_ = std::make_unique<UIImageElement>("titleUI_background", Vector2(0, 0), Vector2(800, 600));
     backgroundElement_->Initialize();
 
-    auto startButton = std::make_unique<UIButtonElement>("title_start", Vector2(100, 100), Vector2(100, 100), "start", true);
+    auto startButton = std::make_unique<UIButtonElement>("title_start", Vector2(100, 100), Vector2(100, 100), "", true);
     startButton->Initialize();
     startButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
     startButton->SetOnHoverExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
@@ -134,14 +134,14 @@ void TitleUI::InitializeUIElements()
     startIcon->Initialize();
     startButton->AddChild(std::move(startIcon));
 
-    auto optionButton = std::make_unique<UIButtonElement>("title_options", Vector2(100, 250), Vector2(100, 100), "option", true);
+    auto optionButton = std::make_unique<UIButtonElement>("title_options", Vector2(100, 250), Vector2(100, 100), "", true);
     optionButton->Initialize();
     optionButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
     optionButton->SetOnHoverExit([this](){ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]);});
     optionButton->SetOnFocusEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
     optionButton->SetOnFocusExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
-    optionButton->SetOnClickUp([this](){DisPatchEvent("OpenOptionMenu");});
-    optionButton->SetOnClick([this]() { DisPatchEvent("OpenOptionMenu"); });
+    optionButton->SetOnClickUp([this]() { DisPatchEvent("OpenOptionMenu"); backgroundElement_->SetEnabled(false); });
+    optionButton->SetOnClick([this]() { DisPatchEvent("OpenOptionMenu"); backgroundElement_->SetEnabled(false); });
 
     auto optionParent = std::make_unique<UIImageElement>("title_optionsParent", Vector2(100, 250), Vector2(120, 120));
     optionParent->Initialize();
@@ -150,7 +150,7 @@ void TitleUI::InitializeUIElements()
     optionIcon->Initialize();
     optionButton->AddChild(std::move(optionIcon));
 
-    auto exitButton = std::make_unique<UIButtonElement>("title_exit", Vector2(100, 400), Vector2(100, 100), "exit", true);
+    auto exitButton = std::make_unique<UIButtonElement>("title_exit", Vector2(100, 400), Vector2(100, 100), "", true);
     exitButton->Initialize();
     exitButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::ExitParent]); });
     exitButton->SetOnHoverExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::ExitParent]); });

@@ -70,17 +70,26 @@ void TriggerEffects::EmitCenterCircles(const Vector3& pos)
     }
 }
 
-void TriggerEffects::EmitSurroundingParticles(const Vector3& pos)
+void TriggerEffects::EmitSurroundingParticles(const Vector3& pos, int32_t comboLevel)
 {
     // 座標設定
-    Vector3 offset = { 0.0f, 1.0f, 0.0f };
-    cubePop_.SetPosition(pos + offset);
-    triangleEmitter_.SetPosition(pos);
+    const Vector3 offset = { 0.0f, 1.0f, 0.0f };
+
     lightPillarEmitter_.SetPosition(pos);
-    risingParticles_.SetPosition(pos);
-    // 生成
-    cubePop_.GenerateParticles();
-    triangleEmitter_.GenerateParticles();
-    risingParticles_.GenerateParticles();
     lightPillarEmitter_.GenerateParticles();
+
+    triangleEmitter_.SetPosition(pos);
+    triangleEmitter_.GenerateParticles();
+
+    if (comboLevel >= 1)
+    {
+        cubePop_.SetPosition(pos + offset);
+        cubePop_.GenerateParticles();
+    }
+
+    if (comboLevel >= 2)
+    {
+        risingParticles_.SetPosition(pos);
+        risingParticles_.GenerateParticles();
+    }
 }

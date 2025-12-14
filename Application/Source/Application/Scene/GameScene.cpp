@@ -269,7 +269,7 @@ void GameScene::Update()
         gameMusic_->Pause();
     }
     feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
-    gameUI_->Update(gameCore_->GetCombo()); // コンボ値をUIに渡す
+    gameUI_->Update(gameCore_->GetCombo(),deltaTime); // コンボ値をUIに渡す
     settingMenu_->Update();
 
     float elapsedTime = gameMusic_->GetElapsedTime();
@@ -345,8 +345,8 @@ void GameScene::Draw()
 
         Sprite::PreDraw();
 
-        gameUI_->Draw(); // UIの描画
         renderer->EndFrame();
+        gameUI_->Draw(); // UIの描画
         laneOutline_->Apply("GameCore", "DepthOutline");
     }
 

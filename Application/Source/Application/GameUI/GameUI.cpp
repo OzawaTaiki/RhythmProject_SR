@@ -1,10 +1,20 @@
 #include "GameUI.h"
 
 #include <Debug/ImGuiDebugManager.h>
+#include <Debug/ImguITools.h>
 
 void GameUI::Initialize()
 {
-    textGenerator_.Initialize(FontConfig());
+    FontConfig conf = {};
+    conf.atlasSize = Vector2(512, 512);
+    conf.fontFilePath = "Resources/Fonts/NotoSansJP-Regular.ttf";
+    conf.fontSize = 64.0f;
+    textGenerator_.Initialize(conf);
+
+    comboValueAnimation_ = std::make_unique<AnimationSequence>("ComboValueAnim");
+    comboValueAnimation_->Initialize("Resources/Data/UI/");//保存ディレクトリ
+
+
 
     jsonBinder_ = std::make_unique<JsonBinder>("GameUI", "Resources/Data/UI/");
 
@@ -13,20 +23,26 @@ void GameUI::Initialize()
 
 }
 
-void GameUI::Update(int32_t combo)
+void GameUI::Update(int32_t combo, float deltaTime)
 {
+    if (combo != comboValue_)
+    {
+        comboValueAnimation_->SetCurrentTime(0.0f);// リセット
+
+    }
+    comboValueAnimation_->Update(deltaTime);
+
+    comboValueParam_.scale = comboValueAnimation_->GetValue<Vector2>("Scale");
+
     comboValue_ = combo;
+
     ImGui();
 }
 
 void GameUI::Draw()
 {
-    // コンボが0のときは表示しない
-    if (comboValue_ == 0)
-        return;
-
-    textGenerator_.Draw(std::format(L"{}", comboValue_), comboValueParam_);
     textGenerator_.Draw(L"Combo", comboTextParam_);
+    textGenerator_.Draw(std::format(L"{}", comboValue_), comboValueParam_);
 }
 
 void GameUI::ImGui()
@@ -45,12 +61,16 @@ void GameUI::ImGui()
         comboTextParam_.ImGui();
         ImGui::PopID();
 
-        if(ImGui::Button("Save"))
+        if (ImGui::Button("Save"))
         {
             jsonBinder_->Save();
+            comboValueAnimation_->Save();
         }
 
+        ImGuiTool::TimeLine("ComboValueAnim", comboValueAnimation_.get());
+
         ImGui::End();
+
     }
 #endif // _DEBUG
 }

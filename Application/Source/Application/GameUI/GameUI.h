@@ -3,6 +3,7 @@
 //#include <Features/UI/UISprite.h>
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/Json/JsonBinder.h>
+#include <Features/Animation/Sequence/AnimationSequence.h>
 
 /// <summary>
 /// ゲームUIクラス。
@@ -22,7 +23,8 @@ public:
     /// 毎フレームの更新処理。
     /// </summary>
     /// <param name="combo">現在のコンボ数</param>
-    void Update(int32_t combo);
+    /// <param name="deltaTime">デルタタイム</param>
+    void Update(int32_t combo, float deltaTime);
 
     /// <summary>
     /// 描画処理を行う。
@@ -40,6 +42,8 @@ private:
 
     TextParam comboValueParam_; // コンボ値のテキストパラメータ
     TextParam comboTextParam_; // コンボのテキストパラメータ
+
+    std::unique_ptr<AnimationSequence> comboValueAnimation_ = nullptr; // コンボ値のアニメーションシーケンス
 
     int32_t comboValue_ = 0; // コンボ値
 

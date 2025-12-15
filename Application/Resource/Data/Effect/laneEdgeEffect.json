@@ -1,0 +1,97 @@
+{
+    "laneEdgeEffect": {
+        "particleEmitCount": 200,
+        "particleParams": {
+            "acceleration": {
+                "x": 0.0,
+                "y": -10.0,
+                "z": 0.0
+            },
+            "color": {
+                "w": 0.5,
+                "x": 0.5,
+                "y": 0.800000011920929,
+                "z": 1.0
+            },
+            "direction": {
+                "x": -1.0,
+                "y": 1.0,
+                "z": 0.0
+            },
+            "isBillboard": [
+                true,
+                true,
+                true
+            ],
+            "isInfiniteLife": false,
+            "lifeTime": 0.20000000298023224,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": 298.5
+            },
+            "rotate": {
+                "x": 1.5700000524520874,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotationSpeed": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "size": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "speed": 5.0
+        },
+        "pillarParams": {
+            "acceleration": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "color": {
+                "w": 1.0,
+                "x": 0.27413129806518555,
+                "y": 0.8215079307556152,
+                "z": 1.0
+            },
+            "direction": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "isBillboard": [
+                false,
+                false,
+                false
+            ],
+            "isInfiniteLife": false,
+            "lifeTime": 0.5,
+            "position": {
+                "x": 4.0,
+                "y": 0.0,
+                "z": 15.0
+            },
+            "rotate": {
+                "x": -0.7853981852531433,
+                "y": 1.5707963705062866,
+                "z": 0.0
+            },
+            "rotationSpeed": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "size": {
+                "x": 300.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "speed": 0.0
+        }
+    }
+}

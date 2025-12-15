@@ -30,6 +30,8 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
     speakerSeekEffect_ = std::make_unique<SpeakerSeekEffect>();
     speakerSeekEffect_->Initialize();
 
+    laneEdgeEffects_ = std::make_unique<LaneEdgeEffects>();
+    laneEdgeEffects_->Initialize();
 
     for (int32_t i = 0; i < judgeTextPool_.size(); ++i)
     {
@@ -94,6 +96,8 @@ void FeedbackEffect::Update(float deltaTime, const std::vector<InputData>& input
         }
     }
 
+    if (laneEdgeEffects_)
+        laneEdgeEffects_->Update(deltaTime);
 }
 
 void FeedbackEffect::Draw()
@@ -121,13 +125,20 @@ void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType,int3
 {
     // 各エフェクトの再生
 
+    int32_t comboLevel = comboThresholds_.GetComboLevel(combo);
+    bool levelUp = (comboLevel != prevComboLevel_) && (comboLevel > prevComboLevel_);
+
     if (judgeSound_)
         judgeSound_->Play();
 
     if (judgeEffect_)
     {
-        int32_t comboLevel = comboThresholds_.GetComboLevel(combo);
         judgeEffect_->Play(laneIndex, comboLevel);
+    }
+
+    if (levelUp && laneEdgeEffects_)
+    {
+        laneEdgeEffects_->Emit();
     }
 
     PlaySpeakerSeekEffect(laneIndex, judgeType);
@@ -136,6 +147,8 @@ void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType,int3
 
 
     AllocateJudgeText(judgeType, laneIndex); // 判定テキストを割り当てる
+
+    prevComboLevel_ = comboLevel;
 }
 
 void FeedbackEffect::PlayMissedEffect()

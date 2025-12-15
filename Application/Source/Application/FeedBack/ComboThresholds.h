@@ -23,6 +23,8 @@ private:
     using ThresholdPair = std::array<int32_t, kArraySize>;
     using ThresholdFloatPair = std::array<float, kArraySize>;
 
+    int32_t prevLevel_ = 0;
+
     int32_t maxCombo_ = 0;
     ThresholdPair thresholdsCount_{ 0,0 };// コンボ数の閾値
 

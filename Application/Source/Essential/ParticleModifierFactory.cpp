@@ -9,6 +9,8 @@
 
 #include <Application/Effects/Speaker/SpeakerEffectModifier.h>
 
+#include <Application/FeedBack/LaneEdgePillar/LaneEdgeEffect.h>
+
 
 ParticleModifierFactory::ParticleModifierFactory()
 {
@@ -20,6 +22,8 @@ ParticleModifierFactory::ParticleModifierFactory()
     modifierCreators_["RotationBasedMovementModifier"] = []() { return std::make_unique<RotationBasedMovementModifier>(); };
     modifierCreators_["SpeakerRingModifier"]        = []() { return std::make_unique<SpeakerRingModifier>(); };
     modifierCreators_["SpeakerParticleModifier"]    = []() { return std::make_unique<SpeakerParticleModifier>(); };
+    modifierCreators_["LaneEdgePillarModifier"] = []() { return std::make_unique<LaneEdgePillarModifier>(); };
+    modifierCreators_["LaneEdgeParticleModifier"] = []() { return std::make_unique<LaneEdgeParticleModifier>(); };
 }
 
 std::unique_ptr<ParticleModifier> ParticleModifierFactory::CreateModifier(const std::string& _name)

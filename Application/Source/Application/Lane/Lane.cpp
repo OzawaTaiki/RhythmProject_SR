@@ -2,7 +2,7 @@
 
 #include <Features/Camera/Camera/Camera.h>
 
-float Lane::laneLength_ = 100.0f; // 初期値
+float Lane::laneLength_ = 300.0f; // 初期値
 float Lane::totalWidth_ = 8.0f; // 初期値
 int32_t Lane::laneCount_ = 4; // 初期値
 float Lane::laneWidth_ = Lane::totalWidth_ / static_cast<float>(Lane::laneCount_); // 一本あたりの幅

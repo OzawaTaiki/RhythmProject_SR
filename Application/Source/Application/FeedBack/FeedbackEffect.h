@@ -10,7 +10,7 @@
 #include <Application/GameEnvironment/BackgroundEffect.h>
 #include <Application/FeedBack/HoldingEffect/NoteHoldEffect.h>
 #include <APplication/FeedBack/SpeakerSeekEffect.h>
-
+#include <Application/FeedBack/LaneEdgePillar/LaneEdgeEffect.h>
 #include <Application/FeedBack/ComboThresholds.h>
 
 #include <Application/Input/InputData.h>
@@ -148,8 +148,10 @@ private:
     /// </summary>
     std::vector<std::unique_ptr<LaneEffect>> laneEffects_; // レーンごとのエフェクト
 
+    std::unique_ptr<LaneEdgeEffects> laneEdgeEffects_; // レーンエッジエフェクト
 
     ComboThresholds comboThresholds_; // コンボ閾値管理クラス
+    int32_t prevComboLevel_ = 0; // 前回のコンボレベル
 
     // 座標変換用カメラ
     Camera* camera_ = nullptr; // カメラへのポインタ

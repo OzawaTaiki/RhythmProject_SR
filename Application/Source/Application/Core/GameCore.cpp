@@ -51,6 +51,7 @@ void GameCore::Initialize(float noteSpeed, float musicLaytencyMs, float beginOff
 
     noteDeletePosition_ = -noteJudge_->GetMissJudgeThreshold() * noteSpeed_; // ノーツを削除する位置を設定
 
+
     combo_ = 0; // コンボの初期化
     maxCombo_ = 0; // 最大コンボの初期化
 }

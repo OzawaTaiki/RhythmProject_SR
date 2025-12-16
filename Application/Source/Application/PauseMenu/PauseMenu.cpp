@@ -104,6 +104,7 @@ void PauseMenu::Draw()
     if (!isDraw_)
         return;
 
+    
     background_->Draw();
 
 }
@@ -113,11 +114,11 @@ void PauseMenu::CliclEvent(EventType element)
     std::string eventName = GetDispatchEventName(element);
     if (!eventName.empty())
     {
+        UINavigationManager::GetInstance()->ClearFocus();
         EventManager::GetInstance()->DispatchEvent(GameEvent(eventName, nullptr));
         isDraw_ = false; // 描画を停止
         if (element != EventType::OpenSettings)
             isActive_ = false; // ポーズメニューを非アクティブに
-        UINavigationManager::GetInstance()->ClearFocus();
     }
 }
 

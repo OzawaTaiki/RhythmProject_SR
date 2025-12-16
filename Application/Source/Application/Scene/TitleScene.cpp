@@ -92,7 +92,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     hexagonGrid_ = std::make_unique<HexagonGrid>();
     Rect area(Vector2(0, 0), Vector2(1280, 720));
-    //hexagonGrid_->Initialize(area);
+    hexagonGrid_->Initialize(area);
 }
 
 void TitleScene::Update()
@@ -120,7 +120,9 @@ void TitleScene::Update()
     particleSystem_->Update();
     settingMenu_->Update();
     titleUI_->Update();
-    //hexagonGrid_->Update();
+#ifndef _DEBUG
+    hexagonGrid_->Update();
+#endif
     titleBack_->Update();
     if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
         spectrumRing_->Update(voiceInstance_->GetElapsedTime());
@@ -164,7 +166,7 @@ void TitleScene::Draw()
     LayerSystem::SetLayer("back");
     {
         titleBack_->Draw();
-        //hexagonGrid_->Draw();
+        hexagonGrid_->Draw();
     }
 
     LayerSystem::SetLayer("ring");

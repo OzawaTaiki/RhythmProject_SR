@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Features/Scene/Interface/ISceneTransition.h>
+#include <Features/UI/UITextElement.h>
 
 #include <Features/Sprite/Sprite.h>
 
@@ -33,6 +34,7 @@ private:
     float fadeSpeed_ = 1.0f; // フェード速度
 
     std::unique_ptr<Sprite> transitionSprite_ = nullptr; // トランジション用のスプライト
+    std::unique_ptr<UITextElement> loadingText_ = nullptr;
 
     bool isEnd_ = false; // トランジションが終了したか
     bool canSwitch_ = false; // シーンを切り替え可能か

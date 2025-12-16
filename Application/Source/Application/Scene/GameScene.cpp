@@ -16,7 +16,6 @@
 #include <Features/TextRenderer/TextRenderer.h>
 #include <Features/Event/EventManager.h>
 
-#include <Application/Scene/Transition/SceneTrans.h>
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Application/Setting/Setting.h>
 #include <Framework/LayerSystem/LayerSystem.h>
@@ -44,6 +43,8 @@ GameScene::~GameScene()
     EventManager::GetInstance()->RemoveEventListener("RequestResume", this);
     EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
     EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
+    //if(loadingThread_.joinable())
+    //    loadingThread_.join();
 
 }
 
@@ -53,7 +54,7 @@ GameScene::~GameScene()
 void GameScene::Initialize(SceneData* sceneData)
 {
     auto now = std::chrono::system_clock::now();
-
+    Debug::Log(std::format("GameScene Initialize Start TimePoint: {}\n", now.time_since_epoch().count()));
     Debug::Log(std::format("Current TimePoint: {}\n", now.time_since_epoch().count()));
 
     //SceneCamera_.Initialize();
@@ -114,8 +115,12 @@ void GameScene::Initialize(SceneData* sceneData)
     }
     isLoadComplete_ = false;
     //loadingThread_ = std::thread(&GameScene::Load, this, beforeScene, beatMapFilePath, editorBeatMapData);
+
+    auto begin = std::chrono::system_clock::now();
     gameEnvironment_ = std::make_unique<GameEnvironment>();
     gameEnvironment_->Initialize();
+    auto end = std::chrono::system_clock::now();
+    Debug::Log(std::format("GameEnvironment Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()));
     Load(beforeScene, beatMapFilePath, editorBeatMapData);
 //    gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
 //    gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs); // ノーツの移動速度とオフセット時間を設定
@@ -322,20 +327,24 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+    Time::TimeStamp("GameScene Draw Start ");
     // レイヤーごとに描画
     ModelManager::GetInstance()->PreDrawForObjectModel();
-
+    Time::TimeStamp("Set GameEnvironment Layer ");
     LayerSystem::SetLayer("GameEnvironment");
     {
         ModelManager::GetInstance()->PreDrawForObjectModel();
+        Time::TimeStamp("Draw GameEnvironment ");
         gameEnvironment_->Draw(&SceneCamera_);
+        Time::TimeStamp("Apply Bloom Effect ");
         LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom",bloom_.get());
+        Time::TimeStamp("Apply Vignette Effect ");
         feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
     }
 
     if (!isLoadComplete_)
         return;
-
+    Time::TimeStamp("Set GameCore Layer ");
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("GameCore");
     {
@@ -350,12 +359,13 @@ void GameScene::Draw()
         laneOutline_->Apply("GameCore", "DepthOutline");
     }
 
-
+    Time::TimeStamp("Set FeedbackEffect Layer ");
     ModelManager::GetInstance()->PreDrawForObjectModel();
     LayerSystem::SetLayer("FeedbackEffect");
     {
         feedbackEffect_->Draw();
     }
+    Time::TimeStamp("Set PauseMenu  Layer ");
     LayerSystem::SetLayer("PauseMenu");
     {
         pauseMenu_->Draw();
@@ -364,6 +374,7 @@ void GameScene::Draw()
 
     LayerSystem::SetLayer("FeedbackEffect");
 
+    Time::TimeStamp("GameScene Draw End ");
 }
 
 void GameScene::DrawShadow() {}
@@ -376,6 +387,8 @@ bool GameScene::IsCompleteLoadBeatMap()
     }
     else if (!isBeatMapLoaded_)
     {
+        auto begin = std::chrono::system_clock::now();
+        Debug::Log(std::format("BeatMap Load Complete TimePoint: {}\n", begin.time_since_epoch().count()));
         if (!beatMapLoader_->IsLoadingSuccess())
         {
             // 読み込み失敗してたら エラーメッセージを取得して表示
@@ -418,6 +431,11 @@ bool GameScene::IsCompleteLoadBeatMap()
 
         isBeatMapLoaded_ = true;
         isWatingForStart_ = true; // 譜面読み込み完了したら開始待機状態にする
+
+        auto end = std::chrono::system_clock::now();
+        Debug::Log(std::format("BeatMap Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()));
+        Debug::Log(std::format("TimeStamp at Load Complete: {}\n", end.time_since_epoch().count()));
+
     }
     return isBeatMapLoaded_;
 }
@@ -434,6 +452,8 @@ void GameScene::UpdateGameStartOffset()
     // ゲーム開始オフセット時間を超えたら
     if (waitTimer_ >= gameStartOffset_)
     {
+        auto timeStamp = std::chrono::system_clock::now();
+        Debug::Log(std::format("Game Start TimePoint: {}\n", timeStamp.time_since_epoch().count()));
         isWatingForStart_ = false;
         waitTimer_ = 0.0f;
         // ゲーム開始
@@ -508,6 +528,8 @@ void GameScene::OnEvent(const GameEvent& event)
 
 void GameScene::Load(const std::string& beforeScene, const std::string& filepth, const BeatMapData& data)
 {
+    auto now = std::chrono::system_clock::now();
+    Debug::Log(std::format("GameScene Load Start TimePoint: {}\n", now.time_since_epoch().count()));
 
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };
@@ -548,7 +570,8 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     else if (beforeScene == "EditorScene")
     {
         currentBeatMapData_ = data; // エディタから渡された譜面データを取得
-        if (currentBeatMapData_.title == "None")                    currentBeatMapData_.title = "test";
+        if (currentBeatMapData_.title == "None")
+            currentBeatMapData_.title = "test";
         gameMode_ = GameMode::EditorTest;
     }
 
@@ -564,8 +587,6 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     beatManager_->Initialize(100);
 
 
-    feedbackEffect_ = std::make_unique<FeedbackEffect>();
-    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
 
     gameUI_ = std::make_unique<GameUI>();
     gameUI_->Initialize();
@@ -576,11 +597,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
 
-    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType,int32_t combo) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType, combo); });
-    gameCore_->SetMissCallback([&]() { feedbackEffect_->PlayMissedEffect(); });
-    gameCore_->SetHoldCallback([&](int32_t laneIndex) { feedbackEffect_->PlayHoldEffect(laneIndex); });
 
-    SceneManager::GetInstance()->SetTransition(std::make_unique<SceneTrans>());
 
     switch (gameMode_)
     {
@@ -614,6 +631,12 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     LayerSystem::CreateOutputLayer("Bloom");
     LayerSystem::CreateOutputLayer("DepthOutline");
 
+    feedbackEffect_ = std::make_unique<FeedbackEffect>();
+    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
+
+    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType, int32_t combo) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType, combo); });
+    gameCore_->SetMissCallback([&]() { feedbackEffect_->PlayMissedEffect(); });
+    gameCore_->SetHoldCallback([&](int32_t laneIndex) { feedbackEffect_->PlayHoldEffect(laneIndex); });
 
 
     bloom_ = std::make_unique<Bloom>();
@@ -638,13 +661,17 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     audioSpectrum_ = AudioSpectrum();
 
     while (!IsCompleteLoadBeatMap())
-        continue;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
 
     feedbackEffect_->InitComboThresholds(static_cast<int32_t>(beatMapLoader_->GetLoadedBeatMapData().notes.size()));
     laneOutline_->SetComboThresholds(feedbackEffect_->GetComboThresholds());
 
 
     isLoadComplete_ = true;
+
+    auto end = std::chrono::system_clock::now();
+    Debug::Log(std::format("GameScene Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - now).count()));
 }
 
 void GameScene::ImGui()

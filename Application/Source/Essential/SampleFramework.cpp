@@ -12,6 +12,7 @@
 #include <Features/Model/Primitive/Builder/PrimitiveBuilder.h>
 #include <Features/UI/Collider/UICollisionManager.h>
 #include <Features/UI/UINavigationManager.h>
+#include <Application/Scene/Transition/SceneTrans.h>
 
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
@@ -35,10 +36,12 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
     LayerSystem::Initialize();
 
     Setting::Load();
+    sceneManager_->SetTransition(std::make_unique<SceneTrans>());
 
     GenerateModels();
 
     AudioSystem::GetInstance()->SetMasterVolume(Setting::current_.masterVolume);
+    FontCache::GetInstance()->GetAtlasData("Resources/Fonts/NotoSansJP-Regular.ttf", 128);
 
 
     // 最初のシーンで初期化
@@ -47,6 +50,8 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 
 void SampleFramework::Update()
 {
+    Time::TimeStamp("FrameUPdateStart ");
+
     Framework::Update();
 
     rtvManager_->ClearAllRenderTarget();
@@ -60,32 +65,36 @@ void SampleFramework::Update()
     UICollisionManager::GetInstance()->CheckCollision(input_->GetMousePosition());
 
     //=============================
+
+    Time::TimeStamp("FrameUpdateEnd ");
 }
 
 void SampleFramework::Draw()
 {
+    Time::TimeStamp("FrameDrawStart ");
+
     Framework::PreDraw();
 
-    rtvManager_->SetDepthStencil("ShadowMap");
-    sceneManager_->DrawShadow();
+    //rtvManager_->SetDepthStencil("ShadowMap");
+    //sceneManager_->DrawShadow();
 
     rtvManager_->SetRenderTexture("default");
 
     // ========== 描画処理 ==========
-
+    Time::TimeStamp("Scene Drawing : ");
     sceneManager_->Draw();
 
+    Time::TimeStamp("Particle Drawing : ");
     ParticleSystem::GetInstance()->DrawParticles();
-
+    Time::TimeStamp("2D Batch Drawing : ");
     batch2DRenderer_->Render();
-
+    Time::TimeStamp("Text Rendering : ");
     lineDrawer_->Draw();
     //=============================
-
     textRenderer_->EndFrame();
-
+    Time::TimeStamp("Composite All Layers : ");
     LayerSystem::CompositeAllLayers("default");
-
+    Time::TimeStamp("Begin PreDraw : ");
     dxCommon_->PreDraw();
     // スワップチェインに戻す
     rtvManager_->SetSwapChainRenderTexture(dxCommon_->GetSwapChain());
@@ -100,6 +109,8 @@ void SampleFramework::Draw()
 
     // 後にupdateに
     sceneManager_->ChangeScene();
+
+    Time::TimeStamp("FrameDrawEnd ");
 }
 
 void SampleFramework::Finalize()

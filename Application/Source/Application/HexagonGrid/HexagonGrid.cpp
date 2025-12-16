@@ -127,6 +127,7 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
                 label += "0";
 
             auto hexagon = std::make_unique<UIButtonElement>(label + std::to_string(num), center, Vector2( diameter, diameter ), "", false);
+            hexagon->Initialize();
             hexagon->SetPosition(center);
             hexagon->SetAnchor({ 0.5f,0.5f });
             hexagon->SetSize({ diameter , diameter });

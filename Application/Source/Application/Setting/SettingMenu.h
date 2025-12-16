@@ -57,7 +57,7 @@ private:
     bool isActive_ = false; // メニューがアクティブかどうか
 
     std::unique_ptr<UIElement> backSprite_;
-
+    UIElement* volumeSlider_ = nullptr;       // 音量スライダー フォーカスセット用
     std::function<void(float)> speedSetFunc_ = nullptr; // ノーツ速度を設定するコールバック関数
     std::function<void(float)> audioLatencySetFunc_ = nullptr; // 音声遅延を設定するコールバック関数
 

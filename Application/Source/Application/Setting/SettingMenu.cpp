@@ -4,6 +4,7 @@
 #include <Debug/Debug.h>
 #include <System/Audio/AudioSystem.h>
 #include <Features/Event/EventManager.h>
+#include <Features/UI/UINavigationManager.h>
 
 #include <Application/Setting/Setting.h>
 #include <Features/UI/UIImageElement.h>
@@ -30,6 +31,7 @@ void SettingMenu::Initialize()
     back->Initialize();
     auto volumeSlider = std::make_unique<UISliderElement>("VolumeSlider", Vector2(150, 150), Vector2(200, 20),true);
     volumeSlider->Initialize();
+    volumeSlider->SetStep(0.01f);
     volumeSlider->SetValue(Setting::current_.masterVolume);
     volumeSlider->SetOnValueChanged([](float value)
                                     {
@@ -46,6 +48,7 @@ void SettingMenu::Initialize()
 
     auto noteSpeedSlider = std::make_unique<UISliderElement>("NoteSpeedSlider", Vector2(150, 200), Vector2(200, 20), true);
     noteSpeedSlider->Initialize();
+    noteSpeedSlider->SetStep(5.0f);
     noteSpeedSlider->SetValue(Setting::current_.noteSpeed);
     noteSpeedSlider->SetOnValueChanged([&](float value)
                                        {
@@ -62,6 +65,7 @@ void SettingMenu::Initialize()
     auto audioLatencySlider = std::make_unique<UISliderElement>("AudioLatencySlider", Vector2(150, 250), Vector2(200, 20), true);
     audioLatencySlider->Initialize();
     audioLatencySlider->SetValue(Setting::current_.audioLatencyMs);
+    audioLatencySlider->SetStep(1.0f);
     audioLatencySlider->SetOnValueChanged([&](float value)
                                           {
                                               Setting::current_.audioLatencyMs = value; // 音声遅延を設定に反映
@@ -74,7 +78,19 @@ void SettingMenu::Initialize()
     label->Initialize();
     audioLatencySlider->AddChild(std::move(label));
 
-    back->AddChild(std::move(volumeSlider));
+
+    auto navi1 = volumeSlider->GetComponent<UINavigationComponent>();
+    auto navi2 = noteSpeedSlider->GetComponent<UINavigationComponent>();
+    auto navi3 = audioLatencySlider->GetComponent<UINavigationComponent>();
+
+    navi1->SetNavigation(NavigationDirection::Up, audioLatencySlider.get());
+    navi1->SetNavigation(NavigationDirection::Down, noteSpeedSlider.get());
+    navi2->SetNavigation(NavigationDirection::Up, volumeSlider.get());
+    navi2->SetNavigation(NavigationDirection::Down, audioLatencySlider.get());
+    navi3->SetNavigation(NavigationDirection::Up, noteSpeedSlider.get());
+    navi3->SetNavigation(NavigationDirection::Down, volumeSlider.get());
+
+    volumeSlider_= back->AddChild(std::move(volumeSlider));
     back->AddChild(std::move(noteSpeedSlider));
     back->AddChild(std::move(audioLatencySlider));
 
@@ -96,6 +112,7 @@ void SettingMenu::Update()
     if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
     {
         isActive_ = false;
+        UINavigationManager::GetInstance()->ClearFocus();
         EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
         previewPanel_->StopMusic();
         Debug::Log("SettingMenu closed\n");
@@ -120,6 +137,7 @@ void SettingMenu::OnEvent(const GameEvent& event)
     if (event.GetEventType() == "OpenOptionMenu")
     {
         isActive_ = true;
+        UINavigationManager::GetInstance()->SetFocus(volumeSlider_);
         Debug::Log("SettingMenu opened\n");
     }
 }

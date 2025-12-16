@@ -4,6 +4,7 @@
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 #include <Core/WinApp/WinApp.h>
 #include <Framework/LayerSystem/LayerSystem.h>
+#include <Debug/Debug.h>
 
 void SceneTrans::Initialize()
 {
@@ -21,11 +22,19 @@ void SceneTrans::Initialize()
     transitionSprite_->SetSize(WinApp::kWindowSize_); // 画面全体を覆うサイズに設定
     transitionSprite_->SetColor(Vector4(0, 0, 0, 1)); // 初期は黒色
 
+    FontConfig conf =FontConfig{};
+    conf.fontSize = 128;
+    loadingText_ = std::make_unique<UITextElement>("LoadingText", WinApp::kWindowSize_ * 0.5f, "Loading...", conf);
+    loadingText_->Initialize();
+
+
     LayerSystem::CreateLayer("SceneTransition", 100000); // トランジション用のレイヤーを作成
 }
 
 void SceneTrans::Update()
 {
+    Time::TimeStamp("SceneTrans Updating :");
+
     if (!playing_) return; // トランジションが再生中でない場合は何もしない
 
     if (!canSwitch_)
@@ -35,6 +44,8 @@ void SceneTrans::Update()
         {
             elapsedTime_ = duration_; // 経過時間が持続時間を超えたら持続時間に設定
             canSwitch_ = true; // シーンを切り替え可能にする
+
+            Time::TimeStamp("SceneTrans Can Switch Now ");
         }
     }
     else
@@ -45,6 +56,7 @@ void SceneTrans::Update()
             elapsedTime_ = 0.0f; // 経過時間が0以下になったら0に設定
             isEnd_ = true; // トランジションが終了したとマーク
             playing_ = false; // トランジションの再生を停止
+            Time::TimeStamp("SceneTrans Ended ");
         }
     }
 
@@ -56,6 +68,7 @@ void SceneTrans::Update()
     {
         transitionSprite_->SetColor(Vector4(0, 0, 0, alpha_)); // 黒色のアルファ値を更新
         transitionSprite_->Update();
+        loadingText_->SetColor(Vector4(1, 1, 1, alpha_ * 0.8f)); // 白色のアルファ値を更新
     }
 }
 
@@ -70,15 +83,24 @@ void SceneTrans::Draw()
         Sprite::PreDraw();
         transitionSprite_->Draw(); // トランジションスプライトを描画
     }
+    if (loadingText_)
+    {
+        loadingText_->Draw();
+    }
 }
 
 void SceneTrans::Start()
 {
+    if (playing_)
+        return;
     duration_ = 0.5f; // トランジションの持続時間
     isEnd_ = false; // トランジションが終了したか
     canSwitch_ = false; // シーンを切り替え可能か
-
+    elapsedTime_ = 0.0f;
     playing_ = true; // トランジションが再生中か
+
+    auto timeStamp = std::chrono::system_clock::now();
+    Debug::Log(std::format("Scene Transition Start TimePoint: {}\n", timeStamp.time_since_epoch().count()));
 }
 
 void SceneTrans::End()

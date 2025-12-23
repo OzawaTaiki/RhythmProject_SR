@@ -34,6 +34,7 @@ void TimelineRenderer::Initialize(std::function<void()> toTestFunc)
     timelineStartPosition_ = timelineSprites_["start"]->GetPosition().x; // タイムラインの開始位置を取得
     timelineEndPosition_ = timelineSprites_["end"]->GetPosition().x; // タイムラインの終了位置を取得
     timelineWidth_ = timelineEndPosition_ - timelineStartPosition_; // タイムラインの幅を計算
+    timelineSprites_["playhead"]->SetPosition(Vector2(timelineStartPosition_, timelineSprites_["playhead"]->GetPosition().y));
 
     dummy_timeline_ = Rect();
     dummy_timeline_.leftTop = Vector2(timelineStartPosition_, timelineSprites_["background"]->GetPosition().y);
@@ -45,16 +46,16 @@ void TimelineRenderer::Initialize(std::function<void()> toTestFunc)
         .SetColor({ 0,0,0,1 });
 }
 
-void TimelineRenderer::Draw(const AudioController* _audioController, float _currentTime)
+void TimelineRenderer::Draw(const AudioController* _audioController, float& _currentTime)
 {
     DataUpdate(_audioController, _currentTime);
 
     LineDrawer::GetInstance()->RegisterPoint(timelineSprites_["start"]->GetPosition(), timelineSprites_["end"]->GetPosition(), { 1,1,1,1 });
 
-    timelineSprites_["background"]->Draw();
-    timelineSprites_["start"]->Draw();
-    timelineSprites_["end"]->Draw();
-    timelineSprites_["playhead"]->Draw();
+    timelineSprites_["background"]  ->Draw();
+    timelineSprites_["start"]       ->Draw();
+    timelineSprites_["end"]         ->Draw();
+    timelineSprites_["playhead"]    ->Draw();
     timelineSprites_["toTestButton"]->Draw();
     //text_.Draw(L"テスト", textParam_);
 
@@ -70,45 +71,52 @@ void TimelineRenderer::Finalize()
     // TODO: 終了処理
 }
 
-void TimelineRenderer::DataUpdate(const AudioController* _audioController, float _currentTime)
+void TimelineRenderer::DataUpdate(const AudioController* _audioController, float& _currentTime)
 {
     if (!_audioController)
         return; // 音楽がロードされていない場合は何もしない
 
     auto musicSoundInstance = _audioController->GetSoundInstance();
-    if (!musicSoundInstance)
-        return;
-
-    auto input = Input::GetInstance();
-
-    if (dummy_timeline_.Contains(input->GetMousePosition()) && input->IsMousePressed(0))
+    if (musicSoundInstance)
     {
-        Vector2 mousePos = input->GetMousePosition();
+        auto input = Input::GetInstance();
 
-        // マウス座標をタイムラインの相対位置に変換 時間軸状の座標
-        float relativeX = mousePos.x - timelineStartPosition_;
-        float ratio = relativeX / timelineWidth_; // タイムラインの幅に対する比率を計算
+        if (dummy_timeline_.Contains(input->GetMousePosition()) && input->IsMousePressed(0))
+        {
+            Vector2 mousePos = input->GetMousePosition();
 
-        ratio = std::clamp(ratio, 0.0f, 1.0f); // 比率を0から1の範囲に制限
+            // マウス座標をタイムラインの相対位置に変換 時間軸状の座標
+            float relativeX = mousePos.x - timelineStartPosition_;
+            float ratio = relativeX / timelineWidth_; // タイムラインの幅に対する比率を計算
 
-        float time = musicSoundInstance->GetDuration() * ratio; // 音楽の長さに基づいて時間を計算
+            ratio = std::clamp(ratio, 0.0f, 1.0f); // 比率を0から1の範囲に制限
 
-        _currentTime = time; // 現在の時間を更新
+            float time = musicSoundInstance->GetDuration() * ratio; // 音楽の長さに基づいて時間を計算
 
-        // playheadの座標を更新
-        timelineSprites_["playhead"]->SetPosition(Vector2(timelineStartPosition_ + relativeX, timelineSprites_["playhead"]->GetPosition().y));
+            _currentTime = time; // 現在の時間を更新
+
+            // playheadの座標を更新
+            timelineSprites_["playhead"]->SetPosition(Vector2(timelineStartPosition_ + relativeX, timelineSprites_["playhead"]->GetPosition().y));
+        }
+        else
+        {
+            Vector2 updatePosition;
+            updatePosition.y = timelineSprites_["playhead"]->GetPosition().y; // Y座標は固定
+
+            float ratio = _currentTime / musicSoundInstance->GetDuration(); // 現在の時間を音楽の長さで割って比率を計算
+            ratio = std::clamp(ratio, 0.0f, 1.0f); // 比率を0から1の範囲に制限
+            updatePosition.x = timelineStartPosition_ + ratio * timelineWidth_; // タイムラインの開始位置と幅を使ってX座標を計算
+
+            timelineSprites_["playhead"]->SetPosition(updatePosition); // playheadの位置を更新
+        }
     }
-    else
-    {
-        Vector2 updatePosition;
-        updatePosition.y = timelineSprites_["playhead"]->GetPosition().y; // Y座標は固定
 
-        float ratio = _currentTime / musicSoundInstance->GetDuration(); // 現在の時間を音楽の長さで割って比率を計算
-        ratio = std::clamp(ratio, 0.0f, 1.0f); // 比率を0から1の範囲に制限
-        updatePosition.x = timelineStartPosition_ + ratio * timelineWidth_; // タイムラインの開始位置と幅を使ってX座標を計算
+    timelineSprites_["background"]  ->Update();
+    timelineSprites_["start"]       ->Update();
+    timelineSprites_["end"]         ->Update();
+    timelineSprites_["playhead"]    ->Update();
+    timelineSprites_["toTestButton"]->Update();
 
-        timelineSprites_["playhead"]->SetPosition(updatePosition); // playheadの位置を更新
-    }
 }
 
 } // namespace BME

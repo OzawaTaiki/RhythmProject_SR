@@ -37,6 +37,12 @@ void TitleUI::Initialize()
 
 void TitleUI::Update()
 {
+#ifdef _DEBUG
+
+    ImGuiTool::TimeLine("TitleUI Animation", titleAnimationSequence_.get());
+
+#endif // _DEBUG
+
     float delta = 0.016f;
     if (isExpanding_)
     {
@@ -203,7 +209,7 @@ void TitleUI::InitializeUIElements()
     dummyButton->Initialize();
     backgroundElement_->AddChild(std::move(dummyButton));
 
-
+    backgroundElement_->SetEnabled(false);
 
     //    auto startParent = uiGroup_->CreateElement<UISprite>("title_startParent");
     //    auto startButton = uiGroup_->CreateButton("title_start");

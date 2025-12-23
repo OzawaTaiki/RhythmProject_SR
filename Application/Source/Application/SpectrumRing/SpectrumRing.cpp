@@ -91,9 +91,8 @@ void SpectrumRing::Draw(Camera* camera)
     for (size_t i = 0; i < numRings; ++i)
     {
         uint32_t handleIndex = cycleTextureIndices_[i];
-        rings_[i]->Draw(camera, textureHandles_[handleIndex], Vector4(1, 1, 1, 0.1f));
-    }
-    rings_[numRings]->Draw(camera);
+        rings_[i]->Draw(camera, textureHandles_[handleIndex], Vector4(1, 1, 1, 0.3f));
+    }    rings_[numRings]->Draw(camera);
 }
 
 void SpectrumRing::CreateRings()

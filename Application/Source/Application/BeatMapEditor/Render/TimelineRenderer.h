@@ -21,12 +21,12 @@ public:
     ~TimelineRenderer() = default;
 
     void Initialize(std::function<void()> toTestFunc);
-    void Draw(const AudioController* _audioController, float _currentTime);
+    void Draw(const AudioController* _audioController, float& _currentTime);
     void Finalize();
 
 private:
 
-    void DataUpdate(const AudioController* _audioController, float _currentTime);
+    void DataUpdate(const AudioController* _audioController, float& _currentTime);
 
 private:
 

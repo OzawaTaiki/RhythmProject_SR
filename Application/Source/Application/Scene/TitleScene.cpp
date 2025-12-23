@@ -157,10 +157,6 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-    LayerSystem::SetLayer("back");
-    {
-    }
-
     ModelManager::GetInstance()->PreDrawForObjectModel();
 
     LayerSystem::SetLayer("back");

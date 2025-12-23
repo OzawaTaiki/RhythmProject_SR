@@ -39,6 +39,7 @@ void WaveformRenderer::Draw(const AudioController* audioController, float curren
 
 void WaveformRenderer::DrawBackSprite()
 {// レイヤーの影響を受けるため別関数で用意
+    waveformBackground_->Update();
     waveformBackground_->Draw(Vector4(0, 0, 0, 1));
 }
 

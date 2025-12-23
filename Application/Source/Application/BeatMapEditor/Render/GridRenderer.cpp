@@ -39,6 +39,7 @@ void GridRenderer::DrawLanes()
 {
     for (size_t i = 0; i < laneSprites_.size(); ++i)
     {
+        laneSprites_[i]->Update();
         laneSprites_[i]->Draw(); // レーンを描画
     }
 }
@@ -95,7 +96,6 @@ void GridRenderer::InitLaneSprites(const EditorCoordinate* coordinate)
         laneSprite->SetSize(Vector2(laneWidth, coordinate->GetEditAreaHeight())); // レーンのサイズを設定
         laneSprite->translate_ = Vector2(coordinate->GetLaneLeftX(i) + laneWidth / 2.0f, coordinate->GetBottomMargin()); // レーンの位置を設定
         laneSprite->SetColor(Vector4(0.3f, 0.3f, 0.3f, 1.0f));
-
         laneSprites_.push_back(std::move(laneSprite)); // スプライトをリストに格納
     }
 }

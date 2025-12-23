@@ -106,11 +106,13 @@ void NoteRenderer::DrawNote(const NoteData& _note, const EditorCoordinate* _coor
             noteBridges_[_holdNoteIndex]->translate_ = {noteX, noteY};
             noteBridges_[_holdNoteIndex]->SetColor(color);
             noteBridges_[_holdNoteIndex]->SetSize({40.0f, _coordinate->GetPixelsPerSecond() * _note.holdDuration});
+            noteBridges_[_holdNoteIndex]->Update();
             noteBridges_[_holdNoteIndex]->Draw();
 
             // 終端ノートの描画
             holdNoteEnd_[_holdNoteIndex]->translate_ = {noteX, noteY - _coordinate->GetPixelsPerSecond() * _note.holdDuration};
             holdNoteEnd_[_holdNoteIndex]->SetColor(color);
+            holdNoteEnd_[_holdNoteIndex]->Update();
             holdNoteEnd_[_holdNoteIndex]->Draw();
 
             ++_holdNoteIndex;
@@ -120,6 +122,7 @@ void NoteRenderer::DrawNote(const NoteData& _note, const EditorCoordinate* _coor
     // 開始ノートの描画
     noteSprites_[_noteIndex]->translate_ = {noteX, noteY};
     noteSprites_[_noteIndex]->SetColor(color);
+    noteSprites_[_noteIndex]->Update();
     noteSprites_[_noteIndex]->Draw();
 
     ++_noteIndex;
@@ -200,6 +203,7 @@ void NoteRenderer::DrawPreview(const State* state, const EditorCoordinate* coord
     {
         previewNoteSprite_->translate_ = {previewX, previewY};
         previewNoteSprite_->SetColor(color);
+        previewNoteSprite_->Update();
         previewNoteSprite_->Draw();
     }
     // ロングノート配置モード
@@ -216,6 +220,7 @@ void NoteRenderer::DrawPreview(const State* state, const EditorCoordinate* coord
             // 開始ノート
             previewNoteSprite_->translate_ = {posX, posY};
             previewNoteSprite_->SetColor(color);
+            previewNoteSprite_->Update();
             previewNoteSprite_->Draw();
 
             // 持続時間を計算
@@ -225,12 +230,14 @@ void NoteRenderer::DrawPreview(const State* state, const EditorCoordinate* coord
                 // 終端ノート
                 previewHoldEndSprite_->translate_ = {posX, previewY};
                 previewHoldEndSprite_->SetColor(color);
+                previewHoldEndSprite_->Update();
                 previewHoldEndSprite_->Draw();
 
                 // ブリッジ
                 previewBridgeSprite_->translate_ = {posX, posY};
                 previewBridgeSprite_->SetColor(color);
                 previewBridgeSprite_->SetSize({40.0f, holdDuration * coordinate->GetPixelsPerSecond()});
+                previewBridgeSprite_->Update();
                 previewBridgeSprite_->Draw();
             }
         }
@@ -239,6 +246,7 @@ void NoteRenderer::DrawPreview(const State* state, const EditorCoordinate* coord
             // ロングノート未作成：マウス位置にプレビュー表示
             previewNoteSprite_->translate_ = {previewX, previewY};
             previewNoteSprite_->SetColor(color);
+            previewNoteSprite_->Update();
             previewNoteSprite_->Draw();
         }
     }

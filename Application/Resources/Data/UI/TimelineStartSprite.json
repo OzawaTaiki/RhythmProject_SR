@@ -1,0 +1,30 @@
+{
+    "TimelineStartSprite": {
+        "anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "color": {
+            "w": 1.0,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 280.0,
+            "y": 670.0
+        },
+        "size": {
+            "x": 10.0,
+            "y": 64.0
+        },
+        "texturePath": "white.png"
+    }
+}

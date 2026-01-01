@@ -9,7 +9,6 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <System/Audio/SoundInstance.h>
 #include <System/Audio/VoiceInstance.h>
-#include <Features/Sprite/Sprite.h>
 #include <System/Audio/AudioSystem.h>
 #include <Features/Event/EventListener.h>
 
@@ -33,9 +32,7 @@
 #include <Application/PauseMenu/PauseMenu.h>
 #include <Application/Setting/SettingMenu.h>
 #include <Application/Lane/LaneOutline.h>
-
-
-#include <thread>
+#include <Application/GameCompleteEffect.h>
 
 enum class GameMode
 {
@@ -130,6 +127,7 @@ private:
 
     std::unique_ptr<PauseMenu> pauseMenu_ = nullptr; // 一時停止メニュー
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
+    std::unique_ptr< GameCompleteEffect> gameCompleteEffect_ = nullptr; // ゲーム完了エフェクト
 
     BeatMapLoader* beatMapLoader_ = nullptr;
     BeatMapData currentBeatMapData_ = {}; // 現在の譜面データ
@@ -165,6 +163,6 @@ private:
     bool isTransitionToResultScene_ = false;
     bool noteUpdateEnabled_ = true; // ノートの更新を有効にするかどうか
 
-
-    std::thread loadingThread_; std::atomic<bool> isLoadComplete_;
+    std::thread loadingThread_;
+    std::atomic<bool> isLoadComplete_;
 };

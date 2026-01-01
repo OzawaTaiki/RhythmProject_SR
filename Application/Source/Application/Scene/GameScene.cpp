@@ -33,6 +33,7 @@ GameScene::GameScene()
     EventManager::GetInstance()->AddEventListener("RequestResume", this);
     EventManager::GetInstance()->AddEventListener("RequestRetry", this);
     EventManager::GetInstance()->AddEventListener("RequestToTitle", this);
+    EventManager::GetInstance()->AddEventListener("MusicEnded", this);
 
 
 }
@@ -43,6 +44,7 @@ GameScene::~GameScene()
     EventManager::GetInstance()->RemoveEventListener("RequestResume", this);
     EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
     EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
+    EventManager::GetInstance()->RemoveEventListener("MusicEnded", this);
     //if(loadingThread_.joinable())
     //    loadingThread_.join();
 
@@ -213,7 +215,9 @@ void GameScene::Update()
 
     if (IsMusicEnd())
     {
-        if (isTransitionToResultScene_)
+        gameCompleteEffect_->Update(deltaTime);
+
+        if (isTransitionToResultScene_ && gameCompleteEffect_->IsEffectComplete())
         {
             auto data = std::make_unique<GameToResultData>();
             data->resultData.musicTitle = beatMapLoader_->GetLoadedBeatMapData().title; // 譜面のタイトルを取得
@@ -273,6 +277,7 @@ void GameScene::Draw()
     }
     LayerSystem::SetLayer("PauseMenu");
     {
+        gameCompleteEffect_->Draw();
         pauseMenu_->Draw();
         settingMenu_->Draw();
     }
@@ -427,6 +432,13 @@ void GameScene::OnEvent(const GameEvent& event)
             }
         }
     }
+
+    else if (eventType == "MusicEnded")
+    {
+        gameMusic_->MusicEnd();
+
+        gameCompleteEffect_->StartEffect(gameCore_->GetJudgeResult());
+    }
 }
 
 void GameScene::Load(const std::string& beforeScene, const std::string& filepth, const BeatMapData& data)
@@ -496,7 +508,8 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
 
-
+    gameCompleteEffect_ = std::make_unique<GameCompleteEffect>();
+    gameCompleteEffect_->Initialize();
 
     switch (gameMode_)
     {

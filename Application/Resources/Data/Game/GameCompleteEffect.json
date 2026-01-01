@@ -1,0 +1,268 @@
+{
+    "GameCompleteEffect": {
+        "BG_color_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector4",
+                    "value": {
+                        "w": 0.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 20,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 0.9000000357627869,
+                "value": {
+                    "type": "Vector4",
+                    "value": {
+                        "w": 0.6039215922355652,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "BG_color_variableType": 4,
+        "Banner_Scale_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.6000000238418579,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.3000000715255737,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0
+                    }
+                }
+            }
+        ],
+        "Banner_Scale_variableType": 2,
+        "Banner_Size_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.4000000059604645,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 8,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.800000011920929,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1280.0,
+                        "y": 50.0
+                    }
+                }
+            },
+            {
+                "easingType": 16,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.3000000715255737,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1280.0,
+                        "y": 200.0
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.700000047683716,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1280.0,
+                        "y": 200.0
+                    }
+                }
+            },
+            {
+                "easingType": 29,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.5,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1280.0,
+                        "y": 0.0
+                    }
+                }
+            }
+        ],
+        "Banner_Size_variableType": 2,
+        "Banner_size_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.4000000059604645,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 1.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            }
+        ],
+        "Banner_size_variableType": 2,
+        "IsLooping": false,
+        "MaxPlayTime": 3.5,
+        "SequenceSize": 3,
+        "Text_Scale_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.9000000357627869,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 5,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.2000000476837158,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.20000000298023224,
+                        "y": 0.800000011920929
+                    }
+                }
+            },
+            {
+                "easingType": 20,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.5,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 2.9000000953674316,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0
+                    }
+                }
+            },
+            {
+                "easingType": 29,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.5,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1.0,
+                        "y": 0.0
+                    }
+                }
+            }
+        ],
+        "Text_Scale_variableType": 2,
+        "Text_Size_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.800000011920929,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.399999976158142,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0
+                    }
+                }
+            }
+        ],
+        "Text_Size_variableType": 2,
+        "labels": [
+            "BG_color",
+            "Banner_Size",
+            "Text_Scale"
+        ]
+    }
+}

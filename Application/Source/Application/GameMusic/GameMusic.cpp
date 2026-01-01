@@ -3,6 +3,7 @@
 #include <System/Audio/AudioSystem.h>
 
 #include <Application/EventData/PauseActionData.h>
+#include <Features/Event/EventManager.h>
 
 GameMusic::GameMusic(const std::string& musicFilePath)
 {
@@ -21,7 +22,11 @@ void GameMusic::Initialize(float rewindTime)
 {
     // コールバックの設定
     voiceCallBack_ = std::make_unique<VoiceCallBack>();
-    voiceCallBack_->SetOnStreamEndCallback([this]() {MusicEnd(); }); // 音楽が終了したときのコールバックを設定
+    voiceCallBack_->SetOnStreamEndCallback([this]()
+                                           {
+                                               MusicEnd();
+                                               EventManager::GetInstance()->DispatchEvent(GameEvent("MusicEnded", nullptr));
+                                           }); // 音楽が終了したときのコールバックを設定
 
     rewindTime_ = rewindTime;
     pausedAtTime_ = 0.0f;

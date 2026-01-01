@@ -1,0 +1,30 @@
+{
+    "GameComplete_BG": {
+        "anchor": {
+            "x": 0.0,
+            "y": 0.5
+        },
+        "color": {
+            "w": 0.501960813999176,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 0,
+        "pivot": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "position": {
+            "x": 640.0,
+            "y": 360.0
+        },
+        "size": {
+            "x": 1280.0,
+            "y": 720.0
+        },
+        "texturePath": "white.png"
+    }
+}

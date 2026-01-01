@@ -150,34 +150,6 @@ private:
     // 判定結果の記録
     void RecordJudgeResult(JudgeType result, Note* note);
 
-
-private:
-    //// ホールド状態
-    //struct HoldState
-    //{
-    //    bool isHolding = false;// ホールド中かどうか
-    //    int32_t laneIndex = -1;// ホールド中のレーンインデックス
-
-    //    // ホールド開始
-    //    void StartHold(int32_t lane)
-    //    {
-    //        isHolding = true;
-    //        laneIndex = lane;
-    //    }
-
-    //    void EndHold()
-    //    {
-    //        isHolding = false;
-    //        laneIndex = -1;
-    //    }
-
-    //    bool IsHoldingLane(int32_t lane) const
-    //    {
-    //        // ホールド中かつレーンが一致するかどうか
-    //        return isHolding && laneIndex == lane;
-    //    }
-    //};
-
 private:
 
     // lane

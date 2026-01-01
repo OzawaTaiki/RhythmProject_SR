@@ -88,7 +88,7 @@ void ResultScene::Update()
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
 
     resultUI_->Update(deltaTime);
-    gameEnvironment_->Update(deltaTime);
+    gameEnvironment_->Update(deltaTime, nullptr);
 
     if (resultUI_->IsTransitionToTitle())
     {

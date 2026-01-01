@@ -366,6 +366,7 @@
     <ClCompile Include="Source\Application\FeedBack\LaneEdgePillar\LaneEdgeEffect.cpp">
       <Filter>Application\FeedBack\ComboThresholds</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application\GameEnvironment\SpectrumBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -602,6 +603,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\LaneEdgePillar\LaneEdgeEffect.h">
       <Filter>Application\FeedBack\ComboThresholds</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameEnvironment\SpectrumBar.h">
+      <Filter>Application\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

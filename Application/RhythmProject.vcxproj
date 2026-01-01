@@ -205,6 +205,7 @@
     <ClCompile Include="Source\Application\GameEnvironment\BackgroundEffect.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\GameEnvironment.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\SpeakerEffect.cpp" />
+    <ClCompile Include="Source\Application\GameEnvironment\SpectrumBar.cpp" />
     <ClCompile Include="Source\Application\GameMusic\GameMusic.cpp" />
     <ClCompile Include="Source\Application\GameUI\GameUI.cpp" />
     <ClCompile Include="Source\Application\HexagonGrid\HexagonGrid.cpp" />
@@ -366,6 +367,7 @@
     <ClInclude Include="Source\Application\GameEnvironment\BackgroundEffect.h" />
     <ClInclude Include="Source\Application\GameEnvironment\GameEnvironment.h" />
     <ClInclude Include="Source\Application\GameEnvironment\SpeakerEffect.h" />
+    <ClInclude Include="Source\Application\GameEnvironment\SpectrumBar.h" />
     <ClInclude Include="Source\Application\GameMusic\GameMusic.h" />
     <ClInclude Include="Source\Application\GameUI\GameUI.h" />
     <ClInclude Include="Source\Application\HexagonGrid\HexagonGrid.h" />

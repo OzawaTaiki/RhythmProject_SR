@@ -36,7 +36,7 @@ void GameEnvironment::Initialize(const std::string& filePath)
     stopwatch_.Start();
 }
 
-void GameEnvironment::Update(float deltaTime)
+void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum)
 {
     stopwatch_.Update();
     const float animateTime = 1.0f;
@@ -67,8 +67,16 @@ void GameEnvironment::Update(float deltaTime)
             obj->Update();
         }
     }
+
+    if (audioSpectrum != nullptr)
+    {
+        for (auto& spectrumBar : spectrumBars_)
+        {
+            spectrumBar->Update(deltaTime, audioSpectrum);
+        }
+    }
+
     overFloor_->Update();
-    screen_->Update();
     overlayFloor_->Update();
 }
 
@@ -81,7 +89,11 @@ void GameEnvironment::Draw(const Camera* camera)
             obj->Draw(camera);
         }
     }
-    screen_->Draw(camera, spectrumTextureHandle_, Vector4(1, 1, 1, 1));
+    for (auto& spectrumBar : spectrumBars_)
+    {
+        spectrumBar->Draw(camera,emissivePso_.Get());
+    }
+
     if(enableEmissive_)
         overFloor_->DrawWithPSO(emissivePso_.Get(), camera);
     else
@@ -148,6 +160,8 @@ void GameEnvironment::Serialize(const std::string& filePath)
     if (!data.contains("objects"))
         return; // オブジェクトデータがない場合は終了
 
+
+
     int32_t objectCount = 0;
 
     for (json obj : data["objects"])
@@ -158,8 +172,25 @@ void GameEnvironment::Serialize(const std::string& filePath)
         if (!obj.contains("name") || obj["name"].empty())
             obj["name"] = "obj" + std::to_string(objectCount++); // 名前がない場合は自動で名前を設定
 
+        std::string name = obj["name"].get<std::string>();
 
-        auto object = std::make_unique<ObjectModel>(obj["name"].get<std::string>());
+
+        if (StringUtils::Contains(name, "spectrumBar") ||
+            StringUtils::Contains(name, "SpectrumBar"))
+        {
+            auto spectrumBar = std::make_unique<SpectrumBar>();
+            std::string  number =  name.substr(name.size()-1, 1);
+            int32_t id = std::stoi(number);
+            if (spectrumBars_.size() <= id)
+            {
+                spectrumBars_.resize(id);// 0 からidまでのサイズに拡張
+            }
+            spectrumBar->Initialize(name, id - 1, obj);
+            spectrumBars_[id - 1] = std::move(spectrumBar);
+            continue;
+        }
+
+        auto object = std::make_unique<ObjectModel>(name);
         std::string filepath = "";
         // モデルファイル名の取得
         if (obj.contains("file_name") && !obj["file_name"].empty())
@@ -199,14 +230,9 @@ void GameEnvironment::Serialize(const std::string& filePath)
         object->SetTimeChannel("GameEnvironment"); // アニメーションの時間チャンネルを設定
 
 
-        if (obj["name"] == "overFloor")
+        if (name == "overFloor")
         {
             overFloor_ = std::move(object);
-            continue;
-        }
-        if (obj["name"] == "screen")
-        {
-            screen_ = std::move(object);
             continue;
         }
         if (obj["name"] == "overlayFloor")
@@ -215,13 +241,13 @@ void GameEnvironment::Serialize(const std::string& filePath)
             continue;
         }
         // スピーカーオブジェクトの検出
-        if (StringUtils::Contains(obj["name"].get<std::string>(), "Speaker") ||
-            StringUtils::Contains(obj["name"].get<std::string>(), "speaker"))
+        if (StringUtils::Contains(name, "Speaker") ||
+            StringUtils::Contains(name, "speaker"))
         {
-            BuildSpeakerMap(obj["name"].get<std::string>(), object.get(), filepath); // スピーカーのマップを構築
+            BuildSpeakerMap(name, object.get(), filepath); // スピーカーのマップを構築
         }
-        if (StringUtils::Contains(obj["name"].get<std::string>(), "wall") ||
-            StringUtils::Contains(obj["name"].get<std::string>(), "Wall"))
+        if (StringUtils::Contains(name, "wall") ||
+            StringUtils::Contains(name, "Wall"))
         {
             InitializeWall(object.get()); // Wallの初期化
         }

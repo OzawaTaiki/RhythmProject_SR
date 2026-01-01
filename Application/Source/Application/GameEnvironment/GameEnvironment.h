@@ -5,6 +5,7 @@
 #include <System/Time/Stopwatch.h>
 #include <Features/Event/EventListener.h>
 
+#include "SpectrumBar.h"
 
 #include <memory>
 
@@ -36,7 +37,7 @@ public:
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    void Update(float deltaTime);
+    void Update(float deltaTime, AudioSpectrum* audioSpectrum);
 
     /// <summary>
     /// 描画処理を行う。
@@ -53,8 +54,6 @@ public:
     /// 指定レーンのスピーカーオブジェクトを取得する。
     /// </summary>
     ObjectModel* GetSpeaker(uint32_t laneIndex);
-
-    void SetSpectrumTextureHandle(uint32_t handle) { spectrumTextureHandle_ = handle; }
 
     void OnEvent(const GameEvent& event) override;
 
@@ -81,12 +80,10 @@ private:
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;
     std::unique_ptr<ObjectModel> overlayFloor_ = nullptr;
+    std::vector<std::unique_ptr<SpectrumBar>> spectrumBars_;// スペクトラムバーの配列
 
 
     std::map<uint32_t, ObjectModel*> speakerMap_;
-
-    std::unique_ptr<ObjectModel> screen_ = nullptr;
-    uint32_t spectrumTextureHandle_ = 0;
 
     std::map<ObjectModel*, float> speakerColorTimers_; // スピーカーごとの色変化タイマー
 

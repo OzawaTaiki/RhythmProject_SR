@@ -45,12 +45,11 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 
 
     // 最初のシーンで初期化
-    sceneManager_->Initialize("TitleScene");
+    sceneManager_->Initialize("GameScene");
 }
 
 void SampleFramework::Update()
 {
-    Time::TimeStamp("FrameUPdateStart ");
 
     Framework::Update();
 
@@ -66,12 +65,10 @@ void SampleFramework::Update()
 
     //=============================
 
-    Time::TimeStamp("FrameUpdateEnd ");
 }
 
 void SampleFramework::Draw()
 {
-    Time::TimeStamp("FrameDrawStart ");
 
     Framework::PreDraw();
 
@@ -81,20 +78,14 @@ void SampleFramework::Draw()
     rtvManager_->SetRenderTexture("default");
 
     // ========== 描画処理 ==========
-    Time::TimeStamp("Scene Drawing : ");
     sceneManager_->Draw();
 
-    Time::TimeStamp("Particle Drawing : ");
     ParticleSystem::GetInstance()->DrawParticles();
-    Time::TimeStamp("2D Batch Drawing : ");
     batch2DRenderer_->Render();
-    Time::TimeStamp("Text Rendering : ");
     lineDrawer_->Draw();
     //=============================
     textRenderer_->EndFrame();
-    Time::TimeStamp("Composite All Layers : ");
     LayerSystem::CompositeAllLayers("default");
-    Time::TimeStamp("Begin PreDraw : ");
     dxCommon_->PreDraw();
     // スワップチェインに戻す
     rtvManager_->SetSwapChainRenderTexture(dxCommon_->GetSwapChain());
@@ -110,7 +101,6 @@ void SampleFramework::Draw()
     // 後にupdateに
     sceneManager_->ChangeScene();
 
-    Time::TimeStamp("FrameDrawEnd ");
 }
 
 void SampleFramework::Finalize()

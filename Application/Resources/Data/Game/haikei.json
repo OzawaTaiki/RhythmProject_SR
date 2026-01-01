@@ -1,0 +1,399 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "MESH",
+            "name": "frontRightSpeaker_lane_3",
+            "transform": {
+                "transform": [
+                    10.0,
+                    -6.0,
+                    20.0
+                ],
+                "rotation": [
+                    -0.0,
+                    -2.516923666000366,
+                    0.0
+                ],
+                "scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "frontLeftSpeaker_lane_0",
+            "transform": {
+                "transform": [
+                    -10.0,
+                    -6.0,
+                    20.0
+                ],
+                "rotation": [
+                    -0.0,
+                    2.516923666000366,
+                    0.0
+                ],
+                "scale": [
+                    1.9999996423721313,
+                    2.0,
+                    1.9999996423721313
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "leftSpeaker_lane_1",
+            "transform": {
+                "transform": [
+                    -9.074250221252441,
+                    -6.0,
+                    38.71964645385742
+                ],
+                "rotation": [
+                    -0.0,
+                    3.141592502593994,
+                    0.0
+                ],
+                "scale": [
+                    3.163816452026367,
+                    3.163816452026367,
+                    3.163816452026367
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "rightSpeaker_lane_2",
+            "transform": {
+                "transform": [
+                    9.074250221252441,
+                    -6.0,
+                    38.71964645385742
+                ],
+                "rotation": [
+                    -0.0,
+                    3.141592502593994,
+                    0.0
+                ],
+                "scale": [
+                    3.163816452026367,
+                    3.163816452026367,
+                    3.163816452026367
+                ]
+            },
+            "file_name": "Speaker/Speaker.gltf"
+        },
+        {
+            "type": "MESH",
+            "name": "spectrumBar_006",
+            "transform": {
+                "transform": [
+                    14.502300262451172,
+                    -5.976009845733643,
+                    28.58734893798828
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "SpectrumBar/SpectrumBar.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "spectrumBar_003",
+            "transform": {
+                "transform": [
+                    -3.8230299949645996,
+                    -6.014639854431152,
+                    39.30400085449219
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "SpectrumBar/SpectrumBar.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "spectrumBar_004",
+            "transform": {
+                "transform": [
+                    3.8230299949645996,
+                    -6.014639854431152,
+                    39.30400085449219
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "SpectrumBar/SpectrumBar.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "spectrumBar_005",
+            "transform": {
+                "transform": [
+                    12.438400268554688,
+                    -5.976009845733643,
+                    39.30400085449219
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "SpectrumBar/SpectrumBar.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "spectrumBar_002",
+            "transform": {
+                "transform": [
+                    -12.438400268554688,
+                    -5.976009845733643,
+                    39.30400085449219
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "SpectrumBar/SpectrumBar.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "spectrumBar_001",
+            "transform": {
+                "transform": [
+                    -14.502300262451172,
+                    -5.976009845733643,
+                    28.587299346923828
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "SpectrumBar/SpectrumBar.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "overFloor",
+            "transform": {
+                "transform": [
+                    0.0,
+                    -6.840000152587891,
+                    28.125
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.8179999589920044,
+                    1.0,
+                    1.3890000581741333
+                ]
+            },
+            "file_name": "OverFloor/tiled_overFloor.obj"
+        },
+        {
+            "type": "LIGHT",
+            "name": "Light",
+            "transform": {
+                "transform": [
+                    4.076245307922363,
+                    100.0,
+                    1.0054539442062378
+                ],
+                "rotation": [
+                    -0.6503279805183411,
+                    -1.8663909435272217,
+                    -0.055217139422893524
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    0.9999999403953552
+                ]
+            }
+        },
+        {
+            "type": "CAMERA",
+            "name": "Camera",
+            "transform": {
+                "transform": [
+                    0.0,
+                    6.0,
+                    -15.0
+                ],
+                "rotation": [
+                    -1.3089967966079712,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "underFloor",
+            "transform": {
+                "transform": [
+                    0.0,
+                    -9.0,
+                    9.602886199951172
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    17.30900001525879,
+                    1.0,
+                    7.5
+                ]
+            },
+            "file_name": "BackGrroud/underFloor.obj"
+        },
+        {
+            "type": "MESH",
+            "name": "rightWall",
+            "transform": {
+                "transform": [
+                    16.52690315246582,
+                    -0.834630012512207,
+                    30.6652774810791
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.570796251296997
+                ],
+                "scale": [
+                    7.199999809265137,
+                    1.0,
+                    14.451000213623047
+                ]
+            },
+            "file_name": "pY1x1Plane"
+        },
+        {
+            "type": "MESH",
+            "name": "frontWall",
+            "transform": {
+                "transform": [
+                    0.0,
+                    -1.5447988510131836,
+                    41.03924560546875
+                ],
+                "rotation": [
+                    -1.5707964897155762,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    18.652000427246094,
+                    1.0,
+                    9.375
+                ]
+            },
+            "file_name": "pY1x1Plane"
+        },
+        {
+            "type": "MESH",
+            "name": "overlayFloor",
+            "transform": {
+                "transform": [
+                    0.0,
+                    -5.97599983215332,
+                    31.545827865600586
+                ],
+                "rotation": [
+                    -0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    19.239999771118164,
+                    1.0,
+                    15.902999877929688
+                ]
+            },
+            "file_name": "pY1x1Plane"
+        },
+        {
+            "type": "MESH",
+            "name": "leftWall",
+            "transform": {
+                "transform": [
+                    -16.526899337768555,
+                    -0.834630012512207,
+                    30.6652774810791
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    1.570796251296997
+                ],
+                "scale": [
+                    7.199999809265137,
+                    1.0,
+                    14.451000213623047
+                ]
+            },
+            "file_name": "pY1x1Plane"
+        }
+    ]
+}

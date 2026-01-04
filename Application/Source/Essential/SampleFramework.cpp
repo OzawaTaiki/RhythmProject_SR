@@ -45,7 +45,7 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 
 
     // 最初のシーンで初期化
-    sceneManager_->Initialize("GameScene");
+    sceneManager_->Initialize("TitleScene");
 }
 
 void SampleFramework::Update()

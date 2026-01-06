@@ -9,8 +9,8 @@
 namespace
 {
 Vector4 color_ = Vector4(0.417f, 0.912f, 1.000f, 0.522f);
-Vector3 size = Vector3(0.15f, 0.15f, 0.3f);
-float duration_ = 1.0f; // 軌道にかける時間
+Vector3 size = Vector3(0.1f, 0.1f, 0.2f);
+float duration_ = 0.5f; // 軌道にかける時間
 
 float maxVerticalBulge_ = -2.0f; // 縦方向の膨らみ具合
 float minVerticalBulge_ = -1.0f;

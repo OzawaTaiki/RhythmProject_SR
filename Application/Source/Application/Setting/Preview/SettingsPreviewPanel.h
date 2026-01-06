@@ -3,8 +3,8 @@
 
 #include <System/Audio/SoundInstance.h>
 #include <System/Audio/VoiceInstance.h>
-#include <Features/UI/UIButtonElement.h>
-#include <Features/UI/UIImageElement.h>
+#include <Features/UI/Element/UIButtonElement.h>
+#include <Features/UI/Element/UIImageElement.h>
 
 
 #include <Core/DXCommon/RTV/RenderTexture.h>

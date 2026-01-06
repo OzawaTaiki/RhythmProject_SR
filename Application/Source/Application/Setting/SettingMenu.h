@@ -2,8 +2,8 @@
 
 #include <Features/Event/EventData.h>
 
-#include <Features/UI/UIElement.h>
-#include <Features/UI/UISliderElement.h>
+#include <Features/UI/Element/UIElement.h>
+#include <Features/UI/Element/UISliderElement.h>
 #include <Features/Event/EventListener.h>
 #include <Application/Setting/Preview/SettingsPreviewPanel.h>
 

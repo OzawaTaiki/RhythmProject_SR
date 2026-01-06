@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Features/UI/UIImageElement.h>
+#include <Features/UI/Element/UIImageElement.h>
 #include <Features/Event/EventListener.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
 #include <Features/UI/Collider/UIQuadCollider.h>

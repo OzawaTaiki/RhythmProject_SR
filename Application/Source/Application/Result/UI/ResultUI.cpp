@@ -3,8 +3,6 @@
 #include <Debug/ImguITools.h>
 #include <Debug/ImGuiDebugManager.h>
 
-#include <Features/UI/UIButton.h>
-#include <Features/UI/UISprite.h>
 #include <Features/UI/UINavigationManager.h>
 
 
@@ -161,7 +159,6 @@ void ResultUI::Update(float deltaTime)
 
 void ResultUI::Draw()
 {
-    Sprite::PreDraw();
     UIElement_->Draw();
 
     for (const auto& [textType, param] : textParams_)

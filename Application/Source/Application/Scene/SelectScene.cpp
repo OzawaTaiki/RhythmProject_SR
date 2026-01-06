@@ -95,7 +95,6 @@ void SelectScene::Update()
 void SelectScene::Draw()
 {
 
-    Sprite::PreDraw();
     //selectButton_->Draw();
 }
 

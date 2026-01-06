@@ -263,8 +263,6 @@ void GameScene::Draw()
         renderer->BeginFrame();
         gameCore_->Draw(&SceneCamera_, gameInputManager_->GetKeyBinds());
 
-        Sprite::PreDraw();
-
         renderer->EndFrame();
         gameUI_->Draw(); // UIの描画
         laneOutline_->Apply("GameCore", "DepthOutline");

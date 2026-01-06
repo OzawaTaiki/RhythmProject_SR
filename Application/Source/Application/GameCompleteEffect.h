@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Features/Animation/Sequence/AnimationSequence.h>
-#include <Features/UI/UIImageElement.h>
-#include <Features/UI/UITextElement.h>
+#include <Features/UI/Element/UIImageElement.h>
+#include <Features/UI/Element/UITextElement.h>
 
 #include <Application/Note/Judge/JudgeType.h>
 

@@ -39,7 +39,7 @@ void GameEnvironment::Initialize(const std::string& filePath)
 void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum)
 {
     stopwatch_.Update();
-    const float animateTime = 1.0f;
+    const float animateTime = 0.4f;
     if (stopwatch_.GetElapsedTime<float>() > animateTime)
     {
         stopwatch_.Reset();

@@ -9,8 +9,6 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <Features/TextRenderer/TextGenerator.h>
 
-#include <Features/UI/UIButton.h>
-
 /// <summary>
 /// 選曲画面のシーンクラス。
 /// </summary>

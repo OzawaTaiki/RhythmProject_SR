@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Features/UI/UISprite.h>
 #include <Features/Camera/Camera/Camera.h>
 #include <Features/LineDrawer/LineDrawer.h>
 #include <System/Audio/SoundInstance.h>

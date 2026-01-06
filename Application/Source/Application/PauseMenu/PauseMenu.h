@@ -1,10 +1,8 @@
 #pragma once
 
-#include <Features/UI/UIGroup.h>
-
 //#include <Application/EventData/PauseActionData.h>
 #include <Application/Setting/SettingMenu.h>
-#include <Features/UI/UIImageElement.h>
+#include <Features/UI/Element/UIImageElement.h>
 
 #include <memory>
 

@@ -1,8 +1,8 @@
 #include "HexagonGrid.h"
 #include <Features/UI/Collider/UIConvexPolygonCollider.h>
 #include <Debug/ImGuiDebugManager.h>
-#include <Features/UI/Collider/UIColliderComponent.h>
-#include <Features/UI/UISpriteRenderComponent.h>
+#include <Features/UI/Component/UIColliderComponent.h>
+#include <Features/UI/Component/UISpriteRenderComponent.h>
 #include <numbers>
 
 namespace

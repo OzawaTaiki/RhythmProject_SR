@@ -3,11 +3,8 @@
 #include <System/Input/Input.h>
 #include <Debug/ImGuiDebugManager.h>
 #include <Features/Event/EventManager.h>
-#include <Features/UI/UITextRenderComponent.h>
+#include <Features/UI/Component/UITextRenderComponent.h>
 
-#include <Features/UI/UISprite.h>
-#include <Features/UI/UIButton.h>
-#include <Features/UI/UISlider.h>
 #include <Debug/Debug.h>
 #include <Application/Setting/Setting.h>
 
@@ -104,7 +101,7 @@ void PauseMenu::Draw()
     if (!isDraw_)
         return;
 
-    
+
     background_->Draw();
 
 }

@@ -1,10 +1,9 @@
 #include "TitleUI.h"
 #include <Features/Event/EventManager.h>
 #include <Debug/ImguITools.h>
-#include <Features/UI/UITextBox.h>
-#include <Features/UI/UISpriteRenderComponent.h>
-#include <Features/UI/UIElement.h>
-#include <Features/UI/UIButtonElement.h>
+#include <Features/UI/Component/UISpriteRenderComponent.h>
+#include <Features/UI/Element/UIElement.h>
+#include <Features/UI/Element/UIButtonElement.h>
 #include <Features/UI/UINavigationManager.h>
 TitleUI::TitleUI()
 {

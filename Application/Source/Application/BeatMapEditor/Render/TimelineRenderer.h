@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
-#include <Features/UI/UIImageElement.h>
+#include <Features/UI/Element/UIImageElement.h>
 #include <functional>
-#include <Features/UI/UIButtonElement.h>
+#include <Features/UI/Element/UIButtonElement.h>
 #include <Features/UI/Collider/UIRecntangleCollider.h>
 
 namespace BME

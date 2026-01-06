@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Features/Scene/Interface/ISceneTransition.h>
-#include <Features/UI/UITextElement.h>
+#include <Features/UI/Element/UITextElement.h>
 
 #include <Features/Sprite/Sprite.h>
 

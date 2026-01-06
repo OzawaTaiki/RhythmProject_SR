@@ -2,10 +2,8 @@
 
 // Engine
 #include <Math/Vector/Vector2.h>
-#include <Features/UI/UISprite.h>
-#include <Features/UI/UIGroup.h>
-#include <Features/UI/UIImageElement.h>
-#include <Features/UI/UIButtonElement.h>
+#include <Features/UI/Element/UIImageElement.h>
+#include <Features/UI/Element/UIButtonElement.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
 #include <Features/Json/JsonBinder.h>
 #include <Features/TextRenderer/TextGenerator.h>

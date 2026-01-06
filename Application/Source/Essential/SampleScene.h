@@ -27,7 +27,6 @@
 
 #include <Features/TextRenderer/TextGenerator.h>
 #include <Features/AudioSpectrum/SpectrumTextureGenerator.h>
-#include <Features/UI/UISlider.h>
 
 #include <Features/TextRenderer/Text3DRenderer.h>
 #include <Features/TextRenderer/AtlasData.h>

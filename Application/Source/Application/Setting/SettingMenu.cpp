@@ -7,8 +7,8 @@
 #include <Features/UI/UINavigationManager.h>
 
 #include <Application/Setting/Setting.h>
-#include <Features/UI/UIImageElement.h>
-#include <Features/UI/UITextElement.h>
+#include <Features/UI/Element/UIImageElement.h>
+#include <Features/UI/Element/UITextElement.h>
 
 SettingMenu::SettingMenu()
 {

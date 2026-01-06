@@ -28,10 +28,12 @@ void NoteJudge::Initialize()
 {
     InitializeJsonBinder();
 
+    const float baseFrameTime = 1.0f / 60.0f;// 60FPS基準 0.0166s
     // 仮
-    timingThresholds_[JudgeType::Perfect] = 0.06f;
-    timingThresholds_[JudgeType::Good] = 0.18f;
-    timingThresholds_[JudgeType::Miss] = 0.3f;
+    timingThresholds_[JudgeType::Perfect]   = baseFrameTime * 4.0f;     //  4フレーム 約0.066s
+    timingThresholds_[JudgeType::Good]      = baseFrameTime * 10.0f;    // 10フレーム 約0.166s
+    timingThresholds_[JudgeType::Bad]       = baseFrameTime * 16.0f;    // 16フレーム 約0.266s
+    timingThresholds_[JudgeType::Miss]      = baseFrameTime * 20.0f;    // 20フレーム 約0.333s
 
 }
 

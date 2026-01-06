@@ -56,7 +56,7 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
 
 void FeedbackEffect::Update(float deltaTime, const std::vector<InputData>& inputData)
 {
-    //DebugWindoow(); // デバッグウィンドウの更新
+    //DebugWindow(); // デバッグウィンドウの更新
 
     if (judgeSound_)
         judgeSound_->CleanupStoppedVoices(); // 停止した音声をクリーンアップ

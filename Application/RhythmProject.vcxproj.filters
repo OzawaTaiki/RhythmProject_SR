@@ -142,6 +142,9 @@
     <Filter Include="Application\FeedBack\ComboThresholds">
       <UniqueIdentifier>{1ea1208f-02e2-4497-8dc2-bf91ffd2f6ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Core\ScoreCalc">
+      <UniqueIdentifier>{de667c81-a7a0-4822-8477-11f218416307}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -371,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="Source\Application\GameCompleteEffect.cpp">
       <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Core\ScoreCalc\ScoreCalculator.cpp">
+      <Filter>Application\Core\ScoreCalc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -614,6 +620,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\GameCompleteEffect.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Core\ScoreCalc\ScoreCalculator.h">
+      <Filter>Application\Core\ScoreCalc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

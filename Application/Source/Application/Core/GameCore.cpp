@@ -8,6 +8,7 @@
 #include <Debug/Debug.h>
 #include <Features/TextRenderer/FontCache.h>
 #include <Features/Model/Manager/ModelManager.h>
+#include <Debug/ImGuiDebugManager.h>
 
 GameCore::GameCore(int32_t laneCount) :
     laneCount_(laneCount),
@@ -51,13 +52,24 @@ void GameCore::Initialize(float noteSpeed, float musicLaytencyMs, float beginOff
 
     noteDeletePosition_ = -noteJudge_->GetMissJudgeThreshold() * noteSpeed_; // ノーツを削除する位置を設定
 
-
     combo_ = 0; // コンボの初期化
     maxCombo_ = 0; // 最大コンボの初期化
+
 }
 
 void GameCore::Update(float  deltaTime, const std::vector<InputData>& inputData)
 {
+#ifdef _DEBUG
+
+    static bool autoMode = false;
+    if (ImGuiDebugManager::GetInstance()->Begin("GameCore"))
+    {
+        ImGui::Checkbox("Auto Mode", &autoMode);
+        ImGui::End();
+    }
+#endif // _DEBUG
+
+
     for (auto& lane : lanes_)
     {
         int32_t deleteCount = lane->DeleteNotesOutOfScreen(noteDeletePosition_);// 画面外に出たノーツ数を取得
@@ -71,9 +83,22 @@ void GameCore::Update(float  deltaTime, const std::vector<InputData>& inputData)
             }
         }
     }
+#ifdef _DEBUG
+
+    if (autoMode)
+    {
+        JudgeNotesInAutoMode(gamemusic_->GetElapsedTime());
+    }
+    else
+    {
+        JudgeNotes(inputData);
+    }
+#else
 
     // ノーツの判定処理
     JudgeNotes(inputData);
+
+#endif // _DEBUG
 
     float elapsedTime = 0.0f;
     if (isWaitingForStart_)
@@ -139,28 +164,17 @@ void GameCore::Draw(const Camera* camera, const std::map<int32_t, uint8_t>& keyB
 #endif // _DEBUG
 }
 
-//void GameCore::Draw(const Camera* camera)
-//{
-//    for (const auto& lane : lanes_)
-//    {
-//        if (lane)
-//        {
-//            lane->Draw(camera);
-//        }
-//    }
-//    // 判定ラインの描画
-//#ifdef _DEBUG
-//    LineDrawer::GetInstance()->RegisterPoint(Vector3(-4, 0, 0), Vector3(4, 0, 0));
-//
-//    noteJudge_->DrawJudgeLine();
-//#endif // _DEBUG
-//
-//}
-
 void GameCore::GenerateNotes(const BeatMapData& beatMapData)
 {
     // 譜面データを解析してノーツを生成
     ParseBeatMapData(beatMapData);
+
+    int32_t totalNotes = 0;
+    for (const auto& lane : lanes_)
+    {
+        totalNotes += static_cast<int32_t>(lane->GetNoteCount());
+    }
+    scoreCalculator_.Initialize(totalNotes);
 }
 
 void GameCore::JudgeNotes(const std::vector<InputData>& inputData)
@@ -198,18 +212,37 @@ void GameCore::JudgeNotes(const std::vector<InputData>& inputData)
             default:
                 break;
         }
-
         if (result == JudgeType::None)
             continue; // 判定なしの場合はスキップ
 
         RecordJudgeResult(result, note); // 判定結果を記録
-
+        scoreCalculator_.AddScore(result, combo_); // スコア計算に反映
         UpdateCombo(result);
 
         if (onJudgeCallback_)
             onJudgeCallback_(laneIndex, result, combo_); // 判定時のコールバックを呼び出す
+    }
+}
 
+void GameCore::JudgeNotesInAutoMode(float elapsedTime)
+{
+    for (size_t laneIndex = 0; laneIndex < lanes_.size(); ++laneIndex)
+    {
+        auto& lane = lanes_[laneIndex];
+        auto note = lane->GetFirstNote();
+        if (!note)
+            continue;
 
+        JudgeType result = noteJudge_->ProcessNoteJudge(note, elapsedTime + musicLatencyMs_ / 1000.0f);
+        if (result != JudgeType::Perfect)
+            continue; // 判定なしの場合はスキップ
+
+        RecordJudgeResult(result, note); // 判定結果を記録
+        scoreCalculator_.AddScore(result, combo_); // スコア計算に反映
+        UpdateCombo(result);
+
+        if (onJudgeCallback_)
+            onJudgeCallback_(static_cast<int32_t>(laneIndex), result, combo_); // 判定時のコールバックを呼び出す
     }
 }
 
@@ -281,7 +314,8 @@ JudgeType GameCore::ProcessHoldEndNote(Note* note, const InputData& inputData, L
 void GameCore::UpdateCombo(JudgeType result)
 {
     if (result == JudgeType::Perfect ||
-        result == JudgeType::Good)
+        result == JudgeType::Good||
+        result == JudgeType::Bad)
     {
         ++combo_; // コンボを増やす
         maxCombo_ = (std::max)(maxCombo_, combo_); // 最大コンボを更新

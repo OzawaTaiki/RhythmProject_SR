@@ -105,6 +105,11 @@ int32_t Lane::DeleteNotesOutOfScreen(float noteDeletePos)
 
 }
 
+int32_t Lane::GetNoteCount() const
+{
+    return static_cast<int32_t>(notes_.size());
+}
+
 void Lane::StartHold()
 {
     isHolding_ = true;

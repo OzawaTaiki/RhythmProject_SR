@@ -10,6 +10,7 @@
 #include <Application/Note/Judge/NoteJudge.h>
 #include <Application/Note/Judge/JudgeResult.h>
 #include <Application/GameMusic/GameMusic.h>
+#include <Application/Core/ScoreCalc/ScoreCalculator.h>
 
 // STL
 #include <functional>
@@ -131,6 +132,8 @@ public:
     /// <returns>判定結果のマップ</returns>
     std::map<JudgeType, int32_t> GetJudgeResult() const { return judgeResult_->GetJudgeResult(); }
 
+
+    int32_t GetScore() const { return scoreCalculator_.GetDisplayScore(); }
 private:
     // 譜面データを解析する
     void ParseBeatMapData(const BeatMapData& beatMapData);
@@ -139,6 +142,7 @@ private:
 
     // ノーツの判定
     void JudgeNotes(const std::vector<InputData>& inputData);
+    void JudgeNotesInAutoMode(float elapsedTime);
     // 通常ノーツの判定
     JudgeType ProcessNormalNote(Note* note, const InputData& inputData);
     // ホールドノーツの判定
@@ -166,6 +170,8 @@ private:
     int32_t combo_ = 0; // 現在のコンボ数
     int32_t maxCombo_ = 0; // 最大コンボ数
 
+    // スコア計算
+    ScoreCalculator scoreCalculator_; // スコア計算クラス
 
 
     //-------------------------

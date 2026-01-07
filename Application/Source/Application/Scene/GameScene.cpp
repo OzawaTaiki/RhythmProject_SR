@@ -222,7 +222,7 @@ void GameScene::Update()
             auto data = std::make_unique<GameToResultData>();
             data->resultData.musicTitle = beatMapLoader_->GetLoadedBeatMapData().title; // 譜面のタイトルを取得
             data->resultData.combo = gameCore_->GetMaxCombo();
-            data->resultData.score = gameCore_->GetMaxCombo() * 100; // 仮のスコア計算
+            data->resultData.score = gameCore_->GetScore();
             data->resultData.judgeResult = gameCore_->GetJudgeResult();
 
             UINavigationManager::GetInstance()->ClearFocus();

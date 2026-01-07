@@ -184,6 +184,7 @@
     <ClCompile Include="Source\Application\BeatMapLoader\BeatMapLoader.cpp" />
     <ClCompile Include="Source\Application\BeatsManager\BeatManager.cpp" />
     <ClCompile Include="Source\Application\Core\GameCore.cpp" />
+    <ClCompile Include="Source\Application\Core\ScoreCalc\ScoreCalculator.cpp" />
     <ClCompile Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\HitparticleModifier.cpp" />
     <ClCompile Include="Source\Application\Effects\TapEffects\LightPillarModifier.cpp">
@@ -348,6 +349,7 @@
     <ClInclude Include="Source\Application\BeatMapLoader\BeatMapLoader.h" />
     <ClInclude Include="Source\Application\BeatsManager\BeatManager.h" />
     <ClInclude Include="Source\Application\Core\GameCore.h" />
+    <ClInclude Include="Source\Application\Core\ScoreCalc\ScoreCalculator.h" />
     <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\HitparticleModifier.h" />
     <ClInclude Include="Source\Application\Effects\TapEffects\LightPillarModifier.h">

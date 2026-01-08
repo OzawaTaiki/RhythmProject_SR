@@ -27,6 +27,9 @@ void TitleUI::Initialize()
     buttonExpandAnimationSequence_->Initialize("Resources/Data/AnimSeq/");
 
 
+    focusFrame_ = std::make_unique<FocusFrame>();
+    focusFrame_->Initialize();
+
     InitializeUIElements();
     isActive_ = false;
     isExpanding_= false;
@@ -73,6 +76,7 @@ void TitleUI::Update()
             UpdateAnimationUI(key, delta);
         }
     }
+    focusFrame_->Update(delta);
 }
 
 void TitleUI::Draw()
@@ -81,6 +85,8 @@ void TitleUI::Draw()
         return;
 
     backgroundElement_->Draw();
+
+    focusFrame_->Draw();
 }
 
 void TitleUI::OnEvent(const GameEvent& event)
@@ -102,6 +108,7 @@ void TitleUI::EnterButtonExpandAnimation(AnimationUIElement& element)
     element.animationLabel = "positionOffset";
     element.currentTime = 0.0f;
     element.animating = true;
+    focusFrame_->ChangeTarget(element.uiElement);
 }
 
 void TitleUI::ExitButtonExpandAnimation(AnimationUIElement& element)
@@ -109,11 +116,12 @@ void TitleUI::ExitButtonExpandAnimation(AnimationUIElement& element)
     element.animationLabel = "return_posOffset";
     element.currentTime = 0.0f;
     element.animating = true;
+    focusFrame_->ChangeTarget(nullptr);
 }
 
 void TitleUI::DisPatchEvent(const std::string& event)
 {
-    if(event !="RequestStartGame")
+    if (event != "RequestStartGame")
         isActive_ = false;
     eventManager_->DispatchEvent(GameEvent(event, nullptr));
 }
@@ -129,8 +137,8 @@ void TitleUI::InitializeUIElements()
     startButton->SetOnHoverExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
     startButton->SetOnFocusEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
     startButton->SetOnFocusExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::StartParent]); });
-    startButton->SetOnClickUp([this](){DisPatchEvent("RequestStartGame");});
-    startButton->SetOnClick([this](){DisPatchEvent("RequestStartGame");});
+    startButton->SetOnClickUp([this]() { DisPatchEvent("RequestStartGame"); });
+    startButton->SetOnClick([this]() { DisPatchEvent("RequestStartGame"); });
 
     auto startParent = std::make_unique<UIImageElement>("title_startParent", Vector2(100, 100), Vector2(120, 120));
     startParent->Initialize();
@@ -142,7 +150,7 @@ void TitleUI::InitializeUIElements()
     auto optionButton = std::make_unique<UIButtonElement>("title_options", Vector2(100, 250), Vector2(100, 100), "", true);
     optionButton->Initialize();
     optionButton->SetOnHoverEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
-    optionButton->SetOnHoverExit([this](){ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]);});
+    optionButton->SetOnHoverExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
     optionButton->SetOnFocusEnter([this]() { EnterButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
     optionButton->SetOnFocusExit([this]() { ExitButtonExpandAnimation(animationUIElements_[TitleUIElement::OptionsParent]); });
     optionButton->SetOnClickUp([this]() { DisPatchEvent("OpenOptionMenu"); backgroundElement_->SetEnabled(false); });
@@ -210,113 +218,9 @@ void TitleUI::InitializeUIElements()
 
     backgroundElement_->SetEnabled(false);
 
-    //    auto startParent = uiGroup_->CreateElement<UISprite>("title_startParent");
-    //    auto startButton = uiGroup_->CreateButton("title_start");
-    //    {// スタートボタン
-    //
-    //        startButton->SetOnHoverEnter([this]()
-    //                                     {
-    //                                         auto& element = animationUIElements_[TitleUIElement::StartParent];
-    //                                         element.animationLabel = "positionOffset";
-    //                                         element.currentTime = 0.0f;
-    //                                         element.animating = true;
-    //                                     });
-    //        startButton->SetOnHoverExit([this]()
-    //                                    {
-    //                                        auto& element = animationUIElements_[TitleUIElement::StartParent];
-    //                                        element.animationLabel = "return_posOffset";
-    //                                        element.currentTime = 0.0f;
-    //                                        element.animating = true;
-    //                                    });
-    //        startButton->SetOnClickEnd([this]()
-    //                                   {
-    //                                       eventManager_->DispatchEvent(GameEvent("RequestStartGame", nullptr));
-    //                                   });
-    //
-    //        startParent->AddChild(startButton);
-    //
-    //        auto startIcon = uiGroup_->CreateSprite("title_startIcon");
-    //
-    //        startButton->AddChild(startIcon);
-    //    }
-    //
-    //    auto optionParent = uiGroup_->CreateElement<UISprite>("title_optionsParent");
-    //    auto optionButton = uiGroup_->CreateButton("title_options");
-    //    {// オプションボタン
-    //        optionButton->SetOnHoverEnter([this]()
-    //                                      {
-    //                                          auto& element = animationUIElements_[TitleUIElement::OptionsParent];
-    //                                          element.animationLabel = "positionOffset";
-    //                                          element.currentTime = 0.0f;
-    //                                          element.animating = true;
-    //                                      });
-    //        optionButton->SetOnHoverExit([this]()
-    //                                     {
-    //                                         auto& element = animationUIElements_[TitleUIElement::OptionsParent];
-    //                                         element.animationLabel = "return_posOffset";
-    //                                         element.currentTime = 0.0f;
-    //                                         element.animating = true;
-    //                                     });
-    //        optionButton->SetOnClickEnd([this]()
-    //                                    {
-    //                                        eventManager_->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
-    //                                        isActive_ = false;
-    //                                    });
-    //        optionParent->AddChild(optionButton);
-    //
-    //        auto optionIcon = uiGroup_->CreateSprite("title_optionsIcon");
-    //        optionButton->AddChild(optionIcon);
-    //
-    //    }
-    //
-    //    auto exitParent = uiGroup_->CreateElement<UISprite>("title_exitParent");
-    //    auto exitButton = uiGroup_->CreateButton("title_exit");
-    //    {
-    //        exitButton->SetOnHoverEnter([this]()
-    //                                    {
-    //                                        auto& element = animationUIElements_[TitleUIElement::ExitParent];
-    //                                        element.animationLabel = "positionOffset";
-    //                                        element.currentTime = 0.0f;
-    //                                        element.animating = true;
-    //                                    });
-    //
-    //        exitButton->SetOnHoverExit([this]()
-    //                                   {
-    //                                       auto& element = animationUIElements_[TitleUIElement::ExitParent];
-    //                                       element.animationLabel = "return_posOffset";
-    //                                       element.currentTime = 0.0f;
-    //                                       element.animating = true;
-    //                                   });
-    //
-    //        exitButton->SetOnClickEnd([this]()
-    //                                  {
-    //#ifndef _DEBUG // デバッグビルド時は終了しない
-    //                                      eventManager_->DispatchEvent(GameEvent("RequestExitGame", nullptr));
-    //#endif // _DEBUG
-    //                                  });
-    //        exitParent->AddChild(exitButton);
-    //
-    //        auto exitIcon = uiGroup_->CreateSprite("title_exitIcon");
-    //        exitButton->AddChild(exitIcon);
-    //    }
-    //
-    //    background->AddChild(startParent);
-    //    startParent->AddChild(optionParent);
-    //    optionParent->AddChild(exitParent);
-    //
-    //    // スタートボタンとリングの重なっている部分を無効化するためのダミーボタン
-    //    // なのでコールバックは設定しない
-    //    auto dummyButton = uiGroup_->CreateButton("title_dummyButton");
-    //    background->AddChild(dummyButton);
-    //
-    //    uiElements_[TitleUIElement::Background]     = background;
-    //    uiElements_[TitleUIElement::StartButton]    = startButton;
-    //    uiElements_[TitleUIElement::OptionsButton]  = optionButton;
-    //    uiElements_[TitleUIElement::ExitButton]     = exitButton;
-    //
-    //    animationUIElements_[TitleUIElement::StartParent]   = { startParent, startParent->GetPos() };
-    //    animationUIElements_[TitleUIElement::OptionsParent] = { optionParent, optionParent->GetPos() };
-    //    animationUIElements_[TitleUIElement::ExitParent]    = { exitParent, exitParent->GetPos() };
+    focusFrame_->RegisterTargetName(animationUIElements_[TitleUIElement::StartParent].uiElement);
+    focusFrame_->RegisterTargetName(animationUIElements_[TitleUIElement::OptionsParent].uiElement);
+    focusFrame_->RegisterTargetName(animationUIElements_[TitleUIElement::ExitParent].uiElement);
 }
 
 void TitleUI::UpdateAnimationUI(TitleUIElement elem, float deltaTime)

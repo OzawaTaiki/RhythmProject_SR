@@ -1,0 +1,72 @@
+{
+    "FocusFrame": {
+        "CycleTime": 2.0,
+        "ElementName_0": "title_startParent",
+        "ElementName_1": "title_optionsParent",
+        "ElementName_2": "title_exitParent",
+        "FocusFrame_Edge0_LeftBottom": {
+            "x": -45.0,
+            "y": 100.0
+        },
+        "FocusFrame_Edge0_LeftTop": {
+            "x": -45.0,
+            "y": -100.0
+        },
+        "FocusFrame_Edge0_RightBottom": {
+            "x": 250.0,
+            "y": 100.0
+        },
+        "FocusFrame_Edge0_RightTop": {
+            "x": 300.0,
+            "y": -100.0
+        },
+        "FocusFrame_Edge1_LeftBottom": {
+            "x": -50.0,
+            "y": 100.0
+        },
+        "FocusFrame_Edge1_LeftTop": {
+            "x": 0.0,
+            "y": -100.0
+        },
+        "FocusFrame_Edge1_RightBottom": {
+            "x": 250.0,
+            "y": 100.0
+        },
+        "FocusFrame_Edge1_RightTop": {
+            "x": 300.0,
+            "y": -100.0
+        },
+        "FocusFrame_Edge2_LeftBottom": {
+            "x": -50.0,
+            "y": 100.0
+        },
+        "FocusFrame_Edge2_LeftTop": {
+            "x": 0.0,
+            "y": -100.0
+        },
+        "FocusFrame_Edge2_RightBottom": {
+            "x": 250.0,
+            "y": 100.0
+        },
+        "FocusFrame_Edge2_RightTop": {
+            "x": 300.0,
+            "y": -100.0
+        },
+        "FocusFrame_Edge3_LeftBottom": {
+            "x": -107374176.0,
+            "y": -107374176.0
+        },
+        "FocusFrame_Edge3_LeftTop": {
+            "x": 14252.5390625,
+            "y": 4.1478434544014585e-43
+        },
+        "FocusFrame_Edge3_RightBottom": {
+            "x": -107374176.0,
+            "y": -107374176.0
+        },
+        "FocusFrame_Edge3_RightTop": {
+            "x": 0.001944790594279766,
+            "y": 3.6433760072445244e-44
+        }
+    }
+}

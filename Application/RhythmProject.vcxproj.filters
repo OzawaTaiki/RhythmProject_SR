@@ -378,6 +378,7 @@
     <ClCompile Include="Source\Application\Core\ScoreCalc\ScoreCalculator.cpp">
       <Filter>Application\Core\ScoreCalc</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application\FocusFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -623,6 +624,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Core\ScoreCalc\ScoreCalculator.h">
       <Filter>Application\Core\ScoreCalc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\FocusFrame.h">
+      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

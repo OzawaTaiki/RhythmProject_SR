@@ -5,6 +5,8 @@
 #include <Features/Animation/Sequence/AnimationSequence.h>
 #include <Features/UI/Collider/UIQuadCollider.h>
 
+#include <Application/FocusFrame.h>
+
 #include <memory>
 
 class EventManager;
@@ -87,8 +89,9 @@ private:
     std::unique_ptr<AnimationSequence> titleAnimationSequence_;
     // ボタンが展開されるアニメーション
     std::unique_ptr<AnimationSequence> buttonExpandAnimationSequence_;
-
+    std::unique_ptr<FocusFrame> focusFrame_;
     TitleUIElement animationTarget_ = TitleUIElement::StartButton;
+
 
 };
 

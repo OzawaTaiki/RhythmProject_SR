@@ -203,6 +203,7 @@
     <ClCompile Include="Source\Application\FeedBack\MissedVignette\MissedVignette.cpp" />
     <ClCompile Include="Source\Application\FeedBack\SpeakerSeekEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\TapEffect\TapEffect.cpp" />
+    <ClCompile Include="Source\Application\FocusFrame.cpp" />
     <ClCompile Include="Source\Application\GameCompleteEffect.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\BackgroundEffect.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\GameEnvironment.cpp" />
@@ -409,6 +410,7 @@
     <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h" />
     <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h" />
     <ClInclude Include="Source\Application\TitleUI.h" />
+    <ClInclude Include="Source\Application\FocusFrame.h" />
     <ClInclude Include="Source\Essential\ParticleModifierFactory.h" />
     <ClInclude Include="Source\Essential\SampleFramework.h" />
     <ClInclude Include="Source\Essential\SampleScene.h" />

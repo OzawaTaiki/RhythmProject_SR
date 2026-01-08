@@ -379,6 +379,7 @@
       <Filter>Application\Core\ScoreCalc</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FocusFrame.cpp" />
+    <ClCompile Include="Source\Application\GameEnvironment\SpectrumFloor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -627,6 +628,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\FocusFrame.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameEnvironment\SpectrumFloor.h">
+      <Filter>Application\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

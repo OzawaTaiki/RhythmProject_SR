@@ -141,7 +141,7 @@ void GameScene::Update()
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
     if (deltaTime > 1.0f)
         deltaTime = 0.1f;
-    gameEnvironment_->Update(deltaTime, &audioSpectrum_);
+    gameEnvironment_->Update(deltaTime, &audioSpectrum_, gameMusic_->GetSoundInstance().get(), gameMusic_->GetElapsedTime());
 
     if (!isLoadComplete_)
     {

@@ -5,7 +5,9 @@
 #include <System/Time/Stopwatch.h>
 #include <Features/Event/EventListener.h>
 
+
 #include "SpectrumBar.h"
+#include "SpectrumFloor.h"
 
 #include <memory>
 
@@ -37,7 +39,7 @@ public:
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    void Update(float deltaTime, AudioSpectrum* audioSpectrum);
+    void Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundInstance* soundInstance, float duration);
 
     /// <summary>
     /// 描画処理を行う。
@@ -77,6 +79,7 @@ private:
 
     void CreateEmissivePSO();
 private:
+    std::unique_ptr<SpectrumFloor> spectrumFloor_ = nullptr; //
     std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
     std::unique_ptr<ObjectModel> overFloor_ = nullptr;
     std::unique_ptr<ObjectModel> overlayFloor_ = nullptr;

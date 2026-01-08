@@ -29,6 +29,10 @@ void GameEnvironment::Initialize(const std::string& filePath)
 {
     GameTime::GetChannel("GameEnvironment");
     Serialize(filePath);
+
+    spectrumFloor_ = std::make_unique<SpectrumFloor>();
+    spectrumFloor_->Initialize(8, 8, Vector2(32.0f, 30.0f));
+
     InitializeOverlayFloor();
     CreateEmissivePSO();
 
@@ -36,7 +40,7 @@ void GameEnvironment::Initialize(const std::string& filePath)
     stopwatch_.Start();
 }
 
-void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum)
+void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundInstance* soundInstance, float duration)
 {
     stopwatch_.Update();
     const float animateTime = 0.4f;
@@ -76,7 +80,8 @@ void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum)
         }
     }
 
-    overFloor_->Update();
+    //overFloor_->Update();
+    spectrumFloor_->Update(deltaTime, audioSpectrum, soundInstance, duration);
     overlayFloor_->Update();
 }
 
@@ -91,15 +96,16 @@ void GameEnvironment::Draw(const Camera* camera)
     }
     for (auto& spectrumBar : spectrumBars_)
     {
-        spectrumBar->Draw(camera,emissivePso_.Get());
+        spectrumBar->Draw(camera, emissivePso_.Get());
     }
 
-    if(enableEmissive_)
-        overFloor_->DrawWithPSO(emissivePso_.Get(), camera);
-    else
-        overFloor_->Draw(camera);
+    spectrumFloor_->Draw(camera);
+    //if (enableEmissive_)
+    //    overFloor_->DrawWithPSO(emissivePso_.Get(), camera);
+    //else
+    //    overFloor_->Draw(camera);
 
-    overlayFloor_->DrawWithPSO(emissivePso_.Get(),camera, Vector4(0.3f,0.765f,1.0f,0.25f));
+    overlayFloor_->DrawWithPSO(emissivePso_.Get(), camera, Vector4(0.3f, 0.765f, 1.0f, 0.25f));
 
 }
 
@@ -179,7 +185,7 @@ void GameEnvironment::Serialize(const std::string& filePath)
             StringUtils::Contains(name, "SpectrumBar"))
         {
             auto spectrumBar = std::make_unique<SpectrumBar>();
-            std::string  number =  name.substr(name.size()-1, 1);
+            std::string  number =  name.substr(name.size() - 1, 1);
             int32_t id = std::stoi(number);
             if (spectrumBars_.size() <= id)
             {
@@ -309,7 +315,7 @@ void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
             continue;
         }
 
-        if(timer - deltaTime < 0.0f)
+        if (timer - deltaTime < 0.0f)
             speaker->ChangeAnimation("anim", 0.1f, false);
 
 
@@ -340,31 +346,6 @@ void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
             ++it;
         }
     }
-
-    //// スケールアニメーション
-    //// 大きくなって小さくなる を繰り返す
-    //animationTimer_ += deltaTime;
-    ////TODO: BPMに合わせたアニメーション
-    //const float kMaxScale = 1.2f;
-    //const float kMinScale = 1.0f;
-    //float progress = fmodf(animationTimer_, animationInterval_) / animationInterval_;
-    //float easedProgress = Easing::EaseInOutQuad(progress);
-    //float scaleValue = 1.0f;
-    //if (static_cast<int>(animationTimer_ / animationInterval_) % 2 == 0)
-    //{
-    //    // 拡大
-    //    scaleValue = Lerp(kMinScale, kMaxScale, easedProgress);
-    //}
-    //else
-    //{
-    //    // 縮小
-    //    scaleValue = Lerp(kMaxScale, kMinScale, easedProgress);
-    //}
-
-    //for (auto& [num,obj] : speakerMap_)
-    //{
-    //    obj->scale_ = Vector3(scaleValue, scaleValue, scaleValue);
-    //}
 }
 
 void GameEnvironment::InitializeWall(ObjectModel* wallModel)
@@ -395,8 +376,8 @@ void GameEnvironment::CreateEmissivePSO()
 {
     ShaderCompiler::GetInstance()->Register("EmissivePS", L"EmissiveModel.PS.hlsl", L"ps_6_0");
 
-        auto builder = PSOBuilder::Create();
-        emissivePso_=
+    auto builder = PSOBuilder::Create();
+    emissivePso_=
 
         builder
         .SetBlendMode(PSOFlags::BlendMode::Normal)

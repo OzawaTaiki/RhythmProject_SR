@@ -72,10 +72,12 @@ void BeatMapEditor::Initialize(const BeatMapData& _beatMapData)
     fileManager_ = std::make_unique<BME::FileManager>();
 
     // レンダラー初期化
-    renderer_->Initialize(&editorCoordinate_,state_.get(), for2dCamera_.GetViewProjection());
+    renderer_->Initialize(&editorCoordinate_, state_.get(), for2dCamera_.GetViewProjection());
 
     // 初期譜面データを新Documentに設定
     document_->SetData(_beatMapData);
+
+    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/SE/JudgeSound.wav");
 }
 
 void BeatMapEditor::Update()
@@ -95,6 +97,37 @@ void BeatMapEditor::Update()
         currentTime_
     );
 
+    static size_t lastNoteIndex = 0;
+    if (!audioController_->IsPlaying())
+        lastNoteIndex = 0;
+    else
+    {
+        auto& beatMapData = document_->GetData();
+        bool shouldSound = false;// サウンドを鳴らすかどうかのフラグ
+        for (size_t i = lastNoteIndex; i < beatMapData.notes.size(); ++i)
+        {
+            auto& note = beatMapData.notes[i];
+            if (std::abs(note.targetTime - currentTime_) < 0.01f)
+            {
+                shouldSound = true;
+                lastNoteIndex = i;
+            }
+            else
+            {
+                // 現在の時間を過ぎたら次のノートへ
+                if (note.targetTime > currentTime_)
+                    break;
+            }
+        }
+        if (shouldSound)
+        {
+            // 音ならす
+            if (soundInstance_)
+            {
+                voiceInstance_=soundInstance_->Play(0.5f, false);
+            }
+        }
+    }
 }
 
 void BeatMapEditor::Draw()

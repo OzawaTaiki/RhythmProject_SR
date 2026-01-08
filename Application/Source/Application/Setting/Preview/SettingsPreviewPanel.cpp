@@ -71,7 +71,7 @@ void SettingsPreviewPanel::Initialize()
         320, WinApp::kWindowHeight_,
         DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
         { 0.0f,0.0f ,0.0f ,1.0f },
-        true);
+        true, false);
     // 取得
     renderTexture_ = RTVManager::GetInstance()->GetRenderTexture("SettingsPreviewPanelRT");
     // スプライト用テクスチャハンドル取得

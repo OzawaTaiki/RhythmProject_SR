@@ -93,6 +93,7 @@ void SpectrumFloor::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundI
                 model->Update();
             }
         }
+        return;
     }
 
     if (beginIndex_ == 0 && endIndex_ == 0)
@@ -171,8 +172,6 @@ void SpectrumFloor::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundI
         {
             auto& model = models_[i][j];
             model->Update();
-
-
         }
     }
 }
@@ -184,8 +183,13 @@ void SpectrumFloor::Draw(const Camera* camera)
         for (size_t j = 0; j < zCount_; ++j)
         {
             auto& model = models_[i][j];
-            const auto& tileData = columnsData_[i].tiles_[j];
-            model->Draw(camera, tileData.color_);
+            Vector4 color = Vector4(1, 1, 1, 1);
+            if (columnsData_.size() > i && columnsData_[i].tiles_.size() > j)
+            {
+                const auto& tileData = columnsData_[i].tiles_[j];
+                color = tileData.color_;
+            }
+            model->Draw(camera, color);
         }
     }
 }

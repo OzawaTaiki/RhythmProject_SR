@@ -79,7 +79,7 @@ bool FileManager::SaveInternal(const std::string& _filePath, Document* _document
 
     std::string filePath = _filePath;
     std::string extension = StringUtils::GetExtension(filePath);
-    if (extension != ".json")
+    if (extension != "json")
     {
         filePath += ".json"; // 拡張子がない場合は.jsonを追加
     }

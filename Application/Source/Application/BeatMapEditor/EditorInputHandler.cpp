@@ -348,7 +348,7 @@ void InputHandler::HandlePlaceLongNoteMode(
 
         if (duration > 0.0f)
         {
-            auto command = std::make_unique<PlaceNoteCommand>(document, laneIndex, state->GetLongNoteStartTime(), "long", duration);
+            auto command = std::make_unique<PlaceNoteCommand>(document, laneIndex, state->GetLongNoteStartTime(), "hold", duration);
             commandHistory->ExecuteCommand(std::move(command));
         }
 

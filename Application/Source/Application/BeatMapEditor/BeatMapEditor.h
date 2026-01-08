@@ -118,11 +118,13 @@ private:
         std::vector<NoteData> notes; // コピーしたノートデータ
         float baseline = 0.0f; // コピーしたノートの基準時間
 
-        void Clear() {
+        void Clear()
+        {
             notes.clear();
             baseline = 0.0f;
         };
-        bool IsEmpty() const {
+        bool IsEmpty() const
+        {
             return notes.empty();
         }
     };
@@ -156,9 +158,11 @@ private:
 
     float currentTime_ = 0.0f;
     BeatMapData currentBeatMapData_ = {};
+
+    std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
+    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+
 };
-
-
 /*
 
 操作

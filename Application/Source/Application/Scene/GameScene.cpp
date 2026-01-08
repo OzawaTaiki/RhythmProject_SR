@@ -234,6 +234,7 @@ void GameScene::Update()
     {
         if (input_->IsKeyTriggered(DIK_ESCAPE))
         {
+            UINavigationManager::GetInstance()->ClearFocus();
             auto data = std::make_unique<SharedBeatMapData>();
             data->beatMapData = currentBeatMapData_;
             UINavigationManager::GetInstance()->ClearFocus();
@@ -471,7 +472,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
     gameMode_ = GameMode::Normal;
-    if (beforeScene == "SelectScene")
+    if (beforeScene == "Scene")
     {
         beatMapFilePath = filepth; // 選択された譜面ファイルパスを取得
         gameMode_ = GameMode::Normal;

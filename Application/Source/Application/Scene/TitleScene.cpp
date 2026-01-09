@@ -10,20 +10,14 @@
 
 TitleScene::TitleScene()
 {
-    auto eventManager = EventManager::GetInstance();
-    eventManager->AddEventListener("RequestStartGame", this);
-    eventManager->AddEventListener("RequestExitGame", this);
-    eventManager->AddEventListener("SelectMusic1", this);
-    eventManager->AddEventListener("SelectMusic2", this);
+    EventManager::GetInstance()->AddEventListener("RequestStartGame", this);
+    EventManager::GetInstance()->AddEventListener("RequestExitGame", this);
 }
 
 TitleScene::~TitleScene()
 {
-    auto eventManager = EventManager::GetInstance();
-    eventManager->RemoveEventListener("RequestStartGame", this);
-    eventManager->RemoveEventListener("RequestExitGame", this);
-    eventManager->RemoveEventListener("SelectMusic1", this);
-    eventManager->RemoveEventListener("SelectMusic2", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestStartGame", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestExitGame", this);
 
     UINavigationManager::GetInstance()->ClearFocus();
 }
@@ -198,20 +192,6 @@ void TitleScene::OnEvent(const GameEvent& event)
     else if (event.GetEventType() == "RequestExitGame")
     {
         PostQuitMessage(0);  // Windows APIでアプリ終了
-    }
-    else if (event.GetEventType() == "SelectMusic1")
-    {
-        // 曲1選択
-        soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/demoMusic.wav");
-        voiceInstance_ = soundInstance_->Play(0.5f, false);
-        beatManager_->SetMusicVoiceInstance(voiceInstance_);
-    }
-    else if (event.GetEventType() == "SelectMusic2")
-    {
-        // 曲2選択
-        soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Twilight_Memory.wav");
-        voiceInstance_ = soundInstance_->Play(0.5f, false);
-        beatManager_->SetMusicVoiceInstance(voiceInstance_);
     }
 
 }

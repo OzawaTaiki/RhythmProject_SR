@@ -29,22 +29,22 @@
 
 GameScene::GameScene()
 {
-    auto eventManager = EventManager::GetInstance();
-    eventManager->AddEventListener("ValueChanged", this);
-    eventManager->AddEventListener("RequestResume", this);
-    eventManager->AddEventListener("RequestRetry", this);
-    eventManager->AddEventListener("RequestToTitle", this);
-    eventManager->AddEventListener("MusicEnded", this);
+    EventManager::GetInstance()->AddEventListener("ValueChanged", this);
+    EventManager::GetInstance()->AddEventListener("RequestResume", this);
+    EventManager::GetInstance()->AddEventListener("RequestRetry", this);
+    EventManager::GetInstance()->AddEventListener("RequestToTitle", this);
+    EventManager::GetInstance()->AddEventListener("MusicEnded", this);
+
+
 }
 
 GameScene::~GameScene()
 {
-    auto eventManager = EventManager::GetInstance();
-    eventManager->RemoveEventListener("ValueChanged", this);
-    eventManager->RemoveEventListener("RequestResume", this);
-    eventManager->RemoveEventListener("RequestRetry", this);
-    eventManager->RemoveEventListener("RequestToTitle", this);
-    eventManager->RemoveEventListener("MusicEnded", this);
+    EventManager::GetInstance()->RemoveEventListener("ValueChanged", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestResume", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestRetry", this);
+    EventManager::GetInstance()->RemoveEventListener("RequestToTitle", this);
+    EventManager::GetInstance()->RemoveEventListener("MusicEnded", this);
     //if(loadingThread_.joinable())
     //    loadingThread_.join();
 

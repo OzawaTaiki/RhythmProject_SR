@@ -14,6 +14,12 @@ class TitleUI : public iEventListener
 {
 private:
 
+    enum class GroupType
+    {
+        Menu,
+        MusicSelect,
+    };
+
     enum class TitleUIElement
     {
         Background,
@@ -24,6 +30,13 @@ private:
         StartParent,
         OptionsParent,
         ExitParent,
+
+        Music1,
+        Music2,
+        Return,
+        Music1Parent,
+        Music2Parent,
+        ReturnParent,
 
         Max
     };
@@ -57,7 +70,7 @@ private:
 
     void InitializeUIElements();
 
-
+    void UpdateGroupChange(GroupType newGroup);
 
     void UpdateAnimationUI(TitleUIElement elem, float deltaTime);
 
@@ -82,9 +95,16 @@ private:
     EventManager* eventManager_;
 
     std::unique_ptr<UIImageElement> backgroundElement_;
+    struct elementGroup
+    {
+        std::map<TitleUIElement, UIElement*> elements;
+        std::map<TitleUIElement, AnimationUIElement> animationElements;
+    };
+    std::map<GroupType, elementGroup> uiElementGroups_;
 
-    std::map<TitleUIElement, UIElement*> uiElements_;
-    std::map<TitleUIElement, AnimationUIElement> animationUIElements_;
+    GroupType currentGroup_ = GroupType::Menu;
+    GroupType nextGroup_ = GroupType::Menu;
+    std::unique_ptr<AnimationSequence> groupChangeAnimationSequence_;
 
     std::unique_ptr<AnimationSequence> titleAnimationSequence_;
     // ボタンが展開されるアニメーション

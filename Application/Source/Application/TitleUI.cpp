@@ -94,6 +94,7 @@ void TitleUI::OnEvent(const GameEvent& event)
     if (event.GetEventType() == "CloseOptionMenu")
     {
         isActive_ = true;
+        UINavigationManager::GetInstance()->SetFocus(uiElements_[TitleUIElement::StartButton]);
         backgroundElement_->SetEnabled(true);
     }
     if (event.GetEventType() == "TitleCameraAnimationEnd")

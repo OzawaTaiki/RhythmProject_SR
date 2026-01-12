@@ -46,7 +46,7 @@ void TimelineRenderer::Initialize(std::function<void()> toTestFunc)
         .SetColor({ 0,0,0,1 });
 }
 
-void TimelineRenderer::Draw(const AudioController* _audioController, float& _currentTime)
+void TimelineRenderer::ProcessTimeline(const AudioController* _audioController, float& _currentTime)
 {
     DataUpdate(_audioController, _currentTime);
 

@@ -16,22 +16,40 @@ void EditorRenderer::Initialize(EditorCoordinate* _coordinate, State* _state,con
     gridRenderer_.Initialize(_coordinate);
     waveformRenderer_.Initialize(_matVP);
     timelineRenderer_.Initialize([_state]() { _state->SetToTestMode(true); });
-    uiRenderer_.Initialize();
+    uiController_.Initialize();
 
     LayerSystem::CreateLayer("main", 0);
     LayerSystem::CreateLayer("mid", 100);
     LayerSystem::CreateLayer("top", 2000);
 }
 
-void EditorRenderer::Draw(
+void EditorRenderer::Update(
     State* _state,
     Document* _document,
     FileManager* _fileManager,
     AudioController* _audioController,
     EditorCoordinate* _coordinate,
     BeatManager* beatManager,
-    float _currentTime
+    float& _currentTime
     )
+{
+    if (!_state || !_document || !_audioController || !_coordinate)
+        return;
+
+    // タイムライン処理
+    timelineRenderer_.ProcessTimeline(_audioController, _currentTime);
+
+    // UI処理
+    uiController_.ProcessUI(_state, _document, _audioController, _fileManager, beatManager, _coordinate);
+}
+
+void EditorRenderer::Draw(
+    State* _state,
+    Document* _document,
+    AudioController* _audioController,
+    EditorCoordinate* _coordinate,
+    float _currentTime
+    ) const
 {
     if (!_state || !_document || !_audioController || !_coordinate)
         return;
@@ -68,11 +86,8 @@ void EditorRenderer::Draw(
     {
         waveformRenderer_.Draw(_audioController, _currentTime);
 
-        // タイムライン描画
-        timelineRenderer_.Draw(_audioController, _currentTime);
-
         // UI描画
-        uiRenderer_.Draw(_state, _document, _audioController, _fileManager, beatManager, _coordinate);
+        uiController_.Draw(_state);
     }
 }
 
@@ -82,7 +97,7 @@ void EditorRenderer::Finalize()
     gridRenderer_.Finalize();
     waveformRenderer_.Finalize();
     timelineRenderer_.Finalize();
-    uiRenderer_.Finalize();
+    uiController_.Finalize();
 }
 
 } // namespace BME

@@ -21,7 +21,7 @@ public:
     ~TimelineRenderer() = default;
 
     void Initialize(std::function<void()> toTestFunc);
-    void Draw(const AudioController* _audioController, float& _currentTime);
+    void ProcessTimeline(const AudioController* _audioController, float& _currentTime);
     void Finalize();
 
 private:

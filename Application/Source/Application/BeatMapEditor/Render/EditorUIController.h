@@ -13,21 +13,22 @@ class FileManager;
 class EditorCoordinate;
 
 /// <summary>
-/// UI描画クラス（ImGuiパネル等）
+/// エディターUIコントローラークラス（ImGuiパネル等の描画と制御）
 /// </summary>
-class UIRenderer
+class EditorUIController
 {
 public:
-    UIRenderer() = default;
-    ~UIRenderer() = default;
+    EditorUIController() = default;
+    ~EditorUIController() = default;
 
     void Initialize();
-    void Draw(State* state, 
-              Document* document, 
-              AudioController* audioController, 
-              FileManager* fileManager, 
-              BeatManager* beatManager,
-              EditorCoordinate* coordinate);
+    void ProcessUI(State* state,
+                   Document* document,
+                   AudioController* audioController,
+                   FileManager* fileManager,
+                   BeatManager* beatManager,
+                   EditorCoordinate* coordinate);
+    void Draw(const State* state) const;
     void Finalize();
 
 private:
@@ -35,7 +36,8 @@ private:
     void DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate_);
     void DrawRightPanel(State* state,Document* document, AudioController* audioController, FileManager* fileManager);
 #endif // _DEBUG
-    void DrawDraggingArea(State* state);
+    void UpdateDraggingArea(const State* state);
+    void DrawDraggingArea(const State* state) const;
 
 private:
     std::unique_ptr<Sprite> draggingAreaSprite_;

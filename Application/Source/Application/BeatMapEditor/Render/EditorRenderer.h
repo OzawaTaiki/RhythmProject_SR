@@ -4,7 +4,7 @@
 #include <Application/BeatMapEditor/Render/GridRenderer.h>
 #include <Application/BeatMapEditor/Render/WaveformRenderer.h>
 #include <Application/BeatMapEditor/Render/TimelineRenderer.h>
-#include <Application/BeatMapEditor/Render/UIRenderer.h>
+#include <Application/BeatMapEditor/Render/EditorUIController.h>
 
 class BeatManager;
 
@@ -27,23 +27,30 @@ public:
     ~EditorRenderer() = default;
 
     void Initialize(EditorCoordinate* _coordinate,State* _state ,const Matrix4x4& _matVP);
-    void Draw(
+    void Update(
         State* _state,
         Document* _document,
         FileManager* _fileManager,
         AudioController* _audioController,
         EditorCoordinate* _coordinate,
         BeatManager* beatManager,
-        float _currentTime
+        float& _currentTime
     );
+    void Draw(
+        State* _state,
+        Document* _document,
+        AudioController* _audioController,
+        EditorCoordinate* _coordinate,
+        float _currentTime
+    ) const;
     void Finalize();
 
 private:
-    NoteRenderer noteRenderer_;
-    GridRenderer gridRenderer_;
-    WaveformRenderer waveformRenderer_;
-    TimelineRenderer timelineRenderer_;
-    UIRenderer uiRenderer_;
+    mutable NoteRenderer noteRenderer_;
+    mutable GridRenderer gridRenderer_;
+    mutable WaveformRenderer waveformRenderer_;
+    mutable TimelineRenderer timelineRenderer_;
+    mutable EditorUIController uiController_;
 };
 
 } // namespace BME

@@ -1,4 +1,4 @@
-#include "UIRenderer.h"
+#include "EditorUIController.h"
 #include <Application/BeatMapEditor/EditorState.h>
 #include <Application/BeatMapEditor/BeatMapDocument.h>
 #include <Application/BeatMapEditor/AudioController.h>
@@ -13,7 +13,7 @@
 namespace BME
 {
 
-void UIRenderer::Initialize()
+void EditorUIController::Initialize()
 {
     // TODO: UI初期化
     draggingAreaSprite_ = std::make_unique<Sprite>("DraggingAreaSprite", false);
@@ -22,7 +22,7 @@ void UIRenderer::Initialize()
     draggingAreaSprite_->SetAnchor(Vector2(0.0f, 0.0f)); // アンカーを左上に設定
 }
 
-void UIRenderer::Draw(
+void EditorUIController::ProcessUI(
     State* state,
     [[maybe_unused]]Document* document,
     [[maybe_unused]]AudioController* audioController,
@@ -34,11 +34,16 @@ void UIRenderer::Draw(
     DrawLeftPanel(state, document, audioController, beatManager, coordinate);
     DrawRightPanel(state, document, audioController, fileManager);
 #endif
+    UpdateDraggingArea(state);
+}
+
+void EditorUIController::Draw(const State* state) const
+{
     DrawDraggingArea(state);
 }
 
 #ifdef _DEBUG
-void UIRenderer::DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate)
+void EditorUIController::DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate)
 {
 
     // Modeの表示
@@ -179,7 +184,7 @@ void UIRenderer::DrawLeftPanel(State* state, Document* document, AudioController
 
 }
 
-void UIRenderer::DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager)
+void EditorUIController::DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager)
 {
 
     // File 情報
@@ -310,22 +315,28 @@ void UIRenderer::DrawRightPanel(State* state, Document* document, AudioControlle
 }
 #endif // _DEBUG
 
-void UIRenderer::DrawDraggingArea(State* state)
+void EditorUIController::UpdateDraggingArea(const State* state)
 {
     if (!state || !state->IsDragging())
         return;
 
     Vector2 rectLT, rectRB;
-
     state->GetDragSelectionRect(rectLT, rectRB);
     Vector2 size = rectRB - rectLT;
     draggingAreaSprite_->translate_= rectLT;
     draggingAreaSprite_->SetSize(size);
+    draggingAreaSprite_->Update();
+}
+
+void EditorUIController::DrawDraggingArea(const State* state) const
+{
+    if (!state || !state->IsDragging())
+        return;
 
     draggingAreaSprite_->Draw();
 }
 
-void UIRenderer::Finalize()
+void EditorUIController::Finalize()
 {
     // TODO: 終了処理
 }

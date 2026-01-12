@@ -325,7 +325,7 @@
     <ClCompile Include="Source\Application\BeatMapEditor\Render\TimelineRenderer.cpp">
       <Filter>Application\BeatMapEditor\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\BeatMapEditor\Render\UIRenderer.cpp">
+    <ClCompile Include="Source\Application\BeatMapEditor\Render\EditorUIController.cpp">
       <Filter>Application\BeatMapEditor\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\BeatMapEditor\Render\WaveformRenderer.cpp">
@@ -580,7 +580,7 @@
     <ClInclude Include="Source\Application\BeatMapEditor\Render\TimelineRenderer.h">
       <Filter>Application\BeatMapEditor\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\BeatMapEditor\Render\UIRenderer.h">
+    <ClInclude Include="Source\Application\BeatMapEditor\Render\EditorUIController.h">
       <Filter>Application\BeatMapEditor\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\BeatMapEditor\Render\WaveformRenderer.h">

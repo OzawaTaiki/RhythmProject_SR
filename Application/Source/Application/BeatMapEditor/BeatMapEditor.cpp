@@ -97,6 +97,17 @@ void BeatMapEditor::Update()
         currentTime_
     );
 
+    // レンダラーの更新処理
+    renderer_->Update(
+        state_.get(),
+        document_.get(),
+        fileManager_.get(),
+        audioController_.get(),
+        &editorCoordinate_,
+        beatManager_.get(),
+        currentTime_
+    );
+
     static size_t lastNoteIndex = 0;
     if (!audioController_->IsPlaying())
         lastNoteIndex = 0;
@@ -139,10 +150,8 @@ void BeatMapEditor::Draw()
     renderer_->Draw(
         state_.get(),
         document_.get(),
-        fileManager_.get(),
         audioController_.get(),
         &editorCoordinate_,
-        beatManager_.get(),
         currentTime_
     );
 

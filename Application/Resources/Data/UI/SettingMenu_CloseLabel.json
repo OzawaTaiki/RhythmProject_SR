@@ -1,8 +1,8 @@
 {
-    "VolumeSlider_Value": {
+    "SettingMenu_CloseLabel": {
         "anchor": {
-            "x": 1.0,
-            "y": 0.5
+            "x": 0.4000000059604645,
+            "y": 0.20000000298023224
         },
         "clipRect": {
             "leftTop": {
@@ -25,20 +25,20 @@
         "hasRect": false,
         "isEnabled": true,
         "isVisible": true,
-        "order": 123,
+        "order": 150,
         "pivot": {
             "x": 0.0,
-            "y": 0.5
+            "y": 0.0
         },
         "position": {
-            "x": 240.0,
-            "y": 0.0
+            "x": 10.0,
+            "y": 10.0
         },
         "size": {
             "x": 100.0,
             "y": 50.0
         },
-        "text": "0.220000",
+        "text": "Close",
         "textParam": {
             "bottomColor": {
                 "w": 1.0,
@@ -64,13 +64,13 @@
             "rotate": 0.0,
             "scale": {
                 "x": 1.0,
-                "y": 1.0
+                "y": 0.949999988079071
             },
             "topColor": {
                 "w": 1.0,
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
             },
             "useGradient": false,
             "useOutline": false

@@ -383,6 +383,11 @@ void GameCore::Restart()
     isWaitingForStart_ = true;
     waitTimer_ = 0.0f;
 
+    combo_ = 0;
+    maxCombo_ = 0;
+
+    scoreCalculator_.ScoreReset();
+
     CreateBeatMapNotes();
     judgeResult_->Initialize();
 

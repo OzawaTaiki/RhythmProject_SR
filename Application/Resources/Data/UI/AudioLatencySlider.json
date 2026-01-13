@@ -1,9 +1,11 @@
 {
     "AudioLatencySlider": {
+        "Step": 1.0,
         "anchor": {
             "x": 0.0,
             "y": 0.0
         },
+        "focusable": true,
         "handleHoverColor": {
             "w": 1.0,
             "x": 1.0,

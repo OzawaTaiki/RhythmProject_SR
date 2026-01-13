@@ -16,10 +16,14 @@
 
 PauseMenu::PauseMenu()
 {
+    EventManager::GetInstance()->AddEventListener("CloseOptionMenu", this);
+    EventManager::GetInstance()->AddEventListener("OpenPauseMenu", this);
 }
 
 PauseMenu::~PauseMenu()
 {
+    EventManager::GetInstance()->RemoveEventListener("CloseOptionMenu", this);
+    EventManager::GetInstance()->RemoveEventListener("OpenPauseMenu", this);
 }
 
 void PauseMenu::Initialize()
@@ -82,13 +86,13 @@ void PauseMenu::Update()
 {
     if (!isActive_ || !isDraw_)
     {
-        if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))// ESCキーでポーズメニューを開く
+        if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
         {
-            isActive_ = true;
-            isDraw_ = true;
+            ToActive();
         }
         return;
     }
+
     if(UINavigationManager::GetInstance()->GetFocus() == nullptr)
     {
         UINavigationManager::GetInstance()->SetFocus(resumeButton_);
@@ -101,9 +105,23 @@ void PauseMenu::Draw()
     if (!isDraw_)
         return;
 
-
     background_->Draw();
 
+}
+
+void PauseMenu::OnEvent(const GameEvent& event)
+{
+    const std::string& eventType = event.GetEventType();
+    if (eventType == "CloseOptionMenu")
+    {
+        ToActive();
+    }
+}
+
+void PauseMenu::ToActive()
+{
+    isActive_ = true;
+    isDraw_ = true;
 }
 
 void PauseMenu::CliclEvent(EventType element)

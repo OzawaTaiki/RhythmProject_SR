@@ -25,6 +25,9 @@ public:
 
     int32_t GetDisplayScore()const;
 
+    void ScoreReset();
+
+
 private:
 
 

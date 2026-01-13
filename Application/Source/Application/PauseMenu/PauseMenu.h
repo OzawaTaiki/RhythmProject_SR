@@ -3,13 +3,14 @@
 //#include <Application/EventData/PauseActionData.h>
 #include <Application/Setting/SettingMenu.h>
 #include <Features/UI/Element/UIImageElement.h>
+#include <Features/Event/EventListener.h>
 
 #include <memory>
 
 /// <summary>
 /// ポーズメニュークラス。
 /// </summary>
-class PauseMenu
+class PauseMenu : public iEventListener
 {
 public:
 
@@ -32,11 +33,18 @@ public:
     void Draw();
 
     /// <summary>
+    /// イベントを受信するハンドラ。
+    /// </summary>
+    /// <param name="event"> 受信したイベント</param>
+    void OnEvent(const GameEvent& event) override;
+
+    /// <summary>
     /// ポーズメニューがアクティブかどうかを返す。
     /// </summary>
     bool IsActive() const { return isActive_; }
 
 private:
+    void ToActive();
 
     enum class EventType
     {

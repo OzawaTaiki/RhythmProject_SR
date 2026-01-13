@@ -1,9 +1,11 @@
 {
     "NoteSpeedSlider": {
+        "Step": 5.0,
         "anchor": {
             "x": 0.0,
             "y": 0.0
         },
+        "focusable": true,
         "handleHoverColor": {
             "w": 1.0,
             "x": 1.0,
@@ -13,7 +15,7 @@
         "isEnabled": true,
         "isVisible": true,
         "maxValue": 150.0,
-        "minValue": 0.0,
+        "minValue": 5.0,
         "order": 120,
         "pivot": {
             "x": 0.5,
@@ -27,6 +29,6 @@
             "x": 200.0,
             "y": 20.0
         },
-        "value": 150.0
+        "value": 5.0
     }
 }

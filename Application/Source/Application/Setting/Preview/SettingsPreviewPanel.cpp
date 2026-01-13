@@ -63,7 +63,7 @@ void SettingsPreviewPanel::Initialize()
                                    });
 
     // 音源の読み込み
-    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/120bpm_16beats.wav");
+    //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/120bpm_16beats.wav");
 
     // レンダーターゲットの作成
     RTVManager::GetInstance()->CreateRenderTarget(
@@ -89,6 +89,9 @@ void SettingsPreviewPanel::Initialize()
 
 void SettingsPreviewPanel::Update()
 {
+    if (!soundInstance_)
+        return;
+
     if (Input::GetInstance()->IsKeyTriggered(DIK_SPACE)) // スペースキーで再生/停止切り替え
     {
         if (voiceInstance_ && voiceInstance_->IsPlaying())

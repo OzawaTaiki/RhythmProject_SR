@@ -78,21 +78,42 @@ void SettingMenu::Initialize()
     label->Initialize();
     audioLatencySlider->AddChild(std::move(label));
 
+    auto closeButton = std::make_unique<UIButtonElement>("SettingMenu_CloseButton", Vector2(350, 300), Vector2(100, 40));
+    closeButton->Initialize();
+    closeButton->SetOnClick([this]()
+                               {
+                                   isActive_ = false;
+                                   UINavigationManager::GetInstance()->ClearFocus();
+                                   EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
+                                   previewPanel_->StopMusic();
+                                   Debug::Log("SettingMenu closed\n");
+                               });
+    auto closeLabel = std::make_unique<UITextElement>("SettingMenu_CloseLabel", Vector2(10, 10), "Close");
+    closeLabel->Initialize();
+    closeButton->AddChild(std::move(closeLabel));
+
+
 
     auto navi1 = volumeSlider->GetComponent<UINavigationComponent>();
     auto navi2 = noteSpeedSlider->GetComponent<UINavigationComponent>();
     auto navi3 = audioLatencySlider->GetComponent<UINavigationComponent>();
+    auto closeNavi = closeButton->GetComponent<UINavigationComponent>();
 
-    navi1->SetNavigation(NavigationDirection::Up, audioLatencySlider.get());
+    navi1->SetNavigation(NavigationDirection::Up, closeButton.get());
     navi1->SetNavigation(NavigationDirection::Down, noteSpeedSlider.get());
+
     navi2->SetNavigation(NavigationDirection::Up, volumeSlider.get());
     navi2->SetNavigation(NavigationDirection::Down, audioLatencySlider.get());
     navi3->SetNavigation(NavigationDirection::Up, noteSpeedSlider.get());
-    navi3->SetNavigation(NavigationDirection::Down, volumeSlider.get());
+    navi3->SetNavigation(NavigationDirection::Down, closeButton.get());
+
+    closeNavi->SetNavigation(NavigationDirection::Up, audioLatencySlider.get());
+    closeNavi->SetNavigation(NavigationDirection::Down, volumeSlider.get());
 
     volumeSlider_= back->AddChild(std::move(volumeSlider));
     back->AddChild(std::move(noteSpeedSlider));
     back->AddChild(std::move(audioLatencySlider));
+    back->AddChild(std::move(closeButton));
 
     backSprite_->AddChild(std::move(back));
 

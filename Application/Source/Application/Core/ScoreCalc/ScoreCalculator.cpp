@@ -65,3 +65,8 @@ int32_t ScoreCalculator::GetDisplayScore() const
                            rawScore_, theoreticalMax_, static_cast<int32_t>((rawScore_ / theoreticalMax_) * kBaseScore)));
     return static_cast<int32_t>((rawScore_ / theoreticalMax_) * kBaseScore);
 }
+
+void ScoreCalculator::ScoreReset()
+{
+    rawScore_ = 0.0f;
+}

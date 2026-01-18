@@ -6,10 +6,20 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Features/Model/Manager/ModelManager.h>
 #include <Features/UI/UINavigationManager.h>
+#include <Features/Event/EventManager.h>
+
+ResultScene::ResultScene()
+{
+    EventManager::GetInstance()->AddEventListener("ResultToTitle", this);
+    EventManager::GetInstance()->AddEventListener("Retry", this);
+}
 
 ResultScene::~ResultScene()
 {
-    UINavigationManager::GetInstance()->SetFocus(nullptr);
+    UINavigationManager::GetInstance()->ClearFocus();
+
+    EventManager::GetInstance()->RemoveEventListener("ResultToTitle", this);
+    EventManager::GetInstance()->RemoveEventListener("Retry", this);
 }
 
 void ResultScene::Initialize(SceneData* sceneData)
@@ -53,8 +63,8 @@ void ResultScene::Initialize(SceneData* sceneData)
         }
     }
 
-    resultUI_ = std::make_unique<ResultUI>();
-    resultUI_->Initialize(resultData_);
+    resultEffectFlow_ = std::make_unique<ResultEffectFlow>();
+    resultEffectFlow_->Initialize(resultData_);
 
 
     gameEnvironment_ = std::make_unique<GameEnvironment>();
@@ -63,7 +73,7 @@ void ResultScene::Initialize(SceneData* sceneData)
     boxFilter_ = std::make_unique<BoxFilter>();
     boxFilter_->Initialize();
 
-    boxFilterData_.kernelSize = 5; // カーネルサイズを設定
+    boxFilterData_.kernelSize = 11; // カーネルサイズを設定
 
     boxFilter_->SetData(&boxFilterData_);
 
@@ -87,19 +97,8 @@ void ResultScene::Update()
 
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
 
-    resultUI_->Update(deltaTime);
+    resultEffectFlow_->Update(deltaTime);
     gameEnvironment_->Update(deltaTime, nullptr, nullptr, 0.0f);
-
-    if (resultUI_->IsTransitionToTitle())
-    {
-        UINavigationManager::GetInstance()->ClearFocus();
-        SceneManager::GetInstance()->ReserveScene("TitleScene", nullptr);
-    }
-    else if (resultUI_->IsReplay())
-    {
-        UINavigationManager::GetInstance()->ClearFocus();
-        SceneManager::GetInstance()->ReserveScene("GameScene", nullptr);
-    }
 
     if (enableDebugCamera_)
     {
@@ -128,7 +127,23 @@ void ResultScene::Draw()
 
     LayerSystem::SetLayer("Main");
 
-    resultUI_->Draw();
+    ModelManager::GetInstance()->PreDrawForObjectModel();
+    resultEffectFlow_->Draw3D();
+    resultEffectFlow_->Draw2D();
 }
 
 void ResultScene::DrawShadow() {}
+
+void ResultScene::OnEvent(const GameEvent& event)
+{
+    if (event.GetEventType() == "ResultToTitle")
+    {
+        UINavigationManager::GetInstance()->ClearFocus();
+        SceneManager::GetInstance()->ReserveScene("TitleScene", nullptr);
+    }
+    else if (event.GetEventType() == "Retry")
+    {
+        UINavigationManager::GetInstance()->ClearFocus();
+        SceneManager::GetInstance()->ReserveScene("GameScene", nullptr);
+    }
+}

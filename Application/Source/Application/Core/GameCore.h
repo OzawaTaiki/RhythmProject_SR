@@ -11,6 +11,7 @@
 #include <Application/Note/Judge/JudgeResult.h>
 #include <Application/GameMusic/GameMusic.h>
 #include <Application/Core/ScoreCalc/ScoreCalculator.h>
+#include <Application/Result/RankCalculator.h>
 
 // STL
 #include <functional>
@@ -132,8 +133,13 @@ public:
     /// <returns>判定結果のマップ</returns>
     std::map<JudgeType, int32_t> GetJudgeResult() const { return judgeResult_->GetJudgeResult(); }
 
-
+    /// <summary>
+    /// スコアを取得する
+    /// </summary>
+    /// <returns> 計算済みのスコア</returns>
     int32_t GetScore() const { return scoreCalculator_.GetDisplayScore(); }
+
+    Rank GetRank() const;
 private:
     // 譜面データを解析する
     void ParseBeatMapData(const BeatMapData& beatMapData);
@@ -172,7 +178,6 @@ private:
 
     // スコア計算
     ScoreCalculator scoreCalculator_; // スコア計算クラス
-
 
     //-------------------------
     // コールバック関連

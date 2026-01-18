@@ -339,6 +339,11 @@ void GameCore::RecordJudgeResult(JudgeType result, Note* note)
     note->Judge();
 }
 
+Rank GameCore::GetRank() const
+{
+    return RankCalculator::CalculateRank(scoreCalculator_.GetDisplayScore(), scoreCalculator_.GetBaseScore());
+}
+
 void GameCore::ParseBeatMapData(const BeatMapData& beatMapData)
 {
     notesPerLane_.clear(); // 既存のデータをクリア

@@ -7,10 +7,12 @@
 #include <Features/LineDrawer/LineDrawer.h>
 #include <System/Time/Stopwatch.h>
 #include <Features/Effect/Manager/ParticleSystem.h>
+#include <Features/Event/EventListener.h>
 
 
 #include <Application/Result/ResultData.h>
 #include <Application/Result/UI/ResultUI.h>
+#include <Application/Result/ResultEffectFlow.h>
 
 #include <Application/GameEnvironment/GameEnvironment.h>
 
@@ -19,10 +21,11 @@
 /// <summary>
 /// リザルト画面のシーンクラス。
 /// </summary>
-class ResultScene : public BaseScene
+class ResultScene : public BaseScene,
+    public iEventListener
 {
 public:
-    ResultScene() = default;
+    ResultScene();
     ~ResultScene()override;
 
     /// <summary>
@@ -46,6 +49,9 @@ public:
     void DrawShadow() override;
 
 
+    void OnEvent(const GameEvent& event) override;
+
+
 private:
     // シーン関連
     Camera SceneCamera_ = {};
@@ -64,7 +70,7 @@ private:
 
     ResultData resultData_ = {}; // 結果データ
 
-    std::unique_ptr<ResultUI> resultUI_ = nullptr; // 結果UI
+    std::unique_ptr<ResultEffectFlow> resultEffectFlow_ = nullptr; // 結果エフェクトフロー
 
     std::unique_ptr<GameEnvironment> gameEnvironment_ = nullptr; // ゲーム環境
 

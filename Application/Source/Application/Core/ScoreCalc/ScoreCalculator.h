@@ -27,6 +27,7 @@ public:
 
     void ScoreReset();
 
+    const int32_t GetBaseScore() const;
 
 private:
 

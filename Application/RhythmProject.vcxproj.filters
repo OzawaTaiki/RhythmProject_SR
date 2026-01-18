@@ -130,9 +130,6 @@
     <Filter Include="Application\HeagonGrid">
       <UniqueIdentifier>{3d6932f3-4626-4828-aa7c-2c22c0ffcb65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Result\ResultUI">
-      <UniqueIdentifier>{d745dc63-befd-417a-9be5-ce27bf844dd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Environment\EffectModifiers">
       <UniqueIdentifier>{f8b0cbaf-7add-44ed-9b8e-438fd2a0bd01}</UniqueIdentifier>
     </Filter>
@@ -144,6 +141,15 @@
     </Filter>
     <Filter Include="Application\Core\ScoreCalc">
       <UniqueIdentifier>{de667c81-a7a0-4822-8477-11f218416307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\ResultEffectFlow">
+      <UniqueIdentifier>{53910a3d-fc09-4a62-959d-b1fb025745da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Result\UI">
+      <UniqueIdentifier>{d745dc63-befd-417a-9be5-ce27bf844dd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Result\ModelEffect">
+      <UniqueIdentifier>{3df1ef36-bde7-4873-aef3-8c236db870f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -233,7 +239,7 @@
       <Filter>Application\FeedBack\Judge\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Result\UI\ResultUI.cpp">
-      <Filter>Application\Result\ResultUI</Filter>
+      <Filter>Application\Result\UI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeType.cpp">
       <Filter>Application\Judge</Filter>
@@ -380,6 +386,15 @@
     </ClCompile>
     <ClCompile Include="Source\Application\FocusFrame.cpp" />
     <ClCompile Include="Source\Application\GameEnvironment\SpectrumFloor.cpp" />
+    <ClCompile Include="Source\Application\Result\RankCalculator.cpp">
+      <Filter>Application\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Result\ResultEffectFlow.cpp">
+      <Filter>Application\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Result\ResultModelEffect.cpp">
+      <Filter>Application\Result\ModelEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -484,11 +499,8 @@
     <ClInclude Include="Source\Application\GameEnvironment\GameEnvironment.h">
       <Filter>Application\Environment</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\Result\ResultData.h">
-      <Filter>Application\Result</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\Result\UI\ResultUI.h">
-      <Filter>Application\Result\ResultUI</Filter>
+      <Filter>Application\Result\UI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\GameUI\GameUI.h">
       <Filter>Application\GameUI</Filter>
@@ -632,6 +644,15 @@
     <ClInclude Include="Source\Application\GameEnvironment\SpectrumFloor.h">
       <Filter>Application\Environment</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Application\Result\ResultModelEffect.h">
+      <Filter>Application\Result\ModelEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Result\ResultEffectFlow.h">
+      <Filter>Application\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\Result\ResultData.h">
+      <Filter>Application\Result</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -647,6 +668,9 @@
   <ItemGroup>
     <Text Include="Source\Application\Lane\LaneOutline.h">
       <Filter>Application\Lane</Filter>
+    </Text>
+    <Text Include="Source\Application\Result\RankCalculator.h">
+      <Filter>Application\Result</Filter>
     </Text>
   </ItemGroup>
 </Project>

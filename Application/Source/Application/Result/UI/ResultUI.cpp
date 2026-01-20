@@ -4,6 +4,7 @@
 #include <Debug/ImGuiDebugManager.h>
 
 #include <Features/UI/UINavigationManager.h>
+#include <Features/Event/EventManager.h>
 
 
 
@@ -42,6 +43,10 @@ void ResultUI::Initialize(ResultData resultData)
     animationSequence_->Initialize("Resources/Data/Result/");
     animationSequence_->SetLooping(false);
 
+    animForUI_ = std::make_unique<AnimationSequence>("ResultUISeq_UI");
+    animForUI_->Initialize("Resources/Data/Result/");
+    animForUI_->SetLooping(false);
+
     InitUIGroup();
     InitTextParams();
 
@@ -53,9 +58,9 @@ void ResultUI::Initialize(ResultData resultData)
 
 void ResultUI::Update(float deltaTime)
 {
-    static bool seqUpdate = false;
 
 #ifdef _DEBUG
+    static bool seqUpdate = false;
 
     if (ImGuiDebugManager::GetInstance()->Begin("ResultUI Debug"))
     {
@@ -71,6 +76,8 @@ void ResultUI::Update(float deltaTime)
         }
 
         ImGuiTool::TimeLine("ResultUI Animation", animationSequence_.get());
+
+        ImGuiTool::TimeLine("ResultUI UI Animation", animForUI_.get());
 
         ImGui::Separator();
         if (ImGui::Button("seq Save"))
@@ -104,61 +111,21 @@ void ResultUI::Update(float deltaTime)
 
 #endif // _DEBUG
 
-
-    // アニメーションの更新
-    if (animationSequence_)
+    if (!isDraw_)
     {
-        float duration = animationSequence_->GetMaxPlayTime();
-
-        for (auto& [type, textParam] : textParams_)
-        {
-            auto& animParam = textParam.animationValue;
-            animParam.timer += deltaTime;
-            if (animParam.timer >= duration)
-            {
-                animParam.timer = duration;
-            }
-            if (animParam.timer < 0)
-            {
-                animationSequence_->SetCurrentTime(0);
-
-            }
-            else
-            {
-                animationSequence_->SetCurrentTime(animParam.timer);
-            }
-            animationSequence_->Update(0.0f);
-            animParam.movement = animationSequence_->GetValue<Vector2>("movement");
-            animParam.scale = animationSequence_->GetValue<Vector2>("scale");
-            animParam.alpha = animationSequence_->GetValue<float>("alpha");
-
-            textParam.textParam.position = animParam.position + animParam.movement;
-            textParam.textParam.scale = animParam.scale;
-            textParam.textParam.topColor.w = animParam.alpha;
-            textParam.textParam.bottomColor.w = animParam.alpha;
-
-            if (animParam.timer >= 0 && textParam.counterValue.has_value())
-            {
-                auto& counterValue = textParam.counterValue.value();
-
-                counterValue.animationTimer += deltaTime;
-                if (counterValue.animationTimer >= animationDuration_)
-                {
-                    counterValue.animationTimer = animationDuration_;
-                }
-                // アニメーションの更新
-                float progress = counterValue.animationTimer / animationDuration_;
-                counterValue.currentValue = static_cast<int32_t>(counterValue.value * progress);
-                textParam.label = std::format(L"{}", counterValue.currentValue);
-            }
-
-        }
-        UIElement_->Update();
+        isDraw_ = true;
     }
+
+    UpdateTextParams(deltaTime);
+    UpdateUIs(deltaTime);
+
 }
 
 void ResultUI::Draw()
 {
+    if (!isDraw_)
+        return;
+
     UIElement_->Draw();
 
     for (const auto& [textType, param] : textParams_)
@@ -181,21 +148,21 @@ void ResultUI::InitUIGroup()
     toTitleButton->Initialize();
     toTitleButton->SetOnClickUp([this]()
                                 {
-                                    transitionToTitle_ = true;
+                                    DispatchEvent(EventType::ToTitle);
                                 });
     toTitleButton->SetOnClick([this]()
                               {
-                                  transitionToTitle_ = true;
+                                  DispatchEvent(EventType::ToTitle);
                               });
     auto retryButton = std::make_unique<UIButtonElement>("Retry", Vector2(100, 200), Vector2(150, 50), "リトライ");
     retryButton->Initialize();
     retryButton->SetOnClickUp([this]()
                               {
-                                  replay_ = true;
+                                  DispatchEvent(EventType::Retry);
                               });
     retryButton->SetOnClick([this]()
                             {
-                                replay_ = true;
+                                DispatchEvent(EventType::Retry);
                             });
 
 
@@ -207,37 +174,6 @@ void ResultUI::InitUIGroup()
 
     UIElement_ = std::move(backgroundSprite);
 
-    //    uiGroup_ = std::make_unique<UIGroup>();
-    //    uiGroup_->Initialize();
-    //
-    //    // 背景スプライトの作成
-    //    auto mainBg = uiGroup_->CreateSprite("main_bg");
-    //
-    //    TextParam param;
-    //    param.SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-    //
-    //    // タイトルへボタン初期化
-    //    auto toTitleButton = uiGroup_->CreateButton("To_Title",L"タイトルへ");
-    //    toTitleButton->SetOnClickEnd([this]()
-    //        {
-    //            transitionToTitle_ = true;
-    //        });
-    //
-    //    // リトライボタン初期化
-    //    auto retryButton = uiGroup_->CreateButton("Retry", L"リトライ");
-    //    retryButton->SetOnClickEnd([this]()
-    //        {
-    //            replay_ = true;
-    //        });
-    //
-    //    UIGroup::LinkHorizontal({ toTitleButton.get(), retryButton.get() });
-    //
-    //#ifdef _DEBUG
-    //    // デバッグ用のスプライトとボタンを追加
-    //    debugSprites_.push_back(mainBg.get());
-    //    debugButtons_.push_back(toTitleButton.get());
-    //    debugButtons_.push_back(retryButton.get());
-    //#endif // _DEBUG
 
 }
 
@@ -246,6 +182,8 @@ void ResultUI::InitTextParams()
     jsonBinder_ = std::make_unique<JsonBinder>("ResutUIs", "Resources/Data/Result/");
 
     jsonBinder_->RegisterVariable("animationDuration", &animationDuration_);
+
+    Vector2 basePos = UIElement_->GetPosition();
 
     for (int32_t i = 0; i < static_cast<int32_t>(TextType::Count); ++i)
     {
@@ -267,9 +205,90 @@ void ResultUI::InitTextParams()
         param.label = GetTextLabel(textType);
 
         param.animationValue.position = param.textParam.position; // アニメーション用の初期位置
+        param.animationValue.position.x += basePos.x; // アニメーション用の初期位置
         param.animationValue.scale = param.textParam.scale; // アニメーション用の初期スケール
         param.animationValue.alpha = param.textParam.topColor.w; // アニメーション用の初期アルファ値
         param.animationValue.timer = -param.animationValue.delay; // アニメーション用の初期タイマー
+    }
+}
+
+void ResultUI::UpdateTextParams(float deltaTime)
+{
+    if (!animationSequence_)
+        return;
+
+    // アニメーションの更新
+    float duration = animationSequence_->GetMaxPlayTime();
+
+    for (auto& [type, textParam] : textParams_)
+    {
+        auto& animParam = textParam.animationValue;
+        animParam.timer += deltaTime;
+        if (animParam.timer >= duration)
+        {
+            animParam.timer = duration;
+        }
+        if (animParam.timer < 0)
+        {
+            animationSequence_->SetCurrentTime(0);
+
+        }
+        else
+        {
+            animationSequence_->SetCurrentTime(animParam.timer);
+        }
+        animationSequence_->Update(0.0f);
+        animParam.movement = animationSequence_->GetValue<Vector2>("movement");
+        animParam.scale = animationSequence_->GetValue<Vector2>("scale");
+        animParam.alpha = animationSequence_->GetValue<float>("alpha");
+
+        textParam.textParam.position = animParam.position + animParam.movement;
+        textParam.textParam.scale = animParam.scale;
+        textParam.textParam.topColor.w = animParam.alpha;
+        textParam.textParam.bottomColor.w = animParam.alpha;
+
+        if (animParam.timer >= 0 && textParam.counterValue.has_value())
+        {
+            auto& counterValue = textParam.counterValue.value();
+
+
+            counterValue.animationTimer += deltaTime;
+            if (counterValue.animationTimer >= animationDuration_)
+            {
+                counterValue.animationTimer = animationDuration_;
+            }
+            // アニメーションの更新
+            float progress = counterValue.animationTimer / animationDuration_;
+            counterValue.currentValue = static_cast<int32_t>(counterValue.value * progress);
+            textParam.label = std::format(L"{}", counterValue.currentValue);
+        }
+    }
+}
+
+void ResultUI::UpdateUIs(float deltaTime)
+{
+    if (!animForUI_)
+        return;
+
+    animForUI_->Update(deltaTime);
+
+    // タイトルボタンの更新
+    {
+        Vector2 pos = animForUI_->GetValue<Vector2>("toTitle_positon");
+
+        buttons_[0]->SetPosition(pos);
+    }
+    // リトライボタンの更新
+    {
+        Vector2 pos = animForUI_->GetValue<Vector2>("retry_positon");
+        buttons_[1]->SetPosition(pos);
+    }
+
+    // 背景の更新
+    {
+        Vector2 pos = animForUI_->GetValue<Vector2>("background_position");
+        UIElement_->SetPosition(pos);
+        UIElement_->Update();
     }
 }
 
@@ -376,5 +395,20 @@ ResultUI::TextType ResultUI::GetTextTypeFromJudgeType(JudgeType judgeType) const
         case JudgeType::None:
         default:
             return TextType::Count;
+    }
+}
+
+void ResultUI::DispatchEvent(EventType eventType)
+{
+    switch (eventType)
+    {
+        case EventType::ToTitle:
+            EventManager::GetInstance()->DispatchEvent(GameEvent("ResultToTitle", nullptr));
+            break;
+        case EventType::Retry:
+            EventManager::GetInstance()->DispatchEvent(GameEvent("Retry", nullptr));
+            break;
+        default:
+            break;
     }
 }

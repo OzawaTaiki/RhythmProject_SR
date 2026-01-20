@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Application/Note/Judge/JudgeType.h>
+#include "RankCalculator.h"
 
 #include <map>
 #include <cstdint>
@@ -22,4 +23,7 @@ struct ResultData
 
     // スコア
     int32_t score = 0;
+
+    // ランク
+    Rank rank = Rank::C;
 };

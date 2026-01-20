@@ -1,0 +1,99 @@
+{
+    "ResultUISeq_UI": {
+        "IsLooping": false,
+        "MaxPlayTime": 1.0,
+        "SequenceSize": 3,
+        "background_position_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1500.0,
+                        "y": 320.0
+                    }
+                }
+            },
+            {
+                "easingType": 25,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.6000000238418579,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 1000.0,
+                        "y": 320.0
+                    }
+                }
+            }
+        ],
+        "background_position_variableType": 2,
+        "labels": [
+            "toTitle_positon",
+            "background_position",
+            "retry_positon"
+        ],
+        "retry_positon_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": -1060.0,
+                        "y": 800.0
+                    }
+                }
+            },
+            {
+                "easingType": 25,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.6000000238418579,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": -560.0,
+                        "y": 300.0
+                    }
+                }
+            }
+        ],
+        "retry_positon_variableType": 2,
+        "toTitle_positon_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": -660.0,
+                        "y": 800.0
+                    }
+                }
+            },
+            {
+                "easingType": 25,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.6000000238418579,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": -160.0,
+                        "y": 300.0
+                    }
+                }
+            }
+        ],
+        "toTitle_positon_variableType": 2
+    }
+}

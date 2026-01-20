@@ -1,0 +1,838 @@
+{
+    "ResultModelEffectLoopSeq": {
+        "IsLooping": true,
+        "MaxPlayTime": 4.0,
+        "RC_0_PosOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 2.1500000953674316,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "RC_0_PosOffset__variableType": 3,
+        "RC_0_RotOffset__keyFrames": [
+            {
+                "easingType": 29,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 9.423999786376953,
+                        "z": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 24,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.1000001430511475,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 15.699999809265137,
+                        "z": 0.0
+                    }
+                }
+            },
+            {
+                "easingType": 23,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 4.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 21.990999221801758,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "RC_0_RotOffset__variableType": 3,
+        "RC_0_Scale__keyFrames": [
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 3.0,
+                        "y": 3.0,
+                        "z": 3.0
+                    }
+                }
+            }
+        ],
+        "RC_0_Scale__variableType": 3,
+        "SL_0_PosOffset__keyFrames": [
+            {
+                "easingType": 6,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": -2.299999952316284,
+                        "y": 0.0,
+                        "z": 4.0
+                    }
+                }
+            }
+        ],
+        "SL_0_PosOffset__variableType": 3,
+        "SL_0_RotOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 0.0,
+                        "y": 0.20000000298023224
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 4.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": -6.28000020980835,
+                        "y": 0.20000000298023224
+                    }
+                }
+            }
+        ],
+        "SL_0_RotOffset__variableType": 2,
+        "SL_0_Scale__keyFrames": [
+            {
+                "easingType": 4,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            }
+        ],
+        "SL_0_Scale__variableType": 3,
+        "SL_1_PosOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 2.6700000762939453,
+                        "y": 0.0,
+                        "z": 6.849999904632568
+                    }
+                }
+            }
+        ],
+        "SL_1_PosOffset__variableType": 3,
+        "SL_1_RotOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 3.140000104904175,
+                        "y": 0.0010000000474974513
+                    }
+                }
+            },
+            {
+                "easingType": 4,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.5,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 3.140000104904175,
+                        "y": 0.30000001192092896
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": true,
+                "time": 4.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 3.140000104904175,
+                        "y": 0.0010000000474974513
+                    }
+                }
+            }
+        ],
+        "SL_1_RotOffset__variableType": 2,
+        "SL_1_Scale__keyFrames": [
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            }
+        ],
+        "SL_1_Scale__variableType": 3,
+        "SL_2_PosOffset__keyFrames": [
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.7400000095367432,
+                        "y": -1.5299999713897705,
+                        "z": -1.2799999713897705
+                    }
+                }
+            }
+        ],
+        "SL_2_PosOffset__variableType": 3,
+        "SL_2_RotOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 3.140000104904175,
+                        "y": 0.10000000149011612
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 4.0,
+                "value": {
+                    "type": "Vector2",
+                    "value": {
+                        "x": 9.423999786376953,
+                        "y": 0.10000000149011612
+                    }
+                }
+            }
+        ],
+        "SL_2_RotOffset__variableType": 2,
+        "SL_2_Scale__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            }
+        ],
+        "SL_2_Scale__variableType": 3,
+        "SequenceSize": 20,
+        "Sp_0_PosOffset__keyFrames": [
+            {
+                "easingType": 8,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": -4.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "Sp_0_PosOffset__variableType": 3,
+        "Sp_0_RotOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 2.799999952316284,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "Sp_0_RotOffset__variableType": 3,
+        "Sp_0_Scale__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.20000000298023224,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.4000000059604645,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.8,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.2,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.6,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.8,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.4,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.6,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.8,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.2,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.4,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.6,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            }                
+        ],
+        "Sp_0_Scale__variableType": 3,
+        "Sp_1_PosOffset__keyFrames": [
+            {
+                "easingType": 7,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 4.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "Sp_1_PosOffset__variableType": 3,
+        "Sp_1_RotOffset__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.0,
+                        "y": 3.319999933242798,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "Sp_1_RotOffset__variableType": 3,
+        "Sp_1_Scale__keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.4000000059604645,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 19,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.6,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.8,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.2,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 19,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.4,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 19,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 1.6,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.2,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.4,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 2.8,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 3,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.2,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 19,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.6,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 3.8,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.399999976158142,
+                        "y": 1.399999976158142,
+                        "z": 1.399999976158142
+                    }
+                }
+            },
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 4.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 1.2999999523162842,
+                        "y": 1.2999999523162842,
+                        "z": 1.2999999523162842
+                    }
+                }
+            }
+        ],
+        "Sp_1_Scale__variableType": 3,
+        "camera_pos_keyFrames": [
+            {
+                "easingType": 19,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 3.619999885559082,
+                        "y": 8.649999618530273,
+                        "z": -25.0
+                    }
+                }
+            }
+        ],
+        "camera_pos_variableType": 3,
+        "camera_rot_keyFrames": [
+            {
+                "easingType": 0,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "Vector3",
+                    "value": {
+                        "x": 0.25999999046325684,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            }
+        ],
+        "camera_rot_variableType": 3,
+        "labels": [
+            "Sp_0_PosOffset_",
+            "Sp_0_RotOffset_",
+            "Sp_0_Scale_",
+            "Sp_1_PosOffset_",
+            "Sp_1_RotOffset_",
+            "Sp_1_Scale_",
+            "SL_0_PosOffset_",
+            "SL_0_Scale_",
+            "SL_1_PosOffset_",
+            "SL_1_Scale_",
+            "SL_2_PosOffset_",
+            "SL_2_Scale_",
+            "RC_0_PosOffset_",
+            "RC_0_RotOffset_",
+            "RC_0_Scale_",
+            "camera_pos",
+            "camera_rot",
+            "SL_0_RotOffset_",
+            "SL_1_RotOffset_",
+            "SL_2_RotOffset_"
+        ]
+    }
+}

@@ -31,10 +31,6 @@ public:
     // 描画
     void Draw();
 
-    // タイトルへ遷移するかどうか
-    bool IsTransitionToTitle() const { return transitionToTitle_; }
-    // リプレイするかどうか
-    bool IsReplay() const { return replay_; }
 
 private:
 
@@ -81,6 +77,10 @@ private:
     void InitUIGroup();
     // テキストパラメータの初期化
     void InitTextParams();
+
+    void UpdateTextParams(float deltaTime);
+    void UpdateUIs(float deltaTime);
+
     // テキストタイプからキー文字列を取得
     std::string GetKeyString(TextType textType) const;
     // テキストタイプからラベルを取得
@@ -90,6 +90,12 @@ private:
     // ジャッジタイプからテキストタイプを取得
     TextType GetTextTypeFromJudgeType(JudgeType judgeType) const;
 
+    enum class EventType
+    {
+        ToTitle,
+        Retry,
+    };
+    void DispatchEvent(EventType eventType);
 private:
 
     std::string musicTitle_ = ""; // 楽曲のタイトル
@@ -116,12 +122,8 @@ private:
     std::unique_ptr<AnimationSequence> animationSequence_ = nullptr; // アニメーションシーケンス
 
     std::unique_ptr<UIElement> UIElement_ = nullptr; // UIグループ
-    std::vector<UIElement*> buttons_; 
-
-#ifdef _DEBUG
-    std::vector<UIImageElement*> debugSprites_; // デバッグ用スプライト
-    std::vector<UIButtonElement*> debugButtons_; // デバッグ用ボタン
-#endif // _DEBUG
+    std::vector<UIElement*> buttons_;
+    std::unique_ptr<AnimationSequence> animForUI_ = nullptr; //UI用
 
 
     // textParamの拡張
@@ -141,4 +143,6 @@ private:
     bool replay_ = false; // リプレイするかどうか
 
     TextGenerator text_; // テキストジェネレータ
+
+    bool isDraw_ = false;
 };

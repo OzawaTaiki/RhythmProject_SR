@@ -35,7 +35,7 @@ void ScoreCalculator::Initialize(int32_t totalNotes)
 
 void ScoreCalculator::AddScore(JudgeType judgeType, int32_t currentCombo)
 {
-    judgeType=JudgeType::Perfect;
+    //judgeType=JudgeType::Perfect;
     auto& config = judgementConfigs[judgeType];
 
     if (config.breaksCombo)
@@ -61,7 +61,7 @@ void ScoreCalculator::AddScore(JudgeType judgeType, int32_t currentCombo)
 
 int32_t ScoreCalculator::GetDisplayScore() const
 {
-    Debug::Log(std::format("=========================\nRaw Score: {}, Theoretical Max: {}, Display Score: {}\n=========================\n", 
+    Debug::Log(std::format("=========================\nRaw Score: {}, Theoretical Max: {}, Display Score: {}\n=========================\n",
                            rawScore_, theoreticalMax_, static_cast<int32_t>((rawScore_ / theoreticalMax_) * kBaseScore)));
     return static_cast<int32_t>((rawScore_ / theoreticalMax_) * kBaseScore);
 }
@@ -69,4 +69,9 @@ int32_t ScoreCalculator::GetDisplayScore() const
 void ScoreCalculator::ScoreReset()
 {
     rawScore_ = 0.0f;
+}
+
+const int32_t ScoreCalculator::GetBaseScore() const
+{
+    return kBaseScore;
 }

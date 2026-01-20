@@ -88,7 +88,7 @@ void GameScene::Initialize(SceneData* sceneData)
     /// Application
 
     std::string beforeScene = "None";
-    std::string beatMapFilePath = "Resources/Data/Game/BeatMap/Twilight_Memory.json"; // デフォルトの譜面ファイルパス
+    std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
     BeatMapData editorBeatMapData = {};
 
     gameMode_ = GameMode::Normal;
@@ -224,6 +224,7 @@ void GameScene::Update()
             data->resultData.combo = gameCore_->GetMaxCombo();
             data->resultData.score = gameCore_->GetScore();
             data->resultData.judgeResult = gameCore_->GetJudgeResult();
+            data->resultData.rank = gameCore_->GetRank();
 
             UINavigationManager::GetInstance()->ClearFocus();
             SceneManager::ReserveScene("ResultScene", std::move(data)); // 結果シーンにデータを渡す
@@ -470,7 +471,8 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     /// Application
 
 
-    std::string beatMapFilePath = "Resources/Data/Game/BeatMap/Twilight_Memory.json"; // デフォルトの譜面ファイルパス
+    //std::string beatMapFilePath = "Resources/Data/Game/BeatMap/Twilight_Memory.json"; // デフォルトの譜面ファイルパス
+    std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
     gameMode_ = GameMode::Normal;
     if (beforeScene == "Scene")
     {

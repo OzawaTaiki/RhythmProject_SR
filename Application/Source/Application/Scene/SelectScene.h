@@ -9,6 +9,9 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <Features/TextRenderer/TextGenerator.h>
 
+#include <Application/Select/SelectUI.h>
+
+
 /// <summary>
 /// 選曲画面のシーンクラス。
 /// </summary>
@@ -50,10 +53,10 @@ private:
     Input* input_ = nullptr;
     ParticleSystem* particleSystem_ = nullptr;
 
-    TextGenerator text_;
-
     std::shared_ptr<LightGroup> lightGroup_ = nullptr;
 
-    //std::unique_ptr<UIButton> selectButton_ = nullptr;
+    ///------------------------------
+
+    std::unique_ptr<SelectUI> selectUI_ = nullptr;
 
 };

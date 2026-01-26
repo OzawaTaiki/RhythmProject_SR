@@ -40,8 +40,6 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& _name)
         return std::make_unique<EditorScene>();
     }
 
-
-
     assert("Scene Not Found");
 
     return nullptr;

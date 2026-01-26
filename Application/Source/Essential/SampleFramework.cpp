@@ -4,7 +4,6 @@
 #include <Features/Scene/ParticleTestScene.h>
 #include "SceneFactory.h"
 
-#include <System/Time/Time_MT.h>
 #include <Essential/ParticleModifierFactory.h>
 
 #include <Framework/LayerSystem/LayerSystem.h>
@@ -30,8 +29,6 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
     collisionManager_->Initialize(Vector2(100, 100), 5, Vector2(-50, -50), 1.0f);
 
     PrimitiveBuilder::BuildAndRegisterAll();
-
-    Time_MT::GetInstance()->Initialize();
 
     LayerSystem::Initialize();
 
@@ -83,8 +80,11 @@ void SampleFramework::Draw()
     ParticleSystem::GetInstance()->DrawParticles();
     batch2DRenderer_->Render();
     lineDrawer_->Draw();
-    //=============================
+
     textRenderer_->EndFrame();
+    //=============================
+
+    // レイヤーの合成
     LayerSystem::CompositeAllLayers("default");
     dxCommon_->PreDraw();
     // スワップチェインに戻す
@@ -107,7 +107,6 @@ void SampleFramework::Finalize()
 {
     Setting::Save();
 
-    Time_MT::GetInstance()->Finalize();
     Framework::Finalize();
 }
 

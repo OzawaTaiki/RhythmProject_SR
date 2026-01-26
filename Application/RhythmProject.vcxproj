@@ -235,16 +235,10 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Scene\ResultScene.cpp" />
     <ClCompile Include="Source\Application\Scene\SelectScene.cpp" />
-    <ClCompile Include="Source\Application\Scene\Text3DTestScene.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Source\Application\Scene\Text3DTest_Integration.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Source\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\Application\Scene\Transition\SceneTrans.cpp" />
+    <ClCompile Include="Source\Application\Select\musicSelectUI.cpp" />
+    <ClCompile Include="Source\Application\Select\SelectUI.cpp" />
     <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
     <ClCompile Include="Source\Application\Setting\Setting.cpp" />
     <ClCompile Include="Source\Application\Setting\SettingMenu.cpp" />
@@ -405,12 +399,10 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Scene\ResultScene.h" />
     <ClInclude Include="Source\Application\Scene\SelectScene.h" />
-    <ClInclude Include="Source\Application\Scene\Text3DTestScene.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Source\Application\Scene\TitleScene.h" />
     <ClInclude Include="Source\Application\Scene\Transition\SceneTrans.h" />
+    <ClInclude Include="Source\Application\Select\musicSelectUI.h" />
+    <ClInclude Include="Source\Application\Select\SelectUI.h" />
     <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h" />
     <ClInclude Include="Source\Application\Setting\Setting.h" />
     <ClInclude Include="Source\Application\Setting\SettingMenu.h" />

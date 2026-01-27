@@ -49,8 +49,8 @@ void SelectScene::Update()
         enableDebugCamera_ = !enableDebugCamera_;
 
 #endif // _DEBUG
-
-    selectUI_->Update();
+    float deltaTime = Time::GetDeltaTime<float>();
+    selectUI_->Update(deltaTime);
 
     if (enableDebugCamera_)
     {

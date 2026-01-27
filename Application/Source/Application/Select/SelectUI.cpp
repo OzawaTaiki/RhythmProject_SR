@@ -6,9 +6,9 @@ void SelectUI::Initialize()
     musicSelectUI_->Initialize();
 }
 
-void SelectUI::Update()
+void SelectUI::Update(float deltaTime)
 {
-    musicSelectUI_->Update();
+    musicSelectUI_->Update(deltaTime);
 }
 
 void SelectUI::Draw()

@@ -1,6 +1,8 @@
 #include "musicSelectUI.h"
 
 #include <Debug/ImGuiDebugManager.h>
+#include <Application/MusicList/MusicListManager.h>
+#include <System/Input/Input.h>
 
 namespace
 {
@@ -10,6 +12,7 @@ const int32_t kHalfVisibleCount = kVisibleCount / 2;
 
 void MusicSelectUI::Initialize()
 {
+    isInitialized_ = false;
     selectedIndex_ = 0;
 
     // Jsonバインダー初期化
@@ -41,7 +44,6 @@ void MusicSelectUI::Update()
             button1->Initialize();
 
             uiItems_.push_back({ std::move(button1), 0.0f });
-
         }
 
         if (ImGui::Button("Save"))
@@ -53,6 +55,18 @@ void MusicSelectUI::Update()
     }
 
 #endif // _DEBUG
+
+    if (!isInitialized_)
+    {
+        if (MusicListManager::GetInstance()->IsLoadComplete())
+        {
+            // 読み込み完了してたら初期化
+            InitializeItemsFromData();
+            isInitialized_ = true;
+        }
+    }
+
+    MoveSelection();
 
     ClampSelectedIndex();
 
@@ -75,6 +89,48 @@ void MusicSelectUI::Draw()
         auto& item = uiItems_[index];
         item.item->Draw();
     }
+}
+
+void MusicSelectUI::InitializeItemsFromData()
+{
+    auto& list = MusicListManager::GetInstance()->GetMusicList();
+    musicListSize_ =static_cast<int32_t>(list.size());
+    // UIアイテム数が足りない場合は追加
+    if (musicListSize_ >= kVisibleCount && musicListSize_ > uiItems_.size())
+    {
+        int32_t itemsToAdd = musicListSize_ - static_cast<int32_t>(uiItems_.size());
+        for (int32_t i = 0; i < itemsToAdd; ++i)
+        {
+            std::string buttonName = "MusicSelectButton" + std::to_string(uiItems_.size());
+            auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
+            button->Initialize();
+            uiItems_.push_back({ std::move(button), 0.0f });
+        }
+    }
+
+    // visibleCountより少ない場合は黒くする
+    if (musicListSize_ < kVisibleCount)
+    {
+        for (size_t i = list.size(); i < uiItems_.size(); ++i)
+        {
+            auto& item = uiItems_[i];
+            item.item->SetNormalColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+            item.item->SetHoverColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+            item.item->SetPressedColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+            item.item->SetDisabledColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
+            item.item->SetTextColor(Vector4(0.5f, 0.5f, 0.5f, 0.0f));
+        }
+    }
+
+    // listを走査
+    for (size_t i = 0; i < list.size(); ++i)
+    {
+        // ボタンのテキストを設定
+        auto& item = uiItems_[i];
+        item.item->SetText(list[i].title);
+    }
+
+    isInitialized_ = true;
 }
 
 void MusicSelectUI::InitJsonBinder()
@@ -154,4 +210,19 @@ void MusicSelectUI::ClampSelectedIndex()
 {
     uint32_t itemCount = static_cast<int32_t>(uiItems_.size());
     selectedIndex_ = (selectedIndex_ + itemCount) % itemCount;
+}
+
+void MusicSelectUI::MoveSelection()
+{
+    auto input = Input::GetInstance();
+    if (input->IsKeyTriggered(DIK_UP) ||
+        input->IsKeyTriggered(DIK_W))
+    {
+        selectedIndex_++;
+    }
+    else if (input->IsKeyTriggered(DIK_DOWN)
+             || input->IsKeyTriggered(DIK_S))
+    {
+        selectedIndex_--;
+    }
 }

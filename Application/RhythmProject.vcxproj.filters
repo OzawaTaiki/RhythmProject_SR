@@ -154,6 +154,9 @@
     <Filter Include="Application\Select">
       <UniqueIdentifier>{f486e16c-15d4-478d-8d17-93844dbbd7eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\MusicList">
+      <UniqueIdentifier>{badb0e31-e06d-42de-90f6-8576993b1df7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -402,6 +405,7 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Select\musicSelectUI.cpp" />
     <ClCompile Include="Source\Application\Select\SelectUI.cpp" />
+    <ClCompile Include="Source\Application\MusicList\MusicListManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -664,6 +668,12 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Select\musicSelectUI.h">
       <Filter>Application\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\MusicList\MusicMetaData.h">
+      <Filter>Application\MusicList</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\MusicList\MusicListManager.h">
+      <Filter>Application\MusicList</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

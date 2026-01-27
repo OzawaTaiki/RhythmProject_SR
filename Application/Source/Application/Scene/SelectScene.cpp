@@ -5,6 +5,8 @@
 #include <Features/Scene/Manager/SceneManager.h>
 #include <Application/Scene/Data/SceneDatas.h>
 
+#include <Application/MusicList/MusicListManager.h>
+
 void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
@@ -33,6 +35,8 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     selectUI_ = std::make_unique<SelectUI>();
     selectUI_->Initialize();
+
+    MusicListManager::GetInstance()->LoadAync();
 
 }
 

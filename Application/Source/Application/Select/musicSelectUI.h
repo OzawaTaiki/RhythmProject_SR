@@ -31,6 +31,12 @@ public:
 private:
 
     /// <summary>
+    /// 読み込み完了したデータでアイテムを初期化
+    /// <summary>
+    void InitializeItemsFromData();
+
+
+    /// <summary>
     /// Jsonバインダー初期化
     /// </summary>
     void InitJsonBinder();
@@ -54,6 +60,13 @@ private:
     /// 選択インデックスを範囲内に収める
     /// </summary>
     void ClampSelectedIndex();
+
+    /// <summary>
+    /// 選択移動処理
+    /// </summary>
+    void MoveSelection();
+
+
 private:
 
     // UI配置用の大きな円情報
@@ -83,6 +96,10 @@ private:
     Vector2 BaseUISize_ ={};
 
     int32_t selectedIndex_ = 0;
+    int32_t musicListSize_ = 0;
+
+    // 読み込みが終わり、初期化が完了したか
+    bool isInitialized_ = false;
 
     //std::unique_ptr<AnimationSequence> openSequence_;
 

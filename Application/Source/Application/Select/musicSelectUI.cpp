@@ -6,8 +6,8 @@
 
 namespace
 {
-const int32_t kVisibleCount = 5; // 一度に表示するアイテム数
-const int32_t kHalfVisibleCount = kVisibleCount / 2;
+const int32_t kVisibleCount = 6; // 一度に表示するアイテム数
+const int32_t kHalfVisibleCount = (kVisibleCount-1) / 2;
 }
 
 void MusicSelectUI::Initialize()
@@ -22,7 +22,7 @@ void MusicSelectUI::Initialize()
     EnsureMinimumItems();
 }
 
-void MusicSelectUI::Update()
+void MusicSelectUI::Update(float deltaTime)
 {
 #ifdef _DEBUG
 
@@ -70,7 +70,7 @@ void MusicSelectUI::Update()
 
     ClampSelectedIndex();
 
-    UpdateLayout();
+    UpdateLayout(deltaTime);
     UpdateScaling();
 
     for (auto& item : uiItems_)
@@ -83,7 +83,7 @@ void MusicSelectUI::Draw()
 {
     int32_t itemCount = static_cast<int32_t>(uiItems_.size());
 
-    for (int32_t i = -kHalfVisibleCount; i <= kHalfVisibleCount; ++i)
+    for (int32_t i = -kHalfVisibleCount; i <= kHalfVisibleCount + 1; ++i)
     {
         int32_t index = (selectedIndex_ + i + itemCount) % itemCount;
         auto& item = uiItems_[index];
@@ -148,7 +148,7 @@ void MusicSelectUI::InitJsonBinder()
 
 }
 
-void MusicSelectUI::UpdateLayout()
+void MusicSelectUI::UpdateLayout(float deltaTime)
 {
     int32_t itemCount =static_cast<int32_t>(uiItems_.size());
     if (itemCount == 0)
@@ -157,14 +157,31 @@ void MusicSelectUI::UpdateLayout()
     // 選択しているアイテムの角度
     const float selectedAngle = (layoutCircle_.startAngle + layoutCircle_.endAngle) / 2.0f;// 中央に配置
     // アイテムの間隔角度
-    const float angleStep = -(layoutCircle_.endAngle - layoutCircle_.startAngle) / static_cast<float>(kVisibleCount);
+    const float angleStep = -(layoutCircle_.endAngle - layoutCircle_.startAngle) / static_cast<float>(kVisibleCount - 1);
 
     int32_t startIndex = selectedIndex_ - kHalfVisibleCount;
     int32_t endIndex = selectedIndex_ + kHalfVisibleCount;
+    if (scrollDirection_ == 1)
+        startIndex--;
+    else if (scrollDirection_ == -1)
+        endIndex++;
+
+    float t = 1.0f;
+    if (scrollDirection_ != 0)
+    {
+        scrollElapsedTime_ += deltaTime;
+        t = 1.0f - scrollElapsedTime_ / scrollDuration_;
+        if (t <= 0.0f)
+        {
+            t = 0.0f;
+            scrollDirection_ = 0;
+            scrollElapsedTime_ = 0.0f;
+        }
+    }
 
     for (int32_t i = startIndex; i <= endIndex; ++i)
     {
-        float angle = selectedAngle + (i - selectedIndex_) * angleStep;
+        float angle = selectedAngle + (i - selectedIndex_) * angleStep + scrollDirection_ * angleStep * t;
         // 対象のアイテムのインデックスを計算（循環考慮）
         int32_t itemIndex = (i + itemCount) % itemCount;
         auto& item = uiItems_[itemIndex];
@@ -183,19 +200,34 @@ void MusicSelectUI::UpdateScaling()
     if (itemCount == 0)
         return;
 
+    float t = 1.0f;
+    if (scrollDirection_ != 0)
+    {
+        t = 1.0f - scrollElapsedTime_ / scrollDuration_;
+        if (t <= 0.0f)
+        {
+            t = 0.0f;
+            scrollDirection_ = 0;
+            scrollElapsedTime_ = 0.0f;
+        }
+    }
+
     // 0.6 0.8 1.0 0.8 0.6
     for (int32_t i = -kHalfVisibleCount; i <= kHalfVisibleCount; ++i)
     {
         int32_t index = (selectedIndex_ + i + itemCount) % itemCount;
         auto& item = uiItems_[index];
         float scale = 1.0f - (std::abs(static_cast<float>(i)) * 0.2f);
-        Vector2 newSize = BaseUISize_ * scale;
+        Vector2 targetSize = BaseUISize_ * scale;
+        Vector2 newSize = Lerp(targetSize, item.item->GetSize(), t);
         item.item->SetSize(newSize);
     }
 }
 
 void MusicSelectUI::EnsureMinimumItems()
 {
+    // 最低限のアイテム数を確保
+    // kVisibleCount + 2 はスクロール時の余裕分
     while (uiItems_.size() < static_cast<size_t>(kVisibleCount))
     {
         std::string buttonName = "MusicSelectButton" + std::to_string(uiItems_.size());
@@ -219,10 +251,14 @@ void MusicSelectUI::MoveSelection()
         input->IsKeyTriggered(DIK_W))
     {
         selectedIndex_++;
+        if (scrollDirection_ == 0)
+            scrollDirection_ = 1;
     }
     else if (input->IsKeyTriggered(DIK_DOWN)
              || input->IsKeyTriggered(DIK_S))
     {
         selectedIndex_--;
+        if (scrollDirection_ == 0)
+            scrollDirection_ = -1;
     }
 }

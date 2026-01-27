@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// 更新処理
     /// </summary>
-    void Update();
+    void Update(float deltaTime);
     /// <summary>
     /// 描画処理
     /// </summary>
@@ -44,7 +44,7 @@ private:
     /// <summary>
     /// レイアウト更新
     /// </summary>
-    void UpdateLayout();
+    void UpdateLayout(float deltaTime);
 
     /// <summary>
     /// スケーリング更新
@@ -100,6 +100,10 @@ private:
 
     // 読み込みが終わり、初期化が完了したか
     bool isInitialized_ = false;
+
+    int32_t scrollDirection_ = 0; // スクロール方向 -1:左 1:右 0:停止
+    float scrollElapsedTime_ = 0.0f; // スクロールアニメーション経過時間
+    float scrollDuration_ = 0.3f; // スクロールアニメーション時間
 
     //std::unique_ptr<AnimationSequence> openSequence_;
 

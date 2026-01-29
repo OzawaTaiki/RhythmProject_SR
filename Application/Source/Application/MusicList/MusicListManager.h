@@ -36,6 +36,11 @@ public:
     const std::vector<MusicMetaData>& GetMusicList() const;
 
     /// <summary>
+    /// 指定インデックスの音楽メタデータを取得
+    /// </summary>
+    MusicMetaData GetMusicMetaDataAt(size_t index) const;
+
+    /// <summary>
     /// 音楽リストを再読み込み
     /// </summary>
     void Refresh();

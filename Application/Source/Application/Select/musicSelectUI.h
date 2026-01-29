@@ -2,6 +2,9 @@
 
 #include <Features/UI/Element/UIButtonElement.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
+#include <System/Audio/SoundInstance.h>
+#include <System/Audio/VoiceInstance.h>
+
 
 /// <summary>
 /// 選曲UIクラス
@@ -66,6 +69,10 @@ private:
     /// </summary>
     void MoveSelection();
 
+    /// <summary>
+    /// アイテムにフォーカスが入ったときの処理
+    /// </summary>
+    void OnItemFocusEnter();
 
 private:
 
@@ -104,6 +111,9 @@ private:
     int32_t scrollDirection_ = 0; // スクロール方向 -1:左 1:右 0:停止
     float scrollElapsedTime_ = 0.0f; // スクロールアニメーション経過時間
     float scrollDuration_ = 0.3f; // スクロールアニメーション時間
+
+    std::shared_ptr<SoundInstance> bgmSoundInstance_;
+    std::shared_ptr<VoiceInstance> voiceInstance_;
 
     //std::unique_ptr<AnimationSequence> openSequence_;
 

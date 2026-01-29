@@ -2,6 +2,8 @@
 
 #include <Debug/ImGuiDebugManager.h>
 #include <Application/MusicList/MusicListManager.h>
+#include <System/Audio/AudioSystem.h>
+#include <Application/Setting/Setting.h>
 #include <System/Input/Input.h>
 
 namespace
@@ -130,6 +132,18 @@ void MusicSelectUI::InitializeItemsFromData()
         item.item->SetText(list[i].title);
     }
 
+    int32_t itemCount = static_cast<int32_t>(uiItems_.size());
+    for (int32_t i = -kHalfVisibleCount; i <= kHalfVisibleCount; ++i)
+    {
+        int32_t index = (selectedIndex_ + i + itemCount) % itemCount;
+        auto& item = uiItems_[index];
+        float scale = 1.0f - (std::abs(static_cast<float>(i)) * 0.2f);
+        Vector2 targetSize = BaseUISize_ * scale;
+        Vector2 newSize = targetSize;
+        item.item->SetSize(newSize);
+    }
+
+    OnItemFocusEnter();
     isInitialized_ = true;
 }
 
@@ -145,7 +159,6 @@ void MusicSelectUI::InitJsonBinder()
     jsonBinder_->RegisterVariable("layoutCircle_radius", &layoutCircle_.radius);
     jsonBinder_->RegisterVariable("layoutCircle_startAngle", &layoutCircle_.startAngle);
     jsonBinder_->RegisterVariable("layoutCircle_endAngle", &layoutCircle_.endAngle);
-
 }
 
 void MusicSelectUI::UpdateLayout(float deltaTime)
@@ -161,10 +174,11 @@ void MusicSelectUI::UpdateLayout(float deltaTime)
 
     int32_t startIndex = selectedIndex_ - kHalfVisibleCount;
     int32_t endIndex = selectedIndex_ + kHalfVisibleCount;
+    /*
     if (scrollDirection_ == 1)
         startIndex--;
     else if (scrollDirection_ == -1)
-        endIndex++;
+        endIndex++;*/
 
     float t = 1.0f;
     if (scrollDirection_ != 0)
@@ -227,7 +241,6 @@ void MusicSelectUI::UpdateScaling()
 void MusicSelectUI::EnsureMinimumItems()
 {
     // 最低限のアイテム数を確保
-    // kVisibleCount + 2 はスクロール時の余裕分
     while (uiItems_.size() < static_cast<size_t>(kVisibleCount))
     {
         std::string buttonName = "MusicSelectButton" + std::to_string(uiItems_.size());
@@ -246,6 +259,8 @@ void MusicSelectUI::ClampSelectedIndex()
 
 void MusicSelectUI::MoveSelection()
 {
+    int32_t pre = selectedIndex_;
+
     auto input = Input::GetInstance();
     if (input->IsKeyTriggered(DIK_UP) ||
         input->IsKeyTriggered(DIK_W))
@@ -260,5 +275,30 @@ void MusicSelectUI::MoveSelection()
         selectedIndex_--;
         if (scrollDirection_ == 0)
             scrollDirection_ = -1;
+    }
+
+    if (pre != selectedIndex_)
+    {
+        OnItemFocusEnter();
+    }
+}
+
+void MusicSelectUI::OnItemFocusEnter()
+{
+    if (voiceInstance_ && voiceInstance_->IsPlaying())
+        voiceInstance_->Stop();
+
+    auto metaData = MusicListManager::GetInstance()->GetMusicMetaDataAt(selectedIndex_);
+    if (metaData.audioFilePath.empty())
+    {
+        return;
+    }
+
+    // 音声の読み込みと再生
+    bgmSoundInstance_ = AudioSystem::GetInstance()->Load(metaData.audioFilePath);
+
+    if (bgmSoundInstance_)
+    {
+        voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, true);
     }
 }

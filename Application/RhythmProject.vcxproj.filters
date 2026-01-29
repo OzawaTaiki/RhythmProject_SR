@@ -403,9 +403,15 @@
     <ClCompile Include="Source\Application\FocusFrame.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Select\musicSelectUI.cpp" />
-    <ClCompile Include="Source\Application\Select\SelectUI.cpp" />
-    <ClCompile Include="Source\Application\MusicList\MusicListManager.cpp" />
+    <ClCompile Include="Source\Application\Select\SelectUI.cpp">
+      <Filter>Application\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Select\musicSelectUI.cpp">
+      <Filter>Application\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\MusicList\MusicListManager.cpp">
+      <Filter>Application\MusicList</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">

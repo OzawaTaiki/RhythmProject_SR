@@ -1,0 +1,30 @@
+{
+    "Select_Setting_Icon": {
+        "anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "color": {
+            "w": 1.0,
+            "x": 0.162162184715271,
+            "y": 0.162162184715271,
+            "z": 0.162162184715271
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 0.0,
+            "y": -20.0
+        },
+        "size": {
+            "x": 64.0,
+            "y": 64.0
+        },
+        "texturePath": "GearIcon.png"
+    }
+}

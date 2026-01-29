@@ -5,6 +5,7 @@
 #include <System/Audio/AudioSystem.h>
 #include <Features/Event/EventManager.h>
 #include <Features/UI/UINavigationManager.h>
+#include <Features/UI/Component/UIColliderComponent.h>
 
 #include <Application/Setting/Setting.h>
 #include <Features/UI/Element/UIImageElement.h>
@@ -29,6 +30,8 @@ void SettingMenu::Initialize()
 
     auto back = std::make_unique<UIImageElement>("SettingMenu_back", Vector2(100, 100), Vector2(600, 400));
     back->Initialize();
+    back->AddComponent<UIColliderComponent>();
+
     auto volumeSlider = std::make_unique<UISliderElement>("VolumeSlider", Vector2(150, 150), Vector2(200, 20),true);
     volumeSlider->Initialize();
     volumeSlider->SetStep(0.01f);

@@ -37,6 +37,14 @@ const std::vector<MusicMetaData>& MusicListManager::GetMusicList() const
     return musicList_;
 }
 
+MusicMetaData MusicListManager::GetMusicMetaDataAt(size_t index) const
+{
+    if (index >= 0 && musicList_.size() > index)
+        return musicList_.at(index);
+
+    return MusicMetaData();
+}
+
 void MusicListManager::Refresh()
 {
     LoadAync();

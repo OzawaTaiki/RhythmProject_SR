@@ -5,11 +5,14 @@
 #include <System/Audio/AudioSystem.h>
 #include <Application/Setting/Setting.h>
 #include <System/Input/Input.h>
+#include <Features/Event/EventManager.h>
+#include <Application/Scene/Data/SceneDatas.h>
+#include <Features/UI/UINavigationManager.h>
 
 namespace
 {
 const int32_t kVisibleCount = 6; // 一度に表示するアイテム数
-const int32_t kHalfVisibleCount = (kVisibleCount-1) / 2;
+const int32_t kHalfVisibleCount = (kVisibleCount - 1) / 2;
 }
 
 void MusicSelectUI::Initialize()
@@ -130,6 +133,10 @@ void MusicSelectUI::InitializeItemsFromData()
         // ボタンのテキストを設定
         auto& item = uiItems_[i];
         item.item->SetText(list[i].title);
+        item.item->SetOnClick([this]()
+                           {
+                               OnItemSelected();
+                           });
     }
 
     int32_t itemCount = static_cast<int32_t>(uiItems_.size());
@@ -301,4 +308,17 @@ void MusicSelectUI::OnItemFocusEnter()
     {
         voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, true);
     }
+
+    // navigatoinの設定
+    if (selectedIndex_ >= 0 && uiItems_.size() > selectedIndex_)
+        UINavigationManager::GetInstance()->SetFocus(uiItems_[selectedIndex_].item.get());
+}
+
+void MusicSelectUI::OnItemSelected()
+{
+    MusicSelectUIEventData eventData;
+    eventData.selectedFilePath = MusicListManager::GetInstance()->GetMusicMetaDataAt(selectedIndex_).filePath;
+
+    EventManager::GetInstance()->DispatchEvent(GameEvent("StartGame", &eventData));
+    UINavigationManager::GetInstance()->ClearFocus();
 }

@@ -474,7 +474,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     //std::string beatMapFilePath = "Resources/Data/Game/BeatMap/Twilight_Memory.json"; // デフォルトの譜面ファイルパス
     std::string beatMapFilePath = "Resources/Data/Game/BeatMap/demo1.json"; // デフォルトの譜面ファイルパス
     gameMode_ = GameMode::Normal;
-    if (beforeScene == "Scene")
+    if (beforeScene == "SelectScene")
     {
         beatMapFilePath = filepth; // 選択された譜面ファイルパスを取得
         gameMode_ = GameMode::Normal;

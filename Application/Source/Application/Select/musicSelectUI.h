@@ -2,9 +2,15 @@
 
 #include <Features/UI/Element/UIButtonElement.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
+#include <Features/Event/EventData.h>
 #include <System/Audio/SoundInstance.h>
 #include <System/Audio/VoiceInstance.h>
 
+// イベント発行時のデータ構造体
+struct MusicSelectUIEventData : EventData
+{
+    std::string selectedFilePath; // 選択されたファイルパス
+};
 
 /// <summary>
 /// 選曲UIクラス
@@ -73,6 +79,11 @@ private:
     /// アイテムにフォーカスが入ったときの処理
     /// </summary>
     void OnItemFocusEnter();
+
+    /// <summary>
+    /// アイテムが選択されたときの処理
+    /// </summary>
+    void OnItemSelected();
 
 private:
 

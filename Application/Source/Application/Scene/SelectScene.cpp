@@ -3,9 +3,20 @@
 #include <Utility/FileDialog/FileDialog.h>
 #include <Utility/StringUtils/StringUitls.h>
 #include <Features/Scene/Manager/SceneManager.h>
-#include <Application/Scene/Data/SceneDatas.h>
+#include <Features/Event/EventManager.h>
 
+#include <Application/Scene/Data/SceneDatas.h>
 #include <Application/MusicList/MusicListManager.h>
+
+SelectScene::SelectScene()
+{
+    EventManager::GetInstance()->AddEventListener("StartGame", this);
+}
+
+SelectScene::~SelectScene()
+{
+    EventManager::GetInstance()->RemoveEventListener("StartGame", this);
+}
 
 void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
@@ -42,15 +53,14 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
 void SelectScene::Update()
 {
+    float deltaTime = Time::GetDeltaTime<float>();
+    selectUI_->Update(deltaTime);
+
 #ifdef _DEBUG
 
     // デバッグカメラ
     if (Input::GetInstance()->IsKeyTriggered(DIK_F1))
         enableDebugCamera_ = !enableDebugCamera_;
-
-#endif // _DEBUG
-    float deltaTime = Time::GetDeltaTime<float>();
-    selectUI_->Update(deltaTime);
 
     if (enableDebugCamera_)
     {
@@ -59,6 +69,7 @@ void SelectScene::Update()
         SceneCamera_.TransferData();
     }
     else
+#endif // _DEBUG
     {
         SceneCamera_.Update();
         SceneCamera_.UpdateMatrix();
@@ -76,3 +87,18 @@ void SelectScene::Draw()
 }
 
 void SelectScene::DrawShadow() {}
+
+void SelectScene::OnEvent(const GameEvent& event)
+{
+    const std::string& eventType = event.GetEventType();
+    if (eventType == "StartGame")
+    {
+        auto data = dynamic_cast<MusicSelectUIEventData*>(event.GetData());
+        if (data)
+        {
+            auto sceneData = std::make_unique<SelectToGameData>();
+            sceneData->selectedBeatMapFilePath = data->selectedFilePath;
+            SceneManager::ReserveScene("GameScene", std::move(sceneData));
+        }
+    }
+}

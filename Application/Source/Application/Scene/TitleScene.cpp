@@ -7,6 +7,7 @@
 #include <Features/UI/Collider/UICollisionManager.h>
 #include <Constants/MathConstants.h>
 #include <Features/UI/UINavigationManager.h>
+#include "Data/SceneDatas.h"
 
 TitleScene::TitleScene()
 {
@@ -55,7 +56,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     titleCamera_.Initialize();
 
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/demoMusic.wav");
-    voiceInstance_ = soundInstance_->Play(0.5f, false);
+    voiceInstance_ = soundInstance_->Play(0.5f, true);
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
@@ -124,20 +125,18 @@ void TitleScene::Update()
     hexagonGrid_->Update();
 #endif
     titleBack_->Update();
-    if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
-        spectrumRing_->Update(voiceInstance_->GetElapsedTime());
-    else //そうじゃないときは0
-        spectrumRing_->Update(0.0f);
+    if(spectrumRing_)
+    {
+        if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
+            spectrumRing_->Update(voiceInstance_->GetElapsedTime());
+        else //そうじゃないときは0
+            spectrumRing_->Update(0.0f);
+    }
 
     if (input_->IsKeyPressed(DIK_LCONTROL) &&
         input_->IsKeyTriggered(DIK_O))
     {
         EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
-    }
-    if (input_->IsKeyTriggered(DIK_F10) &&
-        input_->IsKeyPressed(DIK_F1))
-    {
-        SceneManager::ReserveScene("Sample", nullptr);
     }
 
     if (enableDebugCamera_)
@@ -167,7 +166,8 @@ void TitleScene::Draw()
 
     LayerSystem::SetLayer("ring");
     {
-        spectrumRing_->Draw(&SceneCamera_);
+        if(spectrumRing_)
+            spectrumRing_->Draw(&SceneCamera_);
     }
 
     LayerSystem::SetLayer("buttons");
@@ -187,7 +187,11 @@ void TitleScene::OnEvent(const GameEvent& event)
 {
     if (event.GetEventType() == "RequestStartGame")
     {
-        SceneManager::ReserveScene("GameScene", nullptr);
+        auto sceneData = std::make_unique<TitleToSelectData>();
+        sceneData->voiceInstance = voiceInstance_;
+        sceneData->spectrumRing = std::move(spectrumRing_);
+        SceneManager::ReserveScene("SelectScene", std::move(sceneData));
+        //SceneManager::ReserveScene("GameScene", nullptr);
     }
     else if (event.GetEventType() == "RequestExitGame")
     {

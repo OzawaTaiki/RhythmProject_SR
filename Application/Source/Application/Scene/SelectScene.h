@@ -11,6 +11,7 @@
 #include <Features/Event/EventListener.h>
 
 #include <Application/Select/SelectUI.h>
+#include <Application/SpectrumRing/SpectrumRing.h>
 
 
 /// <summary>
@@ -68,5 +69,8 @@ private:
     ///------------------------------
 
     std::unique_ptr<SelectUI> selectUI_ = nullptr;
+    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+
+    std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
 
 };

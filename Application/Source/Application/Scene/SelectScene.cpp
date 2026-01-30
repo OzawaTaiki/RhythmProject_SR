@@ -7,6 +7,7 @@
 
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Application/MusicList/MusicListManager.h>
+#include <Features/Model/Manager/ModelManager.h>
 
 SelectScene::SelectScene()
 {
@@ -44,11 +45,17 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     ///------------------------------
 
+    MusicListManager::GetInstance()->LoadAync();
+
     selectUI_ = std::make_unique<SelectUI>();
     selectUI_->Initialize();
 
-    MusicListManager::GetInstance()->LoadAync();
-
+    auto data = dynamic_cast<TitleToSelectData*>(sceneData);
+    if (data)
+    {
+        spectrumRing_ = std::move(data->spectrumRing);
+        voiceInstance_ = data->voiceInstance;
+    }
 }
 
 void SelectScene::Update()
@@ -56,6 +63,7 @@ void SelectScene::Update()
     float deltaTime = Time::GetDeltaTime<float>();
     selectUI_->Update(deltaTime);
 
+    spectrumRing_->Update(voiceInstance_->GetElapsedTime());
 #ifdef _DEBUG
 
     // デバッグカメラ
@@ -82,8 +90,8 @@ void SelectScene::Update()
 void SelectScene::Draw()
 {
     selectUI_->Draw();
-
-    //selectButton_->Draw();
+    ModelManager::GetInstance()->PreDrawForObjectModel();
+    spectrumRing_->Draw(&SceneCamera_);
 }
 
 void SelectScene::DrawShadow() {}

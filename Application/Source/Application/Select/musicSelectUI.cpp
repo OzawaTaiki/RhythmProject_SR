@@ -319,6 +319,9 @@ void MusicSelectUI::OnItemSelected()
     MusicSelectUIEventData eventData;
     eventData.selectedFilePath = MusicListManager::GetInstance()->GetMusicMetaDataAt(selectedIndex_).filePath;
 
+    if (eventData.selectedFilePath.empty())
+        return;
+
     EventManager::GetInstance()->DispatchEvent(GameEvent("StartGame", &eventData));
     UINavigationManager::GetInstance()->ClearFocus();
 }

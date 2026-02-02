@@ -30,7 +30,7 @@ void ResultModelEffect::Initialize(const ResultData& resultData)
 
     CraeteModels(resultData.rank);
 
-    animationSequence_ = std::make_unique<AnimationSequence>("ResultModelEffectSeq_" + RankCalculator::GetRankString(resultData.rank));
+    animationSequence_ = std::make_unique<AnimationSequence>("ResultModelEffectSeq");
     animationSequence_->Initialize("Resources/Data/Result/");
     animationSequence_->SetLooping(false);
 

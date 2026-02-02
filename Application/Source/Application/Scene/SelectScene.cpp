@@ -63,7 +63,8 @@ void SelectScene::Update()
     float deltaTime = Time::GetDeltaTime<float>();
     selectUI_->Update(deltaTime);
 
-    spectrumRing_->Update(voiceInstance_->GetElapsedTime());
+    if (spectrumRing_ && voiceInstance_ && voiceInstance_->IsPlaying())
+        spectrumRing_->Update(voiceInstance_->GetElapsedTime());
 #ifdef _DEBUG
 
     // デバッグカメラ
@@ -91,7 +92,8 @@ void SelectScene::Draw()
 {
     selectUI_->Draw();
     ModelManager::GetInstance()->PreDrawForObjectModel();
-    spectrumRing_->Draw(&SceneCamera_);
+    if (spectrumRing_)
+        spectrumRing_->Draw(&SceneCamera_);
 }
 
 void SelectScene::DrawShadow() {}

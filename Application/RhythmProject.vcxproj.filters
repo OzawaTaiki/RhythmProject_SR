@@ -127,7 +127,7 @@
     <Filter Include="Application\BeatMapEditor\Renderer">
       <UniqueIdentifier>{d73104ad-f74f-4845-9a94-0d7555e13222}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\HeagonGrid">
+    <Filter Include="Application\HexagonGrid">
       <UniqueIdentifier>{3d6932f3-4626-4828-aa7c-2c22c0ffcb65}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Environment\EffectModifiers">
@@ -319,7 +319,7 @@
     <ClCompile Include="Source\Application\TitleUI.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\TItileCamera\TitleCamera.cpp">
+    <ClCompile Include="Source\Application\TitleCamera\TitleCamera.cpp">
       <Filter>Application\TitleCamera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\BeatMapEditor\Render\EditorRenderer.cpp">
@@ -356,7 +356,7 @@
       <Filter>Application\BeatMapEditor</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\HexagonGrid\HexagonGrid.cpp">
-      <Filter>Application\HeagonGrid</Filter>
+      <Filter>Application\HexagonGrid</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Scene\LoadScene.cpp">
       <Filter>Application\Scene</Filter>
@@ -400,8 +400,12 @@
     <ClCompile Include="Source\Application\FocusFrame.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Select\musicSelectUI.cpp" />
-    <ClCompile Include="Source\Application\Select\SelectUI.cpp" />
+    <ClCompile Include="Source\Application\Select\SelectUI.cpp">
+      <Filter>Application\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Select\musicSelectUI.cpp">
+      <Filter>Application\Select</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -584,9 +588,6 @@
     <ClInclude Include="Source\Application\TitleUI.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">
-      <Filter>Application\TitleCamera</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\BeatMapEditor\Render\EditorRenderer.h">
       <Filter>Application\BeatMapEditor\Renderer</Filter>
     </ClInclude>
@@ -621,7 +622,7 @@
       <Filter>Application\BeatMapEditor</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\HexagonGrid\HexagonGrid.h">
-      <Filter>Application\HeagonGrid</Filter>
+      <Filter>Application\HexagonGrid</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Scene\LoadScene.h">
       <Filter>Application\Scene</Filter>
@@ -664,6 +665,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Select\musicSelectUI.h">
       <Filter>Application\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">
+      <Filter>Application\TitleCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

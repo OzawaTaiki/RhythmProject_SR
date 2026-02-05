@@ -56,7 +56,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     titleCamera_.Initialize();
 
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/demoMusic.wav");
-    voiceInstance_ = soundInstance_->Play(0.5f, true);
+    voiceInstance_ = soundInstance_->Play(0.5f, false);
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();

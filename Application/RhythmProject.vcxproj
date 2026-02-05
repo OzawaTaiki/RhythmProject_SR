@@ -243,7 +243,9 @@
     <ClCompile Include="Source\Application\Setting\Setting.cpp" />
     <ClCompile Include="Source\Application\Setting\SettingMenu.cpp" />
     <ClCompile Include="Source\Application\SpectrumRing\SpectrumRing.cpp" />
-    <ClCompile Include="Source\Application\TItileCamera\TitleCamera.cpp" />
+    <ClCompile Include="Source\Application\TitleCamera\TitleCamera.cpp">
+      <Filter>Application\TitleCamera</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Application\TitleUI.cpp" />
     <ClCompile Include="Source\Essential\ParticleModifierFactory.cpp" />
     <ClCompile Include="Source\Essential\SampleFramework.cpp" />

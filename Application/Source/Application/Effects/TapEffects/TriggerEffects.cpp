@@ -25,7 +25,7 @@ void TriggerEffects::Initialize()
 {
     // テクスチャ読み込み
     textureHandle_ = TextureManager::GetInstance()->Load("circle.png");
-    gradationTexture_ = TextureManager::GetInstance()->Load("guradation.png");
+    gradationTexture_ = TextureManager::GetInstance()->Load("gradation.png");
 
     // エミッター初期化
     cubePop_.Initialize("TapEffect_01");

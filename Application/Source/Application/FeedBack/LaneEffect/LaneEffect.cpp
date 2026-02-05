@@ -28,7 +28,7 @@ void LaneEffect::Initialize(uint32_t laneIndex, const std::string& model)
 
     if (textureHandle_ == UINT_MAX)
     {// テクスチャがまだ読み込まれていない場合にのみ読み込む
-        textureHandle_ = TextureManager::GetInstance()->Load("guradation.png");
+        textureHandle_ = TextureManager::GetInstance()->Load("gradation.png");
     }
 
 }

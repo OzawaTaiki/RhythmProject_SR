@@ -19,10 +19,10 @@ void LaneEdgeEffects::Initialize()
     leftLaneEdgePos = Vector3(-Lane::GetTotalWidth() / 2.0f, 0.0f, 0.0f);
     rightLaneEdgePos = Vector3(Lane::GetTotalWidth() / 2.0f, 0.0f, 0.0f);
 
-    jsonbinder_ = std::make_unique<JsonBinder>("laneEdgeEffect", "Resource/Data/Effect/");
+    jsonbinder_ = std::make_unique<JsonBinder>("laneEdgeEffect", "Resources/Data/Effect/");
 
     circleTexture_= TextureManager::GetInstance()->Load("circle.png");
-    gradationTexture_ = TextureManager::GetInstance()->Load("guradation_01.png");
+    gradationTexture_ = TextureManager::GetInstance()->Load("gradation_01.png");
 
     laneEdgeParticleEffect_ = std::make_unique<LaneEdgeParticleEffect>();
     laneEdgeParticleEffect_->Initialize(jsonbinder_.get());

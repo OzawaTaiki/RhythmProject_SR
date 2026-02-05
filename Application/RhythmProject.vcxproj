@@ -358,6 +358,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Source\Application\Effects\TapEffects\TriggerEffects.h" />
+    <ClInclude Include="Source\Application\EventData\PauseActionData.h" />
     <ClInclude Include="Source\Application\FeedBack\FeedbackEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.h" />
@@ -409,7 +410,7 @@
     <ClInclude Include="Source\Application\Setting\Setting.h" />
     <ClInclude Include="Source\Application\Setting\SettingMenu.h" />
     <ClInclude Include="Source\Application\SpectrumRing\SpectrumRing.h" />
-    <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h" />
+    <ClInclude Include="Source\Application\TitleCamera\TitleCamera.h" />
     <ClInclude Include="Source\Application\TitleUI.h" />
     <ClInclude Include="Source\Application\FocusFrame.h" />
     <ClInclude Include="Source\Essential\ParticleModifierFactory.h" />

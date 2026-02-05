@@ -179,7 +179,7 @@ void ResultUI::InitUIGroup()
 
 void ResultUI::InitTextParams()
 {
-    jsonBinder_ = std::make_unique<JsonBinder>("ResutUIs", "Resources/Data/Result/");
+    jsonBinder_ = std::make_unique<JsonBinder>("ResultUIs", "Resources/Data/Result/");
 
     jsonBinder_->RegisterVariable("animationDuration", &animationDuration_);
 

@@ -10,7 +10,7 @@ SpeakerEffect::SpeakerEffect()
     // 各種エミッター初期化
     ringEmitter_.Initialize("SpeakerRing");
     rectangleParticleEmitter_.Initialize("Speaker_particle");
-    triangleParticleEmitter_.Initialize("Sepaker_Triangle");
+    triangleParticleEmitter_.Initialize("Speaker_Triangle");
 }
 
 void SpeakerEffect::PlaySpeakerEffect(const Vector3& pos)

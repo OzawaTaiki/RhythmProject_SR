@@ -31,6 +31,6 @@ private:
     // 各種エミッター
     ParticleEmitter ringEmitter_;
     ParticleEmitter triangleParticleEmitter_;
-    ParticleEmitter rectanglleParticleEmitter_;
+    ParticleEmitter rectangleParticleEmitter_;
 
 };

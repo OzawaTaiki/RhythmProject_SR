@@ -6,9 +6,9 @@
 #include <Application/BeatMapLoader/BeatMapData.h>
 #include <Application/Result/ResultData.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
-#include <Application/TItileCamera/TitleCamera.h>
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UVTransform/UVTransformAnimation.h>
+#include <Application/TitleCamera/TitleCamera.h>
 
 // シーン間でデータを受け渡すための構造体群
 /// <summary>

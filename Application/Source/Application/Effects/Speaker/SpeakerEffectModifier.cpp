@@ -27,7 +27,7 @@ void SpeakerRingModifier::Apply(Particle* particle, [[maybe_unused]] float delta
     // フェード処理
     Vector4 color = particle->GetColor();
 
-    // 生成時のalpah
+    // 生成時のalpha
     const float initialAlpha = 0.7f;
     color.w = initialAlpha * useProgress;
 
@@ -58,7 +58,7 @@ void SpeakerParticleModifier::Apply(Particle* particle, [[maybe_unused]] float d
     Vector4 color = particle->GetColor();
 
     progress = Easing::EaseInQuint(progress);
-    // 生成時のalpah
+    // 生成時のalpha
     const float initialAlpha = 0.7f;
     color.w = initialAlpha * (1.0f - progress);
 

@@ -13,9 +13,9 @@
 
 #include <Application/Select/SelectUI.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
-#include <Application/TItileCamera/TitleCamera.h>
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UVTransform/UVTransformAnimation.h>
+#include <Application/TitleCamera/TitleCamera.h>
 
 /// <summary>
 /// 選曲画面のシーンクラス。
@@ -68,7 +68,7 @@ private:
 
     ///------------------------------
 
-    std::shared_ptr<LobbyCamera> lobbyCamera_ = nullptr;
+    std::unique_ptr<LobbyCamera> lobbyCamera_ = nullptr;
 
     std::unique_ptr<SelectUI> selectUI_ = nullptr;
 

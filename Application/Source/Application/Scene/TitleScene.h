@@ -16,73 +16,72 @@
 #include <Application/HexagonGrid/HexagonGrid.h>
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
-#include <Application/TItileCamera/TitleCamera.h>
 #include <Application/TitleUI.h>
+#include <Application/TitleCamera/TitleCamera.h>
 
 // #include <Features/BPMDetector/BPMDetector.h>
 
 /// <summary>
 /// タイトル画面のシーンクラス。
 /// </summary>
-class TitleScene : public BaseScene, public iEventListener
-{
+class TitleScene : public BaseScene, public iEventListener {
 public:
-    TitleScene();
-    ~TitleScene() override;
+  TitleScene();
+  ~TitleScene() override;
 
-    /// <summary>
-    /// シーンの初期化処理。
-    /// </summary>
-    void Initialize(SceneData* sceneData) override;
+  /// <summary>
+  /// シーンの初期化処理。
+  /// </summary>
+  void Initialize(SceneData *sceneData) override;
 
-    /// <summary>
-    /// 毎フレームの更新処理。
-    /// </summary>
-    void Update() override;
+  /// <summary>
+  /// 毎フレームの更新処理。
+  /// </summary>
+  void Update() override;
 
-    /// <summary>
-    /// 描画処理。
-    /// </summary>
-    void Draw() override;
+  /// <summary>
+  /// 描画処理。
+  /// </summary>
+  void Draw() override;
 
-    /// <summary>
-    /// シャドウ描画処理。
-    /// </summary>
-    void DrawShadow() override;
+  /// <summary>
+  /// シャドウ描画処理。
+  /// </summary>
+  void DrawShadow() override;
 
     void OnEvent(const GameEvent& event) override;
 
 private:
-    // シーン関連
-    Camera SceneCamera_ = {};
-    Camera camera2d_ = {};
-    DebugCamera debugCamera_ = {};
-    bool enableDebugCamera_ = false;
+  // シーン関連
+  Camera SceneCamera_ = {};
+  Camera camera2d_ = {};
+  DebugCamera debugCamera_ = {};
+  bool enableDebugCamera_ = false;
 
-    LineDrawer* lineDrawer_ = nullptr;
-    Input* input_ = nullptr;
-    ParticleSystem* particleSystem_ = nullptr;
+  LineDrawer *lineDrawer_ = nullptr;
+  Input *input_ = nullptr;
+  ParticleSystem *particleSystem_ = nullptr;
 
-    std::shared_ptr<LightGroup> lightGroup_ = nullptr;
+  std::shared_ptr<LightGroup> lightGroup_ = nullptr;
 
     /// ---------------------------------
     ///     application
 
     std::unique_ptr<LobbyCamera> lobbyCamera_;
 
-    std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+  std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
+  std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
 
-    TextGenerator textGenerator_;
+  TextGenerator textGenerator_;
 
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
     std::shared_ptr<SpectrumRing> spectrumRing_ = nullptr;
 
-    std::unique_ptr<BeatManager> beatManager_ = nullptr;
+  std::unique_ptr<BeatManager> beatManager_ = nullptr;
 
-    std::unique_ptr<TitleUI> titleUI_;
+  std::unique_ptr<TitleUI> titleUI_;
 
-    std::unique_ptr<HexagonGrid> hexagonGrid_;
+  std::unique_ptr<HexagonGrid> hexagonGrid_;
 
     std::shared_ptr<UIImageElement> titleBack_;
     UVTransformAnimation uvAnimation_;

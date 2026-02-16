@@ -9,8 +9,8 @@ SpeakerEffect::SpeakerEffect()
 {
     // 各種エミッター初期化
     ringEmitter_.Initialize("SpeakerRing");
-    rectanglleParticleEmitter_.Initialize("Speaker_particle");
-    triangleParticleEmitter_.Initialize("Sepaker_Triangle");
+    rectangleParticleEmitter_.Initialize("Speaker_particle");
+    triangleParticleEmitter_.Initialize("Speaker_Triangle");
 }
 
 void SpeakerEffect::PlaySpeakerEffect(const Vector3& pos)
@@ -18,12 +18,12 @@ void SpeakerEffect::PlaySpeakerEffect(const Vector3& pos)
     // 座標の設定
     ringEmitter_.SetPosition(pos);
     triangleParticleEmitter_.SetPosition(pos);
-    rectanglleParticleEmitter_.SetPosition(pos);
+    rectangleParticleEmitter_.SetPosition(pos);
 
     // 生成
     ringEmitter_.GenerateParticles();
     triangleParticleEmitter_.GenerateParticles();
-    rectanglleParticleEmitter_.GenerateParticles();
+    rectangleParticleEmitter_.GenerateParticles();
 }
 
 void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent, float delayTime)
@@ -32,15 +32,15 @@ void SpeakerEffect::PlaySpeakerEffect(ObjectModel* parent, float delayTime)
     auto worldTransform = parent->GetWorldTransform();
     ringEmitter_.SetParentTransform(worldTransform);
     triangleParticleEmitter_.SetParentTransform(worldTransform);
-    rectanglleParticleEmitter_.SetParentTransform(worldTransform);
+    rectangleParticleEmitter_.SetParentTransform(worldTransform);
 
     ringEmitter_.SetParentTransform(parent->GetWorldTransform());
     triangleParticleEmitter_.SetParentTransform(parent->GetWorldTransform());
-    rectanglleParticleEmitter_.SetParentTransform(parent->GetWorldTransform());
+    rectangleParticleEmitter_.SetParentTransform(parent->GetWorldTransform());
 
     //ringEmitter_.GenerateParticles();
     triangleParticleEmitter_.GenerateParticles();
-    rectanglleParticleEmitter_.GenerateParticles();
+    rectangleParticleEmitter_.GenerateParticles();
     ColorChangeEvent eventData;
     eventData.targets = parent;
     eventData.delayTime = delayTime;

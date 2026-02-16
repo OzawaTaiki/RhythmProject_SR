@@ -13,10 +13,10 @@ SelectUI::~SelectUI()
     EventManager::GetInstance()->RemoveEventListener("CloseOptionMenu", this);
 }
 
-void SelectUI::Initialize()
+void SelectUI::Initialize(std::shared_ptr<VoiceInstance> voiceInstance)
 {
     musicSelectUI_ =  std::make_unique<MusicSelectUI>();
-    musicSelectUI_->Initialize();
+    musicSelectUI_->Initialize(voiceInstance);
 
     settingMenu_ =std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
@@ -74,4 +74,13 @@ void SelectUI::OnEvent(const GameEvent& event)
     {
         isSettingMenuActive_ = false;
     }
+}
+
+float SelectUI::GetMusicElapsedTime() const
+{
+    if (musicSelectUI_)
+    {
+        return musicSelectUI_->GetSelectedMusicElapsedTime();
+    }
+    return 0.0f;
 }

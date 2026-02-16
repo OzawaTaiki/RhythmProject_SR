@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    void Initialize();
+    void Initialize(std::shared_ptr<VoiceInstance> voiceInstance);
 
     /// <summary>
     /// 更新処理
@@ -35,6 +35,8 @@ public:
     void Draw();
 
     void OnEvent(const GameEvent& event) override;
+
+    float GetMusicElapsedTime() const;
 
 private:
 

@@ -27,7 +27,7 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    void Initialize();
+    void Initialize(std::shared_ptr<VoiceInstance> voiceInstance);
     /// <summary>
     /// 更新処理
     /// </summary>
@@ -37,6 +37,7 @@ public:
     /// </summary>
     void Draw();
 
+    float GetSelectedMusicElapsedTime() const;
 private:
 
     /// <summary>
@@ -85,6 +86,11 @@ private:
     /// </summary>
     void OnItemSelected();
 
+    /// <summary>
+    /// 選択された楽曲を再生する
+    /// </summary>
+    void PlaySelectedMusic();
+
 private:
 
     // UI配置用の大きな円情報
@@ -126,7 +132,9 @@ private:
     std::shared_ptr<SoundInstance> bgmSoundInstance_;
     std::shared_ptr<VoiceInstance> voiceInstance_;
 
-    //std::unique_ptr<AnimationSequence> openSequence_;
+    std::unique_ptr<AnimationSequence> entranceSequence_;
+    bool isEntranceAnimPlaying_ = true;
+    float entranceAnimTime_ = 0.0f;
 
     std::unique_ptr<JsonBinder> jsonBinder_;
 };

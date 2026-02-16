@@ -1,23 +1,25 @@
 #pragma once
 
-#include <Features/Scene/Interface/BaseScene.h>
 #include <Features/Camera/Camera/Camera.h>
 #include <Features/Camera/DebugCamera/DebugCamera.h>
-#include <System/Input/Input.h>
-#include <Features/LineDrawer/LineDrawer.h>
-#include <System/Time/Stopwatch.h>
 #include <Features/Effect/Manager/ParticleSystem.h>
-#include <Features/TextRenderer/TextGenerator.h>
 #include <Features/Event/EventListener.h>
+#include <Features/LineDrawer/LineDrawer.h>
+#include <Features/Scene/Interface/BaseScene.h>
+#include <Features/TextRenderer/TextGenerator.h>
 #include <Features/UVTransform/UVTransformAnimation.h>
+#include <System/Input/Input.h>
+#include <System/Time/Stopwatch.h>
 
+
+#include <Application/BeatsManager/BeatManager.h>
+#include <Application/HexagonGrid/HexagonGrid.h>
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
-#include <Application/BeatsManager/BeatManager.h>
-#include <Application/TitleUI.h>
 #include <Application/TItileCamera/TitleCamera.h>
-#include <Application/HexagonGrid/HexagonGrid.h>
-//#include <Features/BPMDetector/BPMDetector.h>
+#include <Application/TitleUI.h>
+
+// #include <Features/BPMDetector/BPMDetector.h>
 
 /// <summary>
 /// タイトル画面のシーンクラス。
@@ -48,8 +50,8 @@ public:
     /// </summary>
     void DrawShadow() override;
 
-
     void OnEvent(const GameEvent& event) override;
+
 private:
     // シーン関連
     Camera SceneCamera_ = {};
@@ -63,11 +65,10 @@ private:
 
     std::shared_ptr<LightGroup> lightGroup_ = nullptr;
 
-
     /// ---------------------------------
     ///     application
 
-    TitleCamera titleCamera_;
+    std::unique_ptr<LobbyCamera> lobbyCamera_;
 
     std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
     std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
@@ -75,7 +76,7 @@ private:
     TextGenerator textGenerator_;
 
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
-    std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
+    std::shared_ptr<SpectrumRing> spectrumRing_ = nullptr;
 
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
 
@@ -83,7 +84,6 @@ private:
 
     std::unique_ptr<HexagonGrid> hexagonGrid_;
 
-    std::unique_ptr<UIImageElement> titleBack_;
+    std::shared_ptr<UIImageElement> titleBack_;
     UVTransformAnimation uvAnimation_;
-
 };

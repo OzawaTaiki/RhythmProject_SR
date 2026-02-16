@@ -3,7 +3,7 @@
 #include <Features/Event/EventManager.h>
 #include <System/Input/Input.h>
 
-void TitleCamera::Initialize()
+void LobbyCamera::Initialize()
 {
     camera_.Initialize(CameraType::Perspective);
 
@@ -13,7 +13,7 @@ void TitleCamera::Initialize()
     camera_.translate_ = cameraAnimationSequence_->GetValueAtTime<Vector3>("translate", 0.0f);
 }
 
-void TitleCamera::Update(float deltaTime)
+void LobbyCamera::Update(float deltaTime)
 {
 #ifdef _DEBUG
     //ImGuiTool::TimeLine("TitleCameraAnimation", cameraAnimationSequence_.get());
@@ -51,7 +51,7 @@ void TitleCamera::Update(float deltaTime)
     camera_.UpdateMatrix();
 }
 
-void TitleCamera::PlayCameraAnimation()
+void LobbyCamera::PlayCameraAnimation()
 {
     if (isAnimationPlaying_ || isAnimationCompleted_) return;
 

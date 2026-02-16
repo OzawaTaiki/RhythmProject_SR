@@ -11,11 +11,11 @@
 
 namespace
 {
-const int32_t kVisibleCount = 6; // 一度に表示するアイテム数
+const int32_t kVisibleCount = 7; // 一度に表示するアイテム数
 const int32_t kHalfVisibleCount = (kVisibleCount - 1) / 2;
 }
 
-void MusicSelectUI::Initialize()
+void MusicSelectUI::Initialize(std::shared_ptr<VoiceInstance> voiceInstance)
 {
     isInitialized_ = false;
     selectedIndex_ = 0;
@@ -25,6 +25,14 @@ void MusicSelectUI::Initialize()
 
     // 最低限のアイテム数を確保
     EnsureMinimumItems();
+
+    // 入場アニメーション初期化
+    entranceSequence_ = std::make_unique<AnimationSequence>("MusicSelectEntrance");
+    entranceSequence_->Initialize("Resources/Data/AnimSeq/");
+    isEntranceAnimPlaying_ = true;
+    entranceAnimTime_ = 0.0f;
+
+    voiceInstance_ = voiceInstance;
 }
 
 void MusicSelectUI::Update(float deltaTime)
@@ -33,6 +41,7 @@ void MusicSelectUI::Update(float deltaTime)
 
     if (ImGuiDebugManager::GetInstance()->Begin("MusicSelectUI"))
     {
+
         ImGui::DragFloat("scrollTime", &scrollTime_, 0.01f, 0.0f, 5.0f);
         ImGui::DragFloat("marginAngle", &marginAngle_, 0.01f, 0.0f, 3.14f);
         ImGui::DragFloat2("BaseUISize", &BaseUISize_.x);
@@ -41,7 +50,7 @@ void MusicSelectUI::Update(float deltaTime)
         ImGui::DragFloat("layoutCircle_radius", &layoutCircle_.radius, 1.0f, 0.0f, 2000.0f);
         ImGui::DragFloat("layoutCircle_startAngle", &layoutCircle_.startAngle, 0.01f);
         ImGui::DragFloat("layoutCircle_endAngle", &layoutCircle_.endAngle, 0.01f);
-        ImGui::InputInt("focus", reinterpret_cast<int*>(&selectedIndex_));
+        ImGui::InputInt("Select index", reinterpret_cast<int*>(&selectedIndex_));
 
         if (ImGui::Button("Add Item"))
         {
@@ -71,9 +80,20 @@ void MusicSelectUI::Update(float deltaTime)
         }
     }
 
-    MoveSelection();
-
-    ClampSelectedIndex();
+    // 入場アニメーション中は時間を進め、操作を無効化
+    if (isEntranceAnimPlaying_)
+    {
+        entranceAnimTime_ += deltaTime;
+        if (entranceAnimTime_ >= entranceSequence_->GetMaxPlayTime())
+        {
+            entranceAnimTime_ = entranceSequence_->GetMaxPlayTime();
+            isEntranceAnimPlaying_ = false;
+        }
+    }
+    else
+    {
+        MoveSelection();
+    }
 
     UpdateLayout(deltaTime);
     UpdateScaling();
@@ -81,6 +101,10 @@ void MusicSelectUI::Update(float deltaTime)
     for (auto& item : uiItems_)
     {
         item.item->Update();
+    }
+    if (!voiceInstance_ || !voiceInstance_->IsPlaying())
+    {
+        PlaySelectedMusic();
     }
 }
 
@@ -94,6 +118,13 @@ void MusicSelectUI::Draw()
         auto& item = uiItems_[index];
         item.item->Draw();
     }
+}
+
+float MusicSelectUI::GetSelectedMusicElapsedTime() const
+{
+    if (voiceInstance_ && voiceInstance_->IsPlaying())
+        return voiceInstance_->GetElapsedTime();
+    return 0.0f;
 }
 
 void MusicSelectUI::InitializeItemsFromData()
@@ -134,9 +165,9 @@ void MusicSelectUI::InitializeItemsFromData()
         auto& item = uiItems_[i];
         item.item->SetText(list[i].title);
         item.item->SetOnClick([this]()
-                           {
-                               OnItemSelected();
-                           });
+                              {
+                                  OnItemSelected();
+                              });
     }
 
     int32_t itemCount = static_cast<int32_t>(uiItems_.size());
@@ -150,7 +181,7 @@ void MusicSelectUI::InitializeItemsFromData()
         item.item->SetSize(newSize);
     }
 
-    OnItemFocusEnter();
+    //OnItemFocusEnter();
     isInitialized_ = true;
 }
 
@@ -177,10 +208,10 @@ void MusicSelectUI::UpdateLayout(float deltaTime)
     // 選択しているアイテムの角度
     const float selectedAngle = (layoutCircle_.startAngle + layoutCircle_.endAngle) / 2.0f;// 中央に配置
     // アイテムの間隔角度
-    const float angleStep = -(layoutCircle_.endAngle - layoutCircle_.startAngle) / static_cast<float>(kVisibleCount - 1);
+    const float angleStep = -(layoutCircle_.endAngle - layoutCircle_.startAngle) / static_cast<float>(kVisibleCount - 2);
 
-    int32_t startIndex = selectedIndex_ - kHalfVisibleCount;
-    int32_t endIndex = selectedIndex_ + kHalfVisibleCount;
+    //int32_t startIndex = selectedIndex_ - kHalfVisibleCount;
+    //int32_t endIndex = selectedIndex_ + kHalfVisibleCount;
     /*
     if (scrollDirection_ == 1)
         startIndex--;
@@ -200,17 +231,58 @@ void MusicSelectUI::UpdateLayout(float deltaTime)
         }
     }
 
-    for (int32_t i = startIndex; i <= endIndex; ++i)
+    // 入場アニメーション値の取得
+    Vector2 slideOffset = { 0.0f, 0.0f };
+    float spreadFactor = 1.0f;
+    if (isEntranceAnimPlaying_)
     {
-        float angle = selectedAngle + (i - selectedIndex_) * angleStep + scrollDirection_ * angleStep * t;
-        // 対象のアイテムのインデックスを計算（循環考慮）
-        int32_t itemIndex = (i + itemCount) % itemCount;
-        auto& item = uiItems_[itemIndex];
+        slideOffset = entranceSequence_->GetValueAtTime<Vector2>("slideOffset", entranceAnimTime_);
+        spreadFactor = entranceSequence_->GetValueAtTime<float>("spreadFactor", entranceAnimTime_);
+    }
+
+    // 集合位置（選択アイテムの円周上の位置）
+    float centerX = layoutCircle_.center.x + layoutCircle_.radius * cosf(selectedAngle);
+    float centerY = layoutCircle_.center.y + layoutCircle_.radius * sinf(selectedAngle);
+
+    const Vector2 offScreen = { 3000.0f, 3000.0f };
+
+    // スクロール中は両側の表示範囲を1つ広げて退場アニメーションを可能にする
+    // (アイテム数が偶数の場合、循環距離の境界ケースがあるため両側広げる)
+    int32_t visibleMin = -kHalfVisibleCount;
+    int32_t visibleMax = kHalfVisibleCount;
+    if (scrollDirection_ != 0)
+    {
+        visibleMin = -(kHalfVisibleCount);
+        visibleMax = kHalfVisibleCount;
+    }
+
+    for (int32_t i = 0; i < itemCount; ++i)
+    {
+        // selectedIndexからの相対位置を計算（循環考慮）
+        int32_t diff = i - selectedIndex_;
+        // 循環の最短距離に補正
+        if (diff > itemCount / 2) diff -= itemCount;
+        if (diff < -itemCount / 2) diff += itemCount;
+
+        // 表示範囲外は画面外へ
+        if (diff < visibleMin || diff > visibleMax)
+        {
+            uiItems_[i].item->SetPosition(offScreen);
+            continue;
+        }
+
+        float angle = selectedAngle + diff * angleStep + scrollDirection_ * angleStep * t;
+        auto& item = uiItems_[i];
         item.angle = angle;
 
-        // 位置を計算
+        // 本来の円周上の位置を計算
         float x = layoutCircle_.center.x + layoutCircle_.radius * cosf(angle);
         float y = layoutCircle_.center.y + layoutCircle_.radius * sinf(angle);
+
+        // 入場アニメーション: 集合位置と本来位置をspreadFactorで補間 + スライドオフセット
+        x = Lerp(centerX, x, spreadFactor) + slideOffset.x;
+        y = Lerp(centerY, y, spreadFactor) + slideOffset.y;
+
         item.item->SetPosition(Vector2(x, y));
     }
 }
@@ -283,6 +355,7 @@ void MusicSelectUI::MoveSelection()
         if (scrollDirection_ == 0)
             scrollDirection_ = -1;
     }
+    ClampSelectedIndex();
 
     if (pre != selectedIndex_)
     {
@@ -291,6 +364,27 @@ void MusicSelectUI::MoveSelection()
 }
 
 void MusicSelectUI::OnItemFocusEnter()
+{
+    PlaySelectedMusic();
+
+    // navigationの設定
+    if (selectedIndex_ >= 0 && uiItems_.size() > selectedIndex_)
+        UINavigationManager::GetInstance()->SetFocus(uiItems_[selectedIndex_].item.get());
+}
+
+void MusicSelectUI::OnItemSelected()
+{
+    MusicSelectUIEventData eventData;
+    eventData.selectedFilePath = MusicListManager::GetInstance()->GetMusicMetaDataAt(selectedIndex_).filePath;
+
+    if (eventData.selectedFilePath.empty())
+        return;
+
+    EventManager::GetInstance()->DispatchEvent(GameEvent("StartGame", &eventData));
+    UINavigationManager::GetInstance()->ClearFocus();
+}
+
+void MusicSelectUI::PlaySelectedMusic()
 {
     if (voiceInstance_ && voiceInstance_->IsPlaying())
         voiceInstance_->Stop();
@@ -306,22 +400,7 @@ void MusicSelectUI::OnItemFocusEnter()
 
     if (bgmSoundInstance_)
     {
-        voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, true);
+        voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, false);
     }
 
-    // navigatoinの設定
-    if (selectedIndex_ >= 0 && uiItems_.size() > selectedIndex_)
-        UINavigationManager::GetInstance()->SetFocus(uiItems_[selectedIndex_].item.get());
-}
-
-void MusicSelectUI::OnItemSelected()
-{
-    MusicSelectUIEventData eventData;
-    eventData.selectedFilePath = MusicListManager::GetInstance()->GetMusicMetaDataAt(selectedIndex_).filePath;
-
-    if (eventData.selectedFilePath.empty())
-        return;
-
-    EventManager::GetInstance()->DispatchEvent(GameEvent("StartGame", &eventData));
-    UINavigationManager::GetInstance()->ClearFocus();
 }

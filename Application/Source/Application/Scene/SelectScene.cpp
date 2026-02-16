@@ -1,13 +1,15 @@
 #include "SelectScene.h"
 
+#include <Features/Event/EventManager.h>
+#include <Features/Scene/Manager/SceneManager.h>
 #include <Utility/FileDialog/FileDialog.h>
 #include <Utility/StringUtils/StringUitls.h>
-#include <Features/Scene/Manager/SceneManager.h>
-#include <Features/Event/EventManager.h>
 
-#include <Application/Scene/Data/SceneDatas.h>
+
 #include <Application/MusicList/MusicListManager.h>
+#include <Application/Scene/Data/SceneDatas.h>
 #include <Features/Model/Manager/ModelManager.h>
+
 
 SelectScene::SelectScene()
 {
@@ -22,11 +24,10 @@ SelectScene::~SelectScene()
 void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
-    SceneCamera_.translate_ = { 0,5,-13 };
-    SceneCamera_.rotate_ = { 0.26f,0,0 };
+    SceneCamera_.translate_ = { 0, 5, -13 };
+    SceneCamera_.rotate_ = { 0.26f, 0, 0 };
     SceneCamera_.UpdateMatrix();
     debugCamera_.Initialize();
-
 
     lineDrawer_ = LineDrawer::GetInstance();
     lineDrawer_->Initialize();
@@ -42,29 +43,41 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
-
     ///------------------------------
 
     MusicListManager::GetInstance()->LoadAync();
 
-    selectUI_ = std::make_unique<SelectUI>();
-    selectUI_->Initialize();
-
     auto data = dynamic_cast<TitleToSelectData*>(sceneData);
     if (data)
     {
-        spectrumRing_ = std::move(data->spectrumRing);
+        spectrumRing_ = data->spectrumRing;
         voiceInstance_ = data->voiceInstance;
+        lobbyCamera_ = std::move(data->lobbyCamera);
+        backImage_ = data->titleBackground;
+        backImageAnimation_ = data->titleBackgroundAnimation;
     }
+
+    selectUI_ = std::make_unique<SelectUI>();
+    selectUI_->Initialize(voiceInstance_);
+
+    LayerSystem::CreateLayer("back", 0);
+    LayerSystem::CreateLayer("ring", 40);
+    LayerSystem::CreateLayer("ui", 60);
+
 }
 
 void SelectScene::Update()
 {
     float deltaTime = Time::GetDeltaTime<float>();
+
     selectUI_->Update(deltaTime);
 
-    if (spectrumRing_ && voiceInstance_ && voiceInstance_->IsPlaying())
-        spectrumRing_->Update(voiceInstance_->GetElapsedTime());
+    if (spectrumRing_)
+        spectrumRing_->Update(selectUI_->GetMusicElapsedTime());
+
+    backImageAnimation_.Update(deltaTime);
+    backImage_->Update();
+
 #ifdef _DEBUG
 
     // デバッグカメラ
@@ -80,20 +93,31 @@ void SelectScene::Update()
     else
 #endif // _DEBUG
     {
-        SceneCamera_.Update();
+        lobbyCamera_->Update(deltaTime);
+        SceneCamera_ = *lobbyCamera_->GetCamera();
         SceneCamera_.UpdateMatrix();
     }
 
     particleSystem_->Update();
-
 }
 
 void SelectScene::Draw()
 {
-    selectUI_->Draw();
-    ModelManager::GetInstance()->PreDrawForObjectModel();
-    if (spectrumRing_)
-        spectrumRing_->Draw(&SceneCamera_);
+    LayerSystem::SetLayer("back");
+    {
+        backImage_->Draw();
+
+    }
+    LayerSystem::SetLayer("ring");
+    {
+        ModelManager::GetInstance()->PreDrawForObjectModel();
+        if (spectrumRing_)
+            spectrumRing_->Draw(&SceneCamera_);
+    }
+    LayerSystem::SetLayer("ui");
+    {
+        selectUI_->Draw();
+    }
 }
 
 void SelectScene::DrawShadow() {}

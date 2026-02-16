@@ -6,6 +6,9 @@
 #include <Application/BeatMapLoader/BeatMapData.h>
 #include <Application/Result/ResultData.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
+#include <Application/TItileCamera/TitleCamera.h>
+#include <Features/UI/Element/UIImageElement.h>
+#include <Features/UVTransform/UVTransformAnimation.h>
 
 // シーン間でデータを受け渡すための構造体群
 /// <summary>
@@ -26,8 +29,12 @@ struct GameToResultData : SceneData
 {
     ResultData resultData; // ゲームの結果データ
 };
+
 struct TitleToSelectData : SceneData
 {
-    std::unique_ptr<SpectrumRing> spectrumRing; // タイトルシーンから引き継がれるスペクトラムリング
+    std::shared_ptr<SpectrumRing> spectrumRing; // タイトルシーンから引き継がれるスペクトラムリング
     std::shared_ptr<VoiceInstance> voiceInstance; // タイトルシーンから引き継がれる音楽インスタンス
+    std::unique_ptr<LobbyCamera> lobbyCamera; // タイトルシーンから引き継がれるロビー用カメラ
+    std::shared_ptr<UIImageElement> titleBackground; // タイトルシーンから引き継がれるタイトル背景のUI要素
+    UVTransformAnimation titleBackgroundAnimation; // タイトル背景のUV変換アニメーション
 };

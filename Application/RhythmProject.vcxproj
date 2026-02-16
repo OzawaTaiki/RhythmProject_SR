@@ -216,6 +216,7 @@
     <ClCompile Include="Source\Application\Input\GameInputManager.cpp" />
     <ClCompile Include="Source\Application\Lane\Lane.cpp" />
     <ClCompile Include="Source\Application\Lane\LaneOutline.cpp" />
+    <ClCompile Include="Source\Application\MusicList\MusicListManager.cpp" />
     <ClCompile Include="Source\Application\Note\Judge\JudgeLine.cpp" />
     <ClCompile Include="Source\Application\Note\Judge\JudgeResult.cpp" />
     <ClCompile Include="Source\Application\Note\Judge\JudgeType.cpp" />
@@ -381,6 +382,8 @@
     <ClInclude Include="Source\Application\Input\GameInputManager.h" />
     <ClInclude Include="Source\Application\Input\InputData.h" />
     <ClInclude Include="Source\Application\Lane\Lane.h" />
+    <ClInclude Include="Source\Application\MusicList\MusicListManager.h" />
+    <ClInclude Include="Source\Application\MusicList\MusicMetaData.h" />
     <ClInclude Include="Source\Application\Note\Judge\JudgeLine.h" />
     <ClInclude Include="Source\Application\Note\Judge\JudgeResult.h" />
     <ClInclude Include="Source\Application\Note\Judge\JudgeType.h" />

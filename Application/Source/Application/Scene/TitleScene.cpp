@@ -1,12 +1,14 @@
 #include "TitleScene.h"
-#include <Features/Scene/Manager/SceneManager.h>
+#include "Data/SceneDatas.h"
+#include <Constants/MathConstants.h>
 #include <Features/Event/EventManager.h>
+#include <Features/Model/Manager/ModelManager.h>
+#include <Features/Scene/Manager/SceneManager.h>
+#include <Features/UI/Collider/UICollisionManager.h>
+#include <Features/UI/UINavigationManager.h>
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <System/Audio/AudioSystem.h>
-#include <Features/Model/Manager/ModelManager.h>
-#include <Features/UI/Collider/UICollisionManager.h>
-#include <Constants/MathConstants.h>
-#include <Features/UI/UINavigationManager.h>
+
 
 TitleScene::TitleScene()
 {
@@ -25,8 +27,8 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 {
     SceneCamera_.Initialize();
-    SceneCamera_.translate_ = { 0,0,-10 };
-    SceneCamera_.rotate_ = { 0.0f,0,0 };
+    SceneCamera_.translate_ = { 0, 0, -10 };
+    SceneCamera_.rotate_ = { 0.0f, 0, 0 };
     SceneCamera_.UpdateMatrix();
     debugCamera_.Initialize();
 
@@ -45,14 +47,14 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     lightGroup_ = std::make_shared<LightGroup>();
     lightGroup_->Initialize();
 
-
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
 
     ///
     ///
     ///
 
-    titleCamera_.Initialize();
+    lobbyCamera_ = std::make_unique<LobbyCamera>();
+    lobbyCamera_->Initialize();
 
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/demoMusic.wav");
     voiceInstance_ = soundInstance_->Play(0.5f, false);
@@ -67,20 +69,20 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     LayerSystem::CreateLayer("ring", 40);
     LayerSystem::CreateLayer("option", 60);
 
-
     // ビートマネージャーの初期化
     beatManager_ = std::make_unique<BeatManager>();
     beatManager_->Initialize(100.0f);
     beatManager_->SetMusicVoiceInstance(voiceInstance_);
 
-    spectrumRing_ = std::make_unique<SpectrumRing>();
+    spectrumRing_ = std::make_shared<SpectrumRing>();
     spectrumRing_->Initialize(soundInstance_, 5);
     spectrumRing_->SetBeatManager(beatManager_.get());
 
     titleUI_ = std::make_unique<TitleUI>();
     titleUI_->Initialize();
 
-    titleBack_ = std::make_unique<UIImageElement>("Title_Background", WinApp::kWindowSize_ * 0.5f, WinApp::kWindowSize_);
+    titleBack_ = std::make_shared<UIImageElement>(
+        "Title_Background", WinApp::kWindowSize_ * 0.5f, WinApp::kWindowSize_);
     titleBack_->Initialize();
     UVTransform& uvTransform = titleBack_->GetUVTransform();
     uvTransform.SetRotation(MathConstants::kHalfPi / 3.0f);
@@ -124,20 +126,18 @@ void TitleScene::Update()
     hexagonGrid_->Update();
 #endif
     titleBack_->Update();
-    if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
-        spectrumRing_->Update(voiceInstance_->GetElapsedTime());
-    else //そうじゃないときは0
-        spectrumRing_->Update(0.0f);
-
-    if (input_->IsKeyPressed(DIK_LCONTROL) &&
-        input_->IsKeyTriggered(DIK_O))
+    if (spectrumRing_)
     {
-        EventManager::GetInstance()->DispatchEvent(GameEvent("OpenOptionMenu", nullptr));
+        if (voiceInstance_) // 楽曲が再生中なら楽曲の経過時間を渡す
+            spectrumRing_->Update(voiceInstance_->GetElapsedTime());
+        else // そうじゃないときは0
+            spectrumRing_->Update(0.0f);
     }
-    if (input_->IsKeyTriggered(DIK_F10) &&
-        input_->IsKeyPressed(DIK_F1))
+
+    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_O))
     {
-        SceneManager::ReserveScene("Sample", nullptr);
+        EventManager::GetInstance()->DispatchEvent(
+            GameEvent("OpenOptionMenu", nullptr));
     }
 
     if (enableDebugCamera_)
@@ -148,11 +148,13 @@ void TitleScene::Update()
     }
     else
     {
-        titleCamera_.Update(Time::GetDeltaTime<float>());
-        SceneCamera_ = *titleCamera_.GetCamera();
+        if (lobbyCamera_)
+        {
+            lobbyCamera_->Update(Time::GetDeltaTime<float>());
+            SceneCamera_ = *lobbyCamera_->GetCamera();
+        }
         SceneCamera_.UpdateMatrix();
     }
-
 }
 
 void TitleScene::Draw()
@@ -167,7 +169,8 @@ void TitleScene::Draw()
 
     LayerSystem::SetLayer("ring");
     {
-        spectrumRing_->Draw(&SceneCamera_);
+        if (spectrumRing_)
+            spectrumRing_->Draw(&SceneCamera_);
     }
 
     LayerSystem::SetLayer("buttons");
@@ -187,11 +190,24 @@ void TitleScene::OnEvent(const GameEvent& event)
 {
     if (event.GetEventType() == "RequestStartGame")
     {
-        SceneManager::ReserveScene("GameScene", nullptr);
+        if (!lobbyCamera_)
+            return;
+
+        SceneCamera_ = *lobbyCamera_->GetCamera();
+        spectrumRing_->SetBeatManager(nullptr); // ビートマネージャーとの関連を切る
+
+        auto sceneData = std::make_unique<TitleToSelectData>();
+        sceneData->voiceInstance = voiceInstance_;
+        sceneData->spectrumRing = spectrumRing_;
+        sceneData->lobbyCamera = std::move(lobbyCamera_);
+        sceneData->titleBackgroundAnimation = uvAnimation_;
+        sceneData->titleBackground = titleBack_;
+        SceneManager::GetInstance()->EnableTransition(false);
+        SceneManager::ReserveScene("SelectScene", std::move(sceneData));
+        // SceneManager::ReserveScene("GameScene", nullptr);
     }
     else if (event.GetEventType() == "RequestExitGame")
     {
-        PostQuitMessage(0);  // Windows APIでアプリ終了
+        PostQuitMessage(0); // Windows APIでアプリ終了
     }
-
 }

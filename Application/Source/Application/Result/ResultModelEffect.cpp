@@ -27,9 +27,8 @@ const Vector3 kSpotLightForward = Vector3(0, 0, 1);
 void ResultModelEffect::Initialize(const ResultData& resultData)
 {
     camera_.Initialize();
-    resultData;
-    //CraeteModels(resultData.rank);
-    CraeteModels(Rank::A);
+
+    CraeteModels(resultData.rank);
 
     animationSequence_ = std::make_unique<AnimationSequence>("ResultModelEffectSeq");
     animationSequence_->Initialize("Resources/Data/Result/");

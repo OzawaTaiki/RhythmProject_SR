@@ -1,16 +1,16 @@
 {
     "MusicSelectUI": {
         "baseUISize": {
-            "x": 200.0,
-            "y": 200.0
+            "x": 400.0,
+            "y": 150.0
         },
         "layoutCircle_center": {
-            "x": 640.0,
-            "y": 1585.0
+            "x": 1489.0,
+            "y": 390.0
         },
-        "layoutCircle_endAngle": -2.1419999599456787,
-        "layoutCircle_radius": 1200.0,
-        "layoutCircle_startAngle": -1.0,
+        "layoutCircle_endAngle": -3.742000102996826,
+        "layoutCircle_radius": 582.0,
+        "layoutCircle_startAngle": -2.430000066757202,
         "marginAngle": 0.30000001192092896,
         "scrollTime": 0.30000001192092896
     }

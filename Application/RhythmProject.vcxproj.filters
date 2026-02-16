@@ -154,6 +154,9 @@
     <Filter Include="Application\Select">
       <UniqueIdentifier>{f486e16c-15d4-478d-8d17-93844dbbd7eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\MusicList">
+      <UniqueIdentifier>{badb0e31-e06d-42de-90f6-8576993b1df7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -405,6 +408,9 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Select\musicSelectUI.cpp">
       <Filter>Application\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\MusicList\MusicListManager.cpp">
+      <Filter>Application\MusicList</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -666,7 +672,14 @@
     <ClInclude Include="Source\Application\Select\musicSelectUI.h">
       <Filter>Application\Select</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\TItileCamera\TitleCamera.h">
+    <ClInclude Include="Source\Application\MusicList\MusicMetaData.h">
+      <Filter>Application\MusicList</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\MusicList\MusicListManager.h">
+      <Filter>Application\MusicList</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\EventData\PauseActionData.h" />
+    <ClInclude Include="Source\Application\TitleCamera\TitleCamera.h">
       <Filter>Application\TitleCamera</Filter>
     </ClInclude>
   </ItemGroup>

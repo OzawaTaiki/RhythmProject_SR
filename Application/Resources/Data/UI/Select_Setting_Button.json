@@ -1,0 +1,125 @@
+{
+    "Select_Setting_Button": {
+        "anchor": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "clipRect": {
+            "leftTop": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "size": {
+                "x": 0.0,
+                "y": 0.0
+            }
+        },
+        "colliderType": 0,
+        "color": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 1.0,
+            "z": 0.501960813999176
+        },
+        "disabledColor": {
+            "w": 0.501960813999176,
+            "x": 0.501960813999176,
+            "y": 1.0,
+            "z": 0.501960813999176
+        },
+        "focusColor": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 1.0,
+            "z": 0.501960813999176
+        },
+        "focusable": true,
+        "fontConfig": {
+            "atlasSize": {
+                "x": 1024.0,
+                "y": 1024.0
+            },
+            "fontFilePath": "Resources/Fonts/NotoSansJP-Regular.ttf",
+            "fontSize": 24.0
+        },
+        "hasRect": false,
+        "hoverColor": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 1.0,
+            "z": 0.501960813999176
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "normalColor": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 1.0,
+            "z": 0.501960813999176
+        },
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 166.0,
+            "y": 694.0
+        },
+        "pressedColor": {
+            "w": 1.0,
+            "x": 0.501960813999176,
+            "y": 1.0,
+            "z": 0.501960813999176
+        },
+        "size": {
+            "x": 150.0,
+            "y": 150.0
+        },
+        "text": "",
+        "textAlignment": 4,
+        "textColor": {
+            "w": 1.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "textParam": {
+            "bottomColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "outlineScale": 0.029999999329447746,
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            },
+            "position": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "rotate": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            },
+            "topColor": {
+                "w": 1.0,
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "useGradient": false,
+            "useOutline": false
+        },
+        "texturePath": "white.png"
+    }
+}

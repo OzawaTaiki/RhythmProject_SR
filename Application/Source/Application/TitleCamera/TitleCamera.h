@@ -3,12 +3,12 @@
 #include <Features/Camera/Camera/Camera.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
 
-class TitleCamera
+class LobbyCamera
 {
 public:
 
-    TitleCamera() = default;
-    ~TitleCamera() = default;
+    LobbyCamera() = default;
+    ~LobbyCamera() = default;
 
     void Initialize();
     void Update(float deltaTime);

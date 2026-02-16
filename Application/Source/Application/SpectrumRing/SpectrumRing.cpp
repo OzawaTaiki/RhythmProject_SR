@@ -52,7 +52,7 @@ void SpectrumRing::Update(float elapsedTime)
     uint32_t index = cycleTextureIndices_.back();
     cycleTextureIndices_.pop_back();
     cycleTextureIndices_.push_front(index);
-
+    
     auto spectrum = audioSpectrum_.GetSpectrumAtTime(elapsedTime);
     //float min, max;
     //WaveformAnalyzer::GetRawWaveformMaxMin(musicInstance_.get(), _elapsedTime, 5.0f, max, min);

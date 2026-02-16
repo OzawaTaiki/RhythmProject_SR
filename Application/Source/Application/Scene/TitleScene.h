@@ -11,12 +11,13 @@
 #include <System/Input/Input.h>
 #include <System/Time/Stopwatch.h>
 
+
 #include <Application/BeatsManager/BeatManager.h>
 #include <Application/HexagonGrid/HexagonGrid.h>
 #include <Application/Setting/SettingMenu.h>
 #include <Application/SpectrumRing/SpectrumRing.h>
-#include <Application/TitleCamera/TitleCamera.h>
 #include <Application/TitleUI.h>
+#include <Application/TitleCamera/TitleCamera.h>
 
 // #include <Features/BPMDetector/BPMDetector.h>
 
@@ -48,7 +49,7 @@ public:
   /// </summary>
   void DrawShadow() override;
 
-  void OnEvent(const GameEvent &event) override;
+    void OnEvent(const GameEvent& event) override;
 
 private:
   // シーン関連
@@ -63,18 +64,18 @@ private:
 
   std::shared_ptr<LightGroup> lightGroup_ = nullptr;
 
-  /// ---------------------------------
-  ///     application
+    /// ---------------------------------
+    ///     application
 
-  TitleCamera titleCamera_;
+    std::unique_ptr<LobbyCamera> lobbyCamera_;
 
   std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
   std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
 
   TextGenerator textGenerator_;
 
-  std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
-  std::unique_ptr<SpectrumRing> spectrumRing_ = nullptr;
+    std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
+    std::shared_ptr<SpectrumRing> spectrumRing_ = nullptr;
 
   std::unique_ptr<BeatManager> beatManager_ = nullptr;
 
@@ -82,6 +83,6 @@ private:
 
   std::unique_ptr<HexagonGrid> hexagonGrid_;
 
-  std::unique_ptr<UIImageElement> titleBack_;
-  UVTransformAnimation uvAnimation_;
+    std::shared_ptr<UIImageElement> titleBack_;
+    UVTransformAnimation uvAnimation_;
 };

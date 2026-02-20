@@ -3,6 +3,9 @@
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/Event/EventManager.h>
 
+using namespace Engine;
+
+
 SelectUI::SelectUI()
 {
     EventManager::GetInstance()->AddEventListener("CloseOptionMenu", this);

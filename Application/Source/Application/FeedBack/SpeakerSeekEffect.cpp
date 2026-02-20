@@ -6,6 +6,9 @@
 #include <Math/Easing.h>
 #include <Math/Random/RandomGenerator.h>
 
+using namespace Engine;
+
+
 namespace
 {
 Vector4 color_ = Vector4(0.417f, 0.912f, 1.000f, 0.522f);

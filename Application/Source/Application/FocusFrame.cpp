@@ -2,6 +2,10 @@
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UI/Component/UISpriteRenderComponent.h>
 
+using namespace Engine;
+
+// TODO : 文字化け
+
 void FocusFrame::Initialize()
 {
     jsonBinder_ = std::make_unique<JsonBinder>("FocusFrame", "Resources/Data/UI/");
@@ -310,7 +314,7 @@ void FocusFrame::InitEdgesParams(size_t number, OutlineTracer& edge)
 Vector2 FocusFrame::CalcPointOnEdge(const OutlineTracer& edge, float distanceAlongEdge)
 {
     float lengthAccum = 0.0f;// 現在の累積距離
-    // 辺上の点
+    // 霎ｺ荳翫・轤ｹ
     Vector2 pointOnEdge;
     for (size_t i = 0; i < edge.vertices.size(); ++i)
     {
@@ -351,7 +355,7 @@ Vector2 FocusFrame::CalcTangentOnEdge(const OutlineTracer& edge, float distanceA
         {
             // このセグメントの方向ベクトルを返す
             if (segmentLength > 0.0f)
-                tangent = (end - start) / segmentLength; // 正規化
+                tangent = (end - start) / segmentLength; // 豁｣隕丞喧
             break;
         }
         lengthAccum += segmentLength;

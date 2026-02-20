@@ -29,9 +29,9 @@ private:
     bool isEffectActive_ = false;
     bool isComplete_ = false;
 
-    std::unique_ptr<AnimationSequence> sequence_;
+    std::unique_ptr<Engine::AnimationSequence> sequence_;
 
-    std::unique_ptr<UIImageElement> background_;
-    std::unique_ptr<UIImageElement> banner_;
-    std::unique_ptr<UITextElement> text_;
+    std::unique_ptr<Engine::UIImageElement> background_;
+    std::unique_ptr<Engine::UIImageElement> banner_;
+    std::unique_ptr<Engine::UITextElement> text_;
 };

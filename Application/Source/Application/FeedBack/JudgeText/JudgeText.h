@@ -9,7 +9,7 @@
 
 #include <string>
 
-class Camera; // 前方宣言
+namespace Engine { class Camera; } // 前方宣言
 
 // 判定テキスト表示クラス
 /// <summary>
@@ -33,7 +33,7 @@ public:
     /// </summary>
     /// <param name="judgeType">判定タイプ</param>
     /// <param name="laneIndex">レーンインデックス</param>
-    void Initialize(JudgeType judgeType, int32_t laneIndex, const Camera* camera);
+    void Initialize(JudgeType judgeType, int32_t laneIndex, const Engine::Camera* camera);
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -75,7 +75,7 @@ private:
     /// <param name="judgeType">判定タイプ</param>
     /// <param name="topColor">上端の色（出力）</param>
     /// <param name="bottomColor">下端の色（出力）</param>
-    static void GetJudgeTextColor(JudgeType judgeType, Vector4& topColor, Vector4& bottomColor);
+    static void GetJudgeTextColor(JudgeType judgeType, Engine::Vector4& topColor, Engine::Vector4& bottomColor);
 
     // テキストパラメータの更新（内部）
     void UpdateTextParam();
@@ -83,24 +83,24 @@ private:
     static float displayYOffset_; // Y軸のオフセット
 private:
 
-    TextGenerator text_;
+    Engine::TextGenerator text_;
 
     JudgeType judgeType_; // 判定タイプ
 
-    TextParam textParam_; // テキストパラメータ
+    Engine::TextParam textParam_; // テキストパラメータ
 
-    Vector4 topColor_       = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 上端点の色
-    Vector4 bottomColor_    = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // 下端点の色
+    Engine::Vector4 topColor_       = Engine::Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 上端点の色
+    Engine::Vector4 bottomColor_    = Engine::Vector4(0.5f, 0.5f, 0.5f, 1.0f); // 下端点の色
 
-    Vector2 scale_      = { 1.0f, 1.0f };   // テキストのスケール
-    Vector2 movement_   = { 0.0f, 0.0f };   // テキストの移動量
+    Engine::Vector2 scale_      = { 1.0f, 1.0f };   // テキストのスケール
+    Engine::Vector2 movement_   = { 0.0f, 0.0f };   // テキストの移動量
     float   alpha_      = 1.0f;             // テキストのアルファ値
 
     std::wstring judgeText_; // 判定テキスト
 
-    Vector2 position_       = {};   // テキストの表示位置
+    Engine::Vector2 position_       = {};   // テキストの表示位置
     float timer_            = 0.0f; // 表示時間のタイマー
     float displayDuration_  = 1.0f; // 表示時間
 
-    std::unique_ptr<AnimationSequence> animationSequence_; // アニメーション制御クラス
+    std::unique_ptr<Engine::AnimationSequence> animationSequence_; // アニメーション制御クラス
 };

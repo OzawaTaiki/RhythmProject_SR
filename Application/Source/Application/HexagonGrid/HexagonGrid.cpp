@@ -5,6 +5,9 @@
 #include <Features/UI/Component/UISpriteRenderComponent.h>
 #include <numbers>
 
+using namespace Engine;
+
+// TODO : 文字化け
 namespace
 {
 // 描画エリア
@@ -80,7 +83,7 @@ void HexagonGrid::GetHexagonLocalVertices(std::vector<Vector2>& outVertices) con
     outVertices.clear();
     for (int i = 0; i < 6; ++i)
     {
-        float angle = angleStep * i - std::numbers::pi_v<float> / 6.0f; // -30度開始
+        float angle = angleStep * i - std::numbers::pi_v<float> / 6.0f; // -30蠎ｦ髢句ｧ・
         float x = drawRadius * std::cosf(angle);
         float y = drawRadius * std::sinf(angle);
         outVertices.emplace_back(x, y);
@@ -97,7 +100,7 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
     // らしい
     float width = radius_ * std::sqrtf(3.0f);
     float height = radius_ * 1.5f;
-    // 直径
+    // 逶ｴ蠕・
     float diameter = (radius_ - margin_) * 2.0f;
 
     Vector2 start = area.GetLeftTop();
@@ -141,7 +144,7 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
             // カラーは変化なし
             // ホバー中はビートで拡縮など
             // 全体として常に
-            // 一定方向へ流す
+            // 荳螳壽婿蜷代∈豬√☆
             // パーティクルを舞わせる
             // とか
 
@@ -177,7 +180,7 @@ void HexagonGrid::ImGui()
         ImGui::DragFloat("Margin", &margin_, 0.5f, 0.0f, radius_ - 1.0f);
         if (ImGui::Button("Regenerate Grid"))
         {
-            // 再生成
+            // 蜀咲函謌・
             Initialize(drawArea);
         }
 

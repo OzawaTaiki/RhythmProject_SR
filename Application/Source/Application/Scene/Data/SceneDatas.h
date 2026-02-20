@@ -15,26 +15,26 @@
 /// シーン間で受け渡すデータ構造体群を定義するファイル。
 /// </summary>
 // セレクトシーンからゲームシーンへ渡すデータ
-struct SelectToGameData : SceneData
+struct SelectToGameData : Engine::SceneData
 {
     std::string selectedBeatMapFilePath; // 選択された譜面ファイルのパス
 };
 // 共有される譜面データ
-struct SharedBeatMapData : SceneData
+struct SharedBeatMapData : Engine::SceneData
 {
     BeatMapData beatMapData; // 前のシーンから渡される譜面データ
 };
 // ゲームシーンからリザルトシーンへ渡すデータ
-struct GameToResultData : SceneData
+struct GameToResultData : Engine::SceneData
 {
     ResultData resultData; // ゲームの結果データ
 };
 
-struct TitleToSelectData : SceneData
+struct TitleToSelectData : Engine::SceneData
 {
     std::shared_ptr<SpectrumRing> spectrumRing; // タイトルシーンから引き継がれるスペクトラムリング
-    std::shared_ptr<VoiceInstance> voiceInstance; // タイトルシーンから引き継がれる音楽インスタンス
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance; // タイトルシーンから引き継がれる音楽インスタンス
     std::unique_ptr<LobbyCamera> lobbyCamera; // タイトルシーンから引き継がれるロビー用カメラ
-    std::shared_ptr<UIImageElement> titleBackground; // タイトルシーンから引き継がれるタイトル背景のUI要素
-    UVTransformAnimation titleBackgroundAnimation; // タイトル背景のUV変換アニメーション
+    std::shared_ptr<Engine::UIImageElement> titleBackground; // タイトルシーンから引き継がれるタイトル背景のUI要素
+    Engine::UVTransformAnimation titleBackgroundAnimation; // タイトル背景のUV変換アニメーション
 };

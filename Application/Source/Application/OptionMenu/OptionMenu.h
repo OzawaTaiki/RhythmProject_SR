@@ -37,5 +37,5 @@ private:
 
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
 
-    std::unique_ptr<UIButtonElement> closeButton_ = nullptr; // 閉じるボタン
+    std::unique_ptr<Engine::UIButtonElement> closeButton_ = nullptr; // 閉じるボタン
 };

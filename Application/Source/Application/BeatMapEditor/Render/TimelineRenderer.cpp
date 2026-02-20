@@ -4,6 +4,9 @@
 #include <System/Input/Input.h>
 #include <Features/LineDrawer/LineDrawer.h>
 
+using namespace Engine;
+
+
 namespace BME
 {
 

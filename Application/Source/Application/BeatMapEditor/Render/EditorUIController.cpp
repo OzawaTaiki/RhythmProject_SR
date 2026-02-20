@@ -10,6 +10,8 @@
 #include <Utility/StringUtils/StringUitls.h>
 #include <Utility/FileDialog/FileDialog.h>
 
+using namespace Engine;
+
 namespace BME
 {
 

@@ -3,6 +3,8 @@
 #include <Debug/ImGuiDebugManager.h>
 #include <Debug/ImguITools.h>
 
+using namespace Engine;
+
 void GameUI::Initialize()
 {
     FontConfig conf = {};

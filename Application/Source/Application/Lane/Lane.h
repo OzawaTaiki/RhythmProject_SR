@@ -6,7 +6,7 @@
 #include <memory>
 #include <list>
 
-class Camera;
+namespace Engine { class Camera; }
 
 // 単一のレーン
 class Lane
@@ -36,7 +36,7 @@ public:
     /// </summary>
     /// <param name="camera">カメラ</param>
     /// <param name="laneColor">レーンの色</param>
-    void Draw(const Camera* camera, const Vector4& laneColor = Vector4(0.0f, 0.0f, 0.0f, 0.8f)) const;
+    void Draw(const Engine::Camera* camera, const Engine::Vector4& laneColor = Engine::Vector4(0.0f, 0.0f, 0.0f, 0.8f)) const;
 
 
     /// <summary>
@@ -54,7 +54,7 @@ public:
 
     int32_t GetNoteCount()const;
 
-    const Vector3& GetStartPosition() const { return startPosition_; }
+    const Engine::Vector3& GetStartPosition() const { return startPosition_; }
 
     /// <summary>
     /// ホールド開始
@@ -83,7 +83,7 @@ public: // 静的メンバ関数
     static void SetLaneCount(int32_t count) { laneCount_ = count; }
     static int32_t GetLaneCount() { return laneCount_; }
 
-    static Vector3 GetLaneEndPosition(int32_t laneIndex, float judgeLine = 0.0f);
+    static Engine::Vector3 GetLaneEndPosition(int32_t laneIndex, float judgeLine = 0.0f);
 
 private: // 内部処理用関数たち
 
@@ -95,13 +95,13 @@ private: // 内部処理用関数たち
     void CreateLaneModel();
 private:
 
-    std::unique_ptr<ObjectModel> laneModel_ = nullptr; // レーンのモデル
+    std::unique_ptr<Engine::ObjectModel> laneModel_ = nullptr; // レーンのモデル
 
     std::list<std::shared_ptr<Note>> notes_; // レーンにあるノーツ
 
 
-    Vector3 startPosition_; // レーンの開始位置 手前
-    Vector3 endPosition_; // レーンの終了位置 奥
+    Engine::Vector3 startPosition_; // レーンの開始位置 手前
+    Engine::Vector3 endPosition_; // レーンの終了位置 奥
 
     bool isHolding_ = false; // ホールド中かどうか
 private:

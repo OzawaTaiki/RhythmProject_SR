@@ -3,6 +3,8 @@
 #include <Application/Lane/Lane.h>
 #include <Application/Effects/TapEffects/TriggerEffects.h>
 
+using namespace Engine;
+
 void TapEffect::Initialize()
 {
     TriggerEffects::Initialize();

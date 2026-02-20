@@ -11,6 +11,7 @@
 
 #include <Application/FeedBack/LaneEdgePillar/LaneEdgeEffect.h>
 
+using namespace Engine;
 
 ParticleModifierFactory::ParticleModifierFactory()
 {
@@ -26,7 +27,7 @@ ParticleModifierFactory::ParticleModifierFactory()
     modifierCreators_["LaneEdgeParticleModifier"] = []() { return std::make_unique<LaneEdgeParticleModifier>(); };
 }
 
-std::unique_ptr<ParticleModifier> ParticleModifierFactory::CreateModifier(const std::string& _name)
+std::unique_ptr<Engine::ParticleModifier> ParticleModifierFactory::CreateModifier(const std::string& _name)
 {
     auto it = modifierCreators_.find(_name);
     if (it != modifierCreators_.end())

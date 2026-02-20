@@ -6,6 +6,9 @@
 #include <Features/UI/UINavigationManager.h>
 #include <Features/Event/EventManager.h>
 
+using namespace Engine;
+
+
 
 
 void ResultUI::Initialize(ResultData resultData)

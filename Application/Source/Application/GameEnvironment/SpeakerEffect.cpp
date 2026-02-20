@@ -4,6 +4,9 @@
 #include <Features/Event/EventManager.h>
 #include <Application/GameEnvironment/GameEnvironment.h>
 
+using namespace Engine;
+
+
 
 SpeakerEffect::SpeakerEffect()
 {

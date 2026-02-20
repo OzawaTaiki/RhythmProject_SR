@@ -1,7 +1,9 @@
-#include "JudgeResult.h"
+﻿#include "JudgeResult.h"
 
 #include <Features/Event/EventManager.h>
 #include <Debug/ImGuiDebugManager.h>
+
+using namespace Engine;
 
 
 JudgeResult::JudgeResult()

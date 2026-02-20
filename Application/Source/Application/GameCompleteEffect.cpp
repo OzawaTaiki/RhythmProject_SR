@@ -3,6 +3,8 @@
 #include <Debug/ImguITools.h>
 #include <Debug/ImGuiDebugManager.h>
 
+using namespace Engine;
+
 void GameCompleteEffect::Initialize()
 {
     sequence_ = std::make_unique<AnimationSequence>("GameCompleteEffect");

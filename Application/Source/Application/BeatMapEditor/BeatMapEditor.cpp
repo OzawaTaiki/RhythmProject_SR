@@ -21,6 +21,9 @@
 #include <fstream>
 #include <Framework/LayerSystem/LayerSystem.h>
 
+using namespace Engine;
+
+
 // TODO いろいろ
 /// ブリッジに重ねてノーツを置けてしまう
 /// zoom スクロール grid分割 全部キーボードあるいはマウスでできるように

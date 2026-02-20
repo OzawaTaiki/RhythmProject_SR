@@ -4,7 +4,7 @@
 
 #include <Application/Setting/Setting.h>
 
-class SampleFramework : public Framework
+class SampleFramework : public Engine::Framework
 {
 public:
     SampleFramework() = default;

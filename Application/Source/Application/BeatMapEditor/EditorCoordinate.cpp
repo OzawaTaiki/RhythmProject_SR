@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <Core/WinApp/WinApp.h>
 
+using namespace Engine;
+
 namespace BME
 {
 

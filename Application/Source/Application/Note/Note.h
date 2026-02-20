@@ -22,7 +22,7 @@ public:
     /// </summary>
     /// <param name="targetTime">ノーツのターゲット時間（秒）</param>
     /// <param name="targetPosition">ノーツの目標位置（ワールド座標）</param>
-    virtual void Initialize(float targetTime, const Vector3& targetPosition);
+    virtual void Initialize(float targetTime, const Engine::Vector3& targetPosition);
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -35,7 +35,7 @@ public:
     /// 描画処理。
     /// </summary>
     /// <param name="camera">描画用カメラ</param>
-    virtual void Draw(const Camera* camera);
+    virtual void Draw(const Engine::Camera* camera);
 
     /// <summary>
     /// ノーツのターゲット時間を取得する。
@@ -45,7 +45,7 @@ public:
     /// <summary>
     /// ノーツの現在位置（ワールド座標）を取得する。
     /// </summary>
-    Vector3 GetPosition() const { return model_->translate_; }
+    Engine::Vector3 GetPosition() const { return model_->translate_; }
 
     /// <summary>
     /// ノーツの種類を取得する。
@@ -63,10 +63,10 @@ public:
     virtual void Judge();
 
 protected:
-    std::unique_ptr<ObjectModel> model_ = nullptr;
-    Vector4 color_ = { 1,1,1,1 };
+    std::unique_ptr<Engine::ObjectModel> model_ = nullptr;
+    Engine::Vector4 color_ = { 1,1,1,1 };
     float targetTime_ = 0.0f;
-    Vector3 targetPosition_ = { 0,0,0 }; // ノーツの目標位置
+    Engine::Vector3 targetPosition_ = { 0,0,0 }; // ノーツの目標位置
     bool isJudged_ = false;
     NoteType noteType_ = NoteType::Normal; // ノーツのタイプ
 
@@ -80,9 +80,9 @@ public:
     ~NormalNote() override;
 
 
-    void Initialize(float targetTime, const Vector3& targetPosition) override;
+    void Initialize(float targetTime, const Engine::Vector3& targetPosition) override;
     void Update(float elapseTime, float speed) override;
-    void Draw(const Camera* camera) override;
+    void Draw(const Engine::Camera* camera) override;
 
 };
 
@@ -93,16 +93,16 @@ public:
     LongNote();;
     ~LongNote() override;
 
-    void Initialize(float targetTime, const Vector3& targetPosition) override;
+    void Initialize(float targetTime, const Engine::Vector3& targetPosition) override;
     void Update(float elapseTime, float speed) override;
-    void Draw(const Camera* camera) override;
+    void Draw(const Engine::Camera* camera) override;
 
     virtual void Judge() override;
 
     void SetHoldEnd(bool isHoldEnd);
     bool IsHoldEnd() const { return isHoldEnd_; }
 
-    void SetJudgePosition(const Vector3& judgePosition) { judgePosition_ = judgePosition; }
+    void SetJudgePosition(const Engine::Vector3& judgePosition) { judgePosition_ = judgePosition; }
 
     void SetHoldDuration(float holdDuration) { holdDuration_ = holdDuration; }
     float GetHoldDuration() const { return holdDuration_; }
@@ -111,9 +111,9 @@ public:
 
 private:
 
-    std::unique_ptr<ObjectModel> noteBridge_ = nullptr; // ノーツブリッジ
+    std::unique_ptr<Engine::ObjectModel> noteBridge_ = nullptr; // ノーツブリッジ
 
-    Vector3 judgePosition_ = { 0,0,0 }; // 判定位置
+    Engine::Vector3 judgePosition_ = { 0,0,0 }; // 判定位置
     bool isHoldEnd_ = false; // ロングノート終端かどうか
     float holdDuration_ = 0.0f; // ホールド時間
     bool isHeadPressed_ = false; // ヘッド(始端ノーツ)が押されているか

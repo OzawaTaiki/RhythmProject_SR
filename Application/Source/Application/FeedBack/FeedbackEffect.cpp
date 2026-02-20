@@ -6,6 +6,9 @@
 
 #include <Application/GameEnvironment/GameEnvironment.h>
 
+using namespace Engine;
+
+
 void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment)
 {
     if (camera)

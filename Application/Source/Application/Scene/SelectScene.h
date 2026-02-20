@@ -20,7 +20,7 @@
 /// <summary>
 /// 選曲画面のシーンクラス。
 /// </summary>
-class SelectScene : public BaseScene, public iEventListener
+class SelectScene : public Engine::BaseScene, public Engine::iEventListener
 {
 public:
     SelectScene();
@@ -29,7 +29,7 @@ public:
     /// <summary>
     /// シーンの初期化処理。
     /// </summary>
-    void Initialize(SceneData* sceneData) override;
+    void Initialize(Engine::SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -49,18 +49,18 @@ public:
     /// <summary>
     /// イベント受信
     /// </summary>
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
 private:
     // シーン関連
-    Camera SceneCamera_ = {};
-    DebugCamera debugCamera_ = {};
+    Engine::Camera SceneCamera_ = {};
+    Engine::DebugCamera debugCamera_ = {};
 
-    LineDrawer* lineDrawer_ = nullptr;
-    Input* input_ = nullptr;
-    ParticleSystem* particleSystem_ = nullptr;
+    Engine::LineDrawer* lineDrawer_ = nullptr;
+    Engine::Input* input_ = nullptr;
+    Engine::ParticleSystem* particleSystem_ = nullptr;
 
-    std::shared_ptr<LightGroup> lightGroup_ = nullptr;
+    std::shared_ptr<Engine::LightGroup> lightGroup_ = nullptr;
 
 #ifdef _DEBUG
     bool enableDebugCamera_ = false;
@@ -73,8 +73,8 @@ private:
     std::unique_ptr<SelectUI> selectUI_ = nullptr;
 
     std::shared_ptr<SpectrumRing> spectrumRing_ = nullptr;
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr;
 
-    std::shared_ptr<UIImageElement> backImage_ = nullptr;
-    UVTransformAnimation backImageAnimation_ = {};
+    std::shared_ptr<Engine::UIImageElement> backImage_ = nullptr;
+    Engine::UVTransformAnimation backImageAnimation_ = {};
 };

@@ -36,13 +36,13 @@ public:
 
 private:
 
-    std::shared_ptr<SoundInstance> soundInstance_; // ホールド中のサウンド
-    std::shared_ptr<VoiceInstance> voiceInstance_; // 音声インスタンス
+    std::shared_ptr<Engine::SoundInstance> soundInstance_; // ホールド中のサウンド
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_; // 音声インスタンス
 
     // TODO : エミッタ名要確認
-    ParticleEmitter emitter_; // パーティクルエミッタ
-    ParticleEmitter emitter2_; // パーティクルエミッタ
-    ParticleEmitter risingparticlesEmitter_;
+    Engine::ParticleEmitter emitter_; // パーティクルエミッタ
+    Engine::ParticleEmitter emitter2_; // パーティクルエミッタ
+    Engine::ParticleEmitter risingparticlesEmitter_;
 
 
 };

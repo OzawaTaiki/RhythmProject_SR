@@ -1,6 +1,8 @@
 #include "BackgroundEffect.h"
 #include <Application/GameEnvironment/SpeakerEffect.h>
 
+using namespace Engine;
+
 void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex, float delayTime)
 {
     if (!gameEnvironment_)

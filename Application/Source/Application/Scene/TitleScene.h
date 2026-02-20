@@ -24,7 +24,7 @@
 /// <summary>
 /// タイトル画面のシーンクラス。
 /// </summary>
-class TitleScene : public BaseScene, public iEventListener {
+class TitleScene : public Engine::BaseScene, public Engine::iEventListener {
 public:
   TitleScene();
   ~TitleScene() override;
@@ -32,7 +32,7 @@ public:
   /// <summary>
   /// シーンの初期化処理。
   /// </summary>
-  void Initialize(SceneData *sceneData) override;
+  void Initialize(Engine::SceneData *sceneData) override;
 
   /// <summary>
   /// 毎フレームの更新処理。
@@ -49,30 +49,30 @@ public:
   /// </summary>
   void DrawShadow() override;
 
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
 private:
   // シーン関連
-  Camera SceneCamera_ = {};
-  Camera camera2d_ = {};
-  DebugCamera debugCamera_ = {};
+  Engine::Camera SceneCamera_ = {};
+  Engine::Camera camera2d_ = {};
+  Engine::DebugCamera debugCamera_ = {};
   bool enableDebugCamera_ = false;
 
-  LineDrawer *lineDrawer_ = nullptr;
-  Input *input_ = nullptr;
-  ParticleSystem *particleSystem_ = nullptr;
+  Engine::LineDrawer *lineDrawer_ = nullptr;
+  Engine::Input *input_ = nullptr;
+  Engine::ParticleSystem *particleSystem_ = nullptr;
 
-  std::shared_ptr<LightGroup> lightGroup_ = nullptr;
+  std::shared_ptr<Engine::LightGroup> lightGroup_ = nullptr;
 
     /// ---------------------------------
     ///     application
 
     std::unique_ptr<LobbyCamera> lobbyCamera_;
 
-  std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
-  std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+  std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr;
+  std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr;
 
-  TextGenerator textGenerator_;
+  Engine::TextGenerator textGenerator_;
 
     std::unique_ptr<SettingMenu> settingMenu_ = nullptr; // 設定メニュー
     std::shared_ptr<SpectrumRing> spectrumRing_ = nullptr;
@@ -83,6 +83,6 @@ private:
 
   std::unique_ptr<HexagonGrid> hexagonGrid_;
 
-    std::shared_ptr<UIImageElement> titleBack_;
-    UVTransformAnimation uvAnimation_;
+    std::shared_ptr<Engine::UIImageElement> titleBack_;
+    Engine::UVTransformAnimation uvAnimation_;
 };

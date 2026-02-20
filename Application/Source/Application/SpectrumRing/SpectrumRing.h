@@ -15,7 +15,7 @@
 #include <Application/BeatsManager/BeatManager.h>
 
 // 前方宣言
-class Camera;
+namespace Engine { class Camera; }
 
 class SpectrumRing
 {
@@ -23,9 +23,9 @@ public:
     SpectrumRing() = default;
     ~SpectrumRing() = default;
 
-    void Initialize(std::shared_ptr<SoundInstance> musicInstance, size_t numring);
+    void Initialize(std::shared_ptr<Engine::SoundInstance> musicInstance, size_t numring);
     void Update(float elapsedTime);
-    void Draw(class Camera* camera);
+    void Draw(Engine::Camera* camera);
 
     void SetBeatManager(BeatManager* beatManager) { beatManager_ = beatManager; }
 
@@ -40,14 +40,14 @@ private:
 
 private:
 
-    std::vector<std::unique_ptr<ObjectModel>> rings_;
-    std::vector<std::unique_ptr<SpectrumTextureGenerator>> textureGenerators_;
+    std::vector<std::unique_ptr<Engine::ObjectModel>> rings_;
+    std::vector<std::unique_ptr<Engine::SpectrumTextureGenerator>> textureGenerators_;
 
     BeatManager* beatManager_;
 
     std::deque<uint32_t> cycleTextureIndices_;
     std::vector<uint32_t> textureHandles_;
-    std::shared_ptr<SoundInstance> musicInstance_= nullptr;
-    AudioSpectrum audioSpectrum_;
+    std::shared_ptr<Engine::SoundInstance> musicInstance_= nullptr;
+    Engine::AudioSpectrum audioSpectrum_;
     bool isInitTextures_ = false;
 };

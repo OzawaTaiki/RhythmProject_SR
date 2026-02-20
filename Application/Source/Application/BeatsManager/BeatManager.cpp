@@ -4,6 +4,9 @@
 #include <Debug/Debug.h>
 #include <cmath>
 
+using namespace Engine;
+
+
 BeatManager::BeatManager() :
     bpm_(120.0f),
     offset_(0.0f),

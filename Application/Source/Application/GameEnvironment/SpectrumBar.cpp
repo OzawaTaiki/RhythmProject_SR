@@ -6,6 +6,9 @@
 #include <Features/Light/Point/PointLight.h>
 #include <Debug/Debug.h>
 
+using namespace Engine;
+
+
 namespace
 {
 constexpr float kMaxAmplitude = 1.0f; // 最大振幅の仮定値

@@ -10,7 +10,7 @@
 /// <summary>
 /// ポーズメニュークラス。
 /// </summary>
-class PauseMenu : public iEventListener
+class PauseMenu : public Engine::iEventListener
 {
 public:
 
@@ -36,7 +36,7 @@ public:
     /// イベントを受信するハンドラ。
     /// </summary>
     /// <param name="event"> 受信したイベント</param>
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
     /// <summary>
     /// ポーズメニューがアクティブかどうかを返す。
@@ -64,6 +64,6 @@ private:
 
     bool isDraw_ = false; // 描画フラグ
 
-    UIElement* resumeButton_ = nullptr; // レジュームボタン フォーカス要
-    std::unique_ptr<UIImageElement> background_ = nullptr; // 背景画像
+    Engine::UIElement* resumeButton_ = nullptr; // レジュームボタン フォーカス要
+    std::unique_ptr<Engine::UIImageElement> background_ = nullptr; // 背景画像
 };

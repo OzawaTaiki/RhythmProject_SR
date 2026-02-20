@@ -7,6 +7,7 @@
 #include <json.hpp>
 #include <fstream>
 
+using namespace Engine;
 using json = nlohmann::json;
 
 namespace BME {
@@ -38,7 +39,7 @@ bool FileManager::Load(const std::string& _filePath, Document* _document)
         _document->SetModified(false);
         currentFilePath_ = _filePath;
         lastError_.clear();
-        Debug::Log("Beatmap loaded successfully from: " + _filePath + "\n");
+        Engine::Debug::Log("Beatmap loaded successfully from: " + _filePath + "\n");
         return true;
     }
     else
@@ -111,7 +112,7 @@ bool FileManager::SaveInternal(const std::string& _filePath, Document* _document
     if (!outFile.is_open())
     {
         lastError_ = "Failed to open file for saving: " + filePath;
-        Debug::Log(lastError_ + "\n");
+        Engine::Debug::Log(lastError_ + "\n");
         return false;
     }
 
@@ -122,7 +123,7 @@ bool FileManager::SaveInternal(const std::string& _filePath, Document* _document
     currentFilePath_ = filePath;
     _document->SetModified(false);
     lastError_.clear();
-    Debug::Log("Beatmap saved successfully to: " + filePath + "\n");
+    Engine::Debug::Log("Beatmap saved successfully to: " + filePath + "\n");
 
     return true;
 }

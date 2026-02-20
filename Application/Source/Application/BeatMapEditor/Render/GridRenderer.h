@@ -34,11 +34,11 @@ private:
     void InitPlayheadSprite(const EditorCoordinate* coordinate);
 private:
 
-    LineDrawer* lineDrawer_ = nullptr; // ライン描画クラスのポインタ
+    Engine::LineDrawer* lineDrawer_ = nullptr; // ライン描画クラスのポインタ
 
-    std::vector<std::unique_ptr<Sprite>> laneSprites_;
-    std::unique_ptr<Sprite> judgeLineSprite_;
-    std::unique_ptr<Sprite> playheadSprite_;
+    std::vector<std::unique_ptr<Engine::Sprite>> laneSprites_;
+    std::unique_ptr<Engine::Sprite> judgeLineSprite_;
+    std::unique_ptr<Engine::Sprite> playheadSprite_;
 };
 
 } // namespace BME

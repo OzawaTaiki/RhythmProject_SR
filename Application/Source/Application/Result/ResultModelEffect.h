@@ -9,7 +9,7 @@
 #include <Application/Result/ResultData.h>
 
 // 前方宣言
-class Camera;
+namespace Engine { class Camera; }
 
 enum class ModelKind
 {
@@ -33,24 +33,24 @@ private:
 
     void CraeteModels(Rank rank);
 
-    void UpdateSpotLight(ObjectModel* model, float angle, float radius,const Vector3& toTarget);
-    Vector3 CalcSwingTarget(const Vector3& pos, const Vector3& toTarget, float radius, float angleRad);
+    void UpdateSpotLight(Engine::ObjectModel* model, float angle, float radius, const Engine::Vector3& toTarget);
+    Engine::Vector3 CalcSwingTarget(const Engine::Vector3& pos, const Engine::Vector3& toTarget, float radius, float angleRad);
 
-    static Vector3 CalculateSpotLightRotation(const Vector3& pos, const Vector3& rotOffset, const Vector3& targetPos);
+    static Engine::Vector3 CalculateSpotLightRotation(const Engine::Vector3& pos, const Engine::Vector3& rotOffset, const Engine::Vector3& targetPos);
 
     static std::string CreateSeqKey(ModelKind kind, size_t index, const std::string& propertyName);
 
 private:
 
-    Camera camera_;
+    Engine::Camera camera_;
 
-    std::map<ModelKind, std::vector<std::unique_ptr<ObjectModel>>> effectModels_;
+    std::map<ModelKind, std::vector<std::unique_ptr<Engine::ObjectModel>>> effectModels_;
     // 遷移後の演出用アニメーションシーケンス
-    std::unique_ptr<AnimationSequence> animationSequence_;
+    std::unique_ptr<Engine::AnimationSequence> animationSequence_;
     // seqが終わった後のループアニメーション
-    std::unique_ptr<AnimationSequence> loopAnimSeq_;
+    std::unique_ptr<Engine::AnimationSequence> loopAnimSeq_;
     // 現在再生中のアニメーションシーケンス
-    AnimationSequence* currentAnimSeq_ = nullptr;
+    Engine::AnimationSequence* currentAnimSeq_ = nullptr;
 
     float delayTime_ = 2.0f;
     float delayTimer_ = 0.0f;

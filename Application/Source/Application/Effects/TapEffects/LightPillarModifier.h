@@ -6,7 +6,7 @@
 /// <summary>
 /// 光の柱表現を行うパーティクル修飾子クラス。
 /// </summary>
-class LightPillarModifier : public ParticleModifier
+class LightPillarModifier : public Engine::ParticleModifier
 {
 public:
 
@@ -25,5 +25,5 @@ public:
     /// </summary>
     /// <param name="particle">対象パーティクル</param>
     /// <param name="deltaTime">経過時間（秒）</param>
-    void Apply(Particle* particle, float deltaTime) override;
+    void Apply(Engine::Particle* particle, float deltaTime) override;
 };

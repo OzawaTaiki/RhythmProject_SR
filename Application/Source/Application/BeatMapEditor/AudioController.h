@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-class AudioSystem;
+namespace Engine { class AudioSystem; }
 
 namespace BME
 {
@@ -75,24 +75,24 @@ public:
     /// <summary>
     /// SoundInstanceを取得（Waveform表示など外部で必要な場合）
     /// </summary>
-    SoundInstance* GetSoundInstance() const { return musicSoundInstance_.get(); }
+    Engine::SoundInstance* GetSoundInstance() const { return musicSoundInstance_.get(); }
 
     /// <summary>
     /// VoiceInstanceを取得（BeatManager連携など外部で必要な場合）
     /// </summary>
-    std::shared_ptr<VoiceInstance> GetVoiceInstance() const { return musicVoiceInstance_; }
+    std::shared_ptr<Engine::VoiceInstance> GetVoiceInstance() const { return musicVoiceInstance_; }
 
     void PlayForBPMSet();
 
     void StopForBPMSet();
 private:
-    AudioSystem* audioSystem_ = nullptr;                        // AudioSystemのポインタ
-    std::shared_ptr<SoundInstance> musicSoundInstance_;         // 音声インスタンス
-    std::shared_ptr<VoiceInstance> musicVoiceInstance_;         // 再生中の音声インスタンス
-    float volume_ = 1.0f;                                       // 音量
-    float playSpeed_ = 1.0f;                                    // 再生速度
+    Engine::AudioSystem* audioSystem_ = nullptr;                        // AudioSystemのポインタ
+    std::shared_ptr<Engine::SoundInstance> musicSoundInstance_;         // 音声インスタンス
+    std::shared_ptr<Engine::VoiceInstance> musicVoiceInstance_;         // 再生中の音声インスタンス
+    float volume_ = 1.0f;                                               // 音量
+    float playSpeed_ = 1.0f;                                            // 再生速度
 
-    std::shared_ptr<VoiceInstance> voiceInstanceForBPMSet_; // BPM設定用の音声インスタンス
+    std::shared_ptr<Engine::VoiceInstance> voiceInstanceForBPMSet_; // BPM設定用の音声インスタンス
 };
 
 } // namespace BME

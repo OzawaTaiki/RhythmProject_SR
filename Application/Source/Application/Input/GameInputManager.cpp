@@ -4,6 +4,9 @@
 
 #include <algorithm>
 
+using namespace Engine;
+
+
 void GameInputManager::Initialize(Input* input)
 {
     if (input == nullptr)

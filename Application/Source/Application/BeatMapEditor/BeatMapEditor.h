@@ -29,8 +29,7 @@
 #include <memory>
 
 // 前方宣言
-class Input;
-class LineDrawer;
+namespace Engine { class Input; class LineDrawer; }
 class BeatMapLoader;
 
 /// <summary>
@@ -99,9 +98,9 @@ private:
 private:
     struct NoteColor
     {
-        Vector4 defaultColor;
-        Vector4 hoverColor;
-        Vector4 selectedColor;
+        Engine::Vector4 defaultColor;
+        Engine::Vector4 hoverColor;
+        Engine::Vector4 selectedColor;
     };
 
     struct MoveState
@@ -132,12 +131,12 @@ private:
     // ========================================
     // システム依存関係
     // ========================================
-    LineDrawer* lineDrawer_ = nullptr;
-    Input* input_ = nullptr;
-    Camera for2dCamera_;
+    Engine::LineDrawer* lineDrawer_ = nullptr;
+    Engine::Input* input_ = nullptr;
+    Engine::Camera for2dCamera_;
     BeatMapLoader* beatMapLoader_ = nullptr;
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
-    TextGenerator text_;
+    Engine::TextGenerator text_;
     bool enableBeats_ = false;
 
     // ========================================
@@ -159,8 +158,8 @@ private:
     float currentTime_ = 0.0f;
     BeatMapData currentBeatMapData_ = {};
 
-    std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+    std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr;
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr;
 
 };
 /*

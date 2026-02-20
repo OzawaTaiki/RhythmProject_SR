@@ -18,6 +18,8 @@
 
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Application/Setting/Setting.h>
+
+using namespace Engine;
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Features/ColorMask/ColorMask.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>

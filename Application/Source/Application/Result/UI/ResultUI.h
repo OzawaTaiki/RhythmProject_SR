@@ -102,9 +102,9 @@ private:
     // アニメーション用の値
     struct AnimationValue
     {
-        Vector2 position = { 0, 0 }; // 座標
-        Vector2 movement = { 0, 0 }; // 座標
-        Vector2 scale = { 1, 1 }; // スケール
+        Engine::Vector2 position = { 0, 0 }; // 座標
+        Engine::Vector2 movement = { 0, 0 }; // 座標
+        Engine::Vector2 scale = { 1, 1 }; // スケール
         float alpha = 1.0f; // アルファ値
 
         float timer = 0.0f;
@@ -119,30 +119,30 @@ private:
     };
 
     float animationDuration_ = 0.25f;
-    std::unique_ptr<AnimationSequence> animationSequence_ = nullptr; // アニメーションシーケンス
+    std::unique_ptr<Engine::AnimationSequence> animationSequence_ = nullptr; // アニメーションシーケンス
 
-    std::unique_ptr<UIElement> UIElement_ = nullptr; // UIグループ
-    std::vector<UIElement*> buttons_;
-    std::unique_ptr<AnimationSequence> animForUI_ = nullptr; //UI用
+    std::unique_ptr<Engine::UIElement> UIElement_ = nullptr; // UIグループ
+    std::vector<Engine::UIElement*> buttons_;
+    std::unique_ptr<Engine::AnimationSequence> animForUI_ = nullptr; //UI用
 
 
     // textParamの拡張
     struct ExtendedTextParam
     {
         std::wstring label; // ラベル
-        TextParam textParam; // テキストパラメータ
+        Engine::TextParam textParam; // テキストパラメータ
         AnimationValue animationValue = {}; // アニメーション用の値
         std::optional<CounterValue> counterValue = std::nullopt; // カウンター用の値（オプション）
     };
 
     std::map<TextType, ExtendedTextParam> textParams_; // テキストパラメータのマップ
 
-    std::unique_ptr<JsonBinder> jsonBinder_ = nullptr; // JSONバインダー
+    std::unique_ptr<Engine::JsonBinder> jsonBinder_ = nullptr; // JSONバインダー
 
     bool transitionToTitle_ = false; // タイトルへ遷移するかどうか
     bool replay_ = false; // リプレイするかどうか
 
-    TextGenerator text_; // テキストジェネレータ
+    Engine::TextGenerator text_; // テキストジェネレータ
 
     bool isDraw_ = false;
 };

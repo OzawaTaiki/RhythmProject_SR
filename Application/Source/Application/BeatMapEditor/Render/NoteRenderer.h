@@ -41,21 +41,21 @@ private:
 
     struct NoteColor
     {
-        Vector4 defaultColor;
-        Vector4 hoverColor;
-        Vector4 selectedColor;
+        Engine::Vector4 defaultColor;
+        Engine::Vector4 hoverColor;
+        Engine::Vector4 selectedColor;
     };
 
 
 private:
-    std::vector<std::unique_ptr<Sprite>> noteSprites_;
-    std::vector<std::unique_ptr<Sprite>> noteBridges_;
-    std::vector<std::unique_ptr<Sprite>> holdNoteEnd_;
+    std::vector<std::unique_ptr<Engine::Sprite>> noteSprites_;
+    std::vector<std::unique_ptr<Engine::Sprite>> noteBridges_;
+    std::vector<std::unique_ptr<Engine::Sprite>> holdNoteEnd_;
 
     // プレビュー用スプライト
-    std::unique_ptr<Sprite> previewNoteSprite_;
-    std::unique_ptr<Sprite> previewBridgeSprite_;
-    std::unique_ptr<Sprite> previewHoldEndSprite_;
+    std::unique_ptr<Engine::Sprite> previewNoteSprite_;
+    std::unique_ptr<Engine::Sprite> previewBridgeSprite_;
+    std::unique_ptr<Engine::Sprite> previewHoldEndSprite_;
 
     NoteColor normalNoteColor_;
     NoteColor holdNoteColor_;

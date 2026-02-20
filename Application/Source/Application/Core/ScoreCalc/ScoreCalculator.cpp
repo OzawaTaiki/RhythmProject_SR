@@ -8,6 +8,8 @@ const int32_t kMaxComboForBonus = 100;
 const float kMaxComboMultiplier = 1.5f;// コンボ倍率の最大値
 }
 
+using namespace Engine;
+
 void ScoreCalculator::Initialize(int32_t totalNotes)
 {
     totalNotes_ = totalNotes;

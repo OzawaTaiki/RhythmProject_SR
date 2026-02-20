@@ -8,6 +8,8 @@
 #include <Features/UI/UINavigationManager.h>
 #include <Features/Event/EventManager.h>
 
+using namespace Engine;
+
 ResultScene::ResultScene()
 {
     EventManager::GetInstance()->AddEventListener("ResultToTitle", this);

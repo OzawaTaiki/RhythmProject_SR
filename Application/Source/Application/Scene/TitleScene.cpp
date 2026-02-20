@@ -9,6 +9,7 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <System/Audio/AudioSystem.h>
 
+using namespace Engine;
 
 TitleScene::TitleScene()
 {

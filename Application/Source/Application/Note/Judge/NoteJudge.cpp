@@ -1,4 +1,4 @@
-#include "NoteJudge.h"
+﻿#include "NoteJudge.h"
 
 // Engine
 #include <Features/LineDrawer/LineDrawer.h>
@@ -6,6 +6,8 @@
 
 // application
 #include <Application/Note/Note.h>
+
+using namespace Engine;
 
 
 NoteJudge::NoteJudge()
@@ -28,8 +30,8 @@ void NoteJudge::Initialize()
 {
     InitializeJsonBinder();
 
-    const float baseFrameTime = 1.0f / 60.0f;// 60FPS基準 0.0166s
-    // 仮
+    const float baseFrameTime = 1.0f / 60.0f;// 60FPS蝓ｺ貅・0.0166s
+    // 莉ｮ
     timingThresholds_[JudgeType::Perfect]   = baseFrameTime * 4.0f;     //  4フレーム 約0.066s
     timingThresholds_[JudgeType::Good]      = baseFrameTime * 10.0f;    // 10フレーム 約0.166s
     timingThresholds_[JudgeType::Bad]       = baseFrameTime * 16.0f;    // 16フレーム 約0.266s
@@ -40,7 +42,7 @@ void NoteJudge::Initialize()
 void NoteJudge::DrawJudgeLine()
 {
 #ifdef _DEBUG
-    /// debug用
+    /// debug逕ｨ
     // 判定ラインと判定範囲の描画
 
     if (!isDrawLine) return;
@@ -92,7 +94,7 @@ JudgeType NoteJudge::ProcessNoteJudge(Note* note, float elapsedTime)
         if (targetTime >= elapsedTime - timingThresholds_[i] &&
             targetTime <= elapsedTime + timingThresholds_[i])
         {
-            // 判定を行う
+            // 蛻､螳壹ｒ陦後≧
             result = static_cast<JudgeType>(i);
             break;
         }

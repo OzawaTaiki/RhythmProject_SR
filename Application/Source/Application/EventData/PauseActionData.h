@@ -20,7 +20,7 @@ enum class PauseActions
 /// <summary>
 /// ポーズアクションを表すイベントデータ。
 /// </summary>
-struct PauseActionData : EventData
+struct PauseActionData : Engine::EventData
 {
     PauseActions pauseAction = PauseActions::None;
 

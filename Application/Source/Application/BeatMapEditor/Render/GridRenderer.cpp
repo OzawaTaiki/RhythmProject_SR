@@ -3,6 +3,8 @@
 #include <Math/Vector/Vector4.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 
+using namespace Engine;
+
 namespace BME
 {
 

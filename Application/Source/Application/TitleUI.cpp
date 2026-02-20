@@ -6,6 +6,9 @@
 #include <Features/UI/Element/UIElement.h>
 #include <Features/UI/UINavigationManager.h>
 
+using namespace Engine;
+
+
 TitleUI::TitleUI() {
   eventManager_ = EventManager::GetInstance();
   eventManager_->AddEventListener("CloseOptionMenu", this);

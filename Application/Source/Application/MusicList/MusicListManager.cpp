@@ -4,6 +4,8 @@
 
 #include <filesystem>
 
+using namespace Engine;
+
 MusicListManager* MusicListManager::GetInstance()
 {
     static MusicListManager instance;

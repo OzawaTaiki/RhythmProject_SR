@@ -3,6 +3,8 @@
 #include <Features/Event/EventManager.h>
 #include <Debug/Debug.h>
 
+using namespace Engine;
+
 void OptionMenu::Initialize()
 {
     settingMenu_ = std::make_unique<SettingMenu>();

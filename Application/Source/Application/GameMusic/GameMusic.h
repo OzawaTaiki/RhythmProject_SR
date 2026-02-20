@@ -71,18 +71,18 @@ public:
     /// </summary>
     float GetDuration()const;
 
-    std::shared_ptr<VoiceInstance> GetVoiceInstance();
+    std::shared_ptr<Engine::VoiceInstance> GetVoiceInstance();
 
-    std::shared_ptr<SoundInstance> GetSoundInstance();
+    std::shared_ptr<Engine::SoundInstance> GetSoundInstance();
 
     void MusicEnd() { isMusicEnd_ = true; };
 
 private:
 
-    std::shared_ptr<SoundInstance> soundInstance_; // 音楽データ
-    std::shared_ptr<VoiceInstance> voiceInstance_; // 音楽再生インスタンス
+    std::shared_ptr<Engine::SoundInstance> soundInstance_; // 音楽データ
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_; // 音楽再生インスタンス
 
-    std::unique_ptr<VoiceCallBack> voiceCallBack_; // 音楽再生コールバック
+    std::unique_ptr<Engine::VoiceCallBack> voiceCallBack_; // 音楽再生コールバック
 
     bool isMusicPlaying_ = false; // 音楽が再生中かどうか
     bool isMusicEnd_ = false; // 音楽が終了したかどうか

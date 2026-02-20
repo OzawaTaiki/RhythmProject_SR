@@ -21,6 +21,8 @@
 #include <System/Time/Stopwatch.h>
 #include <Features/TextRenderer/FontCache.h>
 
+using namespace Engine;
+
 SampleScene::~SampleScene()
 {
 }

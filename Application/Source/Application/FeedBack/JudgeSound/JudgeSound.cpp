@@ -5,6 +5,9 @@
 
 #include <cassert>
 
+using namespace Engine;
+
+
 JudgeSound::~JudgeSound()
 {
     StopAllSounds(); // 全ての音声を停止

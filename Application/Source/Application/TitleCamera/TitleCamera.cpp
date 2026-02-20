@@ -3,6 +3,8 @@
 #include <Features/Event/EventManager.h>
 #include <System/Input/Input.h>
 
+using namespace Engine;
+
 void LobbyCamera::Initialize()
 {
     camera_.Initialize(CameraType::Perspective);

@@ -3,6 +3,8 @@
 #include <Application/BeatMapEditor/EditorCoordinate.h>
 #include <Core/WinApp/WinApp.h>
 
+using namespace Engine;
+
 namespace BME {
 
 void WaveformRenderer::Initialize(const Matrix4x4& _matVP)

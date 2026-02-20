@@ -12,18 +12,21 @@
 #include <memory>
 
 
-struct ColorChangeEvent : EventData
+struct ColorChangeEvent : Engine::EventData
 {
-    ObjectModel* targets;
+    Engine::ObjectModel* targets;
     float delayTime = 0.0f;
 };
 
+namespace Engine
+{
 class Camera;
+}
 
 /// <summary>
 /// 背景等のオブジェクトに関するクラス。
 /// </summary>
-class GameEnvironment : public iEventListener
+class GameEnvironment : public Engine::iEventListener
 {
 public:
 
@@ -39,13 +42,13 @@ public:
     /// <summary>
     /// 毎フレームの更新処理。
     /// </summary>
-    void Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundInstance* soundInstance, float duration);
+    void Update(float deltaTime, Engine::AudioSpectrum* audioSpectrum, Engine::SoundInstance* soundInstance, float duration);
 
     /// <summary>
     /// 描画処理を行う。
     /// </summary>
     /// <param name="camera">描画用カメラ</param>
-    void Draw(const Camera* camera);
+    void Draw(const Engine::Camera* camera);
 
     /// <summary>
     /// BPMを設定して環境に反映する。
@@ -55,9 +58,9 @@ public:
     /// <summary>
     /// 指定レーンのスピーカーオブジェクトを取得する。
     /// </summary>
-    ObjectModel* GetSpeaker(uint32_t laneIndex);
+    Engine::ObjectModel* GetSpeaker(uint32_t laneIndex);
 
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
 private:
     /// <summary>
@@ -68,29 +71,29 @@ private:
     /// <summary>
     /// スピーカーマップを構築する（内部処理）。
     /// </summary>
-    void BuildSpeakerMap(const std::string& objName,ObjectModel* model, const std::string& filepath);
+    void BuildSpeakerMap(const std::string& objName, Engine::ObjectModel* model, const std::string& filepath);
 
     void UpdateSpeakerAnimation(float deltaTime);
 
     // Wallの初期化
-    void InitializeWall(ObjectModel* wallModel);
+    void InitializeWall(Engine::ObjectModel* wallModel);
 
     void InitializeOverlayFloor();
 
     void CreateEmissivePSO();
 private:
     std::unique_ptr<SpectrumFloor> spectrumFloor_ = nullptr; //
-    std::vector<std::unique_ptr<ObjectModel>> environmentObjects_ = {};
-    std::unique_ptr<ObjectModel> overFloor_ = nullptr;
-    std::unique_ptr<ObjectModel> overlayFloor_ = nullptr;
+    std::vector<std::unique_ptr<Engine::ObjectModel>> environmentObjects_ = {};
+    std::unique_ptr<Engine::ObjectModel> overFloor_ = nullptr;
+    std::unique_ptr<Engine::ObjectModel> overlayFloor_ = nullptr;
     std::vector<std::unique_ptr<SpectrumBar>> spectrumBars_;// スペクトラムバーの配列
 
 
-    std::map<uint32_t, ObjectModel*> speakerMap_;
+    std::map<uint32_t, Engine::ObjectModel*> speakerMap_;
 
-    std::map<ObjectModel*, float> speakerColorTimers_; // スピーカーごとの色変化タイマー
+    std::map<Engine::ObjectModel*, float> speakerColorTimers_; // スピーカーごとの色変化タイマー
 
-    Stopwatch stopwatch_;
+    Engine::Stopwatch stopwatch_;
     int32_t currentAnimationStep_ = 0;
 
     float animationTimer_ = 0.0f;

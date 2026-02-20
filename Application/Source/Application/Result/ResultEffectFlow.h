@@ -4,7 +4,7 @@
 #include <Application/Result/ResultModelEffect.h>
 #include <Application/Result/ResultData.h>
 
-class Camera;
+namespace Engine { class Camera; }
 
 /// <summary>
 /// 結果エフェクトの流れを管理するクラス

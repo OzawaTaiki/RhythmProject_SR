@@ -9,7 +9,9 @@
 #include <Application/Scene/ResultScene.h>
 #include <Application/Scene/EditorScene.h>
 
-std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& _name)
+using namespace Engine;
+
+std::unique_ptr<Engine::BaseScene> SceneFactory::CreateScene(const std::string& _name)
 {
     if (_name == "Sample")
     {

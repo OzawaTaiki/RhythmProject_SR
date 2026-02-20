@@ -1,8 +1,10 @@
-#include "SpectrumRing.h"
+﻿#include "SpectrumRing.h"
 
 #include <Features/AudioSpectrum/AudioSpectrum.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Math/MyLib.h>
+
+using namespace Engine;
 
 namespace
 {

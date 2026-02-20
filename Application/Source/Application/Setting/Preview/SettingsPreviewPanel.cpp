@@ -10,6 +10,9 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <System/Input/Input.h>
 
+using namespace Engine;
+
+
 
 void SettingsPreviewPanel::Initialize()
 {

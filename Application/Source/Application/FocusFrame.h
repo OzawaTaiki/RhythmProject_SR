@@ -2,7 +2,10 @@
 
 #include <Features/UI/Element/UIElement.h>
 
+namespace Engine
+{
 class UISpriteRenderComponent;
+}
 
 enum class VertexType
 {
@@ -17,7 +20,7 @@ struct OutlineTracer
     float progress;
     float totalEdgeLength;
 
-    std::vector<Vector2> vertices;
+    std::vector<Engine::Vector2> vertices;
 };
 
 class FocusFrame
@@ -30,29 +33,29 @@ public:
     void Update(float deltaTime);
     void Draw();
 
-    void ChangeTarget(UIElement* target);
+    void ChangeTarget(Engine::UIElement* target);
 
-    void RegisterTargetName(const UIElement* target);
+    void RegisterTargetName(const Engine::UIElement* target);
 
 private:
     void ClearProgress();
     void InitEdgesParams(size_t number, OutlineTracer& edge);
-    Vector2 CalcPointOnEdge(const OutlineTracer& edge, float distanceAlongEdge);
-    Vector2 CalcTangentOnEdge(const OutlineTracer& edge, float distanceAlongEdge);
-    Vector2 CalcPerpendicularOnEdge(const OutlineTracer& edge, float distanceAlongEdge);
+    Engine::Vector2 CalcPointOnEdge(const OutlineTracer& edge, float distanceAlongEdge);
+    Engine::Vector2 CalcTangentOnEdge(const OutlineTracer& edge, float distanceAlongEdge);
+    Engine::Vector2 CalcPerpendicularOnEdge(const OutlineTracer& edge, float distanceAlongEdge);
     VertexType GetVertexTypeFromProgress(float t, int32_t index);
     bool IsCrossingVertex(const OutlineTracer& edge, float progress0, float progress1);
-    Vector2 GetCrossedVertex(const OutlineTracer& edge, float progress0, float progress1);
-    void UpdateTrackerLine(const OutlineTracer& tracer, const Vector2& targetPos,
+    Engine::Vector2 GetCrossedVertex(const OutlineTracer& edge, float progress0, float progress1);
+    void UpdateTrackerLine(const OutlineTracer& tracer, const Engine::Vector2& targetPos,
                            float progress0, float progress1,
-                           UISpriteRenderComponent* spriteComponent0, UISpriteRenderComponent* spriteComponent1, float width);
+                           Engine::UISpriteRenderComponent* spriteComponent0, Engine::UISpriteRenderComponent* spriteComponent1, float width);
 private:
 
-    UIElement* targetElement_ = nullptr;
+    Engine::UIElement* targetElement_ = nullptr;
 
 
     std::map<std::string, size_t> edgeNameToIndexMap_;
-    std::array<std::unique_ptr<UIElement>, 4> focusFrames_;
+    std::array<std::unique_ptr<Engine::UIElement>, 4> focusFrames_;
     std::vector<OutlineTracer> tracers_;
 
     // 一周にかかる時間
@@ -60,5 +63,5 @@ private:
     float currentTime_ = 0.0f;
     float trailLength_ = 0.2f;
 
-    std::unique_ptr<JsonBinder> jsonBinder_;
+    std::unique_ptr<Engine::JsonBinder> jsonBinder_;
 };

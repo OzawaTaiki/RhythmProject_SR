@@ -2,6 +2,9 @@
 
 #include <Features/Camera/Camera/Camera.h>
 
+using namespace Engine;
+
+
 float Lane::laneLength_ = 300.0f; // 初期値
 float Lane::totalWidth_ = 8.0f; // 初期値
 int32_t Lane::laneCount_ = 4; // 初期値

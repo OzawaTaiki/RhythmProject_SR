@@ -22,13 +22,13 @@ public:
     /// </summary>
     /// <param name="_screenSize">画面サイズ</param>
     /// <param name="_laneCount">レーン数(デフォルト4)</param>
-    void Initialize(const Vector2& _screenSize, const Vector2& _areaCenter = WinApp::kWindowSize_ * 0.5f, const int32_t _laneCount = 4);
+    void Initialize(const Engine::Vector2& _screenSize, const Engine::Vector2& _areaCenter = Engine::WinApp::kWindowSize_ * 0.5f, const int32_t _laneCount = 4);
 
     /// <summary>
     /// 画面サイズを設定
     /// </summary>
     /// <param name="_screenSize">画面サイズ</param>
-    void SetScreenSize(const Vector2& _screenSize);
+    void SetScreenSize(const Engine::Vector2& _screenSize);
 
     /// <summary>
     /// 画面サイズを設定
@@ -96,12 +96,12 @@ public:
     /// </summary>
     /// <param name="_startTime"> 開始時間</param>
     /// <param name="_endTime"> 終了時間</param>
-    void GetVisibleTimeRange(float& _startTime,float& _endTime) const;
+    void GetVisibleTimeRange(float& _startTime, float& _endTime) const;
 
     void SetTopMargin(float _margin);
     void SetBottomMargin(float _margin);
     void SetVerticalMargins(float _topMargin, float _bottomMargin);
-    void SetVerticalMargins(const Vector2& _margin);
+    void SetVerticalMargins(const Engine::Vector2& _margin);
 
     // ========================================
     // グリッドライン
@@ -172,10 +172,10 @@ private:    // 内部計算用
     // 表示範囲キャッシュ無効化
     void InvalidateVisibleRange();
 
-    Vector2 screenSize_; // 画面サイズ
+    Engine::Vector2 screenSize_; // 画面サイズ
     int32_t laneCount_; // レーン数
 
-    Vector2 areaCenter_;
+    Engine::Vector2 areaCenter_;
 
     // レイアウト設定
     float editAreaX_;        // 編集エリアの左端X座標

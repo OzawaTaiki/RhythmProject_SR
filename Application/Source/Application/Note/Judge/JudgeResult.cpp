@@ -24,7 +24,7 @@ void JudgeResult::Initialize()
 {
     judgeResult_.clear();
 
-    // None縺ｯ髯､螟・1縺九ｉ
+    // Noneは除外 1から
     for (size_t i = 1; i < static_cast<size_t>(JudgeType::MAX); ++i)
     {
         JudgeType type = static_cast<JudgeType>(i);
@@ -37,24 +37,24 @@ void JudgeResult::Initialize()
 void JudgeResult::AddJudge(JudgeType judgeType)
 {
     if (judgeType == JudgeType::None)
-        return; // None縺ｯ髯､螟・
+        return; // Noneは除外
 
-    // 蛻､螳夂ｵ先棡縺悟ｭ伜惠縺吶ｋ蝣ｴ蜷医・縺ｿ繧ｫ繧ｦ繝ｳ繝・
+    // 判定結果が存在する場合のみカウント
     if (judgeResult_.find(judgeType) != judgeResult_.end())
     {
-        ++judgeResult_[judgeType]; // 蛻､螳夂ｵ先棡繧偵き繧ｦ繝ｳ繝・
+        ++judgeResult_[judgeType]; // 判定結果をカウント
     }
 }
 
 void JudgeResult::AddJudge(JudgeType judgeType, int32_t count)
 {
     if (judgeType == JudgeType::None || count <= 0)
-        return; // None縺ｯ髯､螟悶√き繧ｦ繝ｳ繝医′0莉･荳九・蝣ｴ蜷医・辟｡隕・
+        return; // Noneは除外、カウントが0以下の場合は無視
 
-    // 蛻､螳夂ｵ先棡縺悟ｭ伜惠縺吶ｋ蝣ｴ蜷医・縺ｿ繧ｫ繧ｦ繝ｳ繝・
+    // 判定結果が存在する場合のみカウント
     if (judgeResult_.find(judgeType) != judgeResult_.end())
     {
-        judgeResult_[judgeType] += count; // 蛻､螳夂ｵ先棡繧偵き繧ｦ繝ｳ繝・
+        judgeResult_[judgeType] += count; // 判定結果をカウント
     }
 }
 
@@ -63,9 +63,9 @@ int32_t JudgeResult::GetJudgeResult(JudgeType judgeType) const
     auto it = judgeResult_.find(judgeType);
     if (it != judgeResult_.end())
     {
-        return it->second; // 蛻､螳夂ｵ先棡繧定ｿ斐☆
+        return it->second; // 判定結果を返す
     }
-    return 0; // 蟄伜惠縺励↑縺・ｴ蜷医・0繧定ｿ斐☆
+    return 0; // 存在しない場合は0を返す
 }
 
 void JudgeResult::DebugWindow()
@@ -85,7 +85,7 @@ void JudgeResult::DebugWindow()
     {
         for (auto& [type, count] : judgeResult_)
         {
-            count = 0; // 蜷・愛螳夂ｵ先棡繧偵Μ繧ｻ繝・ヨ
+            count = 0; // 各判定結果をリセット
         }
     }
 

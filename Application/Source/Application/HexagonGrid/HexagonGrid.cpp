@@ -10,16 +10,16 @@ using namespace Engine;
 // TODO : 文字化け
 namespace
 {
-// 謠冗判繧ｨ繝ｪ繧｢
+// 描画エリア
 Rect drawArea(Vector2(0, 0), Vector2(1280, 720));
 }
 
 void HexagonGrid::Initialize(const Rect& area)
 {
-    moveOffset_ = Vector2(0.0f, 0.0f); // 繧ｪ繝輔そ繝・ヨ繧貞・譛溷喧
+    moveOffset_ = Vector2(0.0f, 0.0f); // オフセットを初期化
 
     Vector2 halfSize = area.size;
-    // 謠冗判繧ｨ繝ｪ繧｢繧呈僑蠑ｵ
+    // 描画エリアを拡張
     Vector2 expandedMin = area.GetLeftTop() - halfSize;
     Vector2 expandedMax = area.GetRightBottom() + halfSize;
     GenerateHexagonGrid(Rect(expandedMin, expandedMax));
@@ -29,15 +29,15 @@ void HexagonGrid::Initialize(const Rect& area)
 void HexagonGrid::Update()
 {
     ImGui();
-    // 蜈ｭ隗貞ｽ｢縺ｮ蟷・→鬮倥＆繧定ｨ育ｮ・
+    // 六角形の幅と高さを計算
     float width = radius_ * std::sqrtf(3.0f);
     float height = radius_ * 1.5f;
 
-    // 繧ｰ繝ｪ繝・ラ蜈ｨ菴薙・繧ｪ繝輔そ繝・ヨ繧呈峩譁ｰ
+    // グリッド全体のオフセットを更新
     moveOffset_ += Vector2(-2.0f, 1.0f) * 0.016f;
 
-    // 繝ｫ繝ｼ繝怜・逅・ 繧ｪ繝輔そ繝・ヨ縺御ｸ螳壼､繧定ｶ・∴縺溘ｉ繝ｪ繧ｻ繝・ヨ
-    // X譁ｹ蜷代・繝ｫ繝ｼ繝暦ｼ・蛻怜・縺ｧ1蜻ｨ譛滂ｼ・
+    // ループ処理: オフセットが一定値を超えたらリセット
+    // X方向のループ（2列分で1周期）
     if (moveOffset_.x < -width * 2.0f)
     {
         moveOffset_.x += width * 2.0f;
@@ -47,7 +47,7 @@ void HexagonGrid::Update()
         moveOffset_.x -= width * 2.0f;
     }
 
-    // Y譁ｹ蜷代・繝ｫ繝ｼ繝暦ｼ・陦悟・縺ｧ1蜻ｨ譛滂ｼ・
+    // Y方向のループ（2行分で1周期）
     if (moveOffset_.y < -height * 2.0f)
     {
         moveOffset_.y += height * 2.0f;
@@ -57,7 +57,7 @@ void HexagonGrid::Update()
         moveOffset_.y -= height * 2.0f;
     }
 
-    // 蜷・・隗貞ｽ｢縺ｮ菴咲ｽｮ繧呈峩譁ｰ・亥・譛滉ｽ咲ｽｮ + 繧ｪ繝輔そ繝・ヨ・・
+    // 各六角形の位置を更新（初期位置 + オフセット）
 
     for (size_t i = 0; i < elements_.size() && i < initialPositions_.size(); ++i)
     {
@@ -78,7 +78,7 @@ void HexagonGrid::Draw()
 void HexagonGrid::GetHexagonLocalVertices(std::vector<Vector2>& outVertices) const
 {
     float angleStep = std::numbers::pi_v<float> *2.0f / 6.0f;
-    float drawRadius = radius_ - margin_; // margin繧貞ｼ輔＞縺溷濠蠕・〒謠冗判
+    float drawRadius = radius_ - margin_; // marginを引いた半径で描画
 
     outVertices.clear();
     for (int i = 0; i < 6; ++i)
@@ -95,9 +95,9 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
     std::vector<Vector2> hexagonVertices;
     GetHexagonLocalVertices(hexagonVertices);
 
-    // 蜈ｭ隗貞ｽ｢縺ｮ蟷・→鬮倥＆繧定ｨ育ｮ・
-    // 繝槭ず繝・け繝翫Φ繝舌・ 竏・ 縺ｨ 1.5 縺ｯ豁｣蜈ｭ隗貞ｽ｢縺ｮ蟷ｾ菴募ｭｦ逧・音諤ｧ縺ｫ蝓ｺ縺･縺・
-    // 繧峨＠縺・
+    // 六角形の幅と高さを計算
+    // マジックナンバー √3 と 1.5 は正六角形の幾何学的特性に基づく
+    // らしい
     float width = radius_ * std::sqrtf(3.0f);
     float height = radius_ * 1.5f;
     // 逶ｴ蠕・
@@ -105,7 +105,7 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
 
     Vector2 start = area.GetLeftTop();
     Vector2 end   = area.GetRightBottom();
-    // margin縺ｯ驟咲ｽｮ險育ｮ励↓蜷ｫ繧√↑縺・
+    // marginは配置計算に含めない
     int32_t colSize = static_cast<int32_t>(std::ceilf((end.x - start.x) / width)) + 2;
     int32_t rowSize = static_cast<int32_t>(std::ceilf((end.y - start.y) / height)) + 2;
 
@@ -116,15 +116,15 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
         for (int32_t col = 0; col < colSize; ++col)
         {
             Vector2 center = GetHexagonCenter(row, col);
-            center += start; // 繧ｨ繝ｪ繧｢縺ｮ髢句ｧ倶ｽ咲ｽｮ繧貞刈邂・
+            center += start; // エリアの開始位置を加算
 
-            initialPositions_.push_back(center); // 蛻晄悄菴咲ｽｮ繧剃ｿ晏ｭ・
+            initialPositions_.push_back(center); // 初期位置を保存
 
             auto collider = std::make_unique<UIConvexPolygonCollider>();
             collider->SetTransformMode(IUICollider::TransformMode::Independent);
             collider->SetLocalVertices(hexagonVertices);
 
-            int32_t num = col + row * colSize; // 繧､繝ｳ繝・ャ繧ｯ繧ｹ險育ｮ励ｂ菫ｮ豁｣
+            int32_t num = col + row * colSize; // インデックス計算も修正
             std::string label = "hexagon_";
             if (num < 10)
                 label += "0";
@@ -140,13 +140,13 @@ void HexagonGrid::GenerateHexagonGrid(const Rect& area)
             hexagon->GetComponent<UISpriteRenderComponent>()->LoadAndSetTexture("Hexagon.png");
 
             elements_.push_back(std::move(hexagon));
-            // Todo: 繧､繝吶Φ繝郁ｨｭ螳・竊・
-            // 繧ｫ繝ｩ繝ｼ縺ｯ螟牙喧縺ｪ縺・
-            // 繝帙ヰ繝ｼ荳ｭ縺ｯ繝薙・繝医〒諡｡邵ｮ縺ｪ縺ｩ
-            // 蜈ｨ菴薙→縺励※蟶ｸ縺ｫ
+            // Todo: イベント設定 ↓
+            // カラーは変化なし
+            // ホバー中はビートで拡縮など
+            // 全体として常に
             // 荳螳壽婿蜷代∈豬√☆
-            // 繝代・繝・ぅ繧ｯ繝ｫ繧定・繧上○繧・
-            // 縺ｨ縺・
+            // パーティクルを舞わせる
+            // とか
 
         }
     }
@@ -161,7 +161,7 @@ Vector2 HexagonGrid::GetHexagonCenter(int32_t row, int32_t col) const
     center.x = col * width;
     center.y = row * height;
 
-    // 螂・焚陦後ｒx譁ｹ蜷代↓繧ｪ繝輔そ繝・ヨ
+    // 奇数行をx方向にオフセット
     if (row % 2 == 1)
     {
         center.x += width * 0.5f;

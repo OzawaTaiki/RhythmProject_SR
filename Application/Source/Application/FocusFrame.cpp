@@ -10,8 +10,8 @@ void FocusFrame::Initialize()
 {
     jsonBinder_ = std::make_unique<JsonBinder>("FocusFrame", "Resources/Data/UI/");
 
-    // JSON縺九ｉ譌｢蟄倥・繧ｨ繝ｬ繝｡繝ｳ繝亥錐繧定ｪｭ縺ｿ霎ｼ縺ｿ
-    //for (size_t i = 0; i < 10; ++i) // 譛螟ｧ10蛟九・繧ｨ繝ｬ繝｡繝ｳ繝医ｒ隧ｦ縺・
+    // JSONから既存のエレメント名を読み込み
+    //for (size_t i = 0; i < 10; ++i) // 最大10個のエレメントを試す
     //{
     //    std::string str;
     //    jsonBinder_->GetVariableValue("ElementName_" + std::to_string(i), str);
@@ -92,7 +92,7 @@ void FocusFrame::Update(float deltaTime)
 
         if (ImGui::DragFloat2("LeftTop", &edge.vertices[static_cast<size_t>(VertexType::LeftTop)].x, 1.0f))
         {
-            // 繝ｪ繧｢繝ｫ繧ｿ繧､繝縺ｧ totalEdgeLength 繧貞・險育ｮ・
+            // リアルタイムで totalEdgeLength を再計算
             float totalLength = 0.0f;
             Vector2 lt = edge.vertices[static_cast<size_t>(VertexType::LeftTop)];
             Vector2 rt = edge.vertices[static_cast<size_t>(VertexType::RightTop)];
@@ -155,7 +155,7 @@ void FocusFrame::Update(float deltaTime)
                 edge.vertices[static_cast<size_t>(VertexType::RightBottom)] = Vector2(size.x / 2, -size.y / 2);
                 edge.vertices[static_cast<size_t>(VertexType::LeftBottom)] = Vector2(-size.x / 2, -size.y / 2);
 
-                // totalEdgeLength繧貞・險育ｮ・
+                // totalEdgeLengthを再計算
                 float totalLength = 0.0f;
                 Vector2 lt = edge.vertices[static_cast<size_t>(VertexType::LeftTop)];
                 Vector2 rt = edge.vertices[static_cast<size_t>(VertexType::RightTop)];
@@ -202,24 +202,24 @@ void FocusFrame::Update(float deltaTime)
     Vector2 targetPos = targetElement_->GetWorldPosition();
     auto& tracer = tracers_[index];
 
-    // 蝓ｺ貅悶→縺ｪ繧却rogress繧呈峩譁ｰ
+    // 基準となるprogressを更新
     tracer.progress += progressIncrement;
     if (tracer.progress >= 1.0f)
         tracer.progress -= 1.0f;
 
-    // 繝医Λ繝・き繝ｼ0縺ｨ1縺ｮ菴咲ｽｮ繧定ｨ育ｮ・
+    // トラッカー0と1の位置を計算
     float progress0 = tracer.progress;
     float progress1 = tracer.progress - trailLength_;
     if (progress1 < 0.0f)
         progress1 += 1.0f;
 
-    // 繝医Λ繝・き繝ｼ0: 0縺ｨ1繧偵▽縺ｪ縺千ｷ・
+    // トラッカー0: 0と1をつなぐ線
     auto* spriteComponent0 = focusFrames_[0]->GetComponent<UISpriteRenderComponent>();
     auto* spriteComponent1 = focusFrames_[1]->GetComponent<UISpriteRenderComponent>();
 
     UpdateTrackerLine(tracer, targetPos, progress0, progress1, spriteComponent0, spriteComponent1, 5.0f);
 
-    // 繝医Λ繝・き繝ｼ2縺ｨ3: 蜿榊ｯｾ蛛ｴ
+    // トラッカー2と3: 反対側
     float progress2 = tracer.progress + 0.5f;
     if (progress2 >= 1.0f)
         progress2 -= 1.0f;
@@ -227,13 +227,13 @@ void FocusFrame::Update(float deltaTime)
     if (progress3 < 0.0f)
         progress3 += 1.0f;
 
-    // 繝医Λ繝・き繝ｼ2: 2縺ｨ3繧偵▽縺ｪ縺千ｷ・
+    // トラッカー2: 2と3をつなぐ線
     auto* spriteComponent2 = focusFrames_[2]->GetComponent<UISpriteRenderComponent>();
     auto* spriteComponent3 = focusFrames_[3]->GetComponent<UISpriteRenderComponent>();
 
     UpdateTrackerLine(tracer, targetPos, progress2, progress3, spriteComponent2, spriteComponent3, 5.0f);
 
-    // focusFrames縺ｮ譖ｴ譁ｰ
+    // focusFramesの更新
     for (auto& frame : focusFrames_)
     {
         frame->Update();
@@ -313,7 +313,7 @@ void FocusFrame::InitEdgesParams(size_t number, OutlineTracer& edge)
 
 Vector2 FocusFrame::CalcPointOnEdge(const OutlineTracer& edge, float distanceAlongEdge)
 {
-    float lengthAccum = 0.0f;// 迴ｾ蝨ｨ縺ｮ邏ｯ遨崎ｷ晞屬
+    float lengthAccum = 0.0f;// 現在の累積距離
     // 霎ｺ荳翫・轤ｹ
     Vector2 pointOnEdge;
     for (size_t i = 0; i < edge.vertices.size(); ++i)
@@ -326,10 +326,10 @@ Vector2 FocusFrame::CalcPointOnEdge(const OutlineTracer& edge, float distanceAlo
 
         if (lengthAccum + segmentLength >= distanceAlongEdge)
         {
-            float remaining = distanceAlongEdge - lengthAccum;// 繧ｻ繧ｰ繝｡繝ｳ繝亥・縺ｧ縺ｮ谿九ｊ霍晞屬
+            float remaining = distanceAlongEdge - lengthAccum;// セグメント内での残り距離
             Vector2 direction = (end - start).Normalize();
-            Vector2 newPos = start + direction * remaining;// 譁ｰ縺励＞鬆らせ菴咲ｽｮ
-            // 鬆らせ繝・・繧ｿ縺ｮ譖ｴ譁ｰ
+            Vector2 newPos = start + direction * remaining;// 新しい頂点位置
+            // 頂点データの更新
             pointOnEdge = newPos;
             break;
         }
@@ -353,7 +353,7 @@ Vector2 FocusFrame::CalcTangentOnEdge(const OutlineTracer& edge, float distanceA
 
         if (lengthAccum + segmentLength >= distanceAlongEdge)
         {
-            // 縺薙・繧ｻ繧ｰ繝｡繝ｳ繝医・譁ｹ蜷代・繧ｯ繝医Ν繧定ｿ斐☆
+            // このセグメントの方向ベクトルを返す
             if (segmentLength > 0.0f)
                 tangent = (end - start) / segmentLength; // 豁｣隕丞喧
             break;
@@ -366,10 +366,10 @@ Vector2 FocusFrame::CalcTangentOnEdge(const OutlineTracer& edge, float distanceA
 
 Vector2 FocusFrame::CalcPerpendicularOnEdge(const OutlineTracer& edge, float distanceAlongEdge)
 {
-    // 謗･邱壹・繧ｯ繝医Ν繧貞叙蠕・
+    // 接線ベクトルを取得
     Vector2 tangent = CalcTangentOnEdge(edge, distanceAlongEdge);
 
-    // 謗･邱壹↓蝙ら峩縺ｪ繝吶け繝医Ν・・0蠎ｦ蝗櫁ｻ｢・・
+    // 接線に垂直なベクトル（90度回転）
     Vector2 perpendicular = Vector2(-tangent.y, tangent.x);
 
     return perpendicular;
@@ -377,36 +377,36 @@ Vector2 FocusFrame::CalcPerpendicularOnEdge(const OutlineTracer& edge, float dis
 
 VertexType FocusFrame::GetVertexTypeFromProgress(float t, int32_t index)
 {
-    // t繧・~4縺ｮ遽・峇縺ｫ螟画鋤・・縺､縺ｮ霎ｺ・・
+    // tを0~4の範囲に変換（4つの辺）
     float scaledT = t * 4.0f;
     int segmentIndex = static_cast<int>(scaledT);
 
-    // 繧ｻ繧ｰ繝｡繝ｳ繝医う繝ｳ繝・ャ繧ｯ繧ｹ繧・~3縺ｫ蛻ｶ髯・
+    // セグメントインデックスを0~3に制限
     if (segmentIndex >= 4)
         segmentIndex = 3;
     if (segmentIndex < 0)
         segmentIndex = 0;
 
-    // index縺悟・謨ｰ縺ｮ蝣ｴ蜷医・逶ｴ蜑阪・鬆らせ縲∝･・焚縺ｮ蝣ｴ蜷医・逶ｴ蠕後・鬆らせ
+    // indexが偶数の場合は直前の頂点、奇数の場合は直後の頂点
     if (index % 2 == 0)
     {
-        // 逶ｴ蜑阪・鬆らせ・医そ繧ｰ繝｡繝ｳ繝医・髢句ｧ矩らせ・・
+        // 直前の頂点（セグメントの開始頂点）
         return static_cast<VertexType>(segmentIndex);
     }
     else
     {
-        // 逶ｴ蠕後・鬆らせ・医そ繧ｰ繝｡繝ｳ繝医・邨ゆｺ・らせ・・
+        // 直後の頂点（セグメントの終了頂点）
         return static_cast<VertexType>((segmentIndex + 1) % 4);
     }
 }
 
 bool FocusFrame::IsCrossingVertex(const OutlineTracer& edge, float progress0, float progress1)
 {
-    // progress繧定ｷ晞屬縺ｫ螟画鋤
+    // progressを距離に変換
     float distance0 = edge.totalEdgeLength * progress0;
     float distance1 = edge.totalEdgeLength * progress1;
 
-    // 蜷・せ縺後←縺ｮ霎ｺ荳翫↓縺ゅｋ縺九ｒ蛻､螳・
+    // 各点がどの辺上にあるかを判定
     float lengthAccum = 0.0f;
     int edgeIndex0 = -1;
     int edgeIndex1 = -1;
@@ -419,13 +419,13 @@ bool FocusFrame::IsCrossingVertex(const OutlineTracer& edge, float progress0, fl
 
         float segmentLength = (end - start).Length();
 
-        // distance0縺後％縺ｮ繧ｻ繧ｰ繝｡繝ｳ繝井ｸ翫↓縺ゅｋ縺・
+        // distance0がこのセグメント上にあるか
         if (edgeIndex0 == -1 && lengthAccum + segmentLength >= distance0)
         {
             edgeIndex0 = static_cast<int>(i);
         }
 
-        // distance1縺後％縺ｮ繧ｻ繧ｰ繝｡繝ｳ繝井ｸ翫↓縺ゅｋ縺・
+        // distance1がこのセグメント上にあるか
         if (edgeIndex1 == -1 && lengthAccum + segmentLength >= distance1)
         {
             edgeIndex1 = static_cast<int>(i);
@@ -433,22 +433,22 @@ bool FocusFrame::IsCrossingVertex(const OutlineTracer& edge, float progress0, fl
 
         lengthAccum += segmentLength;
 
-        // 荳｡譁ｹ隕九▽縺九▲縺溘ｉ邨ゆｺ・
+        // 両方見つかったら終了
         if (edgeIndex0 != -1 && edgeIndex1 != -1)
             break;
     }
 
-    // 逡ｰ縺ｪ繧玖ｾｺ荳翫↓縺・ｋ蝣ｴ蜷医・鬆らせ繧偵∪縺溘＞縺ｧ縺・ｋ
+    // 異なる辺上にいる場合は頂点をまたいでいる
     return edgeIndex0 != edgeIndex1;
 }
 
 Vector2 FocusFrame::GetCrossedVertex(const OutlineTracer& edge, float progress0, float progress1)
 {
-    // progress繧定ｷ晞屬縺ｫ螟画鋤
+    // progressを距離に変換
     float distance0 = edge.totalEdgeLength * progress0;
     float distance1 = edge.totalEdgeLength * progress1;
 
-    // 蜷・せ縺後←縺ｮ霎ｺ荳翫↓縺ゅｋ縺九ｒ蛻､螳・
+    // 各点がどの辺上にあるかを判定
     float lengthAccum = 0.0f;
     int edgeIndex0 = -1;
     int edgeIndex1 = -1;
@@ -461,13 +461,13 @@ Vector2 FocusFrame::GetCrossedVertex(const OutlineTracer& edge, float progress0,
 
         float segmentLength = (end - start).Length();
 
-        // distance0縺後％縺ｮ繧ｻ繧ｰ繝｡繝ｳ繝井ｸ翫↓縺ゅｋ縺・
+        // distance0がこのセグメント上にあるか
         if (edgeIndex0 == -1 && lengthAccum + segmentLength >= distance0)
         {
             edgeIndex0 = static_cast<int>(i);
         }
 
-        // distance1縺後％縺ｮ繧ｻ繧ｰ繝｡繝ｳ繝井ｸ翫↓縺ゅｋ縺・
+        // distance1がこのセグメント上にあるか
         if (edgeIndex1 == -1 && lengthAccum + segmentLength >= distance1)
         {
             edgeIndex1 = static_cast<int>(i);
@@ -475,18 +475,18 @@ Vector2 FocusFrame::GetCrossedVertex(const OutlineTracer& edge, float progress0,
 
         lengthAccum += segmentLength;
 
-        // 荳｡譁ｹ隕九▽縺九▲縺溘ｉ邨ゆｺ・
+        // 両方見つかったら終了
         if (edgeIndex0 != -1 && edgeIndex1 != -1)
             break;
     }
 
-    // 逡ｰ縺ｪ繧玖ｾｺ荳翫↓縺ゅｋ蝣ｴ蜷医√◎縺ｮ髢薙・鬆らせ繧定ｿ斐☆
+    // 異なる辺上にある場合、その間の頂点を返す
     if (edgeIndex0 != edgeIndex1)
     {
         return edge.vertices[edgeIndex0];
     }
 
-    // 蜷後§霎ｺ荳翫↓縺ゅｋ蝣ｴ蜷医・遨ｺ縺ｮ繝吶け繝医Ν繧定ｿ斐☆・医お繝ｩ繝ｼ繧ｱ繝ｼ繧ｹ・・
+    // 同じ辺上にある場合は空のベクトルを返す（エラーケース）
     return Vector2(0, 0);
 }
 
@@ -495,10 +495,10 @@ void FocusFrame::UpdateTrackerLine(const OutlineTracer& tracer, const Vector2& t
     if (!spriteComponent0 || !spriteComponent1)
         return;
 
-    // 鬆らせ繧偵∪縺溘＞縺ｧ縺・ｋ縺九メ繧ｧ繝・け
+    // 頂点をまたいでいるかチェック
     bool isCrossing = IsCrossingVertex(tracer, progress0, progress1);
 
-    // 蜷аrogress縺ｮ霍晞屬縺ｨ菴咲ｽｮ繧定ｨ育ｮ・
+    // 各progressの距離と位置を計算
     float distanceAlongEdge0 = tracer.totalEdgeLength * progress0;
     float distanceAlongEdge1 = tracer.totalEdgeLength * progress1;
     Vector2 pos0 = CalcPointOnEdge(tracer, distanceAlongEdge0);
@@ -507,20 +507,20 @@ void FocusFrame::UpdateTrackerLine(const OutlineTracer& tracer, const Vector2& t
     Vector2 worldPos0 = targetPos + pos0;
     Vector2 worldPos1 = targetPos + pos1;
 
-    // 繧ｹ繝励Λ繧､繝医・鬆らせ繝・・繧ｿ繧貞叙蠕・
+    // スプライトの頂点データを取得
     auto* sprite = spriteComponent0->GetSprite();
     auto& vertices1 = sprite->GetVertexData();
 
     auto* sprite2 = spriteComponent1->GetSprite();
     auto& vertices2 = sprite2->GetVertexData();
 
-    // 蝙ら峩繝吶け繝医Ν繧貞叙蠕・
+    // 垂直ベクトルを取得
     Vector2 perpendicular0 = CalcPerpendicularOnEdge(tracer, distanceAlongEdge0);
     Vector2 perpendicular1 = CalcPerpendicularOnEdge(tracer, distanceAlongEdge1);
 
     if (isCrossing)
     {
-        // 鬆らせ繧偵∪縺溘＞縺ｧ縺・ｋ蝣ｴ蜷医・らせ縺ｧ譖ｲ縺後ｋ邱壹ｒ謠冗判
+        // 頂点をまたいでいる場合、頂点で曲がる線を描画
         Vector2 crossedVertex = GetCrossedVertex(tracer, progress0, progress1) + targetPos;
 
         vertices1[0].position = worldPos0 + perpendicular0 * width;
@@ -540,7 +540,7 @@ void FocusFrame::UpdateTrackerLine(const OutlineTracer& tracer, const Vector2& t
     }
     else
     {
-        // 蜷後§霎ｺ荳翫↓縺ゅｋ蝣ｴ蜷医・逶ｴ邱壹〒謠冗判
+        // 同じ辺上にある場合は直線で描画
         vertices1[0].position = worldPos0 + perpendicular0 * width;
         vertices1[1].position = worldPos0 - perpendicular0 * width;
         vertices1[2].position = worldPos1 + perpendicular0 * width;
@@ -548,7 +548,7 @@ void FocusFrame::UpdateTrackerLine(const OutlineTracer& tracer, const Vector2& t
         vertices1[4].position = worldPos1 - perpendicular0 * width;
         vertices1[5].position = vertices1[2].position;
 
-        // spriteComponent1縺ｯ菴ｿ繧上↑縺・・縺ｧ遨ｺ縺ｫ縺吶ｋ
+        // spriteComponent1は使わないので空にする
         vertices2[0].position = Vector2::zero;
         vertices2[1].position = Vector2::zero;
         vertices2[2].position = Vector2::zero;

@@ -13,7 +13,7 @@ using namespace Engine;
 NoteJudge::NoteJudge()
 {
 #ifdef _DEBUG
-    // 繝・ヰ繝・げ繧ｦ繧｣繝ｳ繝峨え縺ｮ逋ｻ骭ｲ
+    // デバッグウィンドウの登録
     ImGuiDebugManager::GetInstance()->AddDebugWindow("JudgeLine", [this]() { ImGui::Checkbox("DrawLine", &isDrawLine); });
 #endif // _DEBUG
 }
@@ -21,7 +21,7 @@ NoteJudge::NoteJudge()
 NoteJudge::~NoteJudge()
 {
 #ifdef _DEBUG
-    // 繝・ヰ繝・げ繧ｦ繧｣繝ｳ繝峨え縺ｮ蜑企勁
+    // デバッグウィンドウの削除
     ImGuiDebugManager::GetInstance()->RemoveDebugWindow("JudgeLine");
 #endif // _DEBUG
 }
@@ -32,10 +32,10 @@ void NoteJudge::Initialize()
 
     const float baseFrameTime = 1.0f / 60.0f;// 60FPS蝓ｺ貅・0.0166s
     // 莉ｮ
-    timingThresholds_[JudgeType::Perfect]   = baseFrameTime * 4.0f;     //  4繝輔Ξ繝ｼ繝 邏・.066s
-    timingThresholds_[JudgeType::Good]      = baseFrameTime * 10.0f;    // 10繝輔Ξ繝ｼ繝 邏・.166s
-    timingThresholds_[JudgeType::Bad]       = baseFrameTime * 16.0f;    // 16繝輔Ξ繝ｼ繝 邏・.266s
-    timingThresholds_[JudgeType::Miss]      = baseFrameTime * 20.0f;    // 20繝輔Ξ繝ｼ繝 邏・.333s
+    timingThresholds_[JudgeType::Perfect]   = baseFrameTime * 4.0f;     //  4フレーム 約0.066s
+    timingThresholds_[JudgeType::Good]      = baseFrameTime * 10.0f;    // 10フレーム 約0.166s
+    timingThresholds_[JudgeType::Bad]       = baseFrameTime * 16.0f;    // 16フレーム 約0.266s
+    timingThresholds_[JudgeType::Miss]      = baseFrameTime * 20.0f;    // 20フレーム 約0.333s
 
 }
 
@@ -43,7 +43,7 @@ void NoteJudge::DrawJudgeLine()
 {
 #ifdef _DEBUG
     /// debug逕ｨ
-    // 蛻､螳壹Λ繧､繝ｳ縺ｨ蛻､螳夂ｯ・峇縺ｮ謠冗判
+    // 判定ラインと判定範囲の描画
 
     if (!isDrawLine) return;
 
@@ -51,10 +51,10 @@ void NoteJudge::DrawJudgeLine()
 
     float halfWidth = laneTotalWidth_ / 2.0f;
 
-    // 蛻､螳壹Λ繧､繝ｳ繧呈緒逕ｻ
+    // 判定ラインを描画
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
-        // 蛻､螳壹Λ繧､繝ｳ繧呈緒逕ｻ
+        // 判定ラインを描画
         float position = timingThresholds_[i] * speed_ + position_;
 
         Vector3 start = { -halfWidth, 0.01f,  position };
@@ -64,10 +64,10 @@ void NoteJudge::DrawJudgeLine()
     }
 
 
-    // 繝ｩ繧､繝ｳ謇句燕縺ｮ蛻､螳夂ｷ壹ｒ謠冗判
+    // ライン手前の判定線を描画
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
-        // 蛻､螳壹Λ繧､繝ｳ繧呈緒逕ｻ
+        // 判定ラインを描画
         float position = (-timingThresholds_[i] * speed_) + position_;
 
         Vector3 start = { -halfWidth, 0,  position };
@@ -82,7 +82,7 @@ void NoteJudge::DrawJudgeLine()
 JudgeType NoteJudge::ProcessNoteJudge(Note* note, float elapsedTime)
 {
     if (note == nullptr)
-        return JudgeType::None; // null繝√ぉ繝・け
+        return JudgeType::None; // nullチェック
 
     JudgeType result = JudgeType::None;
 
@@ -90,7 +90,7 @@ JudgeType NoteJudge::ProcessNoteJudge(Note* note, float elapsedTime)
 
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
-        // 蛻､螳夂ｯ・峇蜀・°繝√ぉ繝・け
+        // 判定範囲内かチェック
         if (targetTime >= elapsedTime - timingThresholds_[i] &&
             targetTime <= elapsedTime + timingThresholds_[i])
         {

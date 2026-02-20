@@ -1,5 +1,7 @@
 #include "HitparticleModifier.h"
 
+using namespace Engine;
+
 void HitParticleModifier::Initialize()
 {
 }

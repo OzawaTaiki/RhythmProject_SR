@@ -10,7 +10,7 @@ public:
     HexagonGrid() = default;
     ~HexagonGrid() = default;
 
-    void Initialize(const Rect& area);
+    void Initialize(const Engine::Rect& area);
     void Update();
     void Draw();
 
@@ -19,7 +19,7 @@ private:
 
     void GetHexagonLocalVertices(std::vector<Engine::Vector2>& outVertices) const;
 
-    void GenerateHexagonGrid(const Rect& area);
+    void GenerateHexagonGrid(const Engine::Rect& area);
 
     Engine::Vector2 GetHexagonCenter(int32_t row, int32_t col) const;
 

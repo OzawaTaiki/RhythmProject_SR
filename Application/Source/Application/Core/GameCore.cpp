@@ -10,6 +10,7 @@
 #include <System/Input/TextInputManager.h>
 #include <Utility/ConvertString/ConvertString.h>
 
+using namespace Engine;
 
 GameCore::GameCore(int32_t laneCount)
     : laneCount_(laneCount), isWaitingForStart_(true), waitTimer_(0.0f),

@@ -6,6 +6,8 @@
 
 float JudgeText::displayYOffset_ = -150.0f; // Y軸のオフセットを初期化
 
+using namespace Engine;
+
 JudgeText::JudgeText() :
     judgeType_(JudgeType::None),
     position_(0.0f, 0.0f),

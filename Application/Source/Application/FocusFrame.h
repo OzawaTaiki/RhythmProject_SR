@@ -2,7 +2,10 @@
 
 #include <Features/UI/Element/UIElement.h>
 
+namespace Engine
+{
 class UISpriteRenderComponent;
+}
 
 enum class VertexType
 {
@@ -45,7 +48,7 @@ private:
     Engine::Vector2 GetCrossedVertex(const OutlineTracer& edge, float progress0, float progress1);
     void UpdateTrackerLine(const OutlineTracer& tracer, const Engine::Vector2& targetPos,
                            float progress0, float progress1,
-                           UISpriteRenderComponent* spriteComponent0, UISpriteRenderComponent* spriteComponent1, float width);
+                           Engine::UISpriteRenderComponent* spriteComponent0, Engine::UISpriteRenderComponent* spriteComponent1, float width);
 private:
 
     Engine::UIElement* targetElement_ = nullptr;

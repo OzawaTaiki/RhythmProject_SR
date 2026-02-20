@@ -18,7 +18,10 @@ struct ColorChangeEvent : Engine::EventData
     float delayTime = 0.0f;
 };
 
+namespace Engine
+{
 class Camera;
+}
 
 /// <summary>
 /// 背景等のオブジェクトに関するクラス。

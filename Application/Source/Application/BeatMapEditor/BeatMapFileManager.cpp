@@ -7,6 +7,7 @@
 #include <json.hpp>
 #include <fstream>
 
+using namespace Engine;
 using json = nlohmann::json;
 
 namespace BME {
@@ -44,7 +45,7 @@ bool FileManager::Load(const std::string& _filePath, Document* _document)
     else
     {
         lastError_ = beatMapLoader_->GetErrorMessage();
-        Engine::Debug::Log("Error loading beatmap: " + lastError_ + "\n");
+        Debug::Log("Error loading beatmap: " + lastError_ + "\n");
         return false;
     }
 }

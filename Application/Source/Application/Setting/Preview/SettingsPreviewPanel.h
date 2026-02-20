@@ -12,7 +12,10 @@
 #include <Application/Lane/Lane.h>
 
 // 前方宣言
-namespace Engine { class Camera; }
+namespace Engine
+{
+class Camera;
+}
 
 // 設定プレビュー用パネルクラス
 /// <summary>
@@ -33,7 +36,7 @@ private:
 
     std::vector<std::unique_ptr<Lane>> lanes_; // レーンのリスト
 
-    RenderTarget* renderTexture_; // 専用描画テクスチャ
+    Engine::RenderTarget* renderTexture_; // 専用描画テクスチャ
 
     std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr; // メトロノーム音源
     std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr; // 再生中の音源

@@ -5,9 +5,13 @@
 #include <features/Json/JsonBinder.h>
 
 
-namespace Engine { class Camera; class AudioSpectrum; class LightGroup; }
+namespace Engine
+{
+class Camera;
+class AudioSpectrum;
+class LightGroup;
 class PointLightComponent;
-
+}
 struct FrequencyBands
 {
     static constexpr float kSubBass    = 60.0f;    // 0    - 60   Hz (重低音)
@@ -47,7 +51,7 @@ private:
     size_t id_;
     Engine::Vector2 hzRange_;
 
-    std::weak_ptr<PointLightComponent> pointLight_;
+    std::weak_ptr<Engine::PointLightComponent> pointLight_;
     Engine::Vector3 lightOffset_ = Engine::Vector3(0.0f, 2.0f, 0.0f);
 
     Engine::Vector4 color_ = { 1.0f,1.0f ,1.0f ,1.0f };

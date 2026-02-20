@@ -1,4 +1,4 @@
-﻿#include "HexagonGrid.h"
+#include "HexagonGrid.h"
 #include <Features/UI/Collider/UIConvexPolygonCollider.h>
 #include <Debug/ImGuiDebugManager.h>
 #include <Features/UI/Component/UIColliderComponent.h>
@@ -7,6 +7,7 @@
 
 using namespace Engine;
 
+// TODO : 文字化け
 namespace
 {
 // 謠冗判繧ｨ繝ｪ繧｢

@@ -9,7 +9,10 @@
 
 #include <memory>
 
+namespace Engine
+{
 class EventManager;
+}
 class TitleUI : public Engine::iEventListener
 {
 private:
@@ -79,7 +82,7 @@ private:
     bool isExpanding_ = false; // ボタンが展開中かどうか
     float currentTime_ = 0.0f;
 
-    EventManager* eventManager_;
+    Engine::EventManager* eventManager_;
 
     std::unique_ptr<Engine::UIImageElement> backgroundElement_;
 

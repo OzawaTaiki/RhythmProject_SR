@@ -2,6 +2,8 @@
 
 #include <Debug/ImGuiDebugManager.h>
 
+using namespace Engine;
+
 JudgeLine::JudgeLine()
 {
 #ifdef _DEBUG

@@ -1,8 +1,10 @@
-﻿#include "FocusFrame.h"
+#include "FocusFrame.h"
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UI/Component/UISpriteRenderComponent.h>
 
 using namespace Engine;
+
+// TODO : 文字化け
 
 void FocusFrame::Initialize()
 {

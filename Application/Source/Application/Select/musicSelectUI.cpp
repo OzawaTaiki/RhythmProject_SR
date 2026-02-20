@@ -9,6 +9,9 @@
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Features/UI/UINavigationManager.h>
 
+using namespace Engine;
+
+
 namespace
 {
 const int32_t kVisibleCount = 7; // 一度に表示するアイテム数

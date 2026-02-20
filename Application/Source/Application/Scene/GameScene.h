@@ -44,7 +44,7 @@ enum class GameMode
 /// <summary>
 /// ゲームのメインプレイシーンを表すクラス。ゲームの初期化、更新、描画、イベント処理を行う。
 /// </summary>
-class GameScene : public BaseScene, public iEventListener
+class GameScene : public Engine::BaseScene, public Engine::iEventListener
 {
 public:
     /// <summary>
@@ -61,7 +61,7 @@ public:
     /// シーンの初期化処理。
     /// </summary>
     /// <param name="sceneData">シーンに渡す初期データ</param>
-    void Initialize(SceneData* sceneData) override;
+    void Initialize(Engine::SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -100,22 +100,22 @@ private:
     //  タイトルへ戻る処理
     void ToTitle();
     // イベント受信処理
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
     void Load(const std::string& beforeScene,const std::string &filepth,const BeatMapData& data);
 private:
 
     // シーン関連
-    Camera SceneCamera_ = {};
-    Camera camera2d_ = {};
-    DebugCamera debugCamera_ = {};
+    Engine::Camera SceneCamera_ = {};
+    Engine::Camera camera2d_ = {};
+    Engine::DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 
-    LineDrawer* lineDrawer_ = nullptr;
-    Input* input_ = nullptr;
-    ParticleSystem* particleSystem_ = nullptr;
+    Engine::LineDrawer* lineDrawer_ = nullptr;
+    Engine::Input* input_ = nullptr;
+    Engine::ParticleSystem* particleSystem_ = nullptr;
 
-    std::shared_ptr<LightGroup> lightGroup_ = nullptr;
+    std::shared_ptr<Engine::LightGroup> lightGroup_ = nullptr;
 
     // Application
 
@@ -135,8 +135,8 @@ private:
     std::unique_ptr<BeatManager> beatManager_ = nullptr;
     std::future<bool> beatMapLoadFuture_ = {};
 
-    std::unique_ptr<SpectrumTextureGenerator> spectrumTextureGenerator_ = nullptr;
-    AudioSpectrum audioSpectrum_;
+    std::unique_ptr<Engine::SpectrumTextureGenerator> spectrumTextureGenerator_ = nullptr;
+    Engine::AudioSpectrum audioSpectrum_;
 
 
     bool isBeatMapLoaded_ = false;
@@ -154,9 +154,9 @@ private:
 
     std::unique_ptr<LaneOutline> laneOutline_ = nullptr;
 
-    std::unique_ptr<Bloom> bloom_ = nullptr;
-    BloomConstantBufferData bloomData_ = {};
-    BloomBlurConstantBufferData bloomBlurData_ = {};
+    std::unique_ptr<Engine::Bloom> bloom_ = nullptr;
+    Engine::BloomConstantBufferData bloomData_ = {};
+    Engine::BloomBlurConstantBufferData bloomBlurData_ = {};
 
     void ImGui();
     // 楽曲終了後遷移するか

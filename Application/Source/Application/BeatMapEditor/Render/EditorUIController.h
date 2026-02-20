@@ -40,7 +40,7 @@ private:
     void DrawDraggingArea(const State* state) const;
 
 private:
-    std::unique_ptr<Sprite> draggingAreaSprite_;
+    std::unique_ptr<Engine::Sprite> draggingAreaSprite_;
 
 
 };

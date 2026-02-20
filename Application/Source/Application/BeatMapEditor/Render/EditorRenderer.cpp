@@ -8,6 +8,9 @@
 #include <Application/BeatsManager/BeatManager.h>
 #include <Framework/LayerSystem/LayerSystem.h>
 
+using namespace Engine;
+
+
 namespace BME {
 
 void EditorRenderer::Initialize(EditorCoordinate* _coordinate, State* _state,const Matrix4x4& _matVP)

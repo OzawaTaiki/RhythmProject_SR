@@ -13,7 +13,7 @@
 /// 選曲画面のUIクラス
 /// </summary>
 // 選曲UI，設定ボタン，楽曲スピードのUIなどを管理
-class SelectUI : iEventListener
+class SelectUI : Engine::iEventListener
 {
 public:
     SelectUI();
@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    void Initialize(std::shared_ptr<VoiceInstance> voiceInstance);
+    void Initialize(std::shared_ptr<Engine::VoiceInstance> voiceInstance);
 
     /// <summary>
     /// 更新処理
@@ -34,7 +34,7 @@ public:
     /// </summary>
     void Draw();
 
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
     float GetMusicElapsedTime() const;
 
@@ -42,7 +42,7 @@ private:
 
     std::unique_ptr<MusicSelectUI> musicSelectUI_;
 
-    std::unique_ptr<UIButtonElement> settingButton_; // 設定ボタン
+    std::unique_ptr<Engine::UIButtonElement> settingButton_; // 設定ボタン
 
     bool isSettingMenuActive_ = false; // 設定メニューがアクティブかどうか
     std::unique_ptr<SettingMenu> settingMenu_; // 設定メニュー

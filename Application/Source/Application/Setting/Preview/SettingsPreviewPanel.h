@@ -12,7 +12,7 @@
 #include <Application/Lane/Lane.h>
 
 // 前方宣言
-class Camera;
+namespace Engine { class Camera; }
 
 // 設定プレビュー用パネルクラス
 /// <summary>
@@ -35,11 +35,11 @@ private:
 
     RenderTarget* renderTexture_; // 専用描画テクスチャ
 
-    std::shared_ptr<SoundInstance> soundInstance_ = nullptr; // メトロノーム音源
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr; // 再生中の音源
+    std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr; // メトロノーム音源
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr; // 再生中の音源
 
-    std::shared_ptr<UIButtonElement> musicToggleButton_ = nullptr; // 音楽再生トグルボタン
-    std::shared_ptr<UIImageElement> previewSprite_ = nullptr; // プレビュー表示用スプライト
+    std::shared_ptr<Engine::UIButtonElement> musicToggleButton_ = nullptr; // 音楽再生トグルボタン
+    std::shared_ptr<Engine::UIImageElement> previewSprite_ = nullptr; // プレビュー表示用スプライト
     uint32_t previewTextureHandle_ = 0; // プレビューテクスチャハンドル
-    Camera camera_ = {}; // プレビュー用カメラ
+    Engine::Camera camera_ = {}; // プレビュー用カメラ
 };

@@ -10,6 +10,7 @@
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Features/Model/Manager/ModelManager.h>
 
+using namespace Engine;
 
 SelectScene::SelectScene()
 {

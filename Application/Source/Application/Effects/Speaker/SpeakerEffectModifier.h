@@ -6,7 +6,7 @@
 /// <summary>
 /// スピーカーのリング表現用パーティクル修飾子。
 /// </summary>
-class SpeakerRingModifier : public ParticleModifier
+class SpeakerRingModifier : public Engine::ParticleModifier
 {
 public:
     /// <summary>
@@ -24,13 +24,13 @@ public:
     /// </summary>
     /// <param name="particle">対象のパーティクル</param>
     /// <param name="deltaTime">前フレームからの経過時間（秒）</param>
-    void Apply(Particle* particle, float deltaTime) override;
+    void Apply(Engine::Particle* particle, float deltaTime) override;
 };
 
 /// <summary>
 /// スピーカー周辺のパーティクル表現を操作する修飾子。
 /// </summary>
-class SpeakerParticleModifier : public ParticleModifier
+class SpeakerParticleModifier : public Engine::ParticleModifier
 {
 public:
     /// <summary>
@@ -48,5 +48,5 @@ public:
     /// </summary>
     /// <param name="particle">対象のパーティクル</param>
     /// <param name="deltaTime">経過時間（秒）</param>
-    void Apply(Particle* particle, float deltaTime) override;
+    void Apply(Engine::Particle* particle, float deltaTime) override;
 };

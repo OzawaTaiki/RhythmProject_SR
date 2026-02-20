@@ -18,7 +18,7 @@
 #include <functional>
 
 // 前方宣言
-class Camera;
+namespace Engine { class Camera; }
 
 // ゲームの核となる部分
 class GameCore {
@@ -45,7 +45,7 @@ public:
   /// 描画処理
   /// </summary>
   /// <param name="camera">カメラ</param>
-  void Draw(const Camera *camera,
+  void Draw(const Engine::Camera *camera,
             const std::map<int32_t, uint8_t> &keyBindings);
 
   /// <summary>
@@ -58,7 +58,7 @@ public:
   /// 音楽の音声インスタンスを設定する
   /// </summary>
   /// <param name="voiceInstance">音声インスタンスを</param>
-  void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) {
+  void SetMusicVoiceInstance(std::shared_ptr<Engine::VoiceInstance> voiceInstance) {
     musicVoiceInstance_ = voiceInstance;
   }
 
@@ -214,7 +214,7 @@ private:
   // ホールド状態
   // HoldState holdState_ = {};
 
-  std::weak_ptr<VoiceInstance>
+  std::weak_ptr<Engine::VoiceInstance>
       musicVoiceInstance_; // 音楽の音声インスタンス 弱参照
 
   const GameMusic *gamemusic_ = nullptr; // 音楽の管理

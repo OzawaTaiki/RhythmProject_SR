@@ -4,7 +4,9 @@
 
 #include <Application/Scene/Data/SceneDatas.h>
 
-void EditorScene::Initialize(SceneData* sceneData)
+using namespace Engine;
+
+void EditorScene::Initialize(Engine::SceneData* sceneData)
 {
     SceneCamera_.Initialize();
     SceneCamera_.translate_ = { 0,5,-13 };

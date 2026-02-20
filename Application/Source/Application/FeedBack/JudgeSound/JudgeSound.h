@@ -63,8 +63,8 @@ public:
 
 private: // メンバ変数
 
-    std::shared_ptr<SoundInstance> soundInstance_; // 音声インスタンス
-    std::vector<std::shared_ptr<VoiceInstance>> voiceInstance_; // 音声の再生インスタンス
+    std::shared_ptr<Engine::SoundInstance> soundInstance_; // 音声インスタンス
+    std::vector<std::shared_ptr<Engine::VoiceInstance>> voiceInstance_; // 音声の再生インスタンス
 
     std::string soundFilePath_; // サウンドファイルのパス
 

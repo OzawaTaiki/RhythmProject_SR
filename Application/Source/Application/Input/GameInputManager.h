@@ -30,7 +30,7 @@ public:
     /// 初期化処理を行う。
     /// </summary>
     /// <param name="input">Input のインスタンス</param>
-    void Initialize(Input* input);
+    void Initialize(Engine::Input* input);
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -60,7 +60,7 @@ public:
     /// 音楽のボイスインスタンスを設定する。
     /// </summary>
     /// <param name="voiceInstance">音声インスタンスの共有ポインタ</param>
-    void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
+    void SetMusicVoiceInstance(std::shared_ptr<Engine::VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
     /// <summary>
     /// ゲーム音楽の情報を設定する。
@@ -79,13 +79,13 @@ private:
     void SetDefaultKeyBindings();
 
 private:
-    Input* input_; // Inputのインスタンス
+    Engine::Input* input_; // Inputのインスタンス
 
     std::vector<InputData> inputData_; // キーの状態を保持するベクター
 
     std::map<int32_t, uint8_t> keyBindings_; // キーのバインディング
 
-    std::weak_ptr<VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス
+    std::weak_ptr<Engine::VoiceInstance> musicVoiceInstance_; // 音楽の音声インスタンス
 
     const GameMusic* gameMusic_ = nullptr; // ゲーム音楽のインスタンス
 };

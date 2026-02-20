@@ -11,6 +11,9 @@
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UI/Element/UITextElement.h>
 
+using namespace Engine;
+
+
 SettingMenu::SettingMenu()
 {
     // イベントリスナーとして登録

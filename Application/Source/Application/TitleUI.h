@@ -10,7 +10,7 @@
 #include <memory>
 
 class EventManager;
-class TitleUI : public iEventListener
+class TitleUI : public Engine::iEventListener
 {
 private:
 
@@ -29,9 +29,9 @@ private:
     };
     struct AnimationUIElement
     {
-        UIElement* uiElement = nullptr;
+        Engine::UIElement* uiElement = nullptr;
 
-        Vector2 basePos = {};
+        Engine::Vector2 basePos = {};
         float currentTime = 0.0f;
         std::string animationLabel = "";
         bool animating = false;
@@ -47,7 +47,7 @@ public:
 
     void Draw();
 
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
 private:
 
@@ -81,17 +81,18 @@ private:
 
     EventManager* eventManager_;
 
-    std::unique_ptr<UIImageElement> backgroundElement_;
+    std::unique_ptr<Engine::UIImageElement> backgroundElement_;
 
-    std::map<TitleUIElement, UIElement*> uiElements_;
+    std::map<TitleUIElement, Engine::UIElement*> uiElements_;
     std::map<TitleUIElement, AnimationUIElement> animationUIElements_;
 
-    std::unique_ptr<AnimationSequence> titleAnimationSequence_;
+    std::unique_ptr<Engine::AnimationSequence> titleAnimationSequence_;
     // ボタンが展開されるアニメーション
-    std::unique_ptr<AnimationSequence> buttonExpandAnimationSequence_;
+    std::unique_ptr<Engine::AnimationSequence> buttonExpandAnimationSequence_;
     std::unique_ptr<FocusFrame> focusFrame_;
     TitleUIElement animationTarget_ = TitleUIElement::StartButton;
 
 
 };
+
 

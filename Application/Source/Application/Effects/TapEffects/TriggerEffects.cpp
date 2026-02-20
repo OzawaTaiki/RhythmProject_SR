@@ -9,6 +9,9 @@
 
 #include <numbers>
 
+using namespace Engine;
+
+
 uint32_t TriggerEffects::countPerEmit_ = 16; // 一度に発生するパーティクルの数
 float TriggerEffects::baseSize_ = 0.3f;
 float TriggerEffects::centerSize_ = 1.0f;

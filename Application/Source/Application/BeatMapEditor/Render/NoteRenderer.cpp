@@ -2,6 +2,9 @@
 #include <Application/BeatMapEditor/EditorState.h>
 #include <System/Input/Input.h>
 
+using namespace Engine;
+
+
 namespace BME
 {
 namespace

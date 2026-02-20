@@ -1,4 +1,4 @@
-#include "NoteJudge.h"
+﻿#include "NoteJudge.h"
 
 // Engine
 #include <Features/LineDrawer/LineDrawer.h>
@@ -7,11 +7,13 @@
 // application
 #include <Application/Note/Note.h>
 
+using namespace Engine;
+
 
 NoteJudge::NoteJudge()
 {
 #ifdef _DEBUG
-    // デバッグウィンドウの登録
+    // 繝・ヰ繝・げ繧ｦ繧｣繝ｳ繝峨え縺ｮ逋ｻ骭ｲ
     ImGuiDebugManager::GetInstance()->AddDebugWindow("JudgeLine", [this]() { ImGui::Checkbox("DrawLine", &isDrawLine); });
 #endif // _DEBUG
 }
@@ -19,7 +21,7 @@ NoteJudge::NoteJudge()
 NoteJudge::~NoteJudge()
 {
 #ifdef _DEBUG
-    // デバッグウィンドウの削除
+    // 繝・ヰ繝・げ繧ｦ繧｣繝ｳ繝峨え縺ｮ蜑企勁
     ImGuiDebugManager::GetInstance()->RemoveDebugWindow("JudgeLine");
 #endif // _DEBUG
 }
@@ -28,20 +30,20 @@ void NoteJudge::Initialize()
 {
     InitializeJsonBinder();
 
-    const float baseFrameTime = 1.0f / 60.0f;// 60FPS基準 0.0166s
-    // 仮
-    timingThresholds_[JudgeType::Perfect]   = baseFrameTime * 4.0f;     //  4フレーム 約0.066s
-    timingThresholds_[JudgeType::Good]      = baseFrameTime * 10.0f;    // 10フレーム 約0.166s
-    timingThresholds_[JudgeType::Bad]       = baseFrameTime * 16.0f;    // 16フレーム 約0.266s
-    timingThresholds_[JudgeType::Miss]      = baseFrameTime * 20.0f;    // 20フレーム 約0.333s
+    const float baseFrameTime = 1.0f / 60.0f;// 60FPS蝓ｺ貅・0.0166s
+    // 莉ｮ
+    timingThresholds_[JudgeType::Perfect]   = baseFrameTime * 4.0f;     //  4繝輔Ξ繝ｼ繝 邏・.066s
+    timingThresholds_[JudgeType::Good]      = baseFrameTime * 10.0f;    // 10繝輔Ξ繝ｼ繝 邏・.166s
+    timingThresholds_[JudgeType::Bad]       = baseFrameTime * 16.0f;    // 16繝輔Ξ繝ｼ繝 邏・.266s
+    timingThresholds_[JudgeType::Miss]      = baseFrameTime * 20.0f;    // 20繝輔Ξ繝ｼ繝 邏・.333s
 
 }
 
 void NoteJudge::DrawJudgeLine()
 {
 #ifdef _DEBUG
-    /// debug用
-    // 判定ラインと判定範囲の描画
+    /// debug逕ｨ
+    // 蛻､螳壹Λ繧､繝ｳ縺ｨ蛻､螳夂ｯ・峇縺ｮ謠冗判
 
     if (!isDrawLine) return;
 
@@ -49,10 +51,10 @@ void NoteJudge::DrawJudgeLine()
 
     float halfWidth = laneTotalWidth_ / 2.0f;
 
-    // 判定ラインを描画
+    // 蛻､螳壹Λ繧､繝ｳ繧呈緒逕ｻ
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
-        // 判定ラインを描画
+        // 蛻､螳壹Λ繧､繝ｳ繧呈緒逕ｻ
         float position = timingThresholds_[i] * speed_ + position_;
 
         Vector3 start = { -halfWidth, 0.01f,  position };
@@ -62,10 +64,10 @@ void NoteJudge::DrawJudgeLine()
     }
 
 
-    // ライン手前の判定線を描画
+    // 繝ｩ繧､繝ｳ謇句燕縺ｮ蛻､螳夂ｷ壹ｒ謠冗判
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
-        // 判定ラインを描画
+        // 蛻､螳壹Λ繧､繝ｳ繧呈緒逕ｻ
         float position = (-timingThresholds_[i] * speed_) + position_;
 
         Vector3 start = { -halfWidth, 0,  position };
@@ -80,7 +82,7 @@ void NoteJudge::DrawJudgeLine()
 JudgeType NoteJudge::ProcessNoteJudge(Note* note, float elapsedTime)
 {
     if (note == nullptr)
-        return JudgeType::None; // nullチェック
+        return JudgeType::None; // null繝√ぉ繝・け
 
     JudgeType result = JudgeType::None;
 
@@ -88,11 +90,11 @@ JudgeType NoteJudge::ProcessNoteJudge(Note* note, float elapsedTime)
 
     for (const auto& [i, timingThreshold] : timingThresholds_)
     {
-        // 判定範囲内かチェック
+        // 蛻､螳夂ｯ・峇蜀・°繝√ぉ繝・け
         if (targetTime >= elapsedTime - timingThresholds_[i] &&
             targetTime <= elapsedTime + timingThresholds_[i])
         {
-            // 判定を行う
+            // 蛻､螳壹ｒ陦後≧
             result = static_cast<JudgeType>(i);
             break;
         }

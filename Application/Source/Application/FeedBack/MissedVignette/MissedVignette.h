@@ -50,9 +50,9 @@ private:
     float duration_ = 0.5f; // エフェクトの持続時間
     float elapsedTime_ = 0.0f; // 経過時間
 
-    std::unique_ptr<Vignette> vignette_ = nullptr;
-    VignetteData currentVignetteData_ = {};
+    std::unique_ptr<Engine::Vignette> vignette_ = nullptr;
+    Engine::VignetteData currentVignetteData_ = {};
 
-    VignetteData startVignetteData_ = {};
+    Engine::VignetteData startVignetteData_ = {};
 
 };

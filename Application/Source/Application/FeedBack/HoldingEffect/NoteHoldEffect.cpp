@@ -4,6 +4,9 @@
 
 #include <Application/Lane/Lane.h>
 
+using namespace Engine;
+
+
 void NoteHoldEffect::Initialize()
 {
     emitter_.Initialize("PopEffect");

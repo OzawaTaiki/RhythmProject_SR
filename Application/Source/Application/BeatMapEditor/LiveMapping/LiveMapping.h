@@ -61,7 +61,7 @@ private:
     void SetDefaultKeyBindings(int32_t laneIndex);
 
 private:
-    Input* input_ = nullptr; // 入力管理クラスへのポインタ
+    Engine::Input* input_ = nullptr; // 入力管理クラスへのポインタ
 
     std::vector<uint8_t> laneKeyBindings_; // レーンごとのキー入力バインディング
 

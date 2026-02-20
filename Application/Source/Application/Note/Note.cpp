@@ -4,7 +4,9 @@
 
 #include <Debug/Debug.h>
 
-void Note::Initialize(float targetTime, const Vector3& targetPosition)
+using namespace Engine;
+
+void Note::Initialize(float targetTime, const Engine::Vector3& targetPosition)
 {
     model_ = std::make_unique<ObjectModel>("note");
     model_->Initialize("cube/cube.obj");

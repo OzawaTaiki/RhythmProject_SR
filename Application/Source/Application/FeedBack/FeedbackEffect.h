@@ -22,7 +22,7 @@
 #include <bitset>
 
 // 前方宣言
-class Camera;
+namespace Engine { class Camera; }
 class GameEnvironment;
 
 /// <summary>
@@ -47,7 +47,7 @@ public:
     /// <param name="camera">座標変換や表示に用いるカメラ</param>
     /// <param name="laneCount">レーン数</param>
     /// <param name="gameEnvironment">ゲーム環境オブジェクト</param>
-    void Initialize(Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment);
+    void Initialize(Engine::Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment);
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -154,6 +154,6 @@ private:
     int32_t prevComboLevel_ = 0; // 前回のコンボレベル
 
     // 座標変換用カメラ
-    Camera* camera_ = nullptr; // カメラへのポインタ
+    Engine::Camera* camera_ = nullptr; // カメラへのポインタ
     GameEnvironment* gameEnvironment_ = nullptr; // ゲーム環境へのポインタ
 };

@@ -1,8 +1,10 @@
-#include "MusicListManager.h"
+﻿#include "MusicListManager.h"
 #include <Features/Json/Loader/JsonFileIO.h>
 #include <Features/Json/JsonUtils.h>
 
 #include <filesystem>
+
+using namespace Engine;
 
 MusicListManager* MusicListManager::GetInstance()
 {
@@ -54,18 +56,18 @@ void MusicListManager::ScanFolder()
 {
     musicList_.clear();
 
-    // ディレクトリが存在しなければ終了
+    // 繝・ぅ繝ｬ繧ｯ繝医Μ縺悟ｭ伜惠縺励↑縺代ｌ縺ｰ邨ゆｺ・
     if (!std::filesystem::exists(musicDirectory_))
         return;
 
     for (const auto& entry : std::filesystem::directory_iterator(musicDirectory_))
     {
-        // ファイルでなければスキップ
+        // 繝輔ぃ繧､繝ｫ縺ｧ縺ｪ縺代ｌ縺ｰ繧ｹ繧ｭ繝・・
         if (!entry.is_regular_file())
             continue;
 
         const auto& path = entry.path();
-        if (path.extension() != ".json") // json以外はスキップ
+        if (path.extension() != ".json") // json莉･螟悶・繧ｹ繧ｭ繝・・
             continue;
 
         MusicMetaData metaData = LoadMusicMetaData(path.filename().string());

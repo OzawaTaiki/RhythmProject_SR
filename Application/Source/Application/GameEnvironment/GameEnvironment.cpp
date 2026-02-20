@@ -9,6 +9,9 @@
 #include <Math/MyLib.h>
 #include <Math/Easing.h>
 
+using namespace Engine;
+
+
 namespace
 {
 Vector4 startColor = Vector4(0.168f, 0.69f, 0.753f, 1.0f);

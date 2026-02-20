@@ -6,6 +6,9 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Debug/Debug.h>
 
+using namespace Engine;
+
+
 void SceneTrans::Initialize()
 {
     duration_ = 1.0f; // トランジションの持続時間

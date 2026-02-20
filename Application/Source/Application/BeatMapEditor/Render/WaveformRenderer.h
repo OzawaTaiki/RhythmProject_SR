@@ -19,7 +19,7 @@ public:
     WaveformRenderer() = default;
     ~WaveformRenderer() = default;
 
-    void Initialize( const Matrix4x4& _matVP);
+    void Initialize( const Engine::Matrix4x4& _matVP);
     void Draw(const AudioController* _audioController, float _currentTime);
     void DrawBackSprite();
     void Finalize();
@@ -27,9 +27,9 @@ public:
     void UpdateBounds();
 
 private:
-    WaveformDisplay waveformDisplay_;
+    Engine::WaveformDisplay waveformDisplay_;
 
-    std::unique_ptr<Sprite> waveformBackground_;
+    std::unique_ptr<Engine::Sprite> waveformBackground_;
 };
 
 } // namespace BME

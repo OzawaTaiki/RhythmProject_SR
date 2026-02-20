@@ -2,13 +2,13 @@
 
 #include <Features/Scene/Interface/BaseScene.h>
 
-class LoadScene : public BaseScene
+class LoadScene : public Engine::BaseScene
 {
 public:
     LoadScene() = default;
     ~LoadScene() override = default;
 
-    void Initialize(SceneData* sceneData) override;
+    void Initialize(Engine::SceneData* sceneData) override;
     void Update() override;
     void Draw() override;
 

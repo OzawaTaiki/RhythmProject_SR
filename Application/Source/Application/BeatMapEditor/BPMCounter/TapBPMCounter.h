@@ -65,9 +65,9 @@ public:
 
 private:
 
-    Input* input_ = nullptr; // 入力管理クラスへのポインタ
+    Engine::Input* input_ = nullptr; // 入力管理クラスへのポインタ
 
-    Stopwatch stopwatch_; // タップの時間を計測するストップウォッチ
+    Engine::Stopwatch stopwatch_; // タップの時間を計測するストップウォッチ
 
     std::deque<float> tapTimes_= {}; // タップした時間を記録するベクター
     float totalTime_ = 0.0f; // タップの合計時間

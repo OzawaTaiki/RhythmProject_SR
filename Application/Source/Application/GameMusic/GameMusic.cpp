@@ -5,6 +5,9 @@
 #include <Application/EventData/PauseActionData.h>
 #include <Features/Event/EventManager.h>
 
+using namespace Engine;
+
+
 GameMusic::GameMusic(const std::string& musicFilePath)
 {
     soundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);

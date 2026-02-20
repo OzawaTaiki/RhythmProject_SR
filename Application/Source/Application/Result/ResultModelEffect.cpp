@@ -3,6 +3,9 @@
 #include <Debug/ImguITools.h>
 #include <Debug/ImGuiDebugManager.h>
 
+using namespace Engine;
+
+
 namespace
 {
 const std::string kSpeakerModelPath = "Speaker/Speaker.gltf";

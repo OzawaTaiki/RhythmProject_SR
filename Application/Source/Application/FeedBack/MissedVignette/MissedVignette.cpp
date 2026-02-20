@@ -4,6 +4,9 @@
 
 #include <Math/MyLib.h>
 
+using namespace Engine;
+
+
 void MissedVignette::Initialize()
 {
     vignette_ = std::make_unique<Vignette>();

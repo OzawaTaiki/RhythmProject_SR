@@ -12,6 +12,9 @@
 #include <System/Audio/AudioSystem.h>
 #include <Features/UI/UINavigationManager.h>
 
+using namespace Engine;
+
+
 
 
 PauseMenu::PauseMenu()

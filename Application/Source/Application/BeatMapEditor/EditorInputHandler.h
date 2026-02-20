@@ -4,7 +4,7 @@
 #include <Application/BeatMapEditor/EditorCoordinate.h>
 #include <cstdint>
 
-class Input;
+namespace Engine { class Input; }
 class CommandHistory;
 
 namespace BME
@@ -128,7 +128,7 @@ private:
     size_t GetNoteIndexFromMousePosition(const Document* document, const EditorCoordinate* coordinate) const;
 
 private:
-    Input* input_ = nullptr;
+    Engine::Input* input_ = nullptr;
 
 };
 

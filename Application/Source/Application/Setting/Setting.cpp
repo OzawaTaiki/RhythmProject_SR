@@ -1,6 +1,8 @@
-#include "Setting.h"
+﻿#include "Setting.h"
 
 #include <Features/Json/Loader/JsonFileIO.h>
+
+using namespace Engine;
 
 GameSettings Setting::default_ = {
     1.0f, // masterVolume

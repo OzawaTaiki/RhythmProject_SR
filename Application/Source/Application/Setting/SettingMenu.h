@@ -8,7 +8,7 @@
 #include <Application/Setting/Preview/SettingsPreviewPanel.h>
 
 // スライダーの値が変更されたときのイベントデータ
-struct ValueChangedEventData : EventData
+struct ValueChangedEventData : Engine::EventData
 {
     ValueChangedEventData(const std::string& name, float value)
         : name(name), value(value) {}
@@ -21,7 +21,7 @@ struct ValueChangedEventData : EventData
 /// <summary>
 /// 設定メニュークラス。
 /// </summary>
-class SettingMenu : public iEventListener
+class SettingMenu : public Engine::iEventListener
 {
 public:
     SettingMenu();
@@ -50,14 +50,14 @@ public:
     /// <summary>
     /// イベントを受信するハンドラ。
     /// </summary>
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
 private:
 
     bool isActive_ = false; // メニューがアクティブかどうか
 
-    std::unique_ptr<UIElement> backSprite_;
-    UIElement* volumeSlider_ = nullptr;       // 音量スライダー フォーカスセット用
+    std::unique_ptr<Engine::UIElement> backSprite_;
+    Engine::UIElement* volumeSlider_ = nullptr;       // 音量スライダー フォーカスセット用
     std::function<void(float)> speedSetFunc_ = nullptr; // ノーツ速度を設定するコールバック関数
     std::function<void(float)> audioLatencySetFunc_ = nullptr; // 音声遅延を設定するコールバック関数
 

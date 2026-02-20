@@ -2,6 +2,9 @@
 #include <Debug/ImGuiDebugManager.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 
+using namespace Engine;
+
+
 void SpectrumFloor::Initialize(int32_t row, int32_t col, const Vector2& area)
 {
     xCount_ = row;

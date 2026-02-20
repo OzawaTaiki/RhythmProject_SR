@@ -38,14 +38,14 @@ private:
     void ImGui();
 
 private:
-    TextGenerator textGenerator_; // テキスト生成用のインスタンス
+    Engine::TextGenerator textGenerator_; // テキスト生成用のインスタンス
 
-    TextParam comboValueParam_; // コンボ値のテキストパラメータ
-    TextParam comboTextParam_; // コンボのテキストパラメータ
+    Engine::TextParam comboValueParam_; // コンボ値のテキストパラメータ
+    Engine::TextParam comboTextParam_; // コンボのテキストパラメータ
 
-    std::unique_ptr<AnimationSequence> comboValueAnimation_ = nullptr; // コンボ値のアニメーションシーケンス
+    std::unique_ptr<Engine::AnimationSequence> comboValueAnimation_ = nullptr; // コンボ値のアニメーションシーケンス
 
     int32_t comboValue_ = 0; // コンボ値
 
-    std::unique_ptr<JsonBinder> jsonBinder_ = nullptr; // JSONバインダー
+    std::unique_ptr<Engine::JsonBinder> jsonBinder_ = nullptr; // JSONバインダー
 };

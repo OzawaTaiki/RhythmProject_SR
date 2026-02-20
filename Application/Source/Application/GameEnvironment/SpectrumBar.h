@@ -5,9 +5,7 @@
 #include <features/Json/JsonBinder.h>
 
 
-class Camera;
-class AudioSpectrum;
-class LightGroup;
+namespace Engine { class Camera; class AudioSpectrum; class LightGroup; }
 class PointLightComponent;
 
 struct FrequencyBands
@@ -27,32 +25,32 @@ public:
     SpectrumBar() = default;
     ~SpectrumBar() = default;
 
-    void Initialize(const std::string& name,size_t id, const json& jsonData);
-    void Update(float deltaTime, AudioSpectrum* audioSpectrum);
-    void Draw(const Camera* camera, ID3D12PipelineState* pso);
+    void Initialize(const std::string& name, size_t id, const json& jsonData);
+    void Update(float deltaTime, Engine::AudioSpectrum* audioSpectrum);
+    void Draw(const Engine::Camera* camera, ID3D12PipelineState* pso);
 
-    void InitializeSpectrumRange(AudioSpectrum* audioSpectrum);
+    void InitializeSpectrumRange(Engine::AudioSpectrum* audioSpectrum);
 private:
 
     static float CalculateMax(const std::vector<float>& data);
     // 後に個々に計算する
 
-    static Vector2 GetFrequencyRangeById(size_t id);
+    static Engine::Vector2 GetFrequencyRangeById(size_t id);
 
-    void CreatePointLight(LightGroup* lightGroup);
+    void CreatePointLight(Engine::LightGroup* lightGroup);
 
     void InitJsonBinder();
 
 private:
 
-    std::unique_ptr<ObjectModel> model_;
+    std::unique_ptr<Engine::ObjectModel> model_;
     size_t id_;
-    Vector2 hzRange_;
+    Engine::Vector2 hzRange_;
 
     std::weak_ptr<PointLightComponent> pointLight_;
-    Vector3 lightOffset_ = Vector3(0.0f, 2.0f, 0.0f);
+    Engine::Vector3 lightOffset_ = Engine::Vector3(0.0f, 2.0f, 0.0f);
 
-    Vector4 color_ = { 1.0f,1.0f ,1.0f ,1.0f };
+    Engine::Vector4 color_ = { 1.0f,1.0f ,1.0f ,1.0f };
 
     float maxAmplitude_ = 0.0f;
     std::vector<float> spectrumData_;
@@ -60,6 +58,6 @@ private:
     size_t beginIndex_; // 周波数帯域の開始インデックス
     size_t endIndex_; // 周波数帯域の終了インデックス
 
-    std::unique_ptr<JsonBinder> jsonBinder_;
+    std::unique_ptr<Engine::JsonBinder> jsonBinder_;
 
 };

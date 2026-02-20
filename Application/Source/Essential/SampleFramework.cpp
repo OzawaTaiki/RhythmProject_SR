@@ -13,6 +13,8 @@
 #include <Features/UI/UINavigationManager.h>
 #include <Application/Scene/Transition/SceneTrans.h>
 
+using namespace Engine;
+
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
     Framework::Initialize(L"");

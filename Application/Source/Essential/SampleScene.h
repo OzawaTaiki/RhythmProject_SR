@@ -30,13 +30,13 @@
 
 #include <Features/TextRenderer/Text3DRenderer.h>
 #include <Features/TextRenderer/AtlasData.h>
-class SampleScene : public BaseScene
+class SampleScene : public Engine::BaseScene
 {
 public:
 
      ~SampleScene() override;
 
-    void Initialize(SceneData* _sceneData) override;
+    void Initialize(Engine::SceneData* _sceneData) override;
     void Update() override;
     void Draw() override;
     void DrawShadow() override;
@@ -46,39 +46,39 @@ private:
     // シーン関連 基本セット
 
     // カメラ
-    Camera SceneCamera_ = {};
+    Engine::Camera SceneCamera_ = {};
 
     // デバッグカメラ
-    DebugCamera debugCamera_ = {};
+    Engine::DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 
     // ライン描画
-    LineDrawer* lineDrawer_ = nullptr;
+    Engine::LineDrawer* lineDrawer_ = nullptr;
     // 入力
-    Input* input_ = nullptr;
+    Engine::Input* input_ = nullptr;
     // パーティクル
-    ParticleSystem* particleManager_ = nullptr;
+    Engine::ParticleSystem* particleManager_ = nullptr;
     // ライト
-    std::shared_ptr<LightGroup> lights_;
+    std::shared_ptr<Engine::LightGroup> lights_;
 
 
     //------------------------------
     // シーン固有
 
 
-    std::vector<std::unique_ptr<ObjectModel>> rings_;
+    std::vector<std::unique_ptr<Engine::ObjectModel>> rings_;
 
-    std::shared_ptr<SoundInstance> soundInstance_ = nullptr;
-    std::shared_ptr<VoiceInstance> voiceInstance_ = nullptr;
+    std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr;
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr;
 
     // テキストジェネレータ
-    TextGenerator textGenerator_;
+    Engine::TextGenerator textGenerator_;
 
-    AudioSpectrum audioSpectrum_; 
+    Engine::AudioSpectrum audioSpectrum_;
 
-    std::unique_ptr<SpectrumTextureGenerator> textureGenerator_;
-    Text3DRenderer* text3DRenderer_ = nullptr;
-    AtlasData* fontAtlas_ = nullptr;
+    std::unique_ptr<Engine::SpectrumTextureGenerator> textureGenerator_;
+    Engine::Text3DRenderer* text3DRenderer_ = nullptr;
+    Engine::AtlasData* fontAtlas_ = nullptr;
 
 #ifdef _DEBUG
     void ImGui();

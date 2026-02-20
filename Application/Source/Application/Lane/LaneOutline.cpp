@@ -5,6 +5,9 @@
 #include <Application/FeedBack/ComboThresholds.h>
 #include <System/Time/Time.h>
 
+using namespace Engine;
+
+
 void LaneOutline::Initialize(Camera* camera)
 {
     depthBasedOutLine_ = std::make_unique<DepthBasedOutLine>();

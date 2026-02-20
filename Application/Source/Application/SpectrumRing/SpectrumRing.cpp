@@ -1,8 +1,10 @@
-#include "SpectrumRing.h"
+﻿#include "SpectrumRing.h"
 
 #include <Features/AudioSpectrum/AudioSpectrum.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Math/MyLib.h>
+
+using namespace Engine;
 
 namespace
 {
@@ -37,8 +39,8 @@ void SpectrumRing::Update(float elapsedTime)
     if (!isInitTextures_)
     {
         auto spectrum = audioSpectrum_.GetSpectrumAtTime(0.0f);
-        // 一度すべてのテクスチャを生成する
-        // initではできないみたいなのでしかたない
+        // 荳蠎ｦ縺吶∋縺ｦ縺ｮ繝・け繧ｹ繝√Ε繧堤函謌舌☆繧・
+        // init縺ｧ縺ｯ縺ｧ縺阪↑縺・∩縺溘＞縺ｪ縺ｮ縺ｧ縺励°縺溘↑縺・
         for (auto& generator : textureGenerators_)
         {
             generator->Generate(spectrum, 0.0f, barCount);
@@ -46,9 +48,9 @@ void SpectrumRing::Update(float elapsedTime)
         isInitTextures_ = true;
     }
 
-    // テクスチャの生成
-    // 毎フレーム1つだけ新しいデータで更新する
-    // 古いテクスチャは使いまわす
+    // 繝・け繧ｹ繝√Ε縺ｮ逕滓・
+    // 豈弱ヵ繝ｬ繝ｼ繝1縺､縺縺第眠縺励＞繝・・繧ｿ縺ｧ譖ｴ譁ｰ縺吶ｋ
+    // 蜿､縺・ユ繧ｯ繧ｹ繝√Ε縺ｯ菴ｿ縺・∪繧上☆
     uint32_t index = cycleTextureIndices_.back();
     cycleTextureIndices_.pop_back();
     cycleTextureIndices_.push_front(index);
@@ -63,16 +65,16 @@ void SpectrumRing::Update(float elapsedTime)
     uint32_t nextIndex = cycleTextureIndices_.back();
     textureGenerators_[nextIndex]->ReserveClear();
 
-    // 棒の位置は変わらない rot速度は一定間隔
-    // 1箇所当たり三本
-    // 1は最新 2，3は過去
-    // 過去は徐々に短くなる
-    // 過去は毎フレームは更新されない
-    // じゃあどのタイミングで更新するか
-    // TODO : わからん
+    // 譽偵・菴咲ｽｮ縺ｯ螟峨ｏ繧峨↑縺・rot騾溷ｺｦ縺ｯ荳螳夐俣髫・
+    // 1邂・園蠖薙◆繧贋ｸ画悽
+    // 1縺ｯ譛譁ｰ 2・・縺ｯ驕主悉
+    // 驕主悉縺ｯ蠕舌・↓遏ｭ縺上↑繧・
+    // 驕主悉縺ｯ豈弱ヵ繝ｬ繝ｼ繝縺ｯ譖ｴ譁ｰ縺輔ｌ縺ｪ縺・
+    // 縺倥ｃ縺ゅ←縺ｮ繧ｿ繧､繝溘Φ繧ｰ縺ｧ譖ｴ譁ｰ縺吶ｋ縺・
+    // TODO : 繧上°繧峨ｓ
     //
 
-     //TODO : リングの回転
+     //TODO : 繝ｪ繝ｳ繧ｰ縺ｮ蝗櫁ｻ｢
     const float rotationSpeedPerFrame = std::numbers::pi_v<float> *2.0f / static_cast<float>(barCount * 3);
     rings_[0]->euler_.z += rotationSpeedPerFrame;
     for (size_t i = 1; i < rings_.size(); ++i)
@@ -101,9 +103,9 @@ void SpectrumRing::CreateRings()
 
     for (size_t i = 0; i < numRings; ++i)
     {
-        // 大きい順で生成していく
+        // 螟ｧ縺阪＞鬆・〒逕滓・縺励※縺・￥
         Ring priRing(innerRadius, outerRadius - outerRadiusStep * static_cast<float>(i));
-        priRing.SetDivide(256); // 大きめにしないとテクスチャ崩れる
+        priRing.SetDivide(256); // 螟ｧ縺阪ａ縺ｫ縺励↑縺・→繝・け繧ｹ繝√Ε蟠ｩ繧後ｋ
 
         std::string name = "spectrumRing_" + std::to_string(i);
         auto model = std::make_unique<ObjectModel>(name);
@@ -113,7 +115,7 @@ void SpectrumRing::CreateRings()
         rings_.emplace_back(std::move(model));
     }
 
-    //  中のリング
+    //  荳ｭ縺ｮ繝ｪ繝ｳ繧ｰ
     Ring innerRing(0.0f, innerRadius);
     innerRing.SetDivide(256);
     auto innerModel = std::make_unique<ObjectModel>("spectrumInnerRing");

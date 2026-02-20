@@ -21,8 +21,8 @@
 /// <summary>
 /// リザルト画面のシーンクラス。
 /// </summary>
-class ResultScene : public BaseScene,
-    public iEventListener
+class ResultScene : public Engine::BaseScene,
+    public Engine::iEventListener
 {
 public:
     ResultScene();
@@ -31,7 +31,7 @@ public:
     /// <summary>
     /// シーンの初期化処理。
     /// </summary>
-    void Initialize(SceneData* sceneData) override;
+    void Initialize(Engine::SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -49,20 +49,20 @@ public:
     void DrawShadow() override;
 
 
-    void OnEvent(const GameEvent& event) override;
+    void OnEvent(const Engine::GameEvent& event) override;
 
 
 private:
     // シーン関連
-    Camera SceneCamera_ = {};
-    DebugCamera debugCamera_ = {};
+    Engine::Camera SceneCamera_ = {};
+    Engine::DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 
-    LineDrawer* lineDrawer_ = nullptr;
-    Input* input_ = nullptr;
-    ParticleSystem* particleSystem_ = nullptr;
+    Engine::LineDrawer* lineDrawer_ = nullptr;
+    Engine::Input* input_ = nullptr;
+    Engine::ParticleSystem* particleSystem_ = nullptr;
 
-    std::shared_ptr<LightGroup> lightGroup_ = nullptr;
+    std::shared_ptr<Engine::LightGroup> lightGroup_ = nullptr;
 
 
     // -----------------------
@@ -74,6 +74,6 @@ private:
 
     std::unique_ptr<GameEnvironment> gameEnvironment_ = nullptr; // ゲーム環境
 
-    std::unique_ptr<BoxFilter> boxFilter_ = nullptr; // ポストエフェクトのボックスフィルター
-    BoxFilterData boxFilterData_ = {}; // ボックスフィルターのデータ
+    std::unique_ptr<Engine::BoxFilter> boxFilter_ = nullptr; // ポストエフェクトのボックスフィルター
+    Engine::BoxFilterData boxFilterData_ = {}; // ボックスフィルターのデータ
 };

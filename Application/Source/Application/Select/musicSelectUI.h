@@ -7,7 +7,7 @@
 #include <System/Audio/VoiceInstance.h>
 
 // イベント発行時のデータ構造体
-struct MusicSelectUIEventData : EventData
+struct MusicSelectUIEventData : Engine::EventData
 {
     std::string selectedFilePath; // 選択されたファイルパス
 };
@@ -27,7 +27,7 @@ public:
     /// <summary>
     /// 初期化処理
     /// </summary>
-    void Initialize(std::shared_ptr<VoiceInstance> voiceInstance);
+    void Initialize(std::shared_ptr<Engine::VoiceInstance> voiceInstance);
     /// <summary>
     /// 更新処理
     /// </summary>
@@ -96,7 +96,7 @@ private:
     // UI配置用の大きな円情報
     struct LayoutCircle
     {
-        Vector2 center;
+        Engine::Vector2 center;
         float radius;
 
         float startAngle;
@@ -108,7 +108,7 @@ private:
     // 円周上のUIアイテム情報
     struct UIItemWithAngle
     {
-        std::unique_ptr<UIButtonElement> item;
+        std::unique_ptr<Engine::UIButtonElement> item;
         float angle = 0.0f;
     };
 
@@ -117,7 +117,7 @@ private:
     float marginAngle_ = 0.2f; // 円周上のUIアイテム間の角度の余白
     float scrollTime_ = 0.3f; // スクロールアニメーション時間
 
-    Vector2 BaseUISize_ ={};
+    Engine::Vector2 BaseUISize_ ={};
 
     int32_t selectedIndex_ = 0;
     int32_t musicListSize_ = 0;
@@ -129,12 +129,12 @@ private:
     float scrollElapsedTime_ = 0.0f; // スクロールアニメーション経過時間
     float scrollDuration_ = 0.3f; // スクロールアニメーション時間
 
-    std::shared_ptr<SoundInstance> bgmSoundInstance_;
-    std::shared_ptr<VoiceInstance> voiceInstance_;
+    std::shared_ptr<Engine::SoundInstance> bgmSoundInstance_;
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_;
 
-    std::unique_ptr<AnimationSequence> entranceSequence_;
+    std::unique_ptr<Engine::AnimationSequence> entranceSequence_;
     bool isEntranceAnimPlaying_ = true;
     float entranceAnimTime_ = 0.0f;
 
-    std::unique_ptr<JsonBinder> jsonBinder_;
+    std::unique_ptr<Engine::JsonBinder> jsonBinder_;
 };

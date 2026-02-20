@@ -50,7 +50,7 @@ private:
 
 private:
 
-    std::unique_ptr<JsonBinder> jsonBinder_; // JSONバインダー
+    std::unique_ptr<Engine::JsonBinder> jsonBinder_; // JSONバインダー
 
     // 判定 閾値
     std::map<JudgeType, float> timingThresholds_;

@@ -15,14 +15,14 @@ public:
 
     void PlayCameraAnimation();
 
-    Camera* GetCamera() { return &camera_; }
+    Engine::Camera* GetCamera() { return &camera_; }
 private:
 
-    Camera camera_;
+    Engine::Camera camera_;
 
     bool isAnimationPlaying_ = false;
     bool isAnimationCompleted_ =false;
 
-    std::unique_ptr<AnimationSequence> cameraAnimationSequence_ = nullptr;
+    std::unique_ptr<Engine::AnimationSequence> cameraAnimationSequence_ = nullptr;
 };
 

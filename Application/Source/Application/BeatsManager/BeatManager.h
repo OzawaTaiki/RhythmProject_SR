@@ -62,7 +62,7 @@ public:
     /// ========================================
     void SetEnableSound(bool enable) { soundEnabled_ = enable; }
 
-    void SetMusicVoiceInstance(std::shared_ptr<VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
+    void SetMusicVoiceInstance(std::shared_ptr<Engine::VoiceInstance> voiceInstance) { musicVoiceInstance_ = voiceInstance; }
 
     // 1拍あたりの秒数を計算
     float GetSecondsPerBeat() const { return 60.0f / bpm_; }
@@ -73,10 +73,10 @@ private:
     bool playing_ = false;     // 再生中かどうか
 
     // サウンド関連
-    std::shared_ptr<SoundInstance> soundInstance_= nullptr; // サウンドインスタンス
-    std::shared_ptr<VoiceInstance> voiceInstance_= nullptr; // ボイスインスタンス
+    std::shared_ptr<Engine::SoundInstance> soundInstance_= nullptr; // サウンドインスタンス
+    std::shared_ptr<Engine::VoiceInstance> voiceInstance_= nullptr; // ボイスインスタンス
 
-    std::shared_ptr<VoiceInstance> musicVoiceInstance_= nullptr; // 音楽のボイスインスタンス
+    std::shared_ptr<Engine::VoiceInstance> musicVoiceInstance_= nullptr; // 音楽のボイスインスタンス
 
     float volume_ = 0.5f;
     bool soundEnabled_ = true;

@@ -1,5 +1,8 @@
 #include "SpeakerEffectModifier.h"
 
+using namespace Engine;
+
+
 
 void SpeakerRingModifier::Apply(Particle* particle, [[maybe_unused]] float deltaTime)
 {

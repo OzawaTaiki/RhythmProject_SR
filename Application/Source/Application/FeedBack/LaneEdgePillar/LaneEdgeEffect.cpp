@@ -4,6 +4,9 @@
 #include <Features/Effect/Manager/ParticleSystem.h>
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 
+using namespace Engine;
+
+
 namespace
 {
 Vector3 leftLaneEdgePos = Vector3(-Lane::GetTotalWidth() / 2.0f, 0.0f, 0.0f);

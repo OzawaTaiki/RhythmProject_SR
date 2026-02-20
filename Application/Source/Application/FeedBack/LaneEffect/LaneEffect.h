@@ -42,7 +42,7 @@ public:
     /// 描画処理。
     /// </summary>
     /// <param name="camera">描画に使用するカメラ</param>
-    void Draw(const Camera* camera);
+    void Draw(const Engine::Camera* camera);
 
     /// <summary>
     /// エフェクトを開始する。
@@ -70,7 +70,7 @@ public:
     /// <summary>
     /// エフェクトの色を設定する。
     /// </summary>
-    void SetColor(const Vector4& color) { color_ = color; }
+    void SetColor(const Engine::Vector4& color) { color_ = color; }
 
     /// <summary>
     /// 現在のタイマー値を取得する。
@@ -84,11 +84,11 @@ private:
 
     bool isActive_ = true; // エフェクトがアクティブかどうか
 
-    Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f }; // エフェクトの色
+    Engine::Vector4 color_ = { 1.0f, 1.0f, 1.0f, 1.0f }; // エフェクトの色
 
-    std::unique_ptr<ObjectModel> laneModel_; // レーンエフェクトのモデル
+    std::unique_ptr<Engine::ObjectModel> laneModel_; // レーンエフェクトのモデル
 
-    static Vector4  defoultColor_;  // デフォルトの色
+    static Engine::Vector4  defoultColor_;  // デフォルトの色
     static uint32_t textureHandle_; // テクスチャハンドル
 
 };

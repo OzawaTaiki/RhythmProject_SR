@@ -1,5 +1,8 @@
 #include "LiveMapping.h"
 
+using namespace Engine;
+
+
 void LiveMapping::Initialize(int32_t laneCount)
 {
     input_ = Input::GetInstance(); // 入力管理クラスのインスタンスを取得

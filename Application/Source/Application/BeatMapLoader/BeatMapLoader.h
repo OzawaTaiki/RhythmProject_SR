@@ -92,7 +92,7 @@ inline bool BeatMapLoader::GetIfExists(const std::string& key, const nlohmann::j
     }
     catch (std::exception& e)
     {
-        Debug::Log("BeatMapLoader::GetIfExists: Failed to get key " + key + " Exception: " + e.what());
+        Engine::Debug::Log("BeatMapLoader::GetIfExists: Failed to get key " + key + " Exception: " + e.what());
         errorMessage_ = "Error: Key " + key + " has invalid type.";
         return false;
     }

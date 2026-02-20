@@ -6,7 +6,7 @@
 /// <summary>
 /// ヒット時に出るパーティクルを制御する修飾子クラス。
 /// </summary>
-class HitParticleModifier : public ParticleModifier
+class HitParticleModifier : public Engine::ParticleModifier
 {
 public:
     /// <summary>
@@ -29,13 +29,13 @@ public:
     /// </summary>
     /// <param name="particle">対象パーティクル</param>
     /// <param name="deltaTime">経過時間（秒）</param>
-    void Apply(Particle* particle, float deltaTime) override;
+    void Apply(Engine::Particle* particle, float deltaTime) override;
 };
 
 /// <summary>
 /// ヒットサークル表現用のパーティクル修飾子クラス。
 /// </summary>
-class HitCircleParticleModifier : public ParticleModifier
+class HitCircleParticleModifier : public Engine::ParticleModifier
 {
 public:
     /// <summary>
@@ -58,6 +58,6 @@ public:
     /// </summary>
     /// <param name="particle">対象パーティクル</param>
     /// <param name="deltaTime">経過時間（秒）</param>
-    void Apply(Particle* particle, float deltaTime) override;
+    void Apply(Engine::Particle* particle, float deltaTime) override;
 
 };

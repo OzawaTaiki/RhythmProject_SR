@@ -92,11 +92,11 @@ public:
     MoveState& GetMoveState() { return moveState_; }
 
     // ドラッグ選択状態
-    void StartDragSelection(const Vector2& start);
-    void UpdateDragSelection(const Vector2& current);
+    void StartDragSelection(const Engine::Vector2& start);
+    void UpdateDragSelection(const Engine::Vector2& current);
     void EndDragSelection();
     bool IsDragging() const { return isDragging_; }
-    void GetDragSelectionRect(Vector2& LT,Vector2& RB) const;
+    void GetDragSelectionRect(Engine::Vector2& LT, Engine::Vector2& RB) const;
 
     // グリッドスナップ設定
     void SetGridSnapEnabled(bool enabled) { gridSnapEnabled_ = enabled; }
@@ -132,8 +132,8 @@ private:
 
     // ドラッグ選択状態
     bool isDragging_ = false;
-    Vector2 dragStartPosition_{ 0.0f, 0.0f };
-    Vector2 dragCurrentPosition_{ 0.0f, 0.0f };
+    Engine::Vector2 dragStartPosition_{ 0.0f, 0.0f };
+    Engine::Vector2 dragCurrentPosition_{ 0.0f, 0.0f };
 
 
     LiveMapping liveMapping_;

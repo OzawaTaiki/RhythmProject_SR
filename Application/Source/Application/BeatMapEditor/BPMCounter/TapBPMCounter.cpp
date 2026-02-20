@@ -2,6 +2,9 @@
 
 #include <Debug/ImGuiManager.h>
 
+using namespace Engine;
+
+
 void TapBPMCounter::Initialize()
 {
     input_ = Input::GetInstance(); // 入力管理クラスのインスタンスを取得

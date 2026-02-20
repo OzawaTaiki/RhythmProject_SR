@@ -9,7 +9,7 @@
 /// <summary>
 /// フェードイン・フェードアウトによるシーン遷移を実装するクラス。
 /// </summary>
-class SceneTrans : public ISceneTransition
+class SceneTrans : public Engine::ISceneTransition
 {
 public:
     SceneTrans() = default;
@@ -33,8 +33,8 @@ private:
     float alpha_ = 0.0f; // トランジションのアルファ値
     float fadeSpeed_ = 1.0f; // フェード速度
 
-    std::unique_ptr<Sprite> transitionSprite_ = nullptr; // トランジション用のスプライト
-    std::unique_ptr<UITextElement> loadingText_ = nullptr;
+    std::unique_ptr<Engine::Sprite> transitionSprite_ = nullptr; // トランジション用のスプライト
+    std::unique_ptr<Engine::UITextElement> loadingText_ = nullptr;
 
     bool isEnd_ = false; // トランジションが終了したか
     bool canSwitch_ = false; // シーンを切り替え可能か

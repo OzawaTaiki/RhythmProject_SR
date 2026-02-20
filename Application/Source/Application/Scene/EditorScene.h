@@ -13,7 +13,7 @@
 /// <summary>
 /// エディタ用シーン。
 /// </summary>
-class EditorScene : public BaseScene
+class EditorScene : public Engine::BaseScene
 {
 public:
     EditorScene() = default;
@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// シーンの初期化処理。
     /// </summary>
-    void Initialize(SceneData* sceneData) override;
+    void Initialize(Engine::SceneData* sceneData) override;
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -42,15 +42,15 @@ public:
 
 private:
     // シーン関連
-    Camera SceneCamera_ = {};
-    DebugCamera debugCamera_ = {};
+    Engine::Camera SceneCamera_ = {};
+    Engine::DebugCamera debugCamera_ = {};
     bool enableDebugCamera_ = false;
 
-    LineDrawer* lineDrawer_ = nullptr;
-    Input* input_ = nullptr;
-    ParticleSystem* particleSystem_ = nullptr;
+    Engine::LineDrawer* lineDrawer_ = nullptr;
+    Engine::Input* input_ = nullptr;
+    Engine::ParticleSystem* particleSystem_ = nullptr;
 
-    std::shared_ptr<LightGroup> lightGroup_ = nullptr;
+    std::shared_ptr<Engine::LightGroup> lightGroup_ = nullptr;
 
     // Application
     std::unique_ptr<BeatMapEditor> beatMapEditor_ = nullptr; // ビートマップエディターのインスタンス

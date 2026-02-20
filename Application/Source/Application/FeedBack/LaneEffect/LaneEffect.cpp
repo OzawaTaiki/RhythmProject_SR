@@ -4,6 +4,9 @@
 #include <Core/DXCommon/TextureManager/TextureManager.h>
 #include <Math/MyLib.h>
 
+using namespace Engine;
+
+
 Vector4 LaneEffect::defoultColor_ = { 0.5f, 0.7f, 0.8f, 0.5f }; // デフォルトの色を設定
 uint32_t LaneEffect::textureHandle_ = UINT_MAX; // テクスチャハンドルの初期化
 

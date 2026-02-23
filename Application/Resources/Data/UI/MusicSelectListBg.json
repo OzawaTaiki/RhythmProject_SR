@@ -1,0 +1,31 @@
+{
+    "MusicSelectListBg": {
+        "anchor": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "color": {
+            "w": 0.5882353186607361,
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "isEnabled": true,
+        "isVisible": true,
+        "order": 0,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "position": {
+            "x": 960.0,
+            "y": 360.0
+        },
+        "rotation": 0.13962633907794952,
+        "size": {
+            "x": 380.0,
+            "y": 1005.0
+        },
+        "texturePath": "white.png"
+    }
+}

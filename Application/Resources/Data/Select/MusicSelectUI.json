@@ -4,6 +4,13 @@
             "x": 400.0,
             "y": 150.0
         },
+        "bgPaddingX": -30.0,
+        "bgPaddingY": 0.0,
+        "layoutAngle": 0.13962633907794952,
+        "layoutCenter": {
+            "x": 960.0,
+            "y": 360.0
+        },
         "layoutCircle_center": {
             "x": 1489.0,
             "y": 390.0
@@ -12,6 +19,9 @@
         "layoutCircle_radius": 582.0,
         "layoutCircle_startAngle": -2.430000066757202,
         "marginAngle": 0.30000001192092896,
-        "scrollTime": 0.30000001192092896
+        "marginBetweenItems": 150.0,
+        "normalScale": 0.699999988079071,
+        "scrollTime": 0.30000001192092896,
+        "selectedScale": 1.100000023841858
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Features/UI/Element/UIButtonElement.h>
+#include <Features/UI/Element/UIImageElement.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
 #include <Features/Event/EventData.h>
 #include <System/Audio/SoundInstance.h>
@@ -62,6 +63,11 @@ private:
     void UpdateScaling();
 
     /// <summary>
+    /// アイテムカラー更新（選択中はブルーにハイライト）
+    /// </summary>
+    void UpdateItemColors();
+
+    /// <summary>
     /// UIアイテム数が最低限になるように追加する
     /// </summary>
     void EnsureMinimumItems();
@@ -93,31 +99,20 @@ private:
 
 private:
 
-    // UI配置用の大きな円情報
-    struct LayoutCircle
-    {
-        Engine::Vector2 center;
-        float radius;
+    std::unique_ptr<Engine::UIImageElement> backImage_;
+    std::vector<std::unique_ptr<Engine::UIButtonElement>> uiItems_;
 
-        float startAngle;
-        float endAngle;
-    };
-
-    LayoutCircle layoutCircle_;
-
-    // 円周上のUIアイテム情報
-    struct UIItemWithAngle
-    {
-        std::unique_ptr<Engine::UIButtonElement> item;
-        float angle = 0.0f;
-    };
-
-    std::vector<UIItemWithAngle> uiItems_;
-
-    float marginAngle_ = 0.2f; // 円周上のUIアイテム間の角度の余白
-    float scrollTime_ = 0.3f; // スクロールアニメーション時間
+    float marginBetweenItems_ = 150.0f; // アイテム間のマージン
+    float layoutAngle_ = 0.0f; // レイアウトの角度
+    Engine::Vector2 layoutNormalizedDirection_ = { 0.0f, -1.0f }; // レイアウトの正規化された方向ベクトル
+    Engine::Vector2 layoutCenter_ = { 960.0f, 540.0f }; // レイアウトの中心位置
 
     Engine::Vector2 BaseUISize_ ={};
+    float selectedScale_ = 1.0f;  // 選択中アイテムの拡大率
+    float normalScale_   = 0.8f;  // 非選択アイテムの縮小率
+
+    float bgPaddingX_ = 40.0f;   // 背景の左右余白
+    float bgPaddingY_ = 40.0f;   // 背景の上下余白
 
     int32_t selectedIndex_ = 0;
     int32_t musicListSize_ = 0;
@@ -129,10 +124,12 @@ private:
     float scrollElapsedTime_ = 0.0f; // スクロールアニメーション経過時間
     float scrollDuration_ = 0.3f; // スクロールアニメーション時間
 
+
+
     std::shared_ptr<Engine::SoundInstance> bgmSoundInstance_;
     std::shared_ptr<Engine::VoiceInstance> voiceInstance_;
 
-    std::unique_ptr<Engine::AnimationSequence> entranceSequence_;
+    std::unique_ptr<Engine::AnimationSequence> entranceSequence_; // titleからの遷移時のアニメーションシーケンス
     bool isEntranceAnimPlaying_ = true;
     float entranceAnimTime_ = 0.0f;
 

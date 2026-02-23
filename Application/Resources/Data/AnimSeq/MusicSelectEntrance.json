@@ -1,33 +1,77 @@
 {
     "MusicSelectEntrance": {
         "IsLooping": false,
-        "MaxPlayTime": 1.2,
-        "SequenceSize": 2,
+        "MaxPlayTime": 0.8,
+        "SequenceSize": 3,
         "labels": [
-            "slideOffset",
-            "spreadFactor"
+            "bgSlideFactor",
+            "spreadFactor",
+            "slideOffset"
         ],
-        "slideOffset_keyFrames": [
+        "bgSlideFactor_keyFrames": [
             {
-                "easingType": 0,
+                "easingType": 17,
                 "isDelete": false,
                 "isSelect": false,
                 "time": 0.0,
                 "value": {
-                    "type": "Vector2",
-                    "value": {
-                        "x": 800.0,
-                        "y": 0.0
-                    }
+                    "type": "float",
+                    "value": 0.0
                 }
             },
             {
-                "easingType": 16,
+                "easingType": 17,
                 "isDelete": false,
                 "isSelect": false,
                 "time": 0.6,
                 "value": {
-                    "type": "Vector2",
+                    "type": "float",
+                    "value": 1.0
+                }
+            } 
+        ],
+        "bgSlideFactor_variableType": 1,
+        "spreadFactor_keyFrames": [
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "float",
+                    "value": 0.0
+                }
+            },
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.2,
+                "value": {
+                    "type": "float",
+                    "value": 0.0
+                }
+            },
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.6,
+                "value": {
+                    "type": "float",
+                    "value": 1.0
+                }
+            }
+        ],
+        "spreadFactor_variableType": 1,
+        "slideOffset_keyFrames": [
+            {
+                "easingType": 17,
+                "isDelete": false,
+                "isSelect": false,
+                "time": 0.0,
+                "value": {
+                    "type": "struct Vector2",
                     "value": {
                         "x": 0.0,
                         "y": 0.0
@@ -35,39 +79,6 @@
                 }
             }
         ],
-        "slideOffset_variableType": 2,
-        "spreadFactor_keyFrames": [
-            {
-                "easingType": 0,
-                "isDelete": false,
-                "isSelect": false,
-                "time": 0.0,
-                "value": {
-                    "type": "float",
-                    "value": 0.0
-                }
-            },
-            {
-                "easingType": 0,
-                "isDelete": false,
-                "isSelect": false,
-                "time": 0.5,
-                "value": {
-                    "type": "float",
-                    "value": 0.0
-                }
-            },
-            {
-                "easingType": 21,
-                "isDelete": false,
-                "isSelect": false,
-                "time": 1.2,
-                "value": {
-                    "type": "float",
-                    "value": 1.0
-                }
-            }
-        ],
-        "spreadFactor_variableType": 1
+        "slideOffset_variableType": 2
     }
 }

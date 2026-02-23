@@ -8,7 +8,7 @@
 #include <Features/Event/EventManager.h>
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Features/UI/UINavigationManager.h>
-
+#include <Features/UI/Component/UISpriteRenderComponent.h>
 using namespace Engine;
 
 
@@ -16,6 +16,7 @@ namespace
 {
 const int32_t kVisibleCount = 7; // 一度に表示するアイテム数
 const int32_t kHalfVisibleCount = (kVisibleCount - 1) / 2;
+Vector4 focusColor = Vector4(0.44f, 0.66f, 0.97f, 1.0f);
 }
 
 void MusicSelectUI::Initialize(std::shared_ptr<VoiceInstance> voiceInstance)
@@ -25,6 +26,10 @@ void MusicSelectUI::Initialize(std::shared_ptr<VoiceInstance> voiceInstance)
 
     // Jsonバインダー初期化
     InitJsonBinder();
+
+    // リスト背景画像の初期化
+    backImage_ = std::make_unique<UIImageElement>("MusicSelectListBg", layoutCenter_, BaseUISize_);
+    backImage_->Initialize();
 
     // 最低限のアイテム数を確保
     EnsureMinimumItems();
@@ -45,14 +50,42 @@ void MusicSelectUI::Update(float deltaTime)
     if (ImGuiDebugManager::GetInstance()->Begin("MusicSelectUI"))
     {
 
-        ImGui::DragFloat("scrollTime", &scrollTime_, 0.01f, 0.0f, 5.0f);
-        ImGui::DragFloat("marginAngle", &marginAngle_, 0.01f, 0.0f, 3.14f);
         ImGui::DragFloat2("BaseUISize", &BaseUISize_.x);
+        ImGui::DragFloat("marginBetweenItems", &marginBetweenItems_, 1.0f, 0.0f, 500.0f);
+        ImGui::DragFloat2("layout Center", &layoutCenter_.x, 0.01f);
+        ImGui::SliderAngle("layoutAngle", &layoutAngle_);
+        ImGui::DragFloat("selectedScale", &selectedScale_, 0.01f, 0.1f, 3.0f);
+        ImGui::DragFloat("normalScale", &normalScale_, 0.01f, 0.1f, 3.0f);
+        ImGui::DragFloat("bgPaddingX", &bgPaddingX_, 1.0f, 0.0f, 500.0f);
+        ImGui::DragFloat("bgPaddingY", &bgPaddingY_, 1.0f, 0.0f, 500.0f);
+        ImGui::ColorEdit4("focusColor", &focusColor.x);
 
-        ImGui::DragFloat2("layoutCircle_center", &layoutCircle_.center.x, 1.0f);
-        ImGui::DragFloat("layoutCircle_radius", &layoutCircle_.radius, 1.0f, 0.0f, 2000.0f);
-        ImGui::DragFloat("layoutCircle_startAngle", &layoutCircle_.startAngle, 0.01f);
-        ImGui::DragFloat("layoutCircle_endAngle", &layoutCircle_.endAngle, 0.01f);
+        ImGui::Separator();
+        static UVTransform transform;
+        Vector2 offset = transform.GetOffset();
+        Vector2 scale = transform.GetScale();
+        float rotation = transform.GetRotation();
+        bool changed = false;
+        changed |= ImGui::DragFloat2("UV Offset", &offset.x, 0.01f);
+        changed |= ImGui::DragFloat2("UV Scale", &scale.x, 0.01f);
+        changed |= ImGui::DragFloat("UV Rotation", &rotation, 0.01f);
+        if (changed)
+        {
+            transform.SetOffset(offset);
+            transform.SetScale(scale);
+            transform.SetRotation(rotation);
+            for (auto& item : uiItems_)
+            {
+                auto spriteComp = item->GetComponent<UISpriteRenderComponent>();
+                if (spriteComp)
+                {
+                    spriteComp->GetUVTransform() = transform;
+                }
+            }
+        }
+
+
+
         ImGui::InputInt("Select index", reinterpret_cast<int*>(&selectedIndex_));
 
         if (ImGui::Button("Add Item"))
@@ -60,7 +93,7 @@ void MusicSelectUI::Update(float deltaTime)
             auto button1 = std::make_unique<UIButtonElement>("MusicSelectButton1", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), "Button1");
             button1->Initialize();
 
-            uiItems_.push_back({ std::move(button1), 0.0f });
+            uiItems_.push_back(std::move(button1));
         }
 
         if (ImGui::Button("Save"))
@@ -100,26 +133,31 @@ void MusicSelectUI::Update(float deltaTime)
 
     UpdateLayout(deltaTime);
     UpdateScaling();
+    UpdateItemColors();
 
     for (auto& item : uiItems_)
     {
-        item.item->Update();
+        item->Update();
     }
     if (!voiceInstance_ || !voiceInstance_->IsPlaying())
     {
         PlaySelectedMusic();
     }
+
 }
 
 void MusicSelectUI::Draw()
 {
+    // 背景パネルをアイテムより先に描画
+    if (backImage_)
+        backImage_->Draw();
+
     int32_t itemCount = static_cast<int32_t>(uiItems_.size());
 
     for (int32_t i = -kHalfVisibleCount; i <= kHalfVisibleCount + 1; ++i)
     {
         int32_t index = (selectedIndex_ + i + itemCount) % itemCount;
-        auto& item = uiItems_[index];
-        item.item->Draw();
+        uiItems_[index]->Draw();
     }
 }
 
@@ -143,7 +181,13 @@ void MusicSelectUI::InitializeItemsFromData()
             std::string buttonName = "MusicSelectButton" + std::to_string(uiItems_.size());
             auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
             button->Initialize();
-            uiItems_.push_back({ std::move(button), 0.0f });
+            button->SetNormalColor(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+            button->SetTextColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+            auto comp = button->GetComponent<UISpriteRenderComponent>();
+            comp->LoadAndSetTexture("pattern_dot_medium.png");
+            auto& uvTrans = comp->GetUVTransform();
+            uvTrans.SetScale(Vector2(15.0f, 5.0f));
+            uiItems_.push_back(std::move(button));
         }
     }
 
@@ -153,11 +197,11 @@ void MusicSelectUI::InitializeItemsFromData()
         for (size_t i = list.size(); i < uiItems_.size(); ++i)
         {
             auto& item = uiItems_[i];
-            item.item->SetNormalColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
-            item.item->SetHoverColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
-            item.item->SetPressedColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
-            item.item->SetDisabledColor(Vector4(0.1f, 0.1f, 0.1f, 1.0f));
-            item.item->SetTextColor(Vector4(0.5f, 0.5f, 0.5f, 0.0f));
+            item->SetNormalColor(Vector4(   0.01f, 0.01f, 0.01f, 1.0f));
+            item->SetHoverColor(Vector4(    0.01f, 0.01f, 0.01f, 1.0f));
+            item->SetPressedColor(Vector4(  0.01f, 0.01f, 0.01f, 1.0f));
+            item->SetDisabledColor(Vector4( 0.01f, 0.01f, 0.01f, 1.0f));
+            item->SetTextColor(Vector4(0.5f, 0.5f, 0.5f, 0.0f));
         }
     }
 
@@ -166,11 +210,11 @@ void MusicSelectUI::InitializeItemsFromData()
     {
         // ボタンのテキストを設定
         auto& item = uiItems_[i];
-        item.item->SetText(list[i].title);
-        item.item->SetOnClick([this]()
-                              {
-                                  OnItemSelected();
-                              });
+        item->SetText(list[i].title);
+        item->SetOnClick([this]()
+                         {
+                             OnItemSelected();
+                         });
     }
 
     int32_t itemCount = static_cast<int32_t>(uiItems_.size());
@@ -178,13 +222,11 @@ void MusicSelectUI::InitializeItemsFromData()
     {
         int32_t index = (selectedIndex_ + i + itemCount) % itemCount;
         auto& item = uiItems_[index];
-        float scale = 1.0f - (std::abs(static_cast<float>(i)) * 0.2f);
+        float scale = (i == 0) ? selectedScale_ : normalScale_;
         Vector2 targetSize = BaseUISize_ * scale;
-        Vector2 newSize = targetSize;
-        item.item->SetSize(newSize);
+        item->SetSize(targetSize);
     }
 
-    //OnItemFocusEnter();
     isInitialized_ = true;
 }
 
@@ -192,14 +234,14 @@ void MusicSelectUI::InitJsonBinder()
 {
     jsonBinder_ = std::make_unique<JsonBinder>("MusicSelectUI", "Resources/Data/Select/");
 
-    jsonBinder_->RegisterVariable("scrollTime", &scrollTime_);
-    jsonBinder_->RegisterVariable("marginAngle", &marginAngle_);
     jsonBinder_->RegisterVariable("baseUISize", &BaseUISize_);
-
-    jsonBinder_->RegisterVariable("layoutCircle_center", &layoutCircle_.center);
-    jsonBinder_->RegisterVariable("layoutCircle_radius", &layoutCircle_.radius);
-    jsonBinder_->RegisterVariable("layoutCircle_startAngle", &layoutCircle_.startAngle);
-    jsonBinder_->RegisterVariable("layoutCircle_endAngle", &layoutCircle_.endAngle);
+    jsonBinder_->RegisterVariable("marginBetweenItems", &marginBetweenItems_);
+    jsonBinder_->RegisterVariable("layoutAngle", &layoutAngle_);
+    jsonBinder_->RegisterVariable("layoutCenter", &layoutCenter_);
+    jsonBinder_->RegisterVariable("selectedScale", &selectedScale_);
+    jsonBinder_->RegisterVariable("normalScale", &normalScale_);
+    jsonBinder_->RegisterVariable("bgPaddingX", &bgPaddingX_);
+    jsonBinder_->RegisterVariable("bgPaddingY", &bgPaddingY_);
 }
 
 void MusicSelectUI::UpdateLayout(float deltaTime)
@@ -207,19 +249,6 @@ void MusicSelectUI::UpdateLayout(float deltaTime)
     int32_t itemCount =static_cast<int32_t>(uiItems_.size());
     if (itemCount == 0)
         return;
-
-    // 選択しているアイテムの角度
-    const float selectedAngle = (layoutCircle_.startAngle + layoutCircle_.endAngle) / 2.0f;// 中央に配置
-    // アイテムの間隔角度
-    const float angleStep = -(layoutCircle_.endAngle - layoutCircle_.startAngle) / static_cast<float>(kVisibleCount - 2);
-
-    //int32_t startIndex = selectedIndex_ - kHalfVisibleCount;
-    //int32_t endIndex = selectedIndex_ + kHalfVisibleCount;
-    /*
-    if (scrollDirection_ == 1)
-        startIndex--;
-    else if (scrollDirection_ == -1)
-        endIndex++;*/
 
     float t = 1.0f;
     if (scrollDirection_ != 0)
@@ -237,15 +266,25 @@ void MusicSelectUI::UpdateLayout(float deltaTime)
     // 入場アニメーション値の取得
     Vector2 slideOffset = { 0.0f, 0.0f };
     float spreadFactor = 1.0f;
+    Vector2 bgOffset = { 0.0f, 0.0f };
     if (isEntranceAnimPlaying_)
     {
-        slideOffset = entranceSequence_->GetValueAtTime<Vector2>("slideOffset", entranceAnimTime_);
-        spreadFactor = entranceSequence_->GetValueAtTime<float>("spreadFactor", entranceAnimTime_);
+        slideOffset          = entranceSequence_->GetValueAtTime<Vector2>("slideOffset", entranceAnimTime_);
+        spreadFactor         = entranceSequence_->GetValueAtTime<float>("spreadFactor", entranceAnimTime_);
+        float bgSlideFactor  = entranceSequence_->GetValueAtTime<float>("bgSlideFactor", entranceAnimTime_);
+
+        // layoutAngleに沿った方向ベクトルの逆方向からスライドイン
+        // angle=0なら真上、傾きがあればその方向に沿って入ってくる
+        const float kBgSlideDistance = 800.0f;
+        float dirX = sinf(layoutAngle_);
+        float dirY = -cosf(layoutAngle_);
+        bgOffset.x = dirX * kBgSlideDistance * (1.0f - bgSlideFactor);
+        bgOffset.y = dirY * kBgSlideDistance * (1.0f - bgSlideFactor);
     }
 
     // 集合位置（選択アイテムの円周上の位置）
-    float centerX = layoutCircle_.center.x + layoutCircle_.radius * cosf(selectedAngle);
-    float centerY = layoutCircle_.center.y + layoutCircle_.radius * sinf(selectedAngle);
+    float centerX = layoutCenter_.x;
+    float centerY = layoutCenter_.y;
 
     const Vector2 offScreen = { 3000.0f, 3000.0f };
 
@@ -270,23 +309,43 @@ void MusicSelectUI::UpdateLayout(float deltaTime)
         // 表示範囲外は画面外へ
         if (diff < visibleMin || diff > visibleMax)
         {
-            uiItems_[i].item->SetPosition(offScreen);
+            uiItems_[i]->SetPosition(offScreen);
             continue;
         }
 
-        float angle = selectedAngle + diff * angleStep + scrollDirection_ * angleStep * t;
         auto& item = uiItems_[i];
-        item.angle = angle;
 
-        // 本来の円周上の位置を計算
-        float x = layoutCircle_.center.x + layoutCircle_.radius * cosf(angle);
-        float y = layoutCircle_.center.y + layoutCircle_.radius * sinf(angle);
+        // layoutAngleで回転した方向ベクトルでリストの傾きを表現
+        // layoutAngle_=0: 純粋な縦並び / 正値: 右上がりに傾く
+        float dirX = sinf(layoutAngle_);
+        float dirY = -cosf(layoutAngle_);
 
-        // 入場アニメーション: 集合位置と本来位置をspreadFactorで補間 + スライドオフセット
-        x = Lerp(centerX, x, spreadFactor) + slideOffset.x;
-        y = Lerp(centerY, y, spreadFactor) + slideOffset.y;
+        // スクロールアニメーション中は開始位置を1ステップ分ずらし、tとともに収束させる
+        float effectiveDiff = static_cast<float>(diff) + static_cast<float>(scrollDirection_) * t;
 
-        item.item->SetPosition(Vector2(x, y));
+        float x = centerX + effectiveDiff * dirX * marginBetweenItems_;
+        float y = centerY + effectiveDiff * dirY * marginBetweenItems_;
+
+        // 入場アニメーション: 集合位置から各アイテムの本来位置へ拡散
+        x = Lerp(centerX + slideOffset.x, x, spreadFactor);
+        y = Lerp(centerY + slideOffset.y, y, spreadFactor);
+
+        item->SetPosition(Vector2(x, y));
+    }
+
+    // 背景パネル: layoutAngleで回転させ、アイテム列全体を覆うサイズに設定
+    if (backImage_)
+    {
+        // 幅: 選択中アイテムの横幅 + 左右余白
+        float bgW = BaseUISize_.x * selectedScale_ + bgPaddingX_ * 2.0f;
+        // 高さ: アイテム列の全スパン（上下 kHalfVisibleCount 個分）+ 端アイテムの縦幅 + 上下余白
+        float bgH = static_cast<float>(kHalfVisibleCount * 2) * marginBetweenItems_
+            + BaseUISize_.y * normalScale_ + bgPaddingY_ * 2.0f;
+
+        backImage_->SetPosition(Vector2(layoutCenter_.x + bgOffset.x, layoutCenter_.y + bgOffset.y));
+        backImage_->SetSize(Vector2(bgW, bgH));
+        backImage_->SetRotation(layoutAngle_);  // リストの傾きに合わせて回転
+        backImage_->Update();
     }
 }
 
@@ -308,15 +367,36 @@ void MusicSelectUI::UpdateScaling()
         }
     }
 
-    // 0.6 0.8 1.0 0.8 0.6
+    // 選択中: フルサイズ / それ以外: 一律縮小
     for (int32_t i = -kHalfVisibleCount; i <= kHalfVisibleCount; ++i)
     {
         int32_t index = (selectedIndex_ + i + itemCount) % itemCount;
         auto& item = uiItems_[index];
-        float scale = 1.0f - (std::abs(static_cast<float>(i)) * 0.2f);
+        float scale = (i == 0) ? selectedScale_ : normalScale_;
         Vector2 targetSize = BaseUISize_ * scale;
-        Vector2 newSize = Lerp(targetSize, item.item->GetSize(), t);
-        item.item->SetSize(newSize);
+        // スクロール中のみLerpでアニメーション。停止中は目標サイズを直接適用
+        Vector2 newSize = (scrollDirection_ != 0) ? Lerp(targetSize, item->GetSize(), t) : targetSize;
+        item->SetSize(newSize);
+    }
+}
+
+void MusicSelectUI::UpdateItemColors()
+{
+    int32_t itemCount = static_cast<int32_t>(uiItems_.size());
+    for (int32_t i = 0; i < itemCount; ++i)
+    {
+        int32_t diff = i - selectedIndex_;
+        if (diff > itemCount / 2) diff -= itemCount;
+        if (diff < -itemCount / 2) diff += itemCount;
+
+        if (diff == 0)
+        {
+            uiItems_[i]->SetFocusColor(focusColor);  // フォーカス時もブルーを維持
+        }
+        else
+        {
+            //uiItems_[i]->SetNormalColor(Vector4(0.93f, 0.93f, 0.95f, 1.0f)); // 非選択: ライトグレー
+        }
     }
 }
 
@@ -329,13 +409,19 @@ void MusicSelectUI::EnsureMinimumItems()
 
         auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
         button->Initialize();
-        uiItems_.push_back({ std::move(button), 0.0f });
+        button->SetNormalColor(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+        button->SetTextColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+        auto comp = button->GetComponent<UISpriteRenderComponent>();
+        comp->LoadAndSetTexture("pattern_dot_medium.png");
+        auto& uvTrans = comp->GetUVTransform();
+        uvTrans.SetScale(Vector2(15.0f, 5.0f));
+        uiItems_.push_back(std::move(button));
     }
 }
 
 void MusicSelectUI::ClampSelectedIndex()
 {
-    uint32_t itemCount = static_cast<int32_t>(uiItems_.size());
+    uint32_t itemCount = static_cast<int32_t>(musicListSize_);
     selectedIndex_ = (selectedIndex_ + itemCount) % itemCount;
 }
 
@@ -372,7 +458,7 @@ void MusicSelectUI::OnItemFocusEnter()
 
     // navigationの設定
     if (selectedIndex_ >= 0 && uiItems_.size() > selectedIndex_)
-        UINavigationManager::GetInstance()->SetFocus(uiItems_[selectedIndex_].item.get());
+        UINavigationManager::GetInstance()->SetFocus(uiItems_[selectedIndex_].get());
 }
 
 void MusicSelectUI::OnItemSelected()

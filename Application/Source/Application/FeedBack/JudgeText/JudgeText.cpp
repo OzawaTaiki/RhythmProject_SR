@@ -3,6 +3,7 @@
 #include <Math/Mylib.h>
 
 #include <Application/Lane/Lane.h>
+#include <Application/Note/Judge/JudgeColor.h>
 
 float JudgeText::displayYOffset_ = -150.0f; // Y軸のオフセットを初期化
 
@@ -36,7 +37,9 @@ void JudgeText::Initialize(JudgeType judgeType, int32_t laneIndex, const Camera*
 
 
     judgeText_ = GetJudgeText(judgeType_); // 判定テキストの初期化
-    GetJudgeTextColor(judgeType_, topColor_, bottomColor_); // 判定テキストの色を取得
+    auto color = Judge::GetColor(judgeType_); // 判定テキストの色を取得
+    topColor_ = color.top;
+    bottomColor_ = color.bottom;
 
     text_.Initialize(FontConfig()); // テキストレンダラーの初期化
 
@@ -106,39 +109,6 @@ std::wstring JudgeText::GetJudgeText(JudgeType judgeType)
             break;
     }
 
-}
-
-void JudgeText::GetJudgeTextColor(JudgeType judgeType, Vector4& topColor, Vector4& bottomColor)
-{
-    switch (judgeType)
-    {
-        case JudgeType::Perfect:
-            // ピンクから水色
-            topColor = ColorCodeToVector4(0xff66b8ff); // ピンク色
-            bottomColor = Vector4(0.0f, 1.0f, 1.0f, 1.0f); // 水色
-            break;
-        case JudgeType::Good:
-            // 緑から薄い緑
-            topColor = Vector4(0.0f, 1.0f, 0.0f, 1.0f); // 緑色
-            bottomColor = Vector4(0.5f, 1.0f, 0.5f, 1.0f); // 薄い緑色
-            break;
-        case JudgeType::Bad:// 暗青系->黒系
-            topColor = ColorCodeToVector4(0x3838d0ffu);
-            bottomColor = ColorCodeToVector4(0x3ea5ffffu);
-            break;
-
-        case JudgeType::Miss:
-            // グレー
-            topColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // グレー
-            bottomColor = Vector4(0.5f, 0.5f, 0.5f, 1.0f); // グレー
-            break;
-        case JudgeType::None:
-        case JudgeType::MAX:
-        default:
-            topColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f); // 白色
-            bottomColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-            break;
-    }
 }
 
 void JudgeText::UpdateTextParam()

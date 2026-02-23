@@ -6,6 +6,8 @@
 #include <Features/UI/UINavigationManager.h>
 #include <Features/Event/EventManager.h>
 
+#include <Application/Note/Judge/JudgeColor.h>
+
 using namespace Engine;
 
 
@@ -212,6 +214,17 @@ void ResultUI::InitTextParams()
         param.animationValue.scale = param.textParam.scale; // アニメーション用の初期スケール
         param.animationValue.alpha = param.textParam.topColor.w; // アニメーション用の初期アルファ値
         param.animationValue.timer = -param.animationValue.delay; // アニメーション用の初期タイマー
+
+        // ジャッジ系テキストに判定カラーを適用
+        JudgeType judgeType = GetJudgeTypeFromTextType(textType);
+        if (judgeType != JudgeType::None)
+        {
+            auto color = Judge::GetColor(judgeType);
+            param.textParam.topColor    = color.top;
+            param.textParam.bottomColor = color.bottom;
+            param.textParam.useGradient = true;
+            param.animationValue.alpha  = color.top.w;
+        }
     }
 }
 
@@ -369,12 +382,16 @@ JudgeType ResultUI::GetJudgeTypeFromTextType(TextType textType) const
 {
     switch (textType)
     {
+        case TextType::Judge_perfect_text:
         case TextType::Judge_perfect_value:
             return JudgeType::Perfect;
+        case TextType::Judge_good_text:
         case TextType::Judge_good_value:
             return JudgeType::Good;
+        case TextType::Judge_bad_text:
         case TextType::Judge_bad_value:
             return JudgeType::Bad;
+        case TextType::Judge_miss_text:
         case TextType::Judge_miss_value:
             return JudgeType::Miss;
         default:

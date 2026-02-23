@@ -69,14 +69,6 @@ private:
     /// <returns>判定用のテキスト</returns>
     static std::wstring GetJudgeText(JudgeType judgeType);
 
-    /// <summary>
-    /// 判定タイプに応じたテキストの色を決定する（内部ユーティリティ）。
-    /// </summary>
-    /// <param name="judgeType">判定タイプ</param>
-    /// <param name="topColor">上端の色（出力）</param>
-    /// <param name="bottomColor">下端の色（出力）</param>
-    static void GetJudgeTextColor(JudgeType judgeType, Engine::Vector4& topColor, Engine::Vector4& bottomColor);
-
     // テキストパラメータの更新（内部）
     void UpdateTextParam();
 

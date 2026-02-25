@@ -44,7 +44,7 @@ void BeatManager::Update()
         // 拍に合わせて音を鳴らす
         if (soundInstance_)
         {
-            voiceInstance_ = soundInstance_->Play(volume_);
+            voiceInstance_ = soundInstance_->Play(volume_, false, true, nullptr, AudioSystem::GetInstance()->GetSESubmix());
         }
     }
 }

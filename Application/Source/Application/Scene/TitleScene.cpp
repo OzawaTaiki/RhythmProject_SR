@@ -58,7 +58,11 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     lobbyCamera_->Initialize();
 
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/demoMusic.wav");
-    voiceInstance_ = soundInstance_->Play(0.5f, false);
+    voiceInstance_ = soundInstance_->Play(0.5f,
+                                          false,
+                                          true,
+                                          nullptr,
+                                          AudioSystem::GetInstance()->GetBGMSubmix());
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
@@ -113,7 +117,11 @@ void TitleScene::Update()
     if (!voiceInstance_ || !voiceInstance_->IsPlaying())
     {
         // 楽曲が終了したら最初から再生
-        voiceInstance_ = soundInstance_->Play(0.5f, false);
+        voiceInstance_ = soundInstance_->Play(0.5f, false,
+                                              true,
+                                              nullptr,
+                                              AudioSystem::GetInstance()->GetBGMSubmix());
+
         beatManager_->SetMusicVoiceInstance(voiceInstance_);
         // 譜面フォルダからランダムで曲を流したい
     }
@@ -165,7 +173,7 @@ void TitleScene::Draw()
     LayerSystem::SetLayer("back");
     {
         titleBack_->Draw();
-        hexagonGrid_->Draw();
+        //hexagonGrid_->Draw();
     }
 
     LayerSystem::SetLayer("ring");
@@ -203,6 +211,7 @@ void TitleScene::OnEvent(const GameEvent& event)
         sceneData->lobbyCamera = std::move(lobbyCamera_);
         sceneData->titleBackgroundAnimation = uvAnimation_;
         sceneData->titleBackground = titleBack_;
+        sceneData->hexagonGrid = std::move(hexagonGrid_);
         SceneManager::GetInstance()->EnableTransition(false);
         SceneManager::ReserveScene("SelectScene", std::move(sceneData));
         // SceneManager::ReserveScene("GameScene", nullptr);

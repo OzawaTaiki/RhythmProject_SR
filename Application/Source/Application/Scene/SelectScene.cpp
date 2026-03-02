@@ -56,6 +56,7 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
         lobbyCamera_ = std::move(data->lobbyCamera);
         backImage_ = data->titleBackground;
         backImageAnimation_ = data->titleBackgroundAnimation;
+        hexagonGrid_ = std::move(data->hexagonGrid);
     }
 
     selectUI_ = std::make_unique<SelectUI>();
@@ -78,6 +79,10 @@ void SelectScene::Update()
 
     backImageAnimation_.Update(deltaTime);
     backImage_->Update();
+#ifndef _DEBUG
+    if (hexagonGrid_)
+        hexagonGrid_->Update();
+#endif
 
 #ifdef _DEBUG
 
@@ -107,7 +112,8 @@ void SelectScene::Draw()
     LayerSystem::SetLayer("back");
     {
         backImage_->Draw();
-
+        if (hexagonGrid_)
+            hexagonGrid_->Draw();
     }
     LayerSystem::SetLayer("ring");
     {

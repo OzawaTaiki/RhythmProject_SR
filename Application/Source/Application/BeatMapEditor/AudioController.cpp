@@ -143,7 +143,7 @@ void AudioController::PlayForBPMSet()
     Stop();
     StopForBPMSet();
     // 最初から再生（ループ再生）
-    voiceInstanceForBPMSet_ = musicSoundInstance_->Play(volume_, true);
+    voiceInstanceForBPMSet_ = musicSoundInstance_->Play(volume_, true, true, nullptr, audioSystem_->GetBGMSubmix());
     if (voiceInstanceForBPMSet_)
     {
         voiceInstanceForBPMSet_->SetPlaySpeed(playSpeed_);

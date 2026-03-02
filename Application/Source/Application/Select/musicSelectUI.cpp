@@ -489,7 +489,7 @@ void MusicSelectUI::PlaySelectedMusic()
 
     if (bgmSoundInstance_)
     {
-        voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, false);
+        voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, false, true, nullptr, AudioSystem::GetInstance()->GetBGMSubmix());
     }
 
 }

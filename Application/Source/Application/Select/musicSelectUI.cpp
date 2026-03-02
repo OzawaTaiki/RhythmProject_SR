@@ -9,6 +9,8 @@
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Features/UI/UINavigationManager.h>
 #include <Features/UI/Component/UISpriteRenderComponent.h>
+#include <Application/BGMChangeEventData.h>
+
 using namespace Engine;
 
 
@@ -17,6 +19,7 @@ namespace
 const int32_t kVisibleCount = 7; // 一度に表示するアイテム数
 const int32_t kHalfVisibleCount = (kVisibleCount - 1) / 2;
 Vector4 focusColor = Vector4(0.44f, 0.66f, 0.97f, 1.0f);
+
 }
 
 void MusicSelectUI::Initialize(std::shared_ptr<VoiceInstance> voiceInstance)
@@ -181,7 +184,9 @@ void MusicSelectUI::InitializeItemsFromData()
             std::string buttonName = "MusicSelectButton" + std::to_string(uiItems_.size());
             auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
             button->Initialize();
+            button->SetOrder(100);
             button->SetNormalColor(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
+            button->SetFocusColor(focusColor);  // フォーカス時もブルーを維持
             button->SetTextColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
             auto comp = button->GetComponent<UISpriteRenderComponent>();
             comp->LoadAndSetTexture("pattern_dot_medium.png");
@@ -226,6 +231,8 @@ void MusicSelectUI::InitializeItemsFromData()
         Vector2 targetSize = BaseUISize_ * scale;
         item->SetSize(targetSize);
     }
+
+    UINavigationManager::GetInstance()->SetFocus(uiItems_[selectedIndex_].get());
 
     isInitialized_ = true;
 }
@@ -409,6 +416,7 @@ void MusicSelectUI::EnsureMinimumItems()
 
         auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
         button->Initialize();
+        button->SetOrder(100);
         button->SetNormalColor(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
         button->SetTextColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
         auto comp = button->GetComponent<UISpriteRenderComponent>();
@@ -490,6 +498,12 @@ void MusicSelectUI::PlaySelectedMusic()
     if (bgmSoundInstance_)
     {
         voiceInstance_ = bgmSoundInstance_->Play(Setting::current_.musicVolume, false, true, nullptr, AudioSystem::GetInstance()->GetBGMSubmix());
+
+        // BGM変更イベントをディスパッチ
+        BGMChangeEventData eventData;
+        eventData.newBGM = bgmSoundInstance_;
+        EventManager::GetInstance()->DispatchEvent(GameEvent("BGMChanged", &eventData));
+
     }
 
 }

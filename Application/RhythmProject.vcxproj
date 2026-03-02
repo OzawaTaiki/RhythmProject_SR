@@ -351,6 +351,7 @@
     <ClInclude Include="Source\Application\BeatMapLoader\BeatMapData.h" />
     <ClInclude Include="Source\Application\BeatMapLoader\BeatMapLoader.h" />
     <ClInclude Include="Source\Application\BeatsManager\BeatManager.h" />
+    <ClInclude Include="Source\Application\BGMChangeEventData.h" />
     <ClInclude Include="Source\Application\Core\GameCore.h" />
     <ClInclude Include="Source\Application\Core\ScoreCalc\ScoreCalculator.h" />
     <ClInclude Include="Source\Application\Effects\Speaker\SpeakerEffectModifier.h" />

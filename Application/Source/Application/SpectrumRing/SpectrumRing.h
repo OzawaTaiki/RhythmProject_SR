@@ -29,6 +29,8 @@ public:
 
     void SetBeatManager(BeatManager* beatManager) { beatManager_ = beatManager; }
 
+    void SetMusicInstance(std::shared_ptr<Engine::SoundInstance> musicInstance);
+
 private:
 
     void CreateRings();

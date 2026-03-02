@@ -9,17 +9,20 @@
 #include <Application/MusicList/MusicListManager.h>
 #include <Application/Scene/Data/SceneDatas.h>
 #include <Features/Model/Manager/ModelManager.h>
+#include <Application/BGMChangeEventData.h>
 
 using namespace Engine;
 
 SelectScene::SelectScene()
 {
     EventManager::GetInstance()->AddEventListener("StartGame", this);
+    EventManager::GetInstance()->AddEventListener("BGMChanged", this);
 }
 
 SelectScene::~SelectScene()
 {
     EventManager::GetInstance()->RemoveEventListener("StartGame", this);
+    EventManager::GetInstance()->RemoveEventListener("BGMChanged", this);
 }
 
 void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
@@ -75,7 +78,10 @@ void SelectScene::Update()
     selectUI_->Update(deltaTime);
 
     if (spectrumRing_)
+    {
+
         spectrumRing_->Update(selectUI_->GetMusicElapsedTime());
+    }
 
     backImageAnimation_.Update(deltaTime);
     backImage_->Update();
@@ -140,6 +146,15 @@ void SelectScene::OnEvent(const GameEvent& event)
             auto sceneData = std::make_unique<SelectToGameData>();
             sceneData->selectedBeatMapFilePath = data->selectedFilePath;
             SceneManager::ReserveScene("GameScene", std::move(sceneData));
+        }
+    }
+    else if ("BGMChanged" == eventType)
+    {
+        auto data = dynamic_cast<BGMChangeEventData*>(event.GetData());
+        if (data)
+        {
+            if (spectrumRing_)
+                spectrumRing_->SetMusicInstance(data->newBGM);
         }
     }
 }

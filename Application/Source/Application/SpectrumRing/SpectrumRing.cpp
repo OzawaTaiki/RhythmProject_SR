@@ -1,4 +1,4 @@
-﻿#include "SpectrumRing.h"
+#include "SpectrumRing.h"
 
 #include <Features/AudioSpectrum/AudioSpectrum.h>
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
@@ -54,7 +54,7 @@ void SpectrumRing::Update(float elapsedTime)
     uint32_t index = cycleTextureIndices_.back();
     cycleTextureIndices_.pop_back();
     cycleTextureIndices_.push_front(index);
-    
+
     auto spectrum = audioSpectrum_.GetSpectrumAtTime(elapsedTime);
     //float min, max;
     //WaveformAnalyzer::GetRawWaveformMaxMin(musicInstance_.get(), _elapsedTime, 5.0f, max, min);
@@ -95,6 +95,16 @@ void SpectrumRing::Draw(Camera* camera)
         uint32_t handleIndex = cycleTextureIndices_[i];
         rings_[i]->Draw(camera, textureHandles_[handleIndex], Vector4(1, 1, 1, 0.3f));
     }    rings_[numRings]->Draw(camera);
+}
+
+void SpectrumRing::SetMusicInstance(std::shared_ptr<Engine::SoundInstance> musicInstance)
+{
+    if (!musicInstance)
+        return;
+
+    musicInstance_ = musicInstance;
+    audioSpectrum_.SetAudioData(musicInstance_->GetAudioData());
+    audioSpectrum_.SetSampleRate(musicInstance_->GetSampleRate());
 }
 
 void SpectrumRing::CreateRings()

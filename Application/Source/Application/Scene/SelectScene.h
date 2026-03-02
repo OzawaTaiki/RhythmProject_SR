@@ -16,6 +16,7 @@
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UVTransform/UVTransformAnimation.h>
 #include <Application/TitleCamera/TitleCamera.h>
+#include <Application/HexagonGrid/HexagonGrid.h>
 
 /// <summary>
 /// 選曲画面のシーンクラス。
@@ -77,4 +78,6 @@ private:
 
     std::shared_ptr<Engine::UIImageElement> backImage_ = nullptr;
     Engine::UVTransformAnimation backImageAnimation_ = {};
+
+    std::unique_ptr<HexagonGrid> hexagonGrid_ = nullptr;
 };

@@ -13,6 +13,11 @@
 
 using namespace Engine;
 
+namespace
+{
+float cutoffHZ = 700.0f;
+}
+
 
 SettingMenu::SettingMenu()
 {
@@ -92,6 +97,8 @@ void SettingMenu::Initialize()
                                    UINavigationManager::GetInstance()->ClearFocus();
                                    EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
                                    previewPanel_->StopMusic();
+                                   auto submix = AudioSystem::GetInstance()->GetBGMSubmix();
+                                   submix->ClearFilter();
                                    Debug::Log("SettingMenu closed\n");
                                });
     auto closeLabel = std::make_unique<UITextElement>("SettingMenu_CloseLabel", Vector2(10, 10), "Close");
@@ -142,6 +149,10 @@ void SettingMenu::Update()
         UINavigationManager::GetInstance()->ClearFocus();
         EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
         previewPanel_->StopMusic();
+
+        auto submix = AudioSystem::GetInstance()->GetBGMSubmix();
+        submix->ClearFilter();
+
         Debug::Log("SettingMenu closed\n");
     }
 
@@ -164,6 +175,8 @@ void SettingMenu::OnEvent(const GameEvent& event)
     if (event.GetEventType() == "OpenOptionMenu")
     {
         isActive_ = true;
+        auto submix = AudioSystem::GetInstance()->GetBGMSubmix();
+        submix->SetFilter(XAUDIO2_FILTER_TYPE::LowPassFilter, cutoffHZ, 1.0f); // BGMをローパスフィルタでこもらせる
         UINavigationManager::GetInstance()->SetFocus(volumeSlider_);
         Debug::Log("SettingMenu opened\n");
     }

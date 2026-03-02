@@ -9,6 +9,7 @@
 #include <Features/UI/Element/UIImageElement.h>
 #include <Features/UVTransform/UVTransformAnimation.h>
 #include <Application/TitleCamera/TitleCamera.h>
+#include <Application/HexagonGrid/HexagonGrid.h>
 
 // シーン間でデータを受け渡すための構造体群
 /// <summary>
@@ -37,4 +38,5 @@ struct TitleToSelectData : Engine::SceneData
     std::unique_ptr<LobbyCamera> lobbyCamera; // タイトルシーンから引き継がれるロビー用カメラ
     std::shared_ptr<Engine::UIImageElement> titleBackground; // タイトルシーンから引き継がれるタイトル背景のUI要素
     Engine::UVTransformAnimation titleBackgroundAnimation; // タイトル背景のUV変換アニメーション
+    std::unique_ptr<HexagonGrid> hexagonGrid; // タイトルシーンから引き継がれるヘキサゴングリッド
 };

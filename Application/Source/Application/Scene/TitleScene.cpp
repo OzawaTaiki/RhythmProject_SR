@@ -58,11 +58,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     lobbyCamera_->Initialize();
 
     soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/demoMusic.wav");
-    voiceInstance_ = soundInstance_->Play(0.5f,
-                                          false,
-                                          true,
-                                          nullptr,
-                                          AudioSystem::GetInstance()->GetBGMSubmix());
+    voiceInstance_ = soundInstance_->Play(0.5f, false, true, nullptr, AudioSystem::GetInstance()->GetBGMSubmix());
 
     settingMenu_ = std::make_unique<SettingMenu>();
     settingMenu_->Initialize();
@@ -117,11 +113,7 @@ void TitleScene::Update()
     if (!voiceInstance_ || !voiceInstance_->IsPlaying())
     {
         // 楽曲が終了したら最初から再生
-        voiceInstance_ = soundInstance_->Play(0.5f, false,
-                                              true,
-                                              nullptr,
-                                              AudioSystem::GetInstance()->GetBGMSubmix());
-
+        voiceInstance_ = soundInstance_->Play(0.5f, false, true, nullptr, AudioSystem::GetInstance()->GetBGMSubmix());
         beatManager_->SetMusicVoiceInstance(voiceInstance_);
         // 譜面フォルダからランダムで曲を流したい
     }

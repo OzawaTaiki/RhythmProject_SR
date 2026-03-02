@@ -138,7 +138,7 @@ void BeatMapEditor::Update()
             // 音ならす
             if (soundInstance_)
             {
-                voiceInstance_=soundInstance_->Play(0.5f, false);
+                voiceInstance_=soundInstance_->Play(0.5f, false, true, nullptr, AudioSystem::GetInstance()->GetSESubmix());
             }
         }
     }

@@ -22,7 +22,7 @@ void NoteHoldEffect::Play(int32_t laneIndex)
 
     if (!voiceInstance_ || !voiceInstance_->IsPlaying())
     {
-        voiceInstance_ = soundInstance_->Play(1.0f);
+        voiceInstance_ = soundInstance_->Play(1.0f, false, true, nullptr, AudioSystem::GetInstance()->GetSESubmix());
     }
 
     emitter_.SetPosition(lanePos);

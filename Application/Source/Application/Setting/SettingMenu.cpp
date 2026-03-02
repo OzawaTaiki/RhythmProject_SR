@@ -159,8 +159,6 @@ void SettingMenu::Update()
     backSprite_->Update();
     previewPanel_->Update();
 
-    ImGui::DragFloat("cutoffHz", &cutoffHZ, 10.0f, 10.0f, 20000.0f);
-
 }
 
 void SettingMenu::Draw()

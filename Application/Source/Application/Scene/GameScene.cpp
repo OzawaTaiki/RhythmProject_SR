@@ -156,12 +156,12 @@ void GameScene::Update()
 #ifdef _DEBUG
     ImGui();
 
-    if(input_->IsKeyTriggered(DIK_F8))
+    if (input_->IsKeyTriggered(DIK_F8))
         isTransitionToResultScene_ = !isTransitionToResultScene_; // F8キーで結果シーンへの遷移を切り替え
     if (input_->IsKeyTriggered(DIK_F7))
     {
         noteUpdateEnabled_ = !noteUpdateEnabled_;
-        if(noteUpdateEnabled_)
+        if (noteUpdateEnabled_)
             gameMusic_->Resume(); // ノート更新が有効なら音楽を再生
         else
             gameMusic_->Pause(); // ノート更新が無効なら音楽を一時停止
@@ -179,6 +179,7 @@ void GameScene::Update()
     //depthBasedOutLineData_.edgeColor.x = std::sin(static_cast<float>((Time::GetCurrentTime)())) * 0.5f + 0.5f;
     laneOutline_->Update(gameCore_->GetCombo());
     pauseMenu_->Update();
+    gameMusic_->Update(deltaTime);
 
     gameInputManager_->Update(); // 入力更新
     if (noteUpdateEnabled_ && !pauseMenu_->IsActive())
@@ -191,7 +192,7 @@ void GameScene::Update()
         gameMusic_->Pause();
     }
     feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
-    gameUI_->Update(gameCore_->GetCombo(),deltaTime); // コンボ値をUIに渡す
+    gameUI_->Update(gameCore_->GetCombo(), deltaTime); // コンボ値をUIに渡す
     settingMenu_->Update();
 
     float elapsedTime = gameMusic_->GetElapsedTime();
@@ -254,7 +255,7 @@ void GameScene::Draw()
     {
         ModelManager::GetInstance()->PreDrawForObjectModel();
         gameEnvironment_->Draw(&SceneCamera_);
-        LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom",bloom_.get());
+        LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom", bloom_.get());
         feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
     }
 
@@ -403,7 +404,7 @@ void GameScene::OnEvent(const GameEvent& event)
     std::string eventType = event.GetEventType();
 
     // ポーズメニューからのイベント
-    if(StringUtils::Contains(eventType, "Request"))
+    if (StringUtils::Contains(eventType, "Request"))
     {
         if (eventType == "RequestResume")
         {
@@ -424,7 +425,8 @@ void GameScene::OnEvent(const GameEvent& event)
     {
         auto data = dynamic_cast<ValueChangedEventData*>(event.GetData());
         if (data)
-        {if (data->name == "NoteSpeed")
+        {
+            if (data->name == "NoteSpeed")
             {
                 gameCore_->SetNoteSpeed(data->value);
             }
@@ -550,7 +552,15 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
 
     gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType, int32_t combo) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType, combo); });
-    gameCore_->SetMissCallback([&]() { feedbackEffect_->PlayMissedEffect(); });
+    gameCore_->SetMissCallback([&]()
+                               {
+                                   feedbackEffect_->PlayMissedEffect();
+                                   int32_t combo = gameCore_->GetCombo();
+                                   float duckDepth = feedbackEffect_->GetComboThresholds()->GetMissEffectThreshold(combo);
+                                   //float duration = 0.5f;
+                                   float duration = beatManager_->GetSecondsPerBeat() * 2.0f;
+                                   gameMusic_->TriggerDucking(duckDepth, duration);
+                               });
     gameCore_->SetHoldCallback([&](int32_t laneIndex) { feedbackEffect_->PlayHoldEffect(laneIndex); });
 
 
@@ -611,7 +621,7 @@ void GameScene::ImGui()
         ImGui::DragFloat("BlurRadius", &bloomBlurData_.blurRadius, 0.01f);
         ImGui::End();
     }
-    if(ImGuiDebugManager::GetInstance()->Begin("GameScene"))
+    if (ImGuiDebugManager::GetInstance()->Begin("GameScene"))
     {
         ImGui::Text("combo: %d", gameCore_->GetCombo());
         ImGui::Text("maxCombo: %d", gameCore_->GetMaxCombo());

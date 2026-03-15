@@ -17,6 +17,8 @@ public:
     int32_t GetMaxCombo() const { return maxCombo_; }
     size_t GetMaxComboLevel() const { return kArraySize; }
 
+
+    float GetMissEffectThreshold(int32_t combo) const;
 private:
     static const size_t kArraySize = 2;
 

@@ -25,6 +25,12 @@ public:
     void Initialize(float rewindTime = 1.0f);
 
     /// <summary>
+    /// 毎フレームの更新処理を行う
+    /// </summary>
+    /// <param name="deltaTime"></param>
+    void Update(float deltaTime);
+
+    /// <summary>
     /// 再生経過時間を取得する。
     /// </summary>
     float GetElapsedTime() const;
@@ -77,6 +83,14 @@ public:
 
     void MusicEnd() { isMusicEnd_ = true; };
 
+    // ダッキングをトリガーする
+    void TriggerDucking(float targetVolume, float duration);
+
+
+private:
+    // ダッキングの状態を更新する
+    void UpdateDucking(float deltaTime);
+
 private:
 
     std::shared_ptr<Engine::SoundInstance> soundInstance_; // 音楽データ
@@ -91,4 +105,13 @@ private:
 
     // 曲を停止時点での再生経過時間
     float pausedAtTime_ = 0.0f;
+
+    struct DuckingInfo
+    {
+        bool isDucking = false; // ダッキング中かどうか
+        float targetVolume = 1.0f; // ダッキングの目標音量
+        float duckingDuration = 0.5f; // ダッキングの持続時間
+        float duckingElapsed = 0.0f; // ダッキングの経過時間
+        constexpr static float kNormalVolume = 1.0f; // 通常音量
+    }duckingInfo_;
 };

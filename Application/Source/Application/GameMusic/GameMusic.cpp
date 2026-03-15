@@ -4,6 +4,7 @@
 
 #include <Application/EventData/PauseActionData.h>
 #include <Features/Event/EventManager.h>
+#include <Math/MyLib.h>
 
 using namespace Engine;
 
@@ -35,6 +36,11 @@ void GameMusic::Initialize(float rewindTime)
     pausedAtTime_ = 0.0f;
     isMusicPlaying_ = false;
 
+}
+
+void GameMusic::Update(float deltaTime)
+{
+    UpdateDucking(deltaTime);
 }
 
 float GameMusic::GetElapsedTime() const
@@ -127,4 +133,31 @@ std::shared_ptr<SoundInstance> GameMusic::GetSoundInstance()
     if (soundInstance_)
         return soundInstance_;
     return nullptr;
+}
+
+void GameMusic::TriggerDucking(float targetVolume, float duration)
+{
+    duckingInfo_.isDucking = true;
+    duckingInfo_.targetVolume = targetVolume;
+    duckingInfo_.duckingDuration = duration;
+    duckingInfo_.duckingElapsed = 0.0f;
+    SetVolume(targetVolume); // ダッキングの目標音量に即座に設定
+}
+
+void GameMusic::UpdateDucking(float deltaTime)
+{
+    if (!duckingInfo_.isDucking || !voiceInstance_)
+        return;
+
+    duckingInfo_.duckingElapsed += deltaTime;
+    float t = std::min(duckingInfo_.duckingElapsed / duckingInfo_.duckingDuration, 1.0f);
+
+    // ダッキングの目標音量から通常音量への線形補間
+    float currentVolume = Lerp(duckingInfo_.targetVolume, DuckingInfo::kNormalVolume, t);
+    SetVolume(currentVolume);
+    if (t >= 1.0f)
+    {
+        duckingInfo_.isDucking = false; // ダッキング終了
+    }
+
 }

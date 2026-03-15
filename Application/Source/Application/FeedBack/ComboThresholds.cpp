@@ -37,3 +37,14 @@ float ComboThresholds::GetComboProgress(int32_t combo) const
     }
     return 1.0f;
 }
+
+float ComboThresholds::GetMissEffectThreshold(int32_t combo) const
+{
+    int32_t level = GetComboLevel(combo);
+    if (level >= 2)
+        return 0.4f;    // コンボレベル2: 深いダッキング
+    else if (level >= 1)
+        return 0.6f;    // コンボレベル1: 中程度
+    else
+        return 0.8f;    // レベル0: 軽いダッキング
+}

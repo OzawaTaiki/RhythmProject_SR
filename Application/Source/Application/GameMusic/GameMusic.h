@@ -1,6 +1,14 @@
 #pragma once
 
 #include <System/Audio/SoundInstance.h>
+#include <System/Audio/VoiceInstance.h>
+#include <System/Audio/AudioEffect.h>
+
+#include <System/Audio/VST3/VST3Host.h>
+#include <System/Audio/VST3/VST3Module.h>
+#include <System/Audio/VST3/VST3Plugin.h>
+#include <System/Audio/VST3/VST3Effect.h>
+#include <System/Audio/VST3/VST3ParameterManager.h>
 
 /// <summary>
 /// 音楽再生用クラス。
@@ -86,10 +94,18 @@ public:
     // ダッキングをトリガーする
     void TriggerDucking(float targetVolume, float duration);
 
+    void SetBitCrush(float bitDepth, float sampleRateReduction);
+
+    void EnableBitCrush();
+
+    void DisableBitCrush();
 
 private:
     // ダッキングの状態を更新する
     void UpdateDucking(float deltaTime);
+
+    void GenerateVoiceWithBitCrusher(float volume, float startTime);
+        
 
 private:
 
@@ -114,4 +130,12 @@ private:
         float duckingElapsed = 0.0f; // ダッキングの経過時間
         constexpr static float kNormalVolume = 1.0f; // 通常音量
     }duckingInfo_;
+
+    Engine::AudioEffectChain effectChain_; // 音声エフェクトチェーン
+
+    // VST3 BitCrusher
+    Engine::VST3Module* vstModule_ = nullptr;
+    std::unique_ptr<Engine::VST3Plugin> vstPlugin_;
+    Engine::VST3ParameterManager vstParamMgr_;
+    bool vstInitialized_ = false;
 };

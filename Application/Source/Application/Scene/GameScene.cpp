@@ -551,15 +551,21 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     feedbackEffect_ = std::make_unique<FeedbackEffect>();
     feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
 
-    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType, int32_t combo) { feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType, combo); });
+    gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType, int32_t combo)
+                                {
+                                    feedbackEffect_->PlayJudgeEffect(laneIndex, judgeType, combo);
+                                    if (judgeType != JudgeType::Miss)
+                                        gameMusic_->DisableBitCrush();
+                                });
     gameCore_->SetMissCallback([&]()
                                {
                                    feedbackEffect_->PlayMissedEffect();
                                    int32_t combo = gameCore_->GetCombo();
                                    float duckDepth = feedbackEffect_->GetComboThresholds()->GetMissEffectThreshold(combo);
                                    //float duration = 0.5f;
-                                   float duration = beatManager_->GetSecondsPerBeat() * 2.0f;
+                                   float duration = beatManager_->GetSecondsPerBeat() * 0.5f;
                                    gameMusic_->TriggerDucking(duckDepth, duration);
+                                   gameMusic_->EnableBitCrush();
                                });
     gameCore_->SetHoldCallback([&](int32_t laneIndex) { feedbackEffect_->PlayHoldEffect(laneIndex); });
 

@@ -223,9 +223,6 @@
     <ClCompile Include="Source\Application\Scene\Transition\SceneTrans.cpp">
       <Filter>Application\Scene\SceneTransition</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\FeedBack\JudgeSound\JudgeSound.cpp">
-      <Filter>Application\FeedBack\Judge\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\FeedbackEffect.cpp">
       <Filter>Application\FeedBack</Filter>
     </ClCompile>
@@ -492,9 +489,6 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Scene\Transition\SceneTrans.h">
       <Filter>Application\Scene\SceneTransition</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\FeedBack\JudgeSound\JudgeSound.h">
-      <Filter>Application\FeedBack\Judge\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\FeedbackEffect.h">
       <Filter>Application\FeedBack</Filter>

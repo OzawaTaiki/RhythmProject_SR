@@ -200,7 +200,6 @@
     <ClCompile Include="Source\Application\FeedBack\FeedbackEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.cpp" />
-    <ClCompile Include="Source\Application\FeedBack\JudgeSound\JudgeSound.cpp" />
     <ClCompile Include="Source\Application\FeedBack\JudgeText\JudgeText.cpp" />
     <ClCompile Include="Source\Application\FeedBack\LaneEdgePillar\LaneEdgeEffect.cpp" />
     <ClCompile Include="Source\Application\FeedBack\LaneEffect\LaneEffect.cpp" />
@@ -369,7 +368,6 @@
     <ClInclude Include="Source\Application\FeedBack\FeedbackEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.h" />
-    <ClInclude Include="Source\Application\FeedBack\JudgeSound\JudgeSound.h" />
     <ClInclude Include="Source\Application\FeedBack\JudgeText\JudgeText.h" />
     <ClInclude Include="Source\Application\FeedBack\LaneEdgePillar\LaneEdgeEffect.h" />
     <ClInclude Include="Source\Application\FeedBack\LaneEffect\LaneEffect.h" />

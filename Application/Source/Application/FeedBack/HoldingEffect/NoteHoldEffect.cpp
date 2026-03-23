@@ -3,6 +3,7 @@
 #include <System/Audio/AudioSystem.h>
 
 #include <Application/Lane/Lane.h>
+#include <System/Audio/SoundEngine.h>
 
 using namespace Engine;
 
@@ -13,17 +14,13 @@ void NoteHoldEffect::Initialize()
     emitter2_.Initialize("PopEffect2");
     risingparticlesEmitter_.Initialize("hold_cube");
 
-    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/SE/NoteHolding.wav");
 }
 
 void NoteHoldEffect::Play(int32_t laneIndex)
 {
     Vector3 lanePos = Lane::GetLaneEndPosition(laneIndex); // レーンの開始位置を取得
 
-    if (!voiceInstance_ || !voiceInstance_->IsPlaying())
-    {
-        voiceInstance_ = soundInstance_->Play(1.0f, false, true, nullptr, AudioSystem::GetInstance()->GetSESubmix());
-    }
+    Engine::SoundEngine::GetInstance()->PostEvent("OnHoldStart");
 
     emitter_.SetPosition(lanePos);
     emitter2_.SetPosition(lanePos);

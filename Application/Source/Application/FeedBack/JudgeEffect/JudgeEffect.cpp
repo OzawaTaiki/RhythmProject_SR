@@ -2,6 +2,7 @@
 
 #include <Application/Lane/Lane.h>
 #include <Application/Effects/TapEffects/TriggerEffects.h>
+#include <System/Audio/SoundEngine.h>
 
 using namespace Engine;
 
@@ -13,6 +14,7 @@ void JudgeEffect::Initialize()
 void JudgeEffect::Play(int32_t laneIndex, int32_t comboLevel)
 {
     Vector3  lanePos = Lane::GetLaneEndPosition(laneIndex); // レーンの開始位置を取得
+    Engine::SoundEngine::GetInstance()->PostEvent("OnJudge");
 
     // 周囲のパーティクルを発生させる
     TriggerEffects::EmitSurroundingParticles(lanePos, comboLevel);

@@ -1,16 +1,14 @@
 #pragma once
 
-#include <System/Audio/SoundInstance.h>
-#include <System/Audio/VoiceInstance.h>
-
+#include <System/Audio/SoundEngine.h>
 
 #include <memory>
 #include <vector>
 #include <string>
 
-// 判定時にサウンドを鳴らすためのクラス
 /// <summary>
 /// ジャッジ時の効果音を管理するクラス。
+/// SoundEngine 経由で SE を再生する。
 /// </summary>
 class JudgeSound
 {
@@ -27,10 +25,10 @@ public:
 
     /// <summary>
     /// 初期化処理。
+    /// SoundEngine::LoadSoundData() が先に呼ばれている前提。
     /// </summary>
     /// <param name="volume">初期音量（0.0 - 1.0）</param>
-    /// <param name="soundFilePath">SEファイルパス（省略時はデフォルトパス）</param>
-    void Initialize(float volume = 0.5f , const std::string& soundFilePath = "Resources/Sounds/SE/JudgeSound.wav");
+    void Initialize(float volume = 0.5f);
 
     /// <summary>
     /// 効果音を再生する。
@@ -63,12 +61,8 @@ public:
 
 private: // メンバ変数
 
-    std::shared_ptr<Engine::SoundInstance> soundInstance_; // 音声インスタンス
-    std::vector<std::shared_ptr<Engine::VoiceInstance>> voiceInstance_; // 音声の再生インスタンス
+    float volume_ = 0.5f;
 
-    std::string soundFilePath_; // サウンドファイルのパス
-
-
-    float volume_ = 0.5f; // 音量
-
+    // 再生中のハンドル一覧（VoiceInstance の代わり）
+    std::vector<Engine::SoundHandle> handles_;
 };

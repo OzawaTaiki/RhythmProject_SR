@@ -13,6 +13,8 @@
 #include <Features/UI/UINavigationManager.h>
 #include <Application/Scene/Transition/SceneTrans.h>
 
+#include <System/Audio/SoundEngine.h>
+
 using namespace Engine;
 
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
@@ -40,6 +42,12 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
     GenerateModels();
 
     AudioSystem::GetInstance()->SetMasterVolume(Setting::current_.masterVolume);
+
+    // SoundEngine: サウンド定義を JSON から一括ロード
+    SoundEngine::GetInstance()->Initialize();
+    SoundEngine::GetInstance()->LoadSoundData("Resources/Sounds/SoundData.json");
+    SoundEngine::GetInstance()->LoadEventData("Resources/Sounds/SoundEvents.json");
+
     FontCache::GetInstance()->GetAtlasData("Resources/Fonts/NotoSansJP-Regular.ttf", 128);
 
 
@@ -108,6 +116,8 @@ void SampleFramework::Draw()
 void SampleFramework::Finalize()
 {
     Setting::Save();
+
+    SoundEngine::GetInstance()->Finalize();
 
     Framework::Finalize();
 }

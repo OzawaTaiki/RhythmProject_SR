@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "name": "OnJudge",
+      "actions": [
+        {
+          "type": "Play",
+          "soundId": "se_judge",
+          "volume": 0.8,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "name": "OnHoldStart",
+      "actions": [
+        {
+          "type": "Play",
+          "soundId": "se_hold",
+          "volume": 1.0,
+          "loop": false
+        }
+      ]
+    }
+  ]
+}

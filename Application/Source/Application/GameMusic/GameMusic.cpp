@@ -254,6 +254,8 @@ void GameMusic::UpdateDucking(float deltaTime)
 
 void GameMusic::GenerateVoiceWithBitCrusher(float volume, float startTime)
 {
+    // ToDo : SoundEngineへの移行。
+    // エフェクトの対応はしていないので対応次第移行する。
     if (!vstInitialized_ || !vstPlugin_)
     {
         // VST3未初期化の場合はエフェクトなしで再生

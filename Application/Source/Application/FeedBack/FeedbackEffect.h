@@ -1,7 +1,6 @@
 #pragma once
 
 
-#include <Application/FeedBack/JudgeSound/JudgeSound.h>
 #include <Application/FeedBack/JudgeEffect/JudgeEffect.h>
 #include <Application/FeedBack/JudgeText/JudgeText.h>
 #include <Application/FeedBack/MissedVignette/MissedVignette.h>
@@ -113,11 +112,6 @@ private:
 
 
 private:
-
-    /// <summary>
-    /// 判定音を扱うオブジェクト
-    /// </summary>
-    std::unique_ptr<JudgeSound> judgeSound_;
 
     /// <summary>
     /// 判定パーティクル類

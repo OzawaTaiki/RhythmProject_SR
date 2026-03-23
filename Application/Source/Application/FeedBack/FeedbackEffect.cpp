@@ -15,9 +15,6 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
         camera_ = camera;
     gameEnvironment_ = gameEnvironment;
 
-    judgeSound_ = std::make_unique<JudgeSound>();
-    judgeSound_->Initialize();
-
     judgeEffect_ = std::make_unique<JudgeEffect>();
     judgeEffect_->Initialize();
 
@@ -60,9 +57,6 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
 void FeedbackEffect::Update(float deltaTime, const std::vector<InputData>& inputData)
 {
     //DebugWindow(); // デバッグウィンドウの更新
-
-    if (judgeSound_)
-        judgeSound_->CleanupStoppedVoices(); // 停止した音声をクリーンアップ
 
     if (speakerSeekEffect_)
         speakerSeekEffect_->Update(deltaTime);
@@ -124,15 +118,13 @@ void FeedbackEffect::Draw()
     }
 }
 
-void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType,int32_t combo)
+void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType, int32_t combo)
 {
     // 各エフェクトの再生
 
     int32_t comboLevel = comboThresholds_.GetComboLevel(combo);
     bool levelUp = (comboLevel != prevComboLevel_) && (comboLevel > prevComboLevel_);
 
-    if (judgeSound_)
-        judgeSound_->Play();
 
     if (judgeEffect_)
     {

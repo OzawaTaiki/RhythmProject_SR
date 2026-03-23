@@ -1,0 +1,34 @@
+{
+  "sounds": [
+    {
+      "id": "bgm_twilight",
+      "path": "Resources/Sounds/Music/Twilight_Memory.wav",
+      "type": "BGM",
+      "enableOverlap": false
+    },
+    {
+      "id": "bgm_demo",
+      "path": "Resources/Sounds/Music/demoMusic.wav",
+      "type": "BGM",
+      "enableOverlap": false
+    },
+    {
+      "id": "se_judge",
+      "path": "Resources/Sounds/SE/JudgeSound.wav",
+      "type": "SE",
+      "enableOverlap": true
+    },
+    {
+      "id": "se_hold",
+      "path": "Resources/Sounds/SE/NoteHolding.wav",
+      "type": "SE",
+      "enableOverlap": true
+    },
+    {
+      "id": "metronome",
+      "path": "Resources/Sounds/Metronome.wav",
+      "type": "SE",
+      "enableOverlap": true
+    }
+  ]
+}

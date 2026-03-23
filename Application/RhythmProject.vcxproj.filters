@@ -692,11 +692,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shader\EmissiveModel.PS.hlsl">
-      <Filter>Application</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="Source\Application\Lane\LaneOutline.h">
       <Filter>Application\Lane</Filter>
     </Text>

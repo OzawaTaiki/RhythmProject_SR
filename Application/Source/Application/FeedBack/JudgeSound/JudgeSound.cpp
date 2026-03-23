@@ -1,83 +1,50 @@
 #include "JudgeSound.h"
 
-#include <System/Audio/AudioSystem.h>
-#include <Debug/Debug.h>
-
-#include <cassert>
+#include <System/Audio/SoundEngine.h>
 
 using namespace Engine;
 
 
 JudgeSound::~JudgeSound()
 {
-    StopAllSounds(); // 全ての音声を停止
-
-    soundInstance_.reset(); // 音声インスタンスをリセット
+    StopAllSounds();
 }
 
-void JudgeSound::Initialize(float volume ,const std::string& soundFilePath)
+void JudgeSound::Initialize(float volume)
 {
     volume_ = volume;
-    soundFilePath_ = soundFilePath;
-
-    // 音声インスタンスをロード
-    soundInstance_ = AudioSystem::GetInstance()->Load(soundFilePath_);
-    if (!soundInstance_)
-    {
-        Debug::Log("Error: Failed to load sound file: " + soundFilePath_ + "\n");
-        assert(false);
-    }
+    // サウンドのロードは SoundEngine::LoadSoundData() に委譲済み
 }
 
 void JudgeSound::Play()
 {
-    if (!soundInstance_)
+    auto handle = SoundEngine::GetInstance()->Play("se_judge", volume_);
+    if (handle != kInvalidHandle)
     {
-        Debug::Log("Error: Sound instance is not initialized.\n");
-        return;
-    }
-
-    // 音声インスタンスを生成して再生
-    auto voice = soundInstance_->GenerateVoiceInstance(volume_, 0.0f);
-    if (voice)
-    {
-        voice->Play();
-        voiceInstance_.push_back(voice); // 再生インスタンスを保存
-    }
-    else
-    {
-        Debug::Log("Error: Failed to create voice instance for sound: " + soundFilePath_ + "\n");
-        assert(false);
+        handles_.push_back(handle);
     }
 }
 
 void JudgeSound::CleanupStoppedVoices()
 {
-    if (voiceInstance_.empty())
-        return;
+    auto* engine = SoundEngine::GetInstance();
 
-    for (auto it = voiceInstance_.begin(); it != voiceInstance_.end();)
+    for (auto it = handles_.begin(); it != handles_.end();)
     {
-        if (*it && !(*it)->IsPlaying())
-        {
-            it = voiceInstance_.erase(it); // 再生が停止している音声インスタンスを削除
-            continue;
-        }
-        ++it; // 次の要素へ
+        if (!engine->IsPlaying(*it))
+            it = handles_.erase(it);
+        else
+            ++it;
     }
 }
 
 void JudgeSound::StopAllSounds()
 {
-    if (voiceInstance_.empty())
-        return;
+    auto* engine = SoundEngine::GetInstance();
 
-    for (auto& voice : voiceInstance_)
+    for (auto handle : handles_)
     {
-        if (voice)
-        {
-            voice->Stop();
-        }
+        engine->Stop(handle);
     }
-    voiceInstance_.clear();
+    handles_.clear();
 }

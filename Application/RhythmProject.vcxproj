@@ -432,12 +432,6 @@
     <None Include="Source\Application\FeedBack\ComboThresholds.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shader\EmissiveModel.PS.hlsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="Source\Application\Lane\LaneOutline.h" />
     <Text Include="Source\Application\Result\RankCalculator.h" />
   </ItemGroup>

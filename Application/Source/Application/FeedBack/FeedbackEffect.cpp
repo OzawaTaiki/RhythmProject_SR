@@ -124,15 +124,18 @@ void FeedbackEffect::Draw()
     }
 }
 
-void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType,int32_t combo)
+void FeedbackEffect::PlayJudgeEffect(int32_t laneIndex, JudgeType judgeType, int32_t combo)
 {
     // 各エフェクトの再生
 
     int32_t comboLevel = comboThresholds_.GetComboLevel(combo);
     bool levelUp = (comboLevel != prevComboLevel_) && (comboLevel > prevComboLevel_);
 
+    SoundEngine::GetInstance()->PostEvent("OnJudge");
     if (judgeSound_)
-        judgeSound_->Play();
+    {
+        //judgeSound_->Play();
+    }
 
     if (judgeEffect_)
     {

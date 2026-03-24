@@ -38,5 +38,5 @@ struct TitleToSelectData : Engine::SceneData
     std::unique_ptr<LobbyCamera> lobbyCamera; // タイトルシーンから引き継がれるロビー用カメラ
     std::shared_ptr<Engine::UIImageElement> titleBackground; // タイトルシーンから引き継がれるタイトル背景のUI要素
     Engine::UVTransformAnimation titleBackgroundAnimation; // タイトル背景のUV変換アニメーション
-    std::unique_ptr<HexagonGrid> hexagonGrid; // タイトルシーンから引き継がれるヘキサゴングリッド
+    std::shared_ptr<HexagonGrid> hexagonGrid; // タイトルシーンから引き継がれるヘキサゴングリッド
 };

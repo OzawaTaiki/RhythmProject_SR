@@ -3,12 +3,7 @@
 #include <System/Audio/SoundInstance.h>
 #include <System/Audio/VoiceInstance.h>
 #include <System/Audio/AudioEffect.h>
-
-#include <System/Audio/VST3/VST3Host.h>
-#include <System/Audio/VST3/VST3Module.h>
-#include <System/Audio/VST3/VST3Plugin.h>
-#include <System/Audio/VST3/VST3Effect.h>
-#include <System/Audio/VST3/VST3ParameterManager.h>
+#include <System/Audio/AudioEffectManager.h>
 
 /// <summary>
 /// 音楽再生用クラス。
@@ -131,11 +126,5 @@ private:
         constexpr static float kNormalVolume = 1.0f; // 通常音量
     }duckingInfo_;
 
-    Engine::AudioEffectChain effectChain_; // 音声エフェクトチェーン
-
-    // VST3 BitCrusher
-    Engine::VST3Module* vstModule_ = nullptr;
-    std::unique_ptr<Engine::VST3Plugin> vstPlugin_;
-    Engine::VST3ParameterManager vstParamMgr_;
-    bool vstInitialized_ = false;
+    Engine::AudioEffectChain effectChain_; // 音声エフェクトチェーン（Enable/Disable に使用）
 };

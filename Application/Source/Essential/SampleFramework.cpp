@@ -14,6 +14,7 @@
 #include <Application/Scene/Transition/SceneTrans.h>
 
 #include <System/Audio/SoundEngine.h>
+#include <System/Audio/AudioEffectManager.h>
 
 using namespace Engine;
 
@@ -42,6 +43,10 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
     GenerateModels();
 
     AudioSystem::GetInstance()->SetMasterVolume(Setting::current_.masterVolume);
+
+    // AudioEffectManager: エフェクト定義を JSON からロード
+    AudioEffectManager::GetInstance()->Initialize();
+    AudioEffectManager::GetInstance()->LoadEffectData("Resources/Sounds/AudioEffects.json");
 
     // SoundEngine: サウンド定義を JSON から一括ロード
     SoundEngine::GetInstance()->Initialize();
@@ -117,6 +122,7 @@ void SampleFramework::Finalize()
 {
     Setting::Save();
 
+    AudioEffectManager::GetInstance()->Finalize();
     SoundEngine::GetInstance()->Finalize();
 
     Framework::Finalize();

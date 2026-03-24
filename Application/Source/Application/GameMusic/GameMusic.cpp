@@ -12,7 +12,7 @@ namespace
 {
 float gBitDepth = 0.8f;
 float gSampleRateReduction = 0.3f;
-constexpr const char* kVstPluginPath = "Resources/MyVST3Plugin.vst3";
+constexpr const char* kBitCrusherEffectName = "bitcrusher";
 }
 
 GameMusic::GameMusic(const std::string& musicFilePath)
@@ -26,20 +26,6 @@ GameMusic::~GameMusic()
     {
         voiceInstance_.reset();
     }
-
-    if (vstPlugin_)
-    {
-        vstPlugin_->Terminate();
-        vstPlugin_.reset();
-    }
-
-    if (vstModule_)
-    {
-        VST3Host::GetInstance()->UnloadModule(kVstPluginPath);
-        vstModule_ = nullptr;
-    }
-
-    VST3Host::GetInstance()->Finalize();
 }
 
 void GameMusic::Initialize(float rewindTime)
@@ -55,30 +41,7 @@ void GameMusic::Initialize(float rewindTime)
     rewindTime_ = rewindTime;
     pausedAtTime_ = 0.0f;
     isMusicPlaying_ = false;
-
-    // VST3 BitCrusherプラグインの初期化
-    auto* host = VST3Host::GetInstance();
-    host->Initialize();
-
-    vstModule_ = host->LoadModule(kVstPluginPath);
-    if (vstModule_)
-    {
-        auto classes = vstModule_->GetAudioEffectClasses();
-        if (!classes.empty())
-        {
-            vstPlugin_ = vstModule_->CreatePlugin(classes[0]);
-            if (vstPlugin_)
-            {
-                float sr = soundInstance_ ? soundInstance_->GetSampleRate() : 48000.0f;
-                bool initOk = vstPlugin_->Initialize(vstModule_->GetFactory(), host->GetHostApp(), sr, 4096, 2, 2);
-                if (initOk)
-                {
-                    vstParamMgr_.Initialize(vstPlugin_->GetController());
-                    vstInitialized_ = true;
-                }
-            }
-        }
-    }
+    // VST3 の初期化は AudioEffectManager::LoadEffectData() で済み
 }
 
 void GameMusic::Update(float deltaTime)
@@ -201,30 +164,29 @@ void GameMusic::TriggerDucking(float targetVolume, float duration)
 
 void GameMusic::SetBitCrush(float bitDepth, float sampleRateReduction)
 {
-    if (vstInitialized_)
+    auto* paramMgr = AudioEffectManager::GetInstance()->GetParameterManager(kBitCrusherEffectName);
+    if (paramMgr)
     {
-        vstParamMgr_.SetParameter(0, bitDepth);
-        vstParamMgr_.SetParameter(1, sampleRateReduction);
+        paramMgr->SetParameter(0, bitDepth);
+        paramMgr->SetParameter(1, sampleRateReduction);
     }
 }
 
 void GameMusic::EnableBitCrush()
 {
-    if (vstInitialized_)
-    {
-        effectChain_.EnableEffect(0);
+    effectChain_.EnableEffect(0);
 
-        vstParamMgr_.SetParameter(0, gBitDepth);
-        vstParamMgr_.SetParameter(1, gSampleRateReduction);
+    auto* paramMgr = AudioEffectManager::GetInstance()->GetParameterManager(kBitCrusherEffectName);
+    if (paramMgr)
+    {
+        paramMgr->SetParameter(0, gBitDepth);
+        paramMgr->SetParameter(1, gSampleRateReduction);
     }
 }
 
 void GameMusic::DisableBitCrush()
 {
-    if (vstInitialized_)
-    {
-        effectChain_.DisableEffect(0);
-    }
+    effectChain_.DisableEffect(0);
 }
 
 void GameMusic::UpdateDucking(float deltaTime)
@@ -239,10 +201,11 @@ void GameMusic::UpdateDucking(float deltaTime)
     float currentVolume = Lerp(duckingInfo_.targetVolume, DuckingInfo::kNormalVolume, t);
     SetVolume(currentVolume);
 
-    if (vstInitialized_)
+    auto* paramMgr = AudioEffectManager::GetInstance()->GetParameterManager(kBitCrusherEffectName);
+    if (paramMgr)
     {
-        vstParamMgr_.SetParameter(0, gBitDepth);
-        vstParamMgr_.SetParameter(1, gSampleRateReduction);
+        paramMgr->SetParameter(0, gBitDepth);
+        paramMgr->SetParameter(1, gSampleRateReduction);
     }
 
     if (t >= 1.0f)
@@ -254,11 +217,12 @@ void GameMusic::UpdateDucking(float deltaTime)
 
 void GameMusic::GenerateVoiceWithBitCrusher(float volume, float startTime)
 {
-    // ToDo : SoundEngineへの移行。
-    // エフェクトの対応はしていないので対応次第移行する。
-    if (!vstInitialized_ || !vstPlugin_)
+    auto* mgr = AudioEffectManager::GetInstance();
+    auto* paramMgr = mgr->GetParameterManager(kBitCrusherEffectName);
+
+    if (!paramMgr)
     {
-        // VST3未初期化の場合はエフェクトなしで再生
+        // エフェクトが未登録の場合はエフェクトなしで再生
         voiceInstance_ = soundInstance_->GenerateVoiceInstance(volume,
                                                                startTime,
                                                                false,
@@ -268,24 +232,15 @@ void GameMusic::GenerateVoiceWithBitCrusher(float volume, float startTime)
         return;
     }
 
-    IUnknown* xapo = nullptr;
-    if (SUCCEEDED(VST3Effect::Create(vstPlugin_.get(), &xapo)) && xapo)
-    {
-        // パラメータ変更をオーディオ処理に反映するためeffectを接続
-        vstParamMgr_.SetEffect(static_cast<VST3Effect*>(static_cast<IXAPO*>(xapo)));
+    effectChain_ = mgr->BuildEffectChain({ kBitCrusherEffectName });
 
-        effectChain_ = AudioEffectChain();
-        effectChain_.AddEffect(AudioEffect(xapo, 2, false));
-        xapo->Release();
+    voiceInstance_ = soundInstance_->GenerateVoiceInstance(volume,
+                                                           startTime,
+                                                           false,
+                                                           true,
+                                                           voiceCallBack_.get(),
+                                                           AudioSystem::GetInstance()->GetBGMSubmix(),
+                                                           effectChain_.BuildChain());
 
-        voiceInstance_ = soundInstance_->GenerateVoiceInstance(volume,
-                                                               startTime,
-                                                               false,
-                                                               true,
-                                                               voiceCallBack_.get(),
-                                                               AudioSystem::GetInstance()->GetBGMSubmix(),
-                                                               effectChain_.BuildChain());
-
-        effectChain_.AttachToVoice(voiceInstance_->GetSourceVoice());
-    }
+    effectChain_.AttachToVoice(voiceInstance_->GetSourceVoice());
 }

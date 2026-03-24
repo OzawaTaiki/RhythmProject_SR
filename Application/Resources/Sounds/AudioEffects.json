@@ -1,0 +1,10 @@
+{
+  "effects": [
+    {
+      "name": "bitcrusher",
+      "type": "VST3",
+      "path": "Resources/MyVST3Plugin.vst3",
+      "className": ""
+    }
+  ]
+}

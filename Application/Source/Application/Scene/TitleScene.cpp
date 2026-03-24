@@ -93,7 +93,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     uvAnimation_.SetScrollSpeed(Vector2(0.2f, -0.1f));
     uvAnimation_.Play();
 
-    hexagonGrid_ = std::make_unique<HexagonGrid>();
+    hexagonGrid_ = std::make_shared<HexagonGrid>();
     Rect area(Vector2(0, 0), Vector2(1280, 720));
     hexagonGrid_->Initialize(area);
 }
@@ -165,7 +165,7 @@ void TitleScene::Draw()
     LayerSystem::SetLayer("back");
     {
         titleBack_->Draw();
-        //hexagonGrid_->Draw();
+        hexagonGrid_->Draw();
     }
 
     LayerSystem::SetLayer("ring");
@@ -203,7 +203,7 @@ void TitleScene::OnEvent(const GameEvent& event)
         sceneData->lobbyCamera = std::move(lobbyCamera_);
         sceneData->titleBackgroundAnimation = uvAnimation_;
         sceneData->titleBackground = titleBack_;
-        sceneData->hexagonGrid = std::move(hexagonGrid_);
+        sceneData->hexagonGrid = hexagonGrid_;
         SceneManager::GetInstance()->EnableTransition(false);
         SceneManager::ReserveScene("SelectScene", std::move(sceneData));
         // SceneManager::ReserveScene("GameScene", nullptr);

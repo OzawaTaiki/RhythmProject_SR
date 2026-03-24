@@ -81,7 +81,7 @@ private:
 
   std::unique_ptr<TitleUI> titleUI_;
 
-  std::unique_ptr<HexagonGrid> hexagonGrid_;
+  std::shared_ptr<HexagonGrid> hexagonGrid_;
 
     std::shared_ptr<Engine::UIImageElement> titleBack_;
     Engine::UVTransformAnimation uvAnimation_;

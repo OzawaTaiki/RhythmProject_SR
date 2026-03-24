@@ -79,5 +79,5 @@ private:
     std::shared_ptr<Engine::UIImageElement> backImage_ = nullptr;
     Engine::UVTransformAnimation backImageAnimation_ = {};
 
-    std::unique_ptr<HexagonGrid> hexagonGrid_ = nullptr;
+    std::shared_ptr<HexagonGrid> hexagonGrid_ = nullptr;
 };

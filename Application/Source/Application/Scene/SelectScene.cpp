@@ -59,7 +59,7 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
         lobbyCamera_ = std::move(data->lobbyCamera);
         backImage_ = data->titleBackground;
         backImageAnimation_ = data->titleBackgroundAnimation;
-        hexagonGrid_ = std::move(data->hexagonGrid);
+        hexagonGrid_ = data->hexagonGrid;
     }
 
     selectUI_ = std::make_unique<SelectUI>();

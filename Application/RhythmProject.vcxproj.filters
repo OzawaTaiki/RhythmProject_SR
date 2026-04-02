@@ -410,6 +410,7 @@
       <Filter>Application\MusicList</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeColor.cpp" />
+    <ClCompile Include="Source\Application\Note\NoteDrawer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -678,6 +679,7 @@
       <Filter>Application\TitleCamera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\BGMChangeEventData.h" />
+    <ClInclude Include="Source\Application\Note\NoteDrawer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -38,6 +38,7 @@ public:
     /// <param name="laneColor">レーンの色</param>
     void Draw(const Engine::Camera* camera, const Engine::Vector4& laneColor = Engine::Vector4(0.0f, 0.0f, 0.0f, 0.8f)) const;
 
+    void CollectDrawData(NoteDrawer* drawer) const;
 
     /// <summary>
     /// 一番手前のノーツを取得

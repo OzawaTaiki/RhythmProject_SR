@@ -7,6 +7,7 @@
 
 
 #include <cstdint>
+#include "NoteDrawer.h"
 
 /// <summary>
 /// ノーツの基底クラス。
@@ -35,7 +36,10 @@ public:
     /// 描画処理。
     /// </summary>
     /// <param name="camera">描画用カメラ</param>
-    virtual void Draw(const Engine::Camera* camera);
+    virtual void AddToDrawer(NoteDrawer* drawer) const = 0;
+
+    Engine::Matrix4x4 GetWorldMatrix() const;
+
 
     /// <summary>
     /// ノーツのターゲット時間を取得する。
@@ -58,7 +62,7 @@ public:
     bool IsJudged() const { return isJudged_; }
 
     /// <summary>
-    /// ノーツの判定処理を行う（派生クラスでオーバーライド）。
+    /// ノーツの判定処理を行う（派生クラスでオーバーライド）
     /// </summary>
     virtual void Judge();
 
@@ -82,8 +86,8 @@ public:
 
     void Initialize(float targetTime, const Engine::Vector3& targetPosition) override;
     void Update(float elapseTime, float speed) override;
-    void Draw(const Engine::Camera* camera) override;
 
+    void AddToDrawer(NoteDrawer* drawer) const override;
 };
 
 // ロングノーツクラス
@@ -95,7 +99,8 @@ public:
 
     void Initialize(float targetTime, const Engine::Vector3& targetPosition) override;
     void Update(float elapseTime, float speed) override;
-    void Draw(const Engine::Camera* camera) override;
+
+    void AddToDrawer(NoteDrawer* drawer) const override;
 
     virtual void Judge() override;
 

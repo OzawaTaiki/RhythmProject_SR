@@ -9,6 +9,7 @@
 #include <Application/GameMusic/GameMusic.h>
 #include <Application/Input/InputData.h>
 #include <Application/Lane/Lane.h>
+#include <Application/Note/NoteDrawer.h>
 #include <Application/Note/Judge/JudgeResult.h>
 #include <Application/Note/Judge/NoteJudge.h>
 #include <Application/Result/RankCalculator.h>
@@ -186,6 +187,7 @@ private:
     int32_t laneCount_ = 4;                    // レーンの数
     std::vector<std::unique_ptr<Lane>> lanes_; // レーンのリスト
     std::vector<std::list<NoteData>> notesPerLane_; // レーンごとのノートデータリスト
+    std::unique_ptr<NoteDrawer> noteDrawer_;           // ノーツの描画を行うクラス
 
     // judge
     std::unique_ptr<NoteJudge> noteJudge_;     // ノーツの判定を行うクラス

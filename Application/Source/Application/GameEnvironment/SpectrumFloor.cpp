@@ -19,24 +19,41 @@ void SpectrumFloor::Initialize(int32_t row, int32_t col, const Vector2& area)
 
 
     basePos={ 0,-7.6f,30.8f };
-    // models_をrow x colのサイズに初期化
-    models_.resize(xCount_);
-    for (auto& column : models_)
+    //// models_をrow x colのサイズに初期化
+    //models_.resize(xCount_);
+    //for (auto& column : models_)
+    //{
+    //    column.resize(zCount_);
+    //}
+    //for (int32_t y = 0; y < zCount_; ++y)
+    //{
+    //    for (int32_t x = 0; x < xCount_; ++x)
+    //    {
+    //        auto& model = models_[x][y];
+    //        model = std::make_unique<ObjectModel>("SpectrumFloorTile");
+    //        model->Initialize("OverFloor/mono_overFloor.obj");
+    //        model->translate_= Vector3(
+    //            basePos.x + (areaSize_.x / static_cast<float>(models_.size())) * (static_cast<float>(x) + 0.5f) - (areaSize_.x / 2.0f),
+    //            basePos.y,
+    //            basePos.z + (areaSize_.y / static_cast<float>(models_[x].size())) * (static_cast<float>(y) + 0.5f) - (areaSize_.y / 2.0f));
+    //        model->useQuaternion_ = false;
+    //    }
+    //}
+
+    models_ = std::make_unique<InstancedObjectModel>();
+    models_->Initialize("OverFloor/mono_overFloor.obj", xCount_ * zCount_);
+    tilePositions_.resize(xCount_);
+
+    for (int32_t x = 0; x < xCount_; ++x)
     {
-        column.resize(zCount_);
-    }
-    for (int32_t y = 0; y < zCount_; ++y)
-    {
-        for (int32_t x = 0; x < xCount_; ++x)
+        auto& columnPositions = tilePositions_[x];
+        columnPositions.resize(zCount_);
+        for (int32_t y = 0; y < zCount_; ++y)
         {
-            auto& model = models_[x][y];
-            model = std::make_unique<ObjectModel>("SpectrumFloorTile");
-            model->Initialize("OverFloor/mono_overFloor.obj");
-            model->translate_= Vector3(
-                basePos.x + (areaSize_.x / static_cast<float>(models_.size())) * (static_cast<float>(x) + 0.5f) - (areaSize_.x / 2.0f),
+            columnPositions[y] = Vector3(
+                basePos.x + (areaSize_.x / static_cast<float>(xCount_)) * (static_cast<float>(x) + 0.5f) - (areaSize_.x / 2.0f),
                 basePos.y,
-                basePos.z + (areaSize_.y / static_cast<float>(models_[x].size())) * (static_cast<float>(y) + 0.5f) - (areaSize_.y / 2.0f));
-            model->useQuaternion_ = false;
+                basePos.z + (areaSize_.y / static_cast<float>(zCount_)) * (static_cast<float>(y) + 0.5f) - (areaSize_.y / 2.0f));
         }
     }
 
@@ -55,25 +72,17 @@ void SpectrumFloor::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundI
         ImGui::DragInt("Columns", reinterpret_cast<int*>(&xCount_), 1, 1, 64);
         if (ImGui::Button("Apply"))
         {
-            models_.clear();
-            models_.resize(xCount_);
-            for (auto& column : models_)
-            {
-                column.resize(zCount_);
-            }
-
+            tilePositions_.resize(xCount_);
             for (int32_t x = 0; x < xCount_; ++x)
             {
+                auto& columnPositions = tilePositions_[x];
+                columnPositions.resize(zCount_);
                 for (int32_t y = 0; y < zCount_; ++y)
                 {
-                    auto& model = models_[x][y];
-                    model = std::make_unique<ObjectModel>("SpectrumFloorTile");
-                    model->Initialize("OverFloor/mono_overFloor.obj");
-                    model->translate_ = {
+                    columnPositions[y] = Vector3(
                         basePos.x + (areaSize_.x / static_cast<float>(xCount_)) * (static_cast<float>(x) + 0.5f) - (areaSize_.x / 2.0f),
                         basePos.y,
-                        basePos.z + (areaSize_.y / static_cast<float>(zCount_)) * (static_cast<float>(y) + 0.5f) - (areaSize_.y / 2.0f)
-                    };
+                        basePos.z + (areaSize_.y / static_cast<float>(zCount_)) * (static_cast<float>(y) + 0.5f) - (areaSize_.y / 2.0f));
                 }
             }
         }
@@ -86,18 +95,9 @@ void SpectrumFloor::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundI
     }
 
 #endif // _DEBUG
-    if (!audioSpectrum)
-    {
-        for (size_t i = 0; i < xCount_; ++i)
-        {
-            for (size_t j = 0; j < zCount_; ++j)
-            {
-                auto& model = models_[i][j];
-                model->Update();
-            }
-        }
+
+    if (!audioSpectrum || !soundInstance)
         return;
-    }
 
     if (beginIndex_ == 0 && endIndex_ == 0)
     {
@@ -170,29 +170,28 @@ void SpectrumFloor::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundI
             float t = Easing::EaseOutQuart(tileData.timer_);
             tileData.color_ = Lerp(Vector4(0.0f, 0.0f, 0.0f, 1.0f), Vector4(1.0f, 1.0f, 1.0f, 1.0f), t);
         }
-
-        for (size_t j = 0; j < zCount_; ++j)
-        {
-            auto& model = models_[i][j];
-            model->Update();
-        }
     }
 }
 
 void SpectrumFloor::Draw(const Camera* camera)
 {
+    models_->Clear();
+
     for (size_t i = 0; i < xCount_; ++i)
     {
         for (size_t j = 0; j < zCount_; ++j)
         {
-            auto& model = models_[i][j];
             Vector4 color = Vector4(1, 1, 1, 1);
             if (columnsData_.size() > i && columnsData_[i].tiles_.size() > j)
             {
                 const auto& tileData = columnsData_[i].tiles_[j];
                 color = tileData.color_;
             }
-            model->Draw(camera, color);
+            Matrix4x4 world = MakeAffineMatrix(Vector3::one, Vector3::zero, tilePositions_[i][j]);
+            models_->AddInstance(world, color);
         }
     }
+
+    models_->Draw(camera);
+
 }

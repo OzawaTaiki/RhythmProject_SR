@@ -1,7 +1,7 @@
 #include "Note.h"
 
 #include <Features/LineDrawer/LineDrawer.h>
-
+#include <Math/Matrix/MatrixFunction.h>
 #include <Debug/Debug.h>
 
 using namespace Engine;
@@ -33,9 +33,9 @@ void Note::Update(float elapseTime, float speed)
     model_->Update();
 }
 
-void Note::Draw(const Camera* camera)
+Matrix4x4 Note::GetWorldMatrix() const
 {
-    model_->Draw(camera, 0, color_);
+    return MakeAffineMatrix(model_->scale_, model_->quaternion_, model_->translate_);
 }
 
 void Note::Judge()
@@ -43,7 +43,7 @@ void Note::Judge()
     isJudged_ = true; // 判定済みにする
 }
 
-NormalNote::NormalNote() :    Note()
+NormalNote::NormalNote() : Note()
 {
     noteType_ = NoteType::Normal;
     color_ = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -63,9 +63,9 @@ void NormalNote::Update(float elapseTime, float speed)
     Note::Update(elapseTime, speed);
 }
 
-void NormalNote::Draw(const Camera* camera)
+void NormalNote::AddToDrawer(NoteDrawer* drawer) const
 {
-    Note::Draw(camera);
+    drawer->AddNote(GetWorldMatrix(), color_);
 }
 
 LongNote::LongNote() : Note()
@@ -121,14 +121,13 @@ void LongNote::Update(float elapseTime, float speed)
     }
 }
 
-void LongNote::Draw(const Camera* camera)
+void LongNote::AddToDrawer(NoteDrawer* drawer) const
 {
-     model_->Draw(camera,0, Vector4(0.0f, 1.0f, 0.5f, 1.0f));
-
-    // 次のノートが有効な場合はブリッジを描画する
+    drawer->AddNote(GetWorldMatrix(), Vector4(0.0f, 1.0f, 0.5f, 1.0f)); // ノーツを描画
     if (noteBridge_)
     {
-        noteBridge_->Draw(camera, 0, Vector4(0.5f, 1.0f, 0.5f, 1.0f));
+        Matrix4x4 bridgeWorld = MakeAffineMatrix(noteBridge_->scale_, noteBridge_->quaternion_, noteBridge_->translate_);
+        drawer->AddBridge(bridgeWorld, Vector4(0.5f, 1.0f, 0.5f, 1.0f)); // ブリッジを描画
     }
 }
 

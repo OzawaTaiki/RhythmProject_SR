@@ -226,6 +226,7 @@
     <ClCompile Include="Source\Application\Note\Judge\JudgeType.cpp" />
     <ClCompile Include="Source\Application\Note\Judge\NoteJudge.cpp" />
     <ClCompile Include="Source\Application\Note\Note.cpp" />
+    <ClCompile Include="Source\Application\Note\NoteDrawer.cpp" />
     <ClCompile Include="Source\Application\OptionMenu\OptionMenu.cpp" />
     <ClCompile Include="Source\Application\PauseMenu\PauseMenu.cpp" />
     <ClCompile Include="Source\Application\Result\RankCalculator.cpp" />
@@ -393,6 +394,7 @@
     <ClInclude Include="Source\Application\Note\Judge\JudgeType.h" />
     <ClInclude Include="Source\Application\Note\Judge\NoteJudge.h" />
     <ClInclude Include="Source\Application\Note\Note.h" />
+    <ClInclude Include="Source\Application\Note\NoteDrawer.h" />
     <ClInclude Include="Source\Application\Note\NoteType.h" />
     <ClInclude Include="Source\Application\OptionMenu\OptionMenu.h" />
     <ClInclude Include="Source\Application\PauseMenu\PauseMenu.h" />

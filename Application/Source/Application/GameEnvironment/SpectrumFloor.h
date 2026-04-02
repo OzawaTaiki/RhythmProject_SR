@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Features/Model/ObjectModel.h>
+#include <Features/Model/InstancedObjectModel.h>
 #include <vector>
 #include <Features/Json/JsonBinder.h>
 #include <Features/AudioSpectrum/AudioSpectrum.h>
@@ -23,7 +23,8 @@ private:
     int32_t xCount_, zCount_;
     Engine::Vector3 basePos={};
     Engine::Vector2 areaSize_{};
-    std::vector<std::vector<std::unique_ptr<Engine::ObjectModel>>> models_;
+    std::unique_ptr<Engine::InstancedObjectModel> models_;
+    std::vector<std::vector<Engine::Vector3>> tilePositions_;
 
     struct TileData
     {

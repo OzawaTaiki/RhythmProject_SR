@@ -63,16 +63,18 @@ void Lane::Update(float elapseTime, float speed)
 
 void Lane::Draw(const Camera* camera, const Vector4& laneColor) const
 {
-    // TODO: カラーをひきすうでもらってくる
-    // プレビューで全く見えないからー
     if (laneModel_)
     {
         laneModel_->Draw(camera, laneColor);
     }
 
+}
+
+void Lane::CollectDrawData(NoteDrawer* drawer) const
+{
     for (const auto& note : notes_)
     {
-        note->Draw(camera);
+        note->AddToDrawer(drawer);
     }
 }
 

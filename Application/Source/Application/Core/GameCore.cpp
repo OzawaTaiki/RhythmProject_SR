@@ -49,6 +49,8 @@ void GameCore::Initialize(float noteSpeed, float musicLatencyMs,
     noteDeletePosition_ = -noteJudge_->GetMissJudgeThreshold() *
         noteSpeed_; // ノーツを削除する位置を設定
 
+    noteDrawer_ = std::make_unique<NoteDrawer>();
+
     combo_ = 0;    // コンボの初期化
     maxCombo_ = 0; // 最大コンボの初期化
 }
@@ -123,6 +125,8 @@ void GameCore::Update(float deltaTime,
 void GameCore::Draw(const Camera* camera,
                     const std::map<int32_t, uint8_t>& keyBindings)
 {
+    noteDrawer_->Clear();
+
     if (keyBindings.size() != lanes_.size())
     {
         Debug::Log("KeyBindings size does not match lane count.\n");
@@ -135,12 +139,13 @@ void GameCore::Draw(const Camera* camera,
     AtlasData* atlasData = FontCache::GetInstance()->GetAtlasData(
         "Resources/Fonts/NotoSansJP-Regular.ttf", 128);
     wchar_t wchar;
+    ModelManager::GetInstance()->PreDrawForObjectModel();
     for (size_t i = 0; i < lanes_.size(); ++i)
     {
         if (lanes_[i])
         {
-            ModelManager::GetInstance()->PreDrawForObjectModel();
             lanes_[i]->Draw(camera);
+            lanes_[i]->CollectDrawData(noteDrawer_.get());
             // レーンのキー表示
             uint8_t kc = keyBindings.at(static_cast<int32_t>(i));
             textInputManager->ConvertDIKeyToChar(kc, true, wchar);
@@ -150,6 +155,8 @@ void GameCore::Draw(const Camera* camera,
                 Vector2(1.0f, 1.0f), Vector4(1, 1, 1, 0.5f), Vector2(0.5f, 0.0f));
         }
     }
+    noteDrawer_->Draw(camera);
+
     // 判定ラインの描画
 #ifdef _DEBUG
     LineDrawer::GetInstance()->RegisterPoint(Vector3(-4, 0, 0), Vector3(4, 0, 0));
@@ -379,6 +386,13 @@ void GameCore::ParseBeatMapData(const BeatMapData& beatMapData)
     }
 
     CreateBeatMapNotes();
+
+    uint32_t totalNotes = 0;
+    for (const auto& lane : lanes_)
+        totalNotes += lane->GetNoteCount();
+
+    noteDrawer_->Initialize(totalNotes, totalNotes / 2);
+
 }
 
 void GameCore::CreateBeatMapNotes()
@@ -402,5 +416,10 @@ void GameCore::Restart()
     scoreCalculator_.ScoreReset();
 
     CreateBeatMapNotes();
+    uint32_t totalNotes = 0;
+    for (const auto& lane : lanes_)
+        totalNotes += lane->GetNoteCount();
+
+    noteDrawer_->Initialize(totalNotes, totalNotes / 2);
     judgeResult_->Initialize();
 }

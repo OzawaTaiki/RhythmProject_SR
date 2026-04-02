@@ -50,6 +50,6 @@ private:
     std::deque<uint32_t> cycleTextureIndices_;
     std::vector<uint32_t> textureHandles_;
     std::shared_ptr<Engine::SoundInstance> musicInstance_= nullptr;
-    Engine::AudioSpectrum audioSpectrum_;
+    std::unique_ptr<Engine::AudioSpectrum> audioSpectrum_;
     bool isInitTextures_ = false;
 };

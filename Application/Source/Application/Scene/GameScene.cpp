@@ -143,7 +143,7 @@ void GameScene::Update()
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
     if (deltaTime > 1.0f)
         deltaTime = 0.1f;
-    gameEnvironment_->Update(deltaTime, &audioSpectrum_, gameMusic_->GetSoundInstance().get(), gameMusic_->GetElapsedTime());
+    gameEnvironment_->Update(deltaTime, audioSpectrum_.get(), gameMusic_->GetSoundInstance().get(), gameMusic_->GetElapsedTime());
 
     if (!isLoadComplete_)
     {
@@ -197,7 +197,7 @@ void GameScene::Update()
 
     float elapsedTime = gameMusic_->GetElapsedTime();
     float scale = WaveformAnalyzer::GetRMSAtTime(gameMusic_->GetSoundInstance().get(), elapsedTime);
-    spectrumTextureGenerator_->Generate(audioSpectrum_.GetSpectrumAtTime(elapsedTime), scale, 48);
+    spectrumTextureGenerator_->Generate(audioSpectrum_->GetSpectrumAtTime(elapsedTime), scale, 48);
     spectrumTextureGenerator_->ReserveClear();
 
 #pragma endregion // Application
@@ -330,8 +330,8 @@ bool GameScene::IsCompleteLoadBeatMap()
             gameCore_->SetGameMusic(gameMusic_.get());
             gameInputManager_->SetGameMusic(gameMusic_.get()); // 入力管理に音声インスタンスを設定
             //spectrumTextureGenerator_->MakeLogRanges(gameMusic_->GetSoundInstance()->GetSampleRate(), 60.0f, 6000.0f);
-            audioSpectrum_.SetAudioData(gameMusic_->GetSoundInstance()->GetAudioData());
-            audioSpectrum_.SetSampleRate(gameMusic_->GetSoundInstance()->GetSampleRate());
+            audioSpectrum_->SetAudioData(gameMusic_->GetSoundInstance()->GetAudioData());
+            audioSpectrum_->SetSampleRate(gameMusic_->GetSoundInstance()->GetSampleRate());
         }
         else
         {
@@ -589,7 +589,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
     spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
 
-    audioSpectrum_ = AudioSpectrum();
+    audioSpectrum_ = std::make_unique<AudioSpectrum>(32768);
 
     while (!IsCompleteLoadBeatMap())
         std::this_thread::sleep_for(std::chrono::milliseconds(10));

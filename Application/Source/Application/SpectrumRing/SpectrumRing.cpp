@@ -4,6 +4,11 @@
 #include <Features/WaveformDisplay/WaveformAnalyzer.h>
 #include <Math/MyLib.h>
 
+#ifdef _DEBUG
+#include <Debug/ImGuiDebugManager.h>
+#include <imgui.h>
+#endif
+
 using namespace Engine;
 
 namespace
@@ -14,21 +19,21 @@ float outerRadius = 3.0f;
 size_t numRings = 5;
 Vector4 clearColor = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
-int32_t fftsize = 1024;
+int32_t fftsize = 32768;
 int32_t barCount = 48;
 float minHz = 20.0f;
 float maxHz = 10000.0f;
 
 }
 
-void SpectrumRing::Initialize(std::shared_ptr<SoundInstance> musicInstance,size_t numring)
+void SpectrumRing::Initialize(std::shared_ptr<SoundInstance> musicInstance, size_t numring)
 {
     musicInstance_ = musicInstance;
     numRings = numring;
-    audioSpectrum_ = AudioSpectrum();
+    audioSpectrum_ = std::make_unique<AudioSpectrum>(fftsize);
 
-    audioSpectrum_.SetAudioData(musicInstance_->GetAudioData());
-    audioSpectrum_.SetSampleRate(musicInstance_->GetSampleRate());
+    audioSpectrum_->SetAudioData(musicInstance_->GetAudioData());
+    audioSpectrum_->SetSampleRate(musicInstance_->GetSampleRate());
 
     CreateRings();
     CreateTextureGenerators();
@@ -36,9 +41,34 @@ void SpectrumRing::Initialize(std::shared_ptr<SoundInstance> musicInstance,size_
 
 void SpectrumRing::Update(float elapsedTime)
 {
+#ifdef _DEBUG
+    if (ImGuiDebugManager::GetInstance()->Begin("SpectrumRing"))
+    {
+        static int n = 15; // 2^15 = 32768
+        ImGui::SliderInt("N (FFT = 2^N)", &n, 10, 16);
+        ImGui::Text("= %d", 1 << n);
+        if (ImGui::Button("Apply"))
+        {
+            fftsize = 1 << n;
+            audioSpectrum_->SetFFTSize(fftsize);
+            for (auto& gen : textureGenerators_)
+                gen->MakeLogRanges(musicInstance_->GetSampleRate(), minHz, maxHz, barCount, fftsize / 2, fftsize);
+            isInitTextures_ = false;
+        }
+        ImGui::Text("Current: %d", fftsize);
+        ImGui::End();
+    }
+    if (ImGuiDebugManager::GetInstance()->Begin("Fourier Transform"))
+    {
+        // 毎フレームFourier Transformを出すために空で
+        ImGui::End();
+    }
+
+#endif
+
     if (!isInitTextures_)
     {
-        auto spectrum = audioSpectrum_.GetSpectrumAtTime(0.0f);
+        auto spectrum = audioSpectrum_->GetSpectrumAtTime(0.0f);
         // 一度すべてのテクスチャを生成する
         // initではできないみたいなのでしかたない
         for (auto& generator : textureGenerators_)
@@ -55,13 +85,13 @@ void SpectrumRing::Update(float elapsedTime)
     cycleTextureIndices_.pop_back();
     cycleTextureIndices_.push_front(index);
 
-    auto spectrum = audioSpectrum_.GetSpectrumAtTime(elapsedTime);
+    auto spectrum = audioSpectrum_->GetSpectrumAtTime(elapsedTime);
     //float min, max;
     //WaveformAnalyzer::GetRawWaveformMaxMin(musicInstance_.get(), _elapsedTime, 5.0f, max, min);
     float scale =
         //(std::abs(max) + std::abs(min)) / 2.0f;
-        WaveformAnalyzer::GetRMSAtTime(musicInstance_.get(),elapsedTime);
-    textureGenerators_[index]->Generate(spectrum, scale , barCount);
+        WaveformAnalyzer::GetRMSAtTime(musicInstance_.get(), elapsedTime);
+    textureGenerators_[index]->Generate(spectrum, scale, barCount);
     uint32_t nextIndex = cycleTextureIndices_.back();
     textureGenerators_[nextIndex]->ReserveClear();
 
@@ -103,8 +133,8 @@ void SpectrumRing::SetMusicInstance(std::shared_ptr<Engine::SoundInstance> music
         return;
 
     musicInstance_ = musicInstance;
-    audioSpectrum_.SetAudioData(musicInstance_->GetAudioData());
-    audioSpectrum_.SetSampleRate(musicInstance_->GetSampleRate());
+    audioSpectrum_->SetAudioData(musicInstance_->GetAudioData());
+    audioSpectrum_->SetSampleRate(musicInstance_->GetSampleRate());
 }
 
 void SpectrumRing::CreateRings()

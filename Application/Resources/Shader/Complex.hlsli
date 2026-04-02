@@ -11,17 +11,31 @@ struct Complex
 
     Complex Add(Complex other)
     {
-        return (Complex) (real + other.real, imag + other.imag);
+        Complex c =
+        {
+            real + other.real,
+            imag + other.imag
+        };
+        return c;
     }
 
     Complex Sub(Complex other)
     {
-        return (Complex) (real - other.real, imag - other.imag);
+        Complex c =
+        {
+            real - other.real,
+            imag - other.imag
+        };
+        return c;
     }
     Complex Mul(Complex other)
     {
-        return (Complex) (real * other.real - imag * other.imag,
-                          real * other.imag + imag * other.real);
+        Complex c =
+        {
+            real * other.real - imag * other.imag,
+            real * other.imag + imag * other.real
+        };
+        return c;
     }
 
     float Abs()

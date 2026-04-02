@@ -136,7 +136,7 @@ private:
     std::future<bool> beatMapLoadFuture_ = {};
 
     std::unique_ptr<Engine::SpectrumTextureGenerator> spectrumTextureGenerator_ = nullptr;
-    Engine::AudioSpectrum audioSpectrum_;
+    std::unique_ptr<Engine::AudioSpectrum> audioSpectrum_;
 
 
     bool isBeatMapLoaded_ = false;

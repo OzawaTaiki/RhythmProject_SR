@@ -74,7 +74,7 @@ private:
     // テキストジェネレータ
     Engine::TextGenerator textGenerator_;
 
-    Engine::AudioSpectrum audioSpectrum_;
+    std::unique_ptr<Engine::AudioSpectrum> audioSpectrum_;
 
     std::unique_ptr<Engine::SpectrumTextureGenerator> textureGenerator_;
     Engine::Text3DRenderer* text3DRenderer_ = nullptr;

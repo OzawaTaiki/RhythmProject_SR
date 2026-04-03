@@ -411,6 +411,7 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Note\Judge\JudgeColor.cpp" />
     <ClCompile Include="Source\Application\Note\NoteDrawer.cpp" />
+    <ClCompile Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -680,6 +681,7 @@
     </ClInclude>
     <ClInclude Include="Source\Application\BGMChangeEventData.h" />
     <ClInclude Include="Source\Application\Note\NoteDrawer.h" />
+    <ClInclude Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

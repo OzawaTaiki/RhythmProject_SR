@@ -1,5 +1,6 @@
 #pragma once
 #include <Features/Sprite/Sprite.h>
+#include <Application/BeatMapEditor/AutoChartGenerator/autoChartGenerator.h>
 
 class BeatManager;
 
@@ -27,21 +28,22 @@ public:
                    AudioController* audioController,
                    FileManager* fileManager,
                    BeatManager* beatManager,
-                   EditorCoordinate* coordinate);
+                   EditorCoordinate* coordinate,
+                   AutoChartGenerator::GenerateRequest& autoGenerateRequest);
     void Draw(const State* state) const;
     void Finalize();
+
 
 private:
 #ifdef _DEBUG
     void DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate_);
-    void DrawRightPanel(State* state,Document* document, AudioController* audioController, FileManager* fileManager);
+    void DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager, AutoChartGenerator::GenerateRequest& autoGenerateRequest);
 #endif // _DEBUG
     void UpdateDraggingArea(const State* state);
     void DrawDraggingArea(const State* state) const;
 
 private:
     std::unique_ptr<Engine::Sprite> draggingAreaSprite_;
-
 
 };
 

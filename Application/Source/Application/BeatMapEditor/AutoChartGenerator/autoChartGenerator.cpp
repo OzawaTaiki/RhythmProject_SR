@@ -9,7 +9,7 @@ std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* s
 {
     struct BandDef
     {
-        int laneIndex;
+        int32_t laneIndex;
         float minHz;
         float maxHz;
     };

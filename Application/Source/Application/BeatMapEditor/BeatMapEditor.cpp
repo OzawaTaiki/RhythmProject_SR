@@ -6,6 +6,7 @@
 #include <Debug/ImGuiDebugManager.h>
 #include <System/Input/Input.h>
 #include <System/Audio/AudioSystem.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
 
 #include <Application/BeatMapLoader/BeatMapLoader.h>
 #include <Utility/FileDialog/FileDialog.h>
@@ -16,7 +17,9 @@
 #include <Application/BeatMapEditor/Command/MoveNoteCommand.h>
 #include <Application/BeatMapEditor/Command/ChangeHoldDurationCommand.h>
 #include <Application/BeatMapEditor/Command/PasteCommand.h>
+#include <Application/BeatMapEditor/Command/BatchInsertNotesCommand.h>
 
+#include <Application/BeatMapEditor/AutoChartGenerator/autoChartGenerator.h>
 
 #include <fstream>
 #include <Framework/LayerSystem/LayerSystem.h>
@@ -87,7 +90,10 @@ void BeatMapEditor::Update()
 {
     auto voice = audioController_->GetVoiceInstance();
     if (voice && voice->IsPlaying())
+    {
         currentTime_ = voice->GetElapsedTime();
+        beatManager_->Update();
+    }
 
     editorCoordinate_.SetScrollOffset(currentTime_);
 
@@ -97,8 +103,11 @@ void BeatMapEditor::Update()
         audioController_.get(),
         &commandHistory_,
         &editorCoordinate_,
+        beatManager_.get(),
         currentTime_
     );
+
+    BME::AutoChartGenerator::GenerateRequest autoGenerateRequest;
 
     // レンダラーの更新処理
     renderer_->Update(
@@ -108,8 +117,14 @@ void BeatMapEditor::Update()
         audioController_.get(),
         &editorCoordinate_,
         beatManager_.get(),
-        currentTime_
+        currentTime_,
+        autoGenerateRequest
     );
+
+    if (autoGenerateRequest.isRequested)
+    {
+        TriggerAutoGenerate(autoGenerateRequest.settings);
+    }
 
     static size_t lastNoteIndex = 0;
     if (!audioController_->IsPlaying())
@@ -188,4 +203,31 @@ void BeatMapEditor::SetNoteDuration(size_t _noteIndex, float _newDuration)
             return;
     }
     currentBeatMapData_.notes[_noteIndex].holdDuration = _newDuration; // ノートの持続時間を更新
+}
+
+void BeatMapEditor::TriggerAutoGenerate(const BME::AutoChartGenerator::Settings& settings)
+{
+    if (!audioController_->HasAudio())
+        return;
+
+    const size_t windowSize = 1 << 12;
+    auto spectrum = std::make_unique<Engine::AudioSpectrum>(windowSize);
+    auto soundInstance = audioController_->GetSoundInstance();
+    spectrum->SetAudioData(soundInstance->GetAudioData());
+    spectrum->SetSampleRate(soundInstance->GetSampleRate());
+
+    float duration = soundInstance->GetDuration();
+    float bpm = document_->GetData().bpm;
+    float offset = document_->GetData().offset;
+
+    std::vector<NoteData> generatedNotes = autoChartGenerator_.Generate(spectrum.get(), duration, bpm, offset, settings);
+
+    if (generatedNotes.empty())
+    {
+        Debug::Log("Auto generation did not produce any notes.\n");
+        return;
+    }
+
+    commandHistory_.ExecuteCommand(std::make_unique<BME::BatchInsertNotesCommand>(document_.get(), generatedNotes));
+
 }

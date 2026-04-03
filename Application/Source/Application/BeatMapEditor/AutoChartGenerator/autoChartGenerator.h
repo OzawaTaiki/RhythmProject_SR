@@ -21,6 +21,12 @@ public:
         bool snapToGrid = true; // グリッドにスナップするか
         int gridDivision = 4; // グリッドの分割数（1/N）
     };
+
+    struct GenerateRequest
+    {
+        bool isRequested = false;
+        Settings settings;
+    };
 public:
     AutoChartGenerator() = default;
     ~AutoChartGenerator() = default;

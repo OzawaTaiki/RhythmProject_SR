@@ -13,7 +13,7 @@ struct NoteData
     float holdDuration; // ホールドノートの持続時間
 
     NoteData() : laneIndex(0), targetTime(0.0f), noteType("normal"), holdDuration(0.0f) {}
-    NoteData(uint32_t laneIndex, float targetTime, const std::string& noteType, float holdDuration)
+    NoteData(int32_t laneIndex, float targetTime, const std::string& noteType, float holdDuration)
         : laneIndex(laneIndex), targetTime(targetTime), noteType(noteType), holdDuration(holdDuration){}
 };
 

@@ -26,15 +26,16 @@ void EditorUIController::Initialize()
 
 void EditorUIController::ProcessUI(
     State* state,
-    [[maybe_unused]]Document* document,
-    [[maybe_unused]]AudioController* audioController,
-    [[maybe_unused]]FileManager* fileManager,
-    [[maybe_unused]]BeatManager* beatManager,
-    [[maybe_unused]]EditorCoordinate* coordinate)
+    [[maybe_unused]] Document* document,
+    [[maybe_unused]] AudioController* audioController,
+    [[maybe_unused]] FileManager* fileManager,
+    [[maybe_unused]] BeatManager* beatManager,
+    [[maybe_unused]] EditorCoordinate* coordinate,
+    [[maybe_unused]] AutoChartGenerator::GenerateRequest& autoGenerateRequest)
 {
 #ifdef _DEBUG
     DrawLeftPanel(state, document, audioController, beatManager, coordinate);
-    DrawRightPanel(state, document, audioController, fileManager);
+    DrawRightPanel(state, document, audioController, fileManager, autoGenerateRequest);
 #endif
     UpdateDraggingArea(state);
 }
@@ -178,15 +179,17 @@ void EditorUIController::DrawLeftPanel(State* state, Document* document, AudioCo
             musicVoiceInstance->SetPlaySpeed(playSpeed); // 再生速度を設定
         }
         bool enableBeats = beatManager->GetSoundEnabled();
-        ImGui::Checkbox("enable Beats", &enableBeats);// TODO
-        beatManager->SetEnableSound(enableBeats);
+        if (ImGui::Checkbox("enable Beats", &enableBeats))
+        {
+            beatManager->SetEnableSound(enableBeats);
+        }
     }
 
     ImGui::End();
 
 }
 
-void EditorUIController::DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager)
+void EditorUIController::DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager, AutoChartGenerator::GenerateRequest& autoGenerateRequest)
 {
 
     // File 情報
@@ -310,6 +313,26 @@ void EditorUIController::DrawRightPanel(State* state, Document* document, AudioC
                 ImGui::Text("...and %zu more notes", selectedNotes.size() - kMaxViewableNotes);
             }
         }
+
+
+        // パネル下部に固定（セクションの高さ分を引く）
+        const float autoGenSectionHeight = 130.0f; // セクションの大体の高さ
+        ImGui::SetCursorPosY(panelSize.y - autoGenSectionHeight);
+
+        ImGui::SeparatorText("Auto Generate");
+
+        ImGui::SliderFloat("Sensitivity", &autoGenerateRequest.settings.sensitivity, 0.0f, 1.0f);
+        ImGui::SliderFloat("Min Note Gap", &autoGenerateRequest.settings.minNoteGap, 0.05f, 0.5f);
+        ImGui::Checkbox("Snap To Grid", &autoGenerateRequest.settings.snapToGrid);
+
+        ImGui::BeginDisabled(!audioController->HasAudio()); // 音楽未ロードなら無効
+        {
+            if (ImGui::Button("Generate"))
+            {
+                autoGenerateRequest.isRequested = true;
+            }
+        }
+        ImGui::EndDisabled();
 
     }
     ImGui::End();

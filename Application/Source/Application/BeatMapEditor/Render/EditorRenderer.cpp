@@ -33,7 +33,8 @@ void EditorRenderer::Update(
     AudioController* _audioController,
     EditorCoordinate* _coordinate,
     BeatManager* beatManager,
-    float& _currentTime
+    float& _currentTime,
+    AutoChartGenerator::GenerateRequest& autoGenerateRequest
     )
 {
     if (!_state || !_document || !_audioController || !_coordinate)
@@ -43,7 +44,13 @@ void EditorRenderer::Update(
     timelineRenderer_.ProcessTimeline(_audioController, _currentTime);
 
     // UI処理
-    uiController_.ProcessUI(_state, _document, _audioController, _fileManager, beatManager, _coordinate);
+    uiController_.ProcessUI(_state,
+                            _document,
+                            _audioController,
+                            _fileManager,
+                            beatManager,
+                            _coordinate,
+                            autoGenerateRequest);
 }
 
 void EditorRenderer::Draw(

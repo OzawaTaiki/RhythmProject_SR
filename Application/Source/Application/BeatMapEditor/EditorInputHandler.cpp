@@ -32,12 +32,13 @@ void InputHandler::HandleInput(
     AudioController* audioController,
     CommandHistory* commandHistory,
     EditorCoordinate* coordinate,
+    BeatManager* beatManager,
     float& currentTime)
 {
-    if (!state || !document || !audioController || !commandHistory || !coordinate)
+    if (!state || !document || !audioController || !commandHistory || !beatManager || !coordinate)
         return;
 
-    HandleGlobalInput(state, document, audioController, commandHistory, currentTime);
+    HandleGlobalInput(state, document, audioController, commandHistory, beatManager,currentTime);
     HandleModeSpecificInput(state, document, audioController, commandHistory, coordinate);
     HandleMouseWheelInput(coordinate, audioController, currentTime);
 }
@@ -51,15 +52,23 @@ void InputHandler::HandleGlobalInput(
     Document* document,
     AudioController* audioController,
     CommandHistory* commandHistory,
+    BeatManager* beatManager,
     float& currentTime)
 {
     // Space: 音楽の再生/停止
     if (input_->IsKeyTriggered(DIK_SPACE) && state->GetCurrentMode() != EditorMode::BPMSetting)
     {
         if (audioController->IsPlaying())
+        {
             audioController->Stop();
+            beatManager->Reset();
+        }
         else
+        {
             audioController->Play(currentTime);
+            beatManager->SetMusicVoiceInstance(audioController->GetVoiceInstance());
+            beatManager->Start();
+        }
     }
 
     // ESC: 選択をクリア
@@ -172,7 +181,7 @@ void InputHandler::HandleSelectMode(
     State* state,
     Document* document,
     CommandHistory* commandHistory,
-    EditorCoordinate* coordinate    )
+    EditorCoordinate* coordinate)
 {
     const Vector2 mousePos = input_->GetMousePosition();
 

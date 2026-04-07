@@ -34,7 +34,8 @@ public:
         AudioController* _audioController,
         EditorCoordinate* _coordinate,
         BeatManager* beatManager,
-        float& _currentTime
+        float& _currentTime,
+        AutoChartGenerator::GenerateRequest& autoGenerateRequest
     );
     void Draw(
         State* _state,

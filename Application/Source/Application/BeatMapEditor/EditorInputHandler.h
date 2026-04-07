@@ -2,6 +2,7 @@
 
 #include <Application/BeatMapEditor/EditorState.h>
 #include <Application/BeatMapEditor/EditorCoordinate.h>
+#include <Application/BeatsManager/BeatManager.h>
 #include <cstdint>
 
 namespace Engine { class Input; }
@@ -32,6 +33,7 @@ public:
         AudioController* audioController,
         CommandHistory* commandHistory,
         EditorCoordinate* coordinate,
+        BeatManager* beatManager,
         float& currentTime
     );
 
@@ -42,6 +44,7 @@ private:
         Document* document,
         AudioController* audioController,
         CommandHistory* commandHistory,
+        BeatManager* beatManager,
         float& currentTime
     );
 

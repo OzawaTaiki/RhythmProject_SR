@@ -23,6 +23,8 @@
 #include <Application/BeatMapEditor/BeatMapFileManager.h>
 #include <Application/BeatMapEditor/Render/EditorRenderer.h>
 
+#include <Application/BeatMapEditor/AutoChartGenerator/autoChartGenerator.h>
+
 #include <string>
 #include <cstdint>
 #include <vector>
@@ -94,7 +96,12 @@ public:
     /// <param name="_noteIndex"> ノートのインデックス</param>
     /// <param name="_newDuration"> 新しい持続時間</param>
     void SetNoteDuration(size_t _noteIndex, float _newDuration);
-private:
+
+    /// <summary>
+    /// 自動譜面生成を実行してコマンド履歴に積む
+    /// </summary>
+    void TriggerAutoGenerate(const BME::AutoChartGenerator::Settings& settings);
+
 private:
     struct NoteColor
     {
@@ -155,11 +162,13 @@ private:
     std::unique_ptr<BME::EditorRenderer> renderer_;
     std::unique_ptr<BME::FileManager> fileManager_;
 
+    BME::AutoChartGenerator autoChartGenerator_;
+
     float currentTime_ = 0.0f;
     BeatMapData currentBeatMapData_ = {};
 
     std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr;
-    std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr;
+    std::vector<std::shared_ptr<Engine::VoiceInstance>> voiceInstance_;
 
 };
 /*

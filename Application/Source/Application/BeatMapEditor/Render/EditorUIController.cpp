@@ -316,7 +316,7 @@ void EditorUIController::DrawRightPanel(State* state, Document* document, AudioC
 
 
         // パネル下部に固定（セクションの高さ分を引く）
-        const float autoGenSectionHeight = 130.0f; // セクションの大体の高さ
+        const float autoGenSectionHeight = 135.0f; // セクションの大体の高さ
         ImGui::SetCursorPosY(panelSize.y - autoGenSectionHeight);
 
         ImGui::SeparatorText("Auto Generate");
@@ -324,6 +324,10 @@ void EditorUIController::DrawRightPanel(State* state, Document* document, AudioC
         ImGui::SliderFloat("Sensitivity", &autoGenerateRequest.settings.sensitivity, 0.0f, 1.0f);
         ImGui::SliderFloat("Min Note Gap", &autoGenerateRequest.settings.minNoteGap, 0.05f, 0.5f);
         ImGui::Checkbox("Snap To Grid", &autoGenerateRequest.settings.snapToGrid);
+        ImGui::SameLine();
+        ImGui::Checkbox("Use GPU", &autoGenerateRequest.settings.useGpuFFT);
+        ImGui::SliderInt("Grid Division", &autoGenerateRequest.settings.gridDivision, 1, 16);
+        ImGui::SliderInt("FFT Window N", &autoGenerateRequest.settings.windowN, 8, 20);
 
         ImGui::BeginDisabled(!audioController->HasAudio()); // 音楽未ロードなら無効
         {

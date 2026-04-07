@@ -20,7 +20,11 @@ public:
         float minNoteGap = 0.1f; // 同レーン内の最小間隔（秒）
         bool snapToGrid = true; // グリッドにスナップするか
         int gridDivision = 4; // グリッドの分割数（1/N）
+        int windowN = 10; // FFTのウィンドウサイズ = 2^windowN
+
+        bool useGpuFFT = true;
     };
+
 
     struct GenerateRequest
     {
@@ -77,6 +81,8 @@ private:
     /// <param name="minGap">同レーン内の最小間隔（秒）</param>
     /// <returns>ノーツの時間のリスト</returns>
     std::vector<float> PickOnsets(const FluxSeries& fluxSeries, float sensitivity, float minGap);
+
+    void SmoothFlux(FluxSeries& series, int windowSize);
 
     /// <summary>
     /// ノーツの時間をグリッドにスナップする

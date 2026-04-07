@@ -107,7 +107,8 @@ void BeatMapEditor::Update()
         currentTime_
     );
 
-    BME::AutoChartGenerator::GenerateRequest autoGenerateRequest;
+    static BME::AutoChartGenerator::GenerateRequest autoGenerateRequest ={};
+    autoGenerateRequest.isRequested = false;
 
     // レンダラーの更新処理
     renderer_->Update(
@@ -124,6 +125,14 @@ void BeatMapEditor::Update()
     if (autoGenerateRequest.isRequested)
     {
         TriggerAutoGenerate(autoGenerateRequest.settings);
+    }
+
+    for (auto it = voiceInstance_.begin(); it != voiceInstance_.end(); )
+    {
+        if (!(*it)->IsPlaying())
+            it = voiceInstance_.erase(it);
+        else
+            ++it;
     }
 
     static size_t lastNoteIndex = 0;
@@ -153,7 +162,7 @@ void BeatMapEditor::Update()
             // 音ならす
             if (soundInstance_)
             {
-                voiceInstance_=soundInstance_->Play(0.5f, false, true, nullptr, AudioSystem::GetInstance()->GetSESubmix());
+                voiceInstance_.push_back(soundInstance_->Play(0.5f, false, true, nullptr, AudioSystem::GetInstance()->GetSESubmix()));
             }
         }
     }
@@ -210,11 +219,12 @@ void BeatMapEditor::TriggerAutoGenerate(const BME::AutoChartGenerator::Settings&
     if (!audioController_->HasAudio())
         return;
 
-    const size_t windowSize = 1 << 12;
+    const size_t windowSize = 1ull << static_cast<size_t>(settings.windowN);
     auto spectrum = std::make_unique<Engine::AudioSpectrum>(windowSize);
     auto soundInstance = audioController_->GetSoundInstance();
     spectrum->SetAudioData(soundInstance->GetAudioData());
     spectrum->SetSampleRate(soundInstance->GetSampleRate());
+    spectrum->SetUseGPU(settings.useGpuFFT);
 
     float duration = soundInstance->GetDuration();
     float bpm = document_->GetData().bpm;

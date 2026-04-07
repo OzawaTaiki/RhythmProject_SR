@@ -168,7 +168,7 @@ private:
     BeatMapData currentBeatMapData_ = {};
 
     std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr;
-    std::shared_ptr<Engine::VoiceInstance> voiceInstance_ = nullptr;
+    std::vector<std::shared_ptr<Engine::VoiceInstance>> voiceInstance_;
 
 };
 /*

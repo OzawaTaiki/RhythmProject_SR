@@ -189,7 +189,7 @@ void SceneTransHex::CreateHexagons()
 
 void SceneTransHex::InitJsonBinder()
 {
-    jsonBinder_ = std::make_unique<Engine::JsonBinder>("SceneTransHex", "Resource/Data/");
+    jsonBinder_ = std::make_unique<Engine::JsonBinder>("SceneTransHex", "Resources/Data/");
 
     jsonBinder_->RegisterVariable("duration", &duration_);
     jsonBinder_->RegisterVariable("hexagonSize", &hexagonSize_);

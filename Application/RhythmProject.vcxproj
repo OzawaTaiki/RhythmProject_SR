@@ -245,6 +245,7 @@
     <ClCompile Include="Source\Application\Scene\SelectScene.cpp" />
     <ClCompile Include="Source\Application\Scene\TitleScene.cpp" />
     <ClCompile Include="Source\Application\Scene\Transition\SceneTrans.cpp" />
+    <ClCompile Include="Source\Application\Scene\Transition\SceneTransHex.cpp" />
     <ClCompile Include="Source\Application\Select\musicSelectUI.cpp" />
     <ClCompile Include="Source\Application\Select\SelectUI.cpp" />
     <ClCompile Include="Source\Application\Setting\Preview\SettingsPreviewPanel.cpp" />
@@ -417,6 +418,7 @@
     <ClInclude Include="Source\Application\Scene\SelectScene.h" />
     <ClInclude Include="Source\Application\Scene\TitleScene.h" />
     <ClInclude Include="Source\Application\Scene\Transition\SceneTrans.h" />
+    <ClInclude Include="Source\Application\Scene\Transition\SceneTransHex.h" />
     <ClInclude Include="Source\Application\Select\musicSelectUI.h" />
     <ClInclude Include="Source\Application\Select\SelectUI.h" />
     <ClInclude Include="Source\Application\Setting\Preview\SettingsPreviewPanel.h" />

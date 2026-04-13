@@ -11,7 +11,7 @@
 #include <Features/Model/Primitive/Builder/PrimitiveBuilder.h>
 #include <Features/UI/Collider/UICollisionManager.h>
 #include <Features/UI/UINavigationManager.h>
-#include <Application/Scene/Transition/SceneTrans.h>
+#include <Application/Scene/Transition/SceneTransHex.h>
 
 #include <System/Audio/SoundEngine.h>
 #include <System/Audio/AudioEffectManager.h>
@@ -38,7 +38,7 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
     LayerSystem::Initialize();
 
     Setting::Load();
-    sceneManager_->SetTransition(std::make_unique<SceneTrans>());
+    sceneManager_->SetTransition(std::make_unique<SceneTransHex>());
 
     GenerateModels();
 

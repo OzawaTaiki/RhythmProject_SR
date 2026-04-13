@@ -114,6 +114,9 @@ void SceneTransHex::End()
 
 void SceneTransHex::ImGui()
 {
+#ifdef _DEBUG
+
+
     ImGui::Begin("SceneTransHex");
     ImGui::DragFloat("Duration", &duration_, 0.1f, 0.1f, 10.0f);
     ImGui::DragFloat("Hexagon Size", &hexagonSize_, 1.0f, 10.0f, 200.0f);
@@ -145,6 +148,7 @@ void SceneTransHex::ImGui()
         jsonBinder_->Save();
     }
     ImGui::End();
+#endif // _DEBUG
 
 }
 

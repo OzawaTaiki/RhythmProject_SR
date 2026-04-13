@@ -92,8 +92,8 @@ void SampleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
     ring.SetDivide(512);
 
     // 音声データの読み込み
-    //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
-    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
+    soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Alarm01.wav");
+    //soundInstance_ = AudioSystem::GetInstance()->Load("Resources/Sounds/Music/Luminous_memory.wav");
     //soundInstance_ = AudioSystem::GetInstance()->Load("C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav");
 
 

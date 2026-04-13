@@ -413,6 +413,7 @@
     <ClCompile Include="Source\Application\Note\NoteDrawer.cpp" />
     <ClCompile Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.cpp" />
     <ClCompile Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.cpp" />
+    <ClCompile Include="Source\Application\Scene\Transition\SceneTransHex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -684,6 +685,7 @@
     <ClInclude Include="Source\Application\Note\NoteDrawer.h" />
     <ClInclude Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.h" />
     <ClInclude Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.h" />
+    <ClInclude Include="Source\Application\Scene\Transition\SceneTransHex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -1,0 +1,10 @@
+{
+    "SceneTransHex": {
+        "animationDuration": 0.10000000149011612,
+        "duration": 1.0,
+        "hexagonSize": 100.0,
+        "phaseCount": 5,
+        "phaseDelay": 0.10000000149011612,
+        "spacing": 0.0
+    }
+}

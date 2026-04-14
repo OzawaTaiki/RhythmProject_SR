@@ -131,6 +131,7 @@ void GameScene::Initialize(SceneData* sceneData)
     Debug::Log(std::format("GameEnvironment Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()));
     Load(beforeScene, beatMapFilePath, editorBeatMapData);
 
+    hasReservedTransition_ = false;
 }
 
 void GameScene::Update()
@@ -220,7 +221,7 @@ void GameScene::Update()
     {
         gameCompleteEffect_->Update(deltaTime);
 
-        if (isTransitionToResultScene_ && gameCompleteEffect_->IsEffectComplete())
+        if (isTransitionToResultScene_ && !hasReservedTransition_ && gameCompleteEffect_->IsEffectComplete())
         {
             auto data = std::make_unique<GameToResultData>();
             data->resultData.musicTitle = beatMapLoader_->GetLoadedBeatMapData().title; // 譜面のタイトルを取得
@@ -231,6 +232,7 @@ void GameScene::Update()
 
             UINavigationManager::GetInstance()->ClearFocus();
             SceneManager::ReserveScene("ResultScene", std::move(data)); // 結果シーンにデータを渡す
+            hasReservedTransition_ = true;
         }
     }
 

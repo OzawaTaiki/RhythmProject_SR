@@ -149,6 +149,7 @@ private:
 
     std::unique_ptr<GameMusic> gameMusic_ = nullptr; // 音楽の管理
 
+    bool hasReservedTransition_ = false; // 結果シーンへの遷移を予約したかどうか
 
     GameMode gameMode_ = GameMode::Normal;
 

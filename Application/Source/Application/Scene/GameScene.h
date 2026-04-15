@@ -80,6 +80,8 @@ public:
 
 private:
 
+    void UpdateCamera();
+
     /// <summary>
     /// 譜面データの読み込みを待機する
     /// </summary>
@@ -90,7 +92,7 @@ private:
     /// <summary>
     /// ゲーム開始オフセット処理の更新
     /// </summary>
-    void UpdateGameStartOffset();
+    void UpdateGameStartOffset(float deltaTime);
 
 
     // 曲の再生が終わったか
@@ -99,10 +101,32 @@ private:
     void Retry();
     //  タイトルへ戻る処理
     void ToTitle();
+
+    void ToResult();
     // イベント受信処理
     void OnEvent(const Engine::GameEvent& event) override;
 
-    void Load(const std::string& beforeScene,const std::string &filepth,const BeatMapData& data);
+    void Load(const std::string& beforeScene, const std::string& filepth, const BeatMapData& data);
+private:
+
+    enum class SceneState
+    {
+        Loading,    // ロード中
+        WaitingToStart, // ロード完了、ゲーム開始待ち
+        Playing,    // ゲームプレイ中
+        Paused,     // 一時停止中
+        GameComplete, // ゲーム完了（曲の終了を待っている状態）
+        ResultTransition, // 結果シーンへの遷移中
+    };
+
+    SceneState currentState_ = SceneState::Loading;
+
+    void UpdateLoading();
+    void UpdateWaiting(float deltaTime);
+    void UpdatePlaying(float deltaTime);
+    void UpdateCompleted(float deltaTime);
+    void UpdatePaused();
+
 private:
 
     // シーン関連

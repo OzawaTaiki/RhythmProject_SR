@@ -92,14 +92,13 @@ void PauseMenu::Update()
         if (Input::GetInstance()->IsKeyTriggered(DIK_ESCAPE))
         {
             ToActive();
+            // TODO : イベントに移行
+            EventManager::GetInstance()->DispatchEvent(GameEvent("OpenPause", nullptr));
+
         }
         return;
     }
 
-    if(UINavigationManager::GetInstance()->GetFocus() == nullptr)
-    {
-        UINavigationManager::GetInstance()->SetFocus(resumeButton_);
-    }
     background_->Update();
 }
 
@@ -125,6 +124,7 @@ void PauseMenu::ToActive()
 {
     isActive_ = true;
     isDraw_ = true;
+    UINavigationManager::GetInstance()->SetFocus(resumeButton_);
 }
 
 void PauseMenu::CliclEvent(EventType element)

@@ -43,8 +43,8 @@ public:
     /// </summary>
     bool IsActive() const { return isActive_; }
 
-private:
     void ToActive();
+private:
 
     enum class EventType
     {

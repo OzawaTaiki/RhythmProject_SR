@@ -136,105 +136,53 @@ void GameScene::Initialize(SceneData* sceneData)
 
 void GameScene::Update()
 {
-    static auto begin = std::chrono::system_clock::now();
 
-    // ロードが完了してなかったら更新しない
-    /*if (!IsCompleteLoadBeatMap())
-        return;*/
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
-    if (deltaTime > 1.0f)
-        deltaTime = 0.1f;
-    gameEnvironment_->Update(deltaTime, audioSpectrum_.get(), gameMusic_->GetSoundInstance().get(), gameMusic_->GetElapsedTime());
 
-    if (!isLoadComplete_)
-    {
-        Debug::Log("Waiting for BeatMap Load...\n");
-        return;
-    }
-
-    UpdateGameStartOffset();
-
-#ifdef _DEBUG
-    ImGui();
-
-    if (input_->IsKeyTriggered(DIK_F8))
-        isTransitionToResultScene_ = !isTransitionToResultScene_; // F8キーで結果シーンへの遷移を切り替え
-    if (input_->IsKeyTriggered(DIK_F7))
-    {
-        noteUpdateEnabled_ = !noteUpdateEnabled_;
-        if (noteUpdateEnabled_)
-            gameMusic_->Resume(); // ノート更新が有効なら音楽を再生
-        else
-            gameMusic_->Pause(); // ノート更新が無効なら音楽を一時停止
-    }
-
-#endif // _DEBUG
-
-#pragma region Application
-
-    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_R))
-    {
-        Retry();
-    }
-
-    //depthBasedOutLineData_.edgeColor.x = std::sin(static_cast<float>((Time::GetCurrentTime)())) * 0.5f + 0.5f;
-    laneOutline_->Update(gameCore_->GetCombo());
-    pauseMenu_->Update();
-    gameMusic_->Update(deltaTime);
 
     gameInputManager_->Update(); // 入力更新
-    if (noteUpdateEnabled_ && !pauseMenu_->IsActive())
-    {
-        beatManager_->Update();
-        gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
-    }
-    else
-    {
-        gameMusic_->Pause();
-    }
-    feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
-    gameUI_->Update(gameCore_->GetCombo(), deltaTime); // コンボ値をUIに渡す
-    settingMenu_->Update();
+
+    // ロード完了してなかったら更新しない
+    if (!gameMusic_ || !gameMusic_->GetSoundInstance())
+        return;
+
+    gameEnvironment_->Update(deltaTime,
+                             audioSpectrum_.get(),
+                             gameMusic_->GetSoundInstance().get(),
+                             gameMusic_->GetElapsedTime());
 
     float elapsedTime = gameMusic_->GetElapsedTime();
-    float scale = WaveformAnalyzer::GetRMSAtTime(gameMusic_->GetSoundInstance().get(), elapsedTime);
-    spectrumTextureGenerator_->Generate(audioSpectrum_->GetSpectrumAtTime(elapsedTime), scale, 48);
-    spectrumTextureGenerator_->ReserveClear();
+    audioSpectrum_->GetSpectrumAtTime(elapsedTime);
 
-#pragma endregion // Application
 
-    if (enableDebugCamera_)
+    switch (currentState_)
     {
-        debugCamera_.Update();
-        SceneCamera_.matView_ = debugCamera_.matView_;
-        SceneCamera_.TransferData();
+        case SceneState::Loading:
+            UpdateLoading();
+            break;
+        case SceneState::WaitingToStart:
+            UpdateWaiting(deltaTime);
+            break;
+        case SceneState::Playing:
+            UpdatePlaying(deltaTime);
+            break;
+        case SceneState::Paused:
+            UpdatePaused();
+            break;
+        case SceneState::GameComplete:
+            UpdateCompleted(deltaTime);
+            break;
+        case SceneState::ResultTransition:
+            break;
+        default:
+            break;
     }
-    else
-    {
-        SceneCamera_.Update();
-        SceneCamera_.UpdateMatrix();
-    }
+
+    laneOutline_->Update(gameCore_->GetCombo());
+
+    UpdateCamera();
 
     particleSystem_->Update();
-
-    if (IsMusicEnd())
-    {
-        gameCompleteEffect_->Update(deltaTime);
-
-        if (isTransitionToResultScene_ && !hasReservedTransition_ && gameCompleteEffect_->IsEffectComplete())
-        {
-            auto data = std::make_unique<GameToResultData>();
-            data->resultData.musicTitle = beatMapLoader_->GetLoadedBeatMapData().title; // 譜面のタイトルを取得
-            data->resultData.combo = gameCore_->GetMaxCombo();
-            data->resultData.score = gameCore_->GetScore();
-            data->resultData.judgeResult = gameCore_->GetJudgeResult();
-            data->resultData.rank = gameCore_->GetRank();
-
-            UINavigationManager::GetInstance()->ClearFocus();
-            SceneManager::ReserveScene("ResultScene", std::move(data)); // 結果シーンにデータを渡す
-            hasReservedTransition_ = true;
-        }
-    }
 
     if (gameMode_ == GameMode::EditorTest)
     {
@@ -293,6 +241,21 @@ void GameScene::Draw()
 
 void GameScene::DrawShadow() {}
 
+void GameScene::UpdateCamera()
+{
+    if (enableDebugCamera_)
+    {
+        debugCamera_.Update();
+        SceneCamera_.matView_ = debugCamera_.matView_;
+        SceneCamera_.TransferData();
+    }
+    else
+    {
+        SceneCamera_.Update();
+        SceneCamera_.UpdateMatrix();
+    }
+}
+
 bool GameScene::IsCompleteLoadBeatMap()
 {
     if (beatMapLoader_->IsLoading())
@@ -341,7 +304,6 @@ bool GameScene::IsCompleteLoadBeatMap()
             assert(false);
         }
 
-
         isBeatMapLoaded_ = true;
         isWatingForStart_ = true; // 譜面読み込み完了したら開始待機状態にする
 
@@ -353,15 +315,14 @@ bool GameScene::IsCompleteLoadBeatMap()
     return isBeatMapLoaded_;
 }
 
-void GameScene::UpdateGameStartOffset()
+void GameScene::UpdateGameStartOffset(float deltaTime)
 {
     if (!isWatingForStart_)
         return;
 
     // 時間になったら 音楽等再生 trueを返す
         // タイマー更新
-    float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
-    waitTimer_ += deltaTime > 1.0f ? 0.1f : deltaTime;
+    waitTimer_ += deltaTime;
     // ゲーム開始オフセット時間を超えたら
     if (waitTimer_ >= gameStartOffset_)
     {
@@ -376,6 +337,8 @@ void GameScene::UpdateGameStartOffset()
 
         if (gameMusic_)
             gameMusic_->Play(Setting::current_.musicVolume);
+
+        currentState_ = SceneState::Playing;
     }
 }
 
@@ -393,12 +356,28 @@ void GameScene::Retry()
     gameCore_->Restart();
     gameMusic_->Pause();
     isWatingForStart_ = true;
+    currentState_ = SceneState::WaitingToStart;
+    waitTimer_ = 0.0f;
 }
 
 void GameScene::ToTitle()
 {
     UINavigationManager::GetInstance()->ClearFocus();
     SceneManager::ReserveScene("TitleScene", nullptr);
+}
+
+void GameScene::ToResult()
+{
+    auto data = std::make_unique<GameToResultData>();
+    data->resultData.musicTitle = beatMapLoader_->GetLoadedBeatMapData().title; // 譜面のタイトルを取得
+    data->resultData.combo = gameCore_->GetMaxCombo();
+    data->resultData.score = gameCore_->GetScore();
+    data->resultData.judgeResult = gameCore_->GetJudgeResult();
+    data->resultData.rank = gameCore_->GetRank();
+
+    UINavigationManager::GetInstance()->ClearFocus();
+    SceneManager::ReserveScene("ResultScene", std::move(data)); // 結果シーンにデータを渡す
+    hasReservedTransition_ = true;
 }
 
 void GameScene::OnEvent(const GameEvent& event)
@@ -411,6 +390,7 @@ void GameScene::OnEvent(const GameEvent& event)
         if (eventType == "RequestResume")
         {
             gameMusic_->ResumeWithRewind(Setting::current_.musicVolume);
+            currentState_ = SceneState::Playing;
         }
         else if (eventType == "RequestRetry")
         {
@@ -442,8 +422,9 @@ void GameScene::OnEvent(const GameEvent& event)
     else if (eventType == "MusicEnded")
     {
         gameMusic_->MusicEnd();
-
         gameCompleteEffect_->StartEffect(gameCore_->GetJudgeResult());
+
+        currentState_ = SceneState::GameComplete;
     }
 }
 
@@ -495,6 +476,9 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     gameCore_ = std::make_unique<GameCore>(); // レーン数はデフォで4
     gameCore_->Initialize(Setting::current_.noteSpeed, Setting::current_.audioLatencyMs, gameStartOffset_); // ノーツの移動速度とオフセット時間を設定
+    // TODO : startOffsetの排除
+    // stateでの管理に移行中。waitの際にcoreを更新しなければ不要なはず
+
 
     gameInputManager_ = std::make_unique<GameInputManager>();
     gameInputManager_->Initialize(input_);
@@ -605,6 +589,70 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     auto end = std::chrono::system_clock::now();
     Debug::Log(std::format("GameScene Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - now).count()));
+}
+
+void GameScene::UpdateLoading()
+{
+    if (IsCompleteLoadBeatMap())
+    {
+        currentState_ = SceneState::WaitingToStart;
+    }
+
+    // ロード完了してなかったら更新しない
+    if (!gameMusic_ || !gameMusic_->GetSoundInstance())
+        return;
+
+}
+
+void GameScene::UpdateWaiting(float deltaTime)
+{
+    UpdateGameStartOffset(deltaTime);
+
+    gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
+}
+
+void GameScene::UpdatePlaying(float deltaTime)
+{
+    if (input_->IsKeyPressed(DIK_LCONTROL) && input_->IsKeyTriggered(DIK_R))
+    {
+        Retry();
+    }
+
+    pauseMenu_->Update();
+    settingMenu_->Update();
+
+    gameMusic_->Update(deltaTime);
+
+    //beatManager_->Update();
+    gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
+
+    feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
+    gameUI_->Update(gameCore_->GetCombo(), deltaTime); // コンボ値をUIに渡す
+}
+
+void GameScene::UpdateCompleted(float deltaTime)
+{
+    gameCompleteEffect_->Update(deltaTime);
+
+    if (gameCompleteEffect_->IsEffectComplete())
+    {
+        currentState_ = SceneState::ResultTransition;
+        ToResult();
+    }
+}
+
+void GameScene::UpdatePaused()
+{
+    gameMusic_->Pause();
+
+    pauseMenu_->Update();
+    settingMenu_->Update();
+    if (!pauseMenu_->IsActive() && !settingMenu_->IsActive())
+    {
+        // どちらのメニューも非アクティブな場合の処理（ゲームプレイに戻るなど）
+        gameMusic_->ResumeWithRewind(Setting::current_.musicVolume);
+        currentState_ = SceneState::Playing;
+    }
 }
 
 void GameScene::ImGui()

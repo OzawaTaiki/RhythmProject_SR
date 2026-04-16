@@ -336,7 +336,11 @@ void GameScene::UpdateGameStartOffset(float deltaTime)
         gameCore_->Start();
 
         if (gameMusic_)
+        {
+            if (gameMusic_->IsPlaying())
+                gameMusic_->Pause();
             gameMusic_->Play(Setting::current_.musicVolume);
+        }
 
         currentState_ = SceneState::Playing;
     }
@@ -654,8 +658,6 @@ void GameScene::UpdatePaused()
     if (!pauseMenu_->IsActive() && !settingMenu_->IsActive())
     {
         // どちらのメニューも非アクティブな場合の処理（ゲームプレイに戻るなど）
-        gameMusic_->ResumeWithRewind(Setting::current_.musicVolume);
-        currentState_ = SceneState::Playing;
     }
 }
 

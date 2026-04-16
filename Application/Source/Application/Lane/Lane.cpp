@@ -21,7 +21,7 @@ void Lane::Initialize(const std::list<NoteData>& noteDataList, int32_t laneIndex
 
     startPosition_ = endPosition_;
     startPosition_.z += laneLength_;
-
+    isHolding_ = false;
 
     CreateLaneModel();
 

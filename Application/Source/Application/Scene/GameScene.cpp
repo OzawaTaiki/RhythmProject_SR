@@ -619,7 +619,11 @@ void GameScene::UpdatePlaying(float deltaTime)
     }
 
     pauseMenu_->Update();
-    settingMenu_->Update();
+    if (pauseMenu_->IsActive())
+    {
+        currentState_ = SceneState::Paused;
+        return;
+    }
 
     gameMusic_->Update(deltaTime);
 

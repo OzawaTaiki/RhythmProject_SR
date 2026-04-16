@@ -102,12 +102,14 @@ void GameCore::Update(float deltaTime,
 #endif // _DEBUG
 
     float elapsedTime = 0.0f;
-    if (isWaitingForStart_)
-    { // 開始前オフセット待機中
-        waitTimer_ += deltaTime;
-        elapsedTime = Lerp(-beginOffset_, 0.0f, waitTimer_ / beginOffset_);
-    }
-    else if (gamemusic_)
+    deltaTime;
+    //if (isWaitingForStart_)
+    //{ // 開始前オフセット待機中
+    //    waitTimer_ += deltaTime;
+    //    elapsedTime = Lerp(-beginOffset_, 0.0f, waitTimer_ / beginOffset_);
+    //}
+    //else 
+    if (gamemusic_)
     {
         // 音楽の音声インスタンスが有効な場合、経過時間を取得
         if (gamemusic_->IsPlaying())

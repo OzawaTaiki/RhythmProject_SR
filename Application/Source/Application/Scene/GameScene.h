@@ -166,7 +166,7 @@ private:
     bool isBeatMapLoaded_ = false;
 
     bool isWatingForStart_ = false;
-    float gameStartOffset_ = 3.0f;
+    float gameStartOffset_ = 5.0f;
     float waitTimer_ = 0.0f;
 
     bool isMusicPlaying_ = false; // 音楽が再生中かどうか

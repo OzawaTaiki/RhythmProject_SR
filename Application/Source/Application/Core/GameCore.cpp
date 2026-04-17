@@ -13,7 +13,7 @@
 using namespace Engine;
 
 GameCore::GameCore(int32_t laneCount)
-    : laneCount_(laneCount), isWaitingForStart_(true), waitTimer_(0.0f),
+    : laneCount_(laneCount), waitTimer_(0.0f),
     noteDeletePosition_(0.0f), maxCombo_(0), combo_(0)
 {
     lanes_.resize(laneCount);
@@ -28,7 +28,7 @@ void GameCore::Initialize(float noteSpeed, float musicLatencyMs,
     beginOffset_ = beginOffset;
     musicLatencyMs_ = musicLatencyMs;
     waitTimer_ = 0.0f;
-    isWaitingForStart_ = true;
+    currentState_ = State::waitingForStart;
 
     // レーンの初期化
     lanes_.resize(laneCount_);
@@ -55,75 +55,28 @@ void GameCore::Initialize(float noteSpeed, float musicLatencyMs,
     maxCombo_ = 0; // 最大コンボの初期化
 }
 
-void GameCore::Update(float deltaTime,
-                      const std::vector<InputData>& inputData)
+void GameCore::Update(float deltaTime, const std::vector<InputData>& inputData)
 {
-#ifdef _DEBUG
-
-    static bool autoMode = false;
-    if (ImGuiDebugManager::GetInstance()->Begin("GameCore"))
-    {
-        ImGui::Checkbox("Auto Mode", &autoMode);
-        ImGui::End();
-    }
-#endif // _DEBUG
-
-    for (auto& lane : lanes_)
-    {
-        int32_t deleteCount = lane->DeleteNotesOutOfScreen(
-            noteDeletePosition_); // 画面外に出たノーツ数を取得
-        judgeResult_->AddJudge(
-            JudgeType::Miss,
-            deleteCount); // 削除されたノーツの数をミスとしてカウント
-        if (deleteCount > 0)
-        {
-            combo_ = 0; // ノーツが削除されたらコンボをリセット
-            if (onMissCallback_)
-            {
-                onMissCallback_(); // ミス時のコールバックを呼び出す
-            }
-        }
-    }
-#ifdef _DEBUG
-
-    if (autoMode)
-    {
-        JudgeNotesInAutoMode(gamemusic_->GetElapsedTime());
-    }
-    else
-    {
-        JudgeNotes(inputData);
-    }
-#else
-
-    // ノーツの判定処理
-    JudgeNotes(inputData);
-
-#endif // _DEBUG
-
     float elapsedTime = 0.0f;
-    if (isWaitingForStart_)
-    { // 開始前オフセット待機中
-        waitTimer_ += deltaTime;
-        elapsedTime = Lerp(-beginOffset_, 0.0f, waitTimer_ / beginOffset_);
-    }
-    else if (gamemusic_)
+    switch (currentState_)
     {
-        // 音楽の音声インスタンスが有効な場合、経過時間を取得
-        if (gamemusic_->IsPlaying())
-        {
-            // 音楽が再生中の場合、経過時間を取得
-            elapsedTime = gamemusic_->GetElapsedTime();
-        }
+        case GameCore::State::waitingForStart:
+            UpdateWaiting(deltaTime, elapsedTime);
+            break;
+        case GameCore::State::playing:
+            UpdatePlaying( inputData, elapsedTime);
+            break;
+        default:
+            break;
     }
+
     for (auto& lane : lanes_)
     {
         lane->Update(elapsedTime + musicLatencyMs_ / 1000.0f, noteSpeed_);
     }
 }
 
-void GameCore::Draw(const Camera* camera,
-                    const std::map<int32_t, uint8_t>& keyBindings)
+void GameCore::Draw(const Camera* camera, const std::map<int32_t, uint8_t>& keyBindings)
 {
     noteDrawer_->Clear();
 
@@ -263,8 +216,7 @@ JudgeType GameCore::ProcessNormalNote(Note* note, const InputData& inputData)
     return JudgeType::None;
 }
 
-JudgeType GameCore::ProcessHoldNote(Note* note, const InputData& inputData,
-                                    Lane* lane)
+JudgeType GameCore::ProcessHoldNote(Note* note, const InputData& inputData, Lane* lane)
 {
     // 押した瞬間だけ判定
     if (inputData.state == KeyState::Trigger)
@@ -285,8 +237,7 @@ JudgeType GameCore::ProcessHoldNote(Note* note, const InputData& inputData,
     return JudgeType::None;
 }
 
-JudgeType GameCore::ProcessHoldEndNote(Note* note, const InputData& inputData,
-                                       Lane* lane)
+JudgeType GameCore::ProcessHoldEndNote(Note* note, const InputData& inputData, Lane* lane)
 {
     if (inputData.state == KeyState::Trigger)
     {
@@ -351,6 +302,55 @@ void GameCore::RecordJudgeResult(JudgeType result, Note* note)
     note->Judge();
 }
 
+void GameCore::UpdateWaiting(float deltaTime, float& elapsedTime)
+{
+    waitTimer_ += deltaTime;
+    elapsedTime = Lerp(-beginOffset_, 0.0f, waitTimer_ / beginOffset_);
+}
+
+void GameCore::UpdatePlaying(const std::vector<InputData>& inputData, float& elapsedTime)
+{
+#ifdef _DEBUG
+
+    static bool autoMode = false;
+    if (ImGuiDebugManager::GetInstance()->Begin("GameCore"))
+    {
+        ImGui::Checkbox("Auto Mode", &autoMode);
+        ImGui::End();
+    }
+#endif // _DEBUG
+
+    for (auto& lane : lanes_)
+    {
+        int32_t deleteCount = lane->DeleteNotesOutOfScreen(noteDeletePosition_); // 画面外に出たノーツ数を取得
+        judgeResult_->AddJudge(JudgeType::Miss, deleteCount); // 削除されたノーツの数をミスとしてカウント
+        if (deleteCount > 0)
+        {
+            combo_ = 0; // ノーツが削除されたらコンボをリセット
+            if (onMissCallback_)
+            {
+                onMissCallback_(); // ミス時のコールバックを呼び出す
+            }
+        }
+    }
+#ifdef _DEBUG
+
+    if (autoMode)
+        JudgeNotesInAutoMode(gamemusic_->GetElapsedTime());
+    else
+        JudgeNotes(inputData);
+#else
+    // ノーツの判定処理
+    JudgeNotes(inputData);
+
+#endif // _DEBUG
+
+    if (gamemusic_ && gamemusic_->IsPlaying())
+    {
+        elapsedTime = gamemusic_->GetElapsedTime();
+    }
+}
+
 Rank GameCore::GetRank() const
 {
     return RankCalculator::CalculateRank(scoreCalculator_.GetDisplayScore(),
@@ -405,9 +405,14 @@ void GameCore::CreateBeatMapNotes()
     }
 }
 
+void GameCore::Start()
+{
+    currentState_ = State::playing;
+}
+
 void GameCore::Restart()
 {
-    isWaitingForStart_ = true;
+    currentState_ = State::waitingForStart;
     waitTimer_ = 0.0f;
 
     combo_ = 0;

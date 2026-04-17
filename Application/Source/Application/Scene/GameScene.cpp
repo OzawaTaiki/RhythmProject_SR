@@ -613,6 +613,8 @@ void GameScene::UpdateWaiting(float deltaTime)
     UpdateGameStartOffset(deltaTime);
 
     gameCore_->Update(deltaTime, gameInputManager_->GetInputData());
+    feedbackEffect_->Update(deltaTime, gameInputManager_->GetInputData());
+    gameUI_->Update(gameCore_->GetCombo(), deltaTime); // コンボ値をUIに渡す
 }
 
 void GameScene::UpdatePlaying(float deltaTime)

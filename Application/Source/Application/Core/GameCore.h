@@ -74,7 +74,7 @@ public:
     /// <summary>
     /// 開始
     /// </summary>
-    void Start() { isWaitingForStart_ = false; }
+    void Start();
 
     /// <summary>
     /// リスタート
@@ -182,6 +182,19 @@ private:
     void RecordJudgeResult(JudgeType result, Note* note);
 
 private:
+
+    enum class State
+    {
+        waitingForStart, // 開始前オフセット待機中
+        playing,         // プレイ中
+    };
+
+    State currentState_ = State::waitingForStart; // 現在の状態
+
+    void UpdateWaiting(float deltaTime, float& elapsedTime);
+    void UpdatePlaying(const std::vector<InputData>& inputData, float& elapsedTime);
+
+private:
     // lane
     float noteSpeed_ = 30.0f;                  // ノーツの移動速度
     int32_t laneCount_ = 4;                    // レーンの数
@@ -213,9 +226,8 @@ private:
     float noteDeletePosition_ = -10.0f; // ノーツを削除する位置
 
     /// 開始前オフセット関連
-    float beginOffset_ = 2.0f;      // ゲーム開始オフセット時間
-    float waitTimer_ = 0.0f;        // 開始前オフセット待機タイマー
-    bool isWaitingForStart_ = true; // 開始前オフセット待機中かどうか
+    float beginOffset_ = 2.0f; // ゲーム開始オフセット時間
+    float waitTimer_ = 0.0f;   // 開始前オフセット待機タイマー
 
     float musicLatencyMs_ = 0.0f; // 音楽の遅延
 

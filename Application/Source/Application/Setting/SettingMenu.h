@@ -11,12 +11,20 @@
 struct ValueChangedEventData : Engine::EventData
 {
     ValueChangedEventData(const std::string& name, float value)
-        : name(name), value(value) {}
+        : name(name), value(value)
+    {
+    }
     ~ValueChangedEventData() override = default;
 
     std::string name;   // スライダーの名前
     float value;        // スライダーの値
 };
+
+namespace Engine
+{
+class UIAnimationComponent;
+};
+
 
 /// <summary>
 /// 設定メニュークラス。
@@ -54,6 +62,11 @@ public:
 
 private:
 
+    void OpenMenu();
+    void CloseMenu();
+
+private:
+
     bool isActive_ = false; // メニューがアクティブかどうか
 
     std::unique_ptr<Engine::UIElement> backSprite_;
@@ -62,4 +75,7 @@ private:
     std::function<void(float)> audioLatencySetFunc_ = nullptr; // 音声遅延を設定するコールバック関数
 
     std::unique_ptr<SettingsPreviewPanel> previewPanel_ = nullptr; // 設定プレビュー
+
+    Engine::UIAnimationComponent* openAnim_ = nullptr; // 開くときのアニメーション
+    Engine::UIAnimationComponent* closeAnim_ = nullptr; // 閉じるときのアニメーション
 };

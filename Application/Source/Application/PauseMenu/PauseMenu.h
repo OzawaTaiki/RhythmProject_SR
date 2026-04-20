@@ -7,6 +7,8 @@
 
 #include <memory>
 
+namespace Engine { class UIAnimationComponent; }
+
 /// <summary>
 /// ポーズメニュークラス。
 /// </summary>
@@ -60,10 +62,12 @@ private:
 
 private:
 
-    bool isActive_ = false; // 有効フラグ
+    bool isActive_ = false;
+    bool isDraw_ = false;
 
-    bool isDraw_ = false; // 描画フラグ
+    Engine::UIElement* resumeButton_ = nullptr;
+    std::unique_ptr<Engine::UIImageElement> background_ = nullptr;
 
-    Engine::UIElement* resumeButton_ = nullptr; // レジュームボタン フォーカス要
-    std::unique_ptr<Engine::UIImageElement> background_ = nullptr; // 背景画像
+    Engine::UIAnimationComponent* openAnim_ = nullptr;
+    Engine::UIAnimationComponent* closeAnim_ = nullptr;
 };

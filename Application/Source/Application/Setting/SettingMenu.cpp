@@ -6,6 +6,7 @@
 #include <Features/Event/EventManager.h>
 #include <Features/UI/UINavigationManager.h>
 #include <Features/UI/Component/UIColliderComponent.h>
+#include <Features/UI/Component/UIAnimationComponent.h>
 
 #include <Application/Setting/Setting.h>
 #include <Features/UI/Element/UIImageElement.h>
@@ -39,8 +40,10 @@ void SettingMenu::Initialize()
     auto back = std::make_unique<UIImageElement>("SettingMenu_back", Vector2(100, 100), Vector2(600, 400));
     back->Initialize();
     back->AddComponent<UIColliderComponent>();
+    openAnim_ = back->AddComponent<UIAnimationComponent>(back.get(), "OpenAnim");
+    closeAnim_ = back->AddComponent<UIAnimationComponent>(back.get(), "CloseAnim");
 
-    auto volumeSlider = std::make_unique<UISliderElement>("VolumeSlider", Vector2(150, 150), Vector2(200, 20),true);
+    auto volumeSlider = std::make_unique<UISliderElement>("VolumeSlider", Vector2(150, 150), Vector2(200, 20), true);
     volumeSlider->Initialize();
     volumeSlider->SetStep(0.01f);
     volumeSlider->SetValue(Setting::current_.masterVolume);
@@ -51,7 +54,7 @@ void SettingMenu::Initialize()
                                         Debug::Log(std::format("Volume changed: {}\n", value));
                                     });
 
-    auto label = std::make_unique<UITextElement>("VolumeLabel", Vector2(100, 150),  "Volume");
+    auto label = std::make_unique<UITextElement>("VolumeLabel", Vector2(100, 150), "Volume");
     label->Initialize();
 
     volumeSlider->AddChild(std::move(label));
@@ -69,7 +72,7 @@ void SettingMenu::Initialize()
                                            Debug::Log(std::format("Note speed changed: {}\n", value));
                                        });
 
-    label = std::make_unique<UITextElement>("NoteSpeedLabel", Vector2(100, 200),  "Speed");
+    label = std::make_unique<UITextElement>("NoteSpeedLabel", Vector2(100, 200), "Speed");
     label->Initialize();
     noteSpeedSlider->AddChild(std::move(label));
 
@@ -85,22 +88,16 @@ void SettingMenu::Initialize()
                                               Debug::Log(std::format("Audio latency changed: {}\n", value));
                                           });
 
-    label = std::make_unique<UITextElement>("AudioLatencyLabel", Vector2(100, 250),  "Latency");
+    label = std::make_unique<UITextElement>("AudioLatencyLabel", Vector2(100, 250), "Latency");
     label->Initialize();
     audioLatencySlider->AddChild(std::move(label));
 
     auto closeButton = std::make_unique<UIButtonElement>("SettingMenu_CloseButton", Vector2(350, 300), Vector2(100, 40));
     closeButton->Initialize();
     closeButton->SetOnClick([this]()
-                               {
-                                   isActive_ = false;
-                                   UINavigationManager::GetInstance()->ClearFocus();
-                                   EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
-                                   previewPanel_->StopMusic();
-                                   auto submix = AudioSystem::GetInstance()->GetBGMSubmix();
-                                   submix->ClearFilter();
-                                   Debug::Log("SettingMenu closed\n");
-                               });
+                            {
+                                CloseMenu();
+                            });
     auto closeLabel = std::make_unique<UITextElement>("SettingMenu_CloseLabel", Vector2(10, 10), "Close");
     closeLabel->Initialize();
     closeButton->AddChild(std::move(closeLabel));
@@ -130,9 +127,14 @@ void SettingMenu::Initialize()
 
     backSprite_->AddChild(std::move(back));
 
-
     previewPanel_ = std::make_unique<SettingsPreviewPanel>();
     previewPanel_->Initialize();
+
+    closeAnim_->SetOnAnimationEndCallback([this]()
+                                          {
+                                              isActive_ = false;
+                                              EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
+                                          });
 
     isActive_ = false;
 }
@@ -174,10 +176,31 @@ void SettingMenu::OnEvent(const GameEvent& event)
 {
     if (event.GetEventType() == "OpenOptionMenu")
     {
-        isActive_ = true;
-        auto submix = AudioSystem::GetInstance()->GetBGMSubmix();
-        submix->SetFilter(XAUDIO2_FILTER_TYPE::LowPassFilter, cutoffHZ, 1.0f); // BGMをローパスフィルタでこもらせる
-        UINavigationManager::GetInstance()->SetFocus(volumeSlider_);
-        Debug::Log("SettingMenu opened\n");
+        OpenMenu();
+    }
+}
+
+void SettingMenu::OpenMenu()
+{
+    isActive_ = true;
+    UINavigationManager::GetInstance()->SetFocus(volumeSlider_);
+    if (openAnim_)
+        openAnim_->Play();
+}
+
+void SettingMenu::CloseMenu()
+{
+    UINavigationManager::GetInstance()->ClearFocus();
+    previewPanel_->StopMusic();
+    AudioSystem::GetInstance()->GetBGMSubmix()->ClearFilter();
+
+    if (closeAnim_)
+    {
+        closeAnim_->Play();
+    }
+    else
+    {
+        isActive_ = false;
+        EventManager::GetInstance()->DispatchEvent(GameEvent("CloseOptionMenu", nullptr));
     }
 }

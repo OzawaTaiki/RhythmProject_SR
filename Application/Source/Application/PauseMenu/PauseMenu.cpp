@@ -4,6 +4,7 @@
 #include <Debug/ImGuiDebugManager.h>
 #include <Features/Event/EventManager.h>
 #include <Features/UI/Component/UITextRenderComponent.h>
+#include <Features/UI/Component/UIAnimationComponent.h>
 
 #include <Debug/Debug.h>
 #include <Application/Setting/Setting.h>
@@ -37,6 +38,8 @@ void PauseMenu::Initialize()
     auto sprite = std::make_unique<UIImageElement>("PauseMenu_back", Vector2(400, 300), Vector2(400, 300));
     sprite->Initialize();
     sprite->AddComponent<UITextRenderComponent>(sprite.get());
+    openAnim_ = sprite->AddComponent<UIAnimationComponent>(sprite.get(), "OpenAnim");
+    closeAnim_ = sprite->AddComponent<UIAnimationComponent>(sprite.get(), "CloseAnim");
 
     auto resumeButton = std::make_unique<UIButtonElement>("PauseMenu_ResumeButton", Vector2(150, 200), Vector2(100, 50), "Resume");
     resumeButton->Initialize();
@@ -117,6 +120,7 @@ void PauseMenu::OnEvent(const GameEvent& event)
     if (eventType == "CloseOptionMenu")
     {
         ToActive();
+        openAnim_->Stop();
     }
 }
 
@@ -125,6 +129,9 @@ void PauseMenu::ToActive()
     isActive_ = true;
     isDraw_ = true;
     UINavigationManager::GetInstance()->SetFocus(resumeButton_);
+
+    if (openAnim_)
+        openAnim_->Play();
 }
 
 void PauseMenu::CliclEvent(EventType element)
@@ -133,10 +140,24 @@ void PauseMenu::CliclEvent(EventType element)
     if (!eventName.empty())
     {
         UINavigationManager::GetInstance()->ClearFocus();
-        EventManager::GetInstance()->DispatchEvent(GameEvent(eventName, nullptr));
-        isDraw_ = false; // 描画を停止
-        if (element != EventType::OpenSettings)
-            isActive_ = false; // ポーズメニューを非アクティブに
+
+        if (closeAnim_ && element != EventType::OpenSettings)
+        {
+            closeAnim_->SetOnAnimationEndCallback([this, eventName, element]()
+            {
+                EventManager::GetInstance()->DispatchEvent(GameEvent(eventName, nullptr));
+                isDraw_ = false;
+                isActive_ = false;
+            });
+            closeAnim_->Play();
+        }
+        else
+        {
+            EventManager::GetInstance()->DispatchEvent(GameEvent(eventName, nullptr));
+            isDraw_ = false;
+            if (element != EventType::OpenSettings)
+                isActive_ = false;
+        }
     }
 }
 

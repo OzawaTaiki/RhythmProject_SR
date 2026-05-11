@@ -32,8 +32,8 @@ void EditorUIController::ProcessUI(
     [[maybe_unused]] BeatManager* beatManager,
     [[maybe_unused]] EditorCoordinate* coordinate,
     [[maybe_unused]] AutoChartGenerator::GenerateRequest& autoGenerateRequest,
-    bool isGenerating,
-    float progress
+    [[maybe_unused]] bool isGenerating,
+    [[maybe_unused]] float progress
 )
 {
 #ifdef _DEBUG

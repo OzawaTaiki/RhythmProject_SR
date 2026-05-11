@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Application/BeatMapLoader/BeatMapData.h>
+#include <atomic>
 
 namespace Engine { class AudioSpectrum; }
 
@@ -49,7 +50,8 @@ public:
         float duration,
         float bpm,
         float offset,
-        const Settings& settings
+        const Settings& settings,
+        std::atomic<float>* progress = nullptr
     );
 
 
@@ -71,7 +73,12 @@ private:
     /// <param name="maxHz">検出する周波数の上限</param>
     /// <param name="hopSec">FFTのホップサイズ（秒）</param>
     /// <returns>フラックスの時系列データ</returns>
-    FluxSeries ComputeFlux(Engine::AudioSpectrum* spectrum, float duration, float minHz, float maxHz, float hopSec);
+    FluxSeries ComputeFlux(Engine::AudioSpectrum* spectrum,
+                           float duration, float minHz, float maxHz, float hopSec,
+                           std::atomic<float>* progress = nullptr,
+                           int32_t bandIndex = 0,
+                           int32_t totalBands = 1
+                           );
 
     /// <summary>
     /// フラックスのピークを検出して、ノーツの時間を選び出す

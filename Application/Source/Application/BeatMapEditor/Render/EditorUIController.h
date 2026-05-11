@@ -29,7 +29,10 @@ public:
                    FileManager* fileManager,
                    BeatManager* beatManager,
                    EditorCoordinate* coordinate,
-                   AutoChartGenerator::GenerateRequest& autoGenerateRequest);
+                   AutoChartGenerator::GenerateRequest& autoGenerateRequest,
+                   bool isGenerating,
+                   float progress
+    );
     void Draw(const State* state) const;
     void Finalize();
 
@@ -37,7 +40,14 @@ public:
 private:
 #ifdef _DEBUG
     void DrawLeftPanel(State* state, Document* document, AudioController* audioController, BeatManager* beatManager, EditorCoordinate* coordinate_);
-    void DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager, AutoChartGenerator::GenerateRequest& autoGenerateRequest);
+    void DrawRightPanel(State* state,
+                        Document* document,
+                        AudioController* audioController,
+                        FileManager* fileManager,
+                        AutoChartGenerator::GenerateRequest& autoGenerateRequest,
+                        bool isGenerating,
+                        float progress
+    );
 #endif // _DEBUG
     void UpdateDraggingArea(const State* state);
     void DrawDraggingArea(const State* state) const;

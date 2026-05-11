@@ -14,8 +14,6 @@
 #include <Application/BeatsManager/BeatManager.h>
 #include <Application/BeatMapEditor/Command/CommandHistory.h>
 
-
-// 新アーキテクチャクラス
 #include <Application/BeatMapEditor/BeatMapDocument.h>
 #include <Application/BeatMapEditor/EditorState.h>
 #include <Application/BeatMapEditor/AudioController.h>
@@ -29,6 +27,8 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include <future>
+#include <atomic>
 
 // 前方宣言
 namespace Engine { class Input; class LineDrawer; }
@@ -115,9 +115,7 @@ private:
         bool isMoving = false; // 移動中フラグ
         std::vector<float> originalTimes; // 元の時間
         std::vector<size_t> movingIndices; // 移動対象のノートインデックス
-
     };
-
 
     struct ClipboardData
     {
@@ -170,6 +168,10 @@ private:
     std::shared_ptr<Engine::SoundInstance> soundInstance_ = nullptr;
     std::vector<std::shared_ptr<Engine::VoiceInstance>> voiceInstance_;
 
+
+    std::atomic<float> progress{ 0.0f };
+    std::future<std::vector<NoteData>> geanerateFuture_;
+    bool isGenerating_ = false;
 };
 /*
 

@@ -34,7 +34,9 @@ void EditorRenderer::Update(
     EditorCoordinate* _coordinate,
     BeatManager* beatManager,
     float& _currentTime,
-    AutoChartGenerator::GenerateRequest& autoGenerateRequest
+    AutoChartGenerator::GenerateRequest& autoGenerateRequest,
+    bool isGenerating,
+    float progress
     )
 {
     if (!_state || !_document || !_audioController || !_coordinate)
@@ -50,7 +52,9 @@ void EditorRenderer::Update(
                             _fileManager,
                             beatManager,
                             _coordinate,
-                            autoGenerateRequest);
+                            autoGenerateRequest,
+                            isGenerating,
+                            progress);
 }
 
 void EditorRenderer::Draw(

@@ -31,11 +31,14 @@ void EditorUIController::ProcessUI(
     [[maybe_unused]] FileManager* fileManager,
     [[maybe_unused]] BeatManager* beatManager,
     [[maybe_unused]] EditorCoordinate* coordinate,
-    [[maybe_unused]] AutoChartGenerator::GenerateRequest& autoGenerateRequest)
+    [[maybe_unused]] AutoChartGenerator::GenerateRequest& autoGenerateRequest,
+    bool isGenerating,
+    float progress
+)
 {
 #ifdef _DEBUG
     DrawLeftPanel(state, document, audioController, beatManager, coordinate);
-    DrawRightPanel(state, document, audioController, fileManager, autoGenerateRequest);
+    DrawRightPanel(state, document, audioController, fileManager, autoGenerateRequest, isGenerating, progress);
 #endif
     UpdateDraggingArea(state);
 }
@@ -189,7 +192,14 @@ void EditorUIController::DrawLeftPanel(State* state, Document* document, AudioCo
 
 }
 
-void EditorUIController::DrawRightPanel(State* state, Document* document, AudioController* audioController, FileManager* fileManager, AutoChartGenerator::GenerateRequest& autoGenerateRequest)
+void EditorUIController::DrawRightPanel(State* state,
+                                        Document* document,
+                                        AudioController* audioController,
+                                        FileManager* fileManager,
+                                        AutoChartGenerator::GenerateRequest& autoGenerateRequest,
+                                        bool isGenerating,
+                                        float progress
+)
 {
 
     // File 情報
@@ -211,8 +221,6 @@ void EditorUIController::DrawRightPanel(State* state, Document* document, AudioC
                  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
     {
         ImGui::SeparatorText("BeatMap Info");
-
-        ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
 
         ImGui::Text("Current File:");
         ImGui::Text("\t%s", currentPath.empty() ? "None" : StringUtils::GetAfterLast(currentPath, "\\").c_str());
@@ -275,10 +283,8 @@ void EditorUIController::DrawRightPanel(State* state, Document* document, AudioC
             ImGui::EndPopup();
         }
 
-        ImGui::Dummy(ImVec2(0.0f, spacing / 2.0f)); // スペーシングを追加
         ImGui::Text("Notes : %zu", data.notes.size());
 
-        ImGui::Dummy(ImVec2(0.0f, spacing)); // スペーシングを追加
 
         /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -314,29 +320,40 @@ void EditorUIController::DrawRightPanel(State* state, Document* document, AudioC
             }
         }
 
-
         // パネル下部に固定（セクションの高さ分を引く）
-        const float autoGenSectionHeight = 135.0f; // セクションの大体の高さ
+        const float autoGenSectionHeight = 200.0f; // セクションの大体の高さ
         ImGui::SetCursorPosY(panelSize.y - autoGenSectionHeight);
 
         ImGui::SeparatorText("Auto Generate");
-
-        ImGui::SliderFloat("Sensitivity", &autoGenerateRequest.settings.sensitivity, 0.0f, 1.0f);
-        ImGui::SliderFloat("Min Note Gap", &autoGenerateRequest.settings.minNoteGap, 0.05f, 0.5f);
-        ImGui::Checkbox("Snap To Grid", &autoGenerateRequest.settings.snapToGrid);
-        ImGui::SameLine();
-        ImGui::Checkbox("Use GPU", &autoGenerateRequest.settings.useGpuFFT);
-        ImGui::SliderInt("Grid Division", &autoGenerateRequest.settings.gridDivision, 1, 16);
-        ImGui::SliderInt("FFT Window N", &autoGenerateRequest.settings.windowN, 8, 20);
-
-        ImGui::BeginDisabled(!audioController->HasAudio()); // 音楽未ロードなら無効
+        if (isGenerating)
         {
-            if (ImGui::Button("Generate"))
-            {
-                autoGenerateRequest.isRequested = true;
-            }
+            ImGui::Dummy({0.0f,20.0f});
+            ImGui::Dummy({0.0f,20.0f});
+            ImGui::ProgressBar(progress, ImVec2(-1.0f, 0.0f)); // 進行状況を表示
+            ImGui::Text("Generating... %.1f%%", progress * 100.0f); // 進行状況のテキスト表示
+            ImGui::Dummy({0.0f,20.0f});
+            ImGui::Dummy({0.0f,20.0f});
         }
-        ImGui::EndDisabled();
+        else
+        {
+            ImGui::SliderFloat("Sensitivity", &autoGenerateRequest.settings.sensitivity, 0.0f, 1.0f);
+            ImGui::SliderFloat("Min Note Gap", &autoGenerateRequest.settings.minNoteGap, 0.05f, 0.5f);
+            ImGui::Checkbox("Snap To Grid", &autoGenerateRequest.settings.snapToGrid);
+            ImGui::SameLine();
+            ImGui::Checkbox("Use GPU", &autoGenerateRequest.settings.useGpuFFT);
+            ImGui::SliderInt("Grid Division", &autoGenerateRequest.settings.gridDivision, 1, 16);
+            ImGui::SliderInt("FFT Window N", &autoGenerateRequest.settings.windowN, 8, 20);
+
+            ImGui::BeginDisabled(!audioController->HasAudio()); // 音楽未ロードなら無効
+            {
+                if (ImGui::Button("Generate"))
+                {
+                    autoGenerateRequest.isRequested = true;
+                }
+            }
+            ImGui::EndDisabled();
+        }
+
 
     }
     ImGui::End();

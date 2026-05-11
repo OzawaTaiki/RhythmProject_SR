@@ -35,7 +35,9 @@ public:
         EditorCoordinate* _coordinate,
         BeatManager* beatManager,
         float& _currentTime,
-        AutoChartGenerator::GenerateRequest& autoGenerateRequest
+        AutoChartGenerator::GenerateRequest& autoGenerateRequest,
+        bool isGenerating,
+        float progress
     );
     void Draw(
         State* _state,

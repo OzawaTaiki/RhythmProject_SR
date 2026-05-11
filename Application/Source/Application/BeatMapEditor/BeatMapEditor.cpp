@@ -119,12 +119,30 @@ void BeatMapEditor::Update()
         &editorCoordinate_,
         beatManager_.get(),
         currentTime_,
-        autoGenerateRequest
+        autoGenerateRequest,
+        isGenerating_,
+        progress.load()
     );
 
     if (autoGenerateRequest.isRequested)
     {
         TriggerAutoGenerate(autoGenerateRequest.settings);
+    }
+
+    if (isGenerating_ &&
+        geanerateFuture_.valid() &&
+        geanerateFuture_.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+    {
+        auto generatedNotes = geanerateFuture_.get();
+        if (!generatedNotes.empty())
+        {
+            commandHistory_.ExecuteCommand(std::make_unique<BME::BatchInsertNotesCommand>(document_.get(), generatedNotes));
+        }
+        else
+        {
+            Debug::Log("Auto generation did not produce any notes.\n");
+        }
+        isGenerating_ = false;
     }
 
     for (auto it = voiceInstance_.begin(); it != voiceInstance_.end(); )
@@ -218,6 +236,8 @@ void BeatMapEditor::TriggerAutoGenerate(const BME::AutoChartGenerator::Settings&
 {
     if (!audioController_->HasAudio())
         return;
+    if (isGenerating_)
+        return;
 
     const size_t windowSize = 1ull << static_cast<size_t>(settings.windowN);
     auto spectrum = std::make_unique<Engine::AudioSpectrum>(windowSize);
@@ -230,14 +250,20 @@ void BeatMapEditor::TriggerAutoGenerate(const BME::AutoChartGenerator::Settings&
     float bpm = document_->GetData().bpm;
     float offset = document_->GetData().offset;
 
-    std::vector<NoteData> generatedNotes = autoChartGenerator_.Generate(spectrum.get(), duration, bpm, offset, settings);
+    isGenerating_ = true;
+    progress.store(0.0f);
 
-    if (generatedNotes.empty())
-    {
-        Debug::Log("Auto generation did not produce any notes.\n");
-        return;
-    }
+    geanerateFuture_ = std::async(std::launch::async, [this, spectrum = std::move(spectrum), duration, bpm, offset, settings]()
+                                  {
+                                      return autoChartGenerator_.Generate(spectrum.get(), duration, bpm, offset, settings, &progress);
+                                  });
 
-    commandHistory_.ExecuteCommand(std::make_unique<BME::BatchInsertNotesCommand>(document_.get(), generatedNotes));
+    //if (generatedNotes.empty())
+    //{
+    //    Debug::Log("Auto generation did not produce any notes.\n");
+    //    return;
+    //}
+
+    //commandHistory_.ExecuteCommand(std::make_unique<BME::BatchInsertNotesCommand>(document_.get(), generatedNotes));
 
 }

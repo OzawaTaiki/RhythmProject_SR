@@ -8,7 +8,8 @@
 #include <numeric>
 #include <chrono>
 
-std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* spectrum, float duration, float bpm, float offset, const Settings& settings)
+
+std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* spectrum, float duration, float bpm, float offset, const Settings& settings, std::atomic<float>* progress)
 {
     struct BandDef
     {
@@ -18,12 +19,15 @@ std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* s
     };
 
     // TODO : 周波数帯域の定義を外部から受け取れるようにする
-    BandDef bands[] = {
+    std::vector<BandDef> bands = {
         { 0,    20,   150 }, // kick
         { 1,   150,   500 }, // bass
         { 2,   500,  2000 }, // mid
         { 3,  2000, 20000 }  // hi-hat
     };
+
+    int32_t totalBand = static_cast<int32_t>(bands.size());
+
     //BandDef bands[] = {
     //    { 0,    20,   3000},
     //};
@@ -36,10 +40,12 @@ std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* s
     std::vector<NoteData> result;
     int32_t lane;
     lane = 0;// 無参照 回避用
-    for (auto& band : bands)
+    for (int32_t bandIndex = 0; bandIndex < totalBand; ++bandIndex)
     {
+        auto& band = bands[bandIndex];
+
         // 帯域毎のフラックスを計算 TODO：hopSec
-        FluxSeries flux = ComputeFlux(spectrum, duration, band.minHz, band.maxHz, 0.01f);
+        FluxSeries flux = ComputeFlux(spectrum, duration, band.minHz, band.maxHz, 0.01f, progress, band.laneIndex, totalBand);
         SmoothFlux(flux, 5); // 窓幅5フレーム（±2フレーム）
 
         // フラックスのピークから音セット時刻を検出
@@ -74,6 +80,9 @@ std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* s
                   return a.targetTime < b.targetTime;
               });
 
+    if (progress)
+        progress->store(1.0f);
+
     auto endTime = std::chrono::high_resolution_clock::now();
     Engine::Debug::Log(std::format("Auto-chart generation complete: {} notes generated in {} ms\n",
                                    result.size(),
@@ -82,10 +91,13 @@ std::vector<NoteData> BME::AutoChartGenerator::Generate(Engine::AudioSpectrum* s
     return result;
 }
 
-BME::AutoChartGenerator::FluxSeries BME::AutoChartGenerator::ComputeFlux(Engine::AudioSpectrum* spectrum, float duration, float minHz, float maxHz, float hopSec)
+BME::AutoChartGenerator::FluxSeries BME::AutoChartGenerator::ComputeFlux(Engine::AudioSpectrum* spectrum, float duration, float minHz, float maxHz, float hopSec, std::atomic<float>* progress, int32_t bandIndex, int32_t totalBands)
 {
     FluxSeries series;
     std::vector<float> prev;
+
+    int32_t framesPerBand = static_cast<int32_t>(duration / hopSec);
+    int32_t frameIndex = 0;
 
     for (float t = 0.0f; t < duration; t += hopSec)
     {
@@ -114,6 +126,13 @@ BME::AutoChartGenerator::FluxSeries BME::AutoChartGenerator::ComputeFlux(Engine:
         series.flux.push_back(fluxVal);
 
         prev = curr;
+
+        if (progress)
+        {
+            float p = (bandIndex * framesPerBand + frameIndex) / static_cast<float>(framesPerBand * totalBands);
+            progress->store(p);
+        }
+        ++frameIndex;
     }
 
     return series;

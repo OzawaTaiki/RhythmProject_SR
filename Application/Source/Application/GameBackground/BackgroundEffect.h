@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 
 /// <summary>
 /// 背景エフェクト。

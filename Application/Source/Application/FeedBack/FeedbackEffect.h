@@ -6,7 +6,8 @@
 #include <Application/FeedBack/MissedVignette/MissedVignette.h>
 #include <Application/FeedBack/LaneEffect/LaneEffect.h>
 #include <Application/FeedBack/TapEffect/TapEffect.h>
-#include <Application/GameEnvironment/BackgroundEffect.h>
+//#include <Application/GameEnvironment/BackgroundEffect.h>
+#include <Application/GameBackground/BackgroundEffect.h>
 #include <Application/FeedBack/HoldingEffect/NoteHoldEffect.h>
 #include <APplication/FeedBack/SpeakerSeekEffect.h>
 #include <Application/FeedBack/LaneEdgePillar/LaneEdgeEffect.h>

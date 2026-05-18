@@ -43,7 +43,6 @@ void SpectrumFloor::Initialize(int32_t row, int32_t col, const Vector2& area)
 void SpectrumFloor::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundInstance* soundInstance, float duration)
 {
 #ifdef _DEBUG
-    audioSpectrum;
     if (ImGuiDebugManager::GetInstance()->Begin("SpectrumFloor"))
     {
         ImGui::DragFloat3("Base Position", &basePos.x, 0.1f);

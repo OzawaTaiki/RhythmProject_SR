@@ -14,7 +14,7 @@
 #include <Application/Result/UI/ResultUI.h>
 #include <Application/Result/ResultEffectFlow.h>
 
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 
 #include <Features/PostEffects/BoxFilter.h>
 

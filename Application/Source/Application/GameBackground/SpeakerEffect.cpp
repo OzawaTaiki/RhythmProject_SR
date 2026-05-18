@@ -2,7 +2,7 @@
 
 #include <Features/Model/ObjectModel.h>
 #include <Features/Event/EventManager.h>
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 
 using namespace Engine;
 

@@ -23,7 +23,7 @@
 #include <Application/Core/GameCore.h>
 #include <Application/Input/GameInputManager.h>
 #include <Application/FeedBack/FeedbackEffect.h>
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 #include <Application/GameMusic/GameMusic.h>
 #include <Application/GameUI/GameUI.h>
 

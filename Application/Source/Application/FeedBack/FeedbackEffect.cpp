@@ -4,7 +4,7 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Application/Lane/Lane.h>
 
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 
 using namespace Engine;
 

@@ -5,11 +5,11 @@ using namespace Engine;
 
 void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex, float delayTime)
 {
-    if (!gameEnvironment_)
+    if (!gameBackground_)
         return;
 
     // スピーカーオブジェクト取得
-    ObjectModel* speaker = gameEnvironment_->GetSpeaker(laneIndex);
+    ObjectModel* speaker = gameBackground_->GetSpeaker(laneIndex);
     if (!speaker)
         return;
 

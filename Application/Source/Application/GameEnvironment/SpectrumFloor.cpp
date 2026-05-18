@@ -19,26 +19,6 @@ void SpectrumFloor::Initialize(int32_t row, int32_t col, const Vector2& area)
 
 
     basePos={ 0,-7.6f,30.8f };
-    //// models_をrow x colのサイズに初期化
-    //models_.resize(xCount_);
-    //for (auto& column : models_)
-    //{
-    //    column.resize(zCount_);
-    //}
-    //for (int32_t y = 0; y < zCount_; ++y)
-    //{
-    //    for (int32_t x = 0; x < xCount_; ++x)
-    //    {
-    //        auto& model = models_[x][y];
-    //        model = std::make_unique<ObjectModel>("SpectrumFloorTile");
-    //        model->Initialize("OverFloor/mono_overFloor.obj");
-    //        model->translate_= Vector3(
-    //            basePos.x + (areaSize_.x / static_cast<float>(models_.size())) * (static_cast<float>(x) + 0.5f) - (areaSize_.x / 2.0f),
-    //            basePos.y,
-    //            basePos.z + (areaSize_.y / static_cast<float>(models_[x].size())) * (static_cast<float>(y) + 0.5f) - (areaSize_.y / 2.0f));
-    //        model->useQuaternion_ = false;
-    //    }
-    //}
 
     models_ = std::make_unique<InstancedObjectModel>();
     models_->Initialize("OverFloor/mono_overFloor.obj", xCount_ * zCount_);

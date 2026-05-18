@@ -21,8 +21,8 @@ public:
     /// 管理する GameEnvironment を設定する。
     /// </summary>
     /// <param name="env">GameEnvironment のポインタ</param>
-    void SetGameEnvironment(GameEnvironment* env) { gameEnvironment_ = env; }
+    void SetGameBackground(GameBackground* bg) { gameBackground_ = bg; }
 
 private:
-    GameEnvironment* gameEnvironment_ = nullptr; // 参照ポインタ
+    GameBackground* gameBackground_ = nullptr; // 参照ポインタ
 };

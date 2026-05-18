@@ -18,19 +18,19 @@ Vector4 startColor = Vector4(0.168f, 0.69f, 0.753f, 1.0f);
 Vector4 endColor = Vector4(0.272f, 0.280f, 0.502f, 1.0f);
 }
 
-GameEnvironment::GameEnvironment()
+GameBackground::GameBackground()
 {
     EventManager::GetInstance()->AddEventListener("SpeakerEffectColorChange", this);
 }
 
-GameEnvironment::~GameEnvironment()
+GameBackground::~GameBackground()
 {
     EventManager::GetInstance()->RemoveEventListener("SpeakerEffectColorChange", this);
 }
 
-void GameEnvironment::Initialize(const std::string& filePath)
+void GameBackground::Initialize(const std::string& filePath)
 {
-    GameTime::GetChannel("GameEnvironment");
+    GameTime::GetChannel("GameBackground");
     Serialize(filePath);
 
     spectrumFloor_ = std::make_unique<SpectrumFloor>();
@@ -43,7 +43,7 @@ void GameEnvironment::Initialize(const std::string& filePath)
     stopwatch_.Start();
 }
 
-void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundInstance* soundInstance, float duration)
+void GameBackground::Update(float deltaTime, AudioSpectrum* audioSpectrum, SoundInstance* soundInstance, float duration)
 {
     stopwatch_.Update();
     const float animateTime = 0.4f;
@@ -67,7 +67,7 @@ void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum, Soun
     }
     UpdateSpeakerAnimation(deltaTime);
 
-    for (auto& obj : environmentObjects_)
+    for (auto& obj : backgroundObjects_)
     {
         if (obj)
         {
@@ -88,9 +88,9 @@ void GameEnvironment::Update(float deltaTime, AudioSpectrum* audioSpectrum, Soun
     overlayFloor_->Update();
 }
 
-void GameEnvironment::Draw(const Camera* camera)
+void GameBackground::Draw(const Camera* camera)
 {
-    for (auto& obj : environmentObjects_)
+    for (auto& obj : backgroundObjects_)
     {
         if (obj)
         {
@@ -112,7 +112,7 @@ void GameEnvironment::Draw(const Camera* camera)
 
 }
 
-void GameEnvironment::SetBPM(float bpm)
+void GameBackground::SetBPM(float bpm)
 {
     // BPMに基づいて時間スケールを設定
 
@@ -127,10 +127,10 @@ void GameEnvironment::SetBPM(float bpm)
 
     animationInterval_ = (60.0f / bpm) * 2.0f; // 二拍に一回
     // 時間スケールをゲームタイムチャネルに設定 アニメーション速度を調整
-    GameTime::GetChannel("GameEnvironment").SetGameSpeed(timeScale_ * 1.3f);
+    GameTime::GetChannel("GameBackground").SetGameSpeed(timeScale_ * 1.3f);
 }
 
-ObjectModel* GameEnvironment::GetSpeaker(uint32_t laneIndex)
+ObjectModel* GameBackground::GetSpeaker(uint32_t laneIndex)
 {
     auto it = speakerMap_.find(laneIndex);
     if (it != speakerMap_.end())
@@ -140,7 +140,7 @@ ObjectModel* GameEnvironment::GetSpeaker(uint32_t laneIndex)
     return nullptr; // 見つからなかった場合はnullptrを返す
 }
 
-void GameEnvironment::OnEvent(const GameEvent& event)
+void GameBackground::OnEvent(const GameEvent& event)
 {
     if (event.GetEventType() == "SpeakerEffectColorChange")
     {
@@ -158,7 +158,7 @@ void GameEnvironment::OnEvent(const GameEvent& event)
     }
 }
 
-void GameEnvironment::Serialize(const std::string& filePath)
+void GameBackground::Serialize(const std::string& filePath)
 {
     json data = JsonFileIO::Load(filePath, "");
 
@@ -236,7 +236,7 @@ void GameEnvironment::Serialize(const std::string& filePath)
         object->useQuaternion_ = true; // クォータニオンを使用するように設定
 
         //object->GetMaterial()->SetColor(Vector4(0.5f, 0.5f, 0.5f, 1.0f)); // デフォルトの色を設定
-        object->SetTimeChannel("GameEnvironment"); // アニメーションの時間チャンネルを設定
+        object->SetTimeChannel("GameBackground"); // アニメーションの時間チャンネルを設定
 
 
         if (name == "overFloor")
@@ -260,12 +260,12 @@ void GameEnvironment::Serialize(const std::string& filePath)
         {
             InitializeWall(object.get()); // Wallの初期化
         }
-        environmentObjects_.push_back(std::move(object)); // オブジェクトを追加
+        backgroundObjects_.push_back(std::move(object)); // オブジェクトを追加
 
     }
 }
 
-void GameEnvironment::BuildSpeakerMap(const std::string& objName, ObjectModel* model, const std::string& filepath)
+void GameBackground::BuildSpeakerMap(const std::string& objName, ObjectModel* model, const std::string& filepath)
 {
     if (!StringUtils::Contains(objName, "lane"))
         return;
@@ -294,7 +294,7 @@ void GameEnvironment::BuildSpeakerMap(const std::string& objName, ObjectModel* m
     model->LoadAnimation(filepath, "anim");
 }
 
-void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
+void GameBackground::UpdateSpeakerAnimation(float deltaTime)
 {
 
     // 色変化の計算
@@ -351,7 +351,7 @@ void GameEnvironment::UpdateSpeakerAnimation(float deltaTime)
     }
 }
 
-void GameEnvironment::InitializeWall(ObjectModel* wallModel)
+void GameBackground::InitializeWall(ObjectModel* wallModel)
 {
     if (!wallModel)
         return;
@@ -365,7 +365,7 @@ void GameEnvironment::InitializeWall(ObjectModel* wallModel)
     }
 }
 
-void GameEnvironment::InitializeOverlayFloor()
+void GameBackground::InitializeOverlayFloor()
 {
     const Vector4 floorColor = Vector4(0.4f, 0.6f, 1.0f, 0.5f);
     auto& materials = overlayFloor_->GetMaterials();
@@ -375,7 +375,7 @@ void GameEnvironment::InitializeOverlayFloor()
     }
 }
 
-void GameEnvironment::CreateEmissivePSO()
+void GameBackground::CreateEmissivePSO()
 {
     ShaderCompiler::GetInstance()->Register("EmissivePS", L"EmissiveModel.PS.hlsl", L"ps_6_0");
 

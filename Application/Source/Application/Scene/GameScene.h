@@ -23,7 +23,7 @@
 #include <Application/Core/GameCore.h>
 #include <Application/Input/GameInputManager.h>
 #include <Application/FeedBack/FeedbackEffect.h>
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 #include <Application/GameMusic/GameMusic.h>
 #include <Application/GameUI/GameUI.h>
 
@@ -146,7 +146,7 @@ private:
     std::unique_ptr<GameCore> gameCore_ = nullptr;                  // ゲームの核となる部分
     std::unique_ptr<GameInputManager> gameInputManager_ = nullptr;  // ゲームの入力管理
     std::unique_ptr<FeedbackEffect> feedbackEffect_ = nullptr;      // フィードバックエフェクト
-    std::unique_ptr<GameEnvironment> gameEnvironment_ = nullptr; // ゲーム環境のオブジェクト配置
+    std::unique_ptr<GameBackground> gameBackground_ = nullptr; // ゲーム環境のオブジェクト配置
     std::unique_ptr<GameUI> gameUI_ = nullptr; // ゲームUI
 
     std::unique_ptr<PauseMenu> pauseMenu_ = nullptr; // 一時停止メニュー

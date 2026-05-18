@@ -4,16 +4,16 @@
 #include <Framework/LayerSystem/LayerSystem.h>
 #include <Application/Lane/Lane.h>
 
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 
 using namespace Engine;
 
 
-void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment)
+void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameBackground* gameBackground)
 {
     if (camera)
         camera_ = camera;
-    gameEnvironment_ = gameEnvironment;
+    gameBackground_ = gameBackground;
 
     judgeEffect_ = std::make_unique<JudgeEffect>();
     judgeEffect_->Initialize();
@@ -22,7 +22,7 @@ void FeedbackEffect::Initialize(Camera* camera, int32_t laneCount, GameEnvironme
     tapEffect_->Initialize();
 
     backgroundEffect_ = std::make_unique<BackgroundEffect>();
-    backgroundEffect_->SetGameEnvironment(gameEnvironment_);
+    backgroundEffect_->SetGameBackground(gameBackground_);
 
     noteHoldEffect_ = std::make_unique<NoteHoldEffect>();
     noteHoldEffect_->Initialize();
@@ -160,7 +160,7 @@ void FeedbackEffect::PlaySpeakerSeekEffect(int32_t laneIndex, [[maybe_unused]] J
     static const Vector3 speakerOffset = Vector3(0, 1, 0);
     if (speakerSeekEffect_)
     {
-        Vector3 speakerPos = gameEnvironment_->GetSpeaker(laneIndex)->GetWorldTransform()->GetWorldPosition();
+        Vector3 speakerPos = gameBackground_->GetSpeaker(laneIndex)->GetWorldTransform()->GetWorldPosition();
         speakerSeekEffect_->Emit(speakerPos + speakerOffset, Lane::GetLaneEndPosition(laneIndex), kMaxSeekEffects_); // スピーカーに向かうエフェクトを発生
     }
 }

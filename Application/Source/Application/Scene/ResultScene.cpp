@@ -69,8 +69,8 @@ void ResultScene::Initialize(SceneData* sceneData)
     resultEffectFlow_->Initialize(resultData_);
 
 
-    gameEnvironment_ = std::make_unique<GameEnvironment>();
-    gameEnvironment_->Initialize();
+    gameBackground_ = std::make_unique<GameBackground>();
+    gameBackground_->Initialize();
 
     boxFilter_ = std::make_unique<BoxFilter>();
     boxFilter_->Initialize();
@@ -80,7 +80,7 @@ void ResultScene::Initialize(SceneData* sceneData)
     boxFilter_->SetData(&boxFilterData_);
 
 
-    LayerSystem::CreateLayer("GameEnvironment", 0);
+    LayerSystem::CreateLayer("GameBackground", 0);
     LayerSystem::CreateLayer("Main", 1);
     LayerSystem::CreateOutputLayer("BoxFilter");
 }
@@ -100,7 +100,7 @@ void ResultScene::Update()
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
 
     resultEffectFlow_->Update(deltaTime);
-    gameEnvironment_->Update(deltaTime, nullptr, nullptr, 0.0f);
+    gameBackground_->Update(deltaTime, nullptr, nullptr, 0.0f);
 
     if (enableDebugCamera_)
     {
@@ -121,11 +121,11 @@ void ResultScene::Update()
 void ResultScene::Draw()
 {
     ModelManager::GetInstance()->PreDrawForObjectModel();
-    LayerSystem::SetLayer("GameEnvironment");
+    LayerSystem::SetLayer("GameBackground");
 
-    gameEnvironment_->Draw(&SceneCamera_);
+    gameBackground_->Draw(&SceneCamera_);
 
-    LayerSystem::ApplyPostEffect("GameEnvironment", "BoxFilter", boxFilter_.get());
+    LayerSystem::ApplyPostEffect("GameBackground", "BoxFilter", boxFilter_.get());
 
     LayerSystem::SetLayer("Main");
 

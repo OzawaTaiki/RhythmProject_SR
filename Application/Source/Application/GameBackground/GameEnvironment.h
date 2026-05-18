@@ -26,12 +26,12 @@ class Camera;
 /// <summary>
 /// 背景等のオブジェクトに関するクラス。
 /// </summary>
-class GameEnvironment : public Engine::iEventListener
+class GameBackground : public Engine::iEventListener
 {
 public:
 
-    GameEnvironment();
-    ~GameEnvironment();
+    GameBackground();
+    ~GameBackground();
 
     /// <summary>
     /// 初期化処理を行う。
@@ -83,7 +83,7 @@ private:
     void CreateEmissivePSO();
 private:
     std::unique_ptr<SpectrumFloor> spectrumFloor_ = nullptr; //
-    std::vector<std::unique_ptr<Engine::ObjectModel>> environmentObjects_ = {};
+    std::vector<std::unique_ptr<Engine::ObjectModel>> backgroundObjects_ = {};
     std::unique_ptr<Engine::ObjectModel> overFloor_ = nullptr;
     std::unique_ptr<Engine::ObjectModel> overlayFloor_ = nullptr;
     std::vector<std::unique_ptr<SpectrumBar>> spectrumBars_;// スペクトラムバーの配列

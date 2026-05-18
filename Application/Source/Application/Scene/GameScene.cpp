@@ -103,11 +103,11 @@ void GameScene::Initialize(SceneData* sceneData)
             if (selectToGameData)
             {
                 beatMapFilePath = selectToGameData->selectedBeatMapFilePath; // 選択された譜面ファイルパスを取得
-                gameMode_ = GameMode::Normal;
+                    gameMode_ = GameMode::Normal;
+                }
             }
-        }
-        else if (beforeScene == "EditorScene")
-        {
+            else if (beforeScene == "EditorScene")
+            {
             auto editorToGameData = dynamic_cast<SharedBeatMapData*>(sceneData);
             if (editorToGameData)
             {
@@ -125,10 +125,10 @@ void GameScene::Initialize(SceneData* sceneData)
 
     LightingSystem::GetInstance()->SetActiveGroup(lightGroup_);
     auto begin = std::chrono::system_clock::now();
-    gameEnvironment_ = std::make_unique<GameEnvironment>();
-    gameEnvironment_->Initialize("Resources/Data/Game/haikei.json");
+    gameBackground_ = std::make_unique<GameBackground>();
+    gameBackground_->Initialize("Resources/Data/Game/haikei.json");
     auto end = std::chrono::system_clock::now();
-    Debug::Log(std::format("GameEnvironment Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()));
+    Debug::Log(std::format("GameBackground Load Time: {} ms\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()));
     Load(beforeScene, beatMapFilePath, editorBeatMapData);
 
     hasReservedTransition_ = false;
@@ -146,7 +146,7 @@ void GameScene::Update()
     if (!gameMusic_ || !gameMusic_->GetSoundInstance())
         return;
 
-    gameEnvironment_->Update(deltaTime,
+    gameBackground_->Update(deltaTime,
                              audioSpectrum_.get(),
                              gameMusic_->GetSoundInstance().get(),
                              gameMusic_->GetElapsedTime());
@@ -201,12 +201,12 @@ void GameScene::Draw()
 {
     // レイヤーごとに描画
     ModelManager::GetInstance()->PreDrawForObjectModel();
-    LayerSystem::SetLayer("GameEnvironment");
+    LayerSystem::SetLayer("GameBackground");
     {
         ModelManager::GetInstance()->PreDrawForObjectModel();
-        gameEnvironment_->Draw(&SceneCamera_);
-        LayerSystem::ApplyPostEffect("GameEnvironment", "Bloom", bloom_.get());
-        feedbackEffect_->ApplyMissedVignetteEffect("GameEnvironment", "Vignette");
+        gameBackground_->Draw(&SceneCamera_);
+        LayerSystem::ApplyPostEffect("GameBackground", "Bloom", bloom_.get());
+        feedbackEffect_->ApplyMissedVignetteEffect("GameBackground", "Vignette");
     }
 
     if (!isLoadComplete_)
@@ -285,7 +285,7 @@ bool GameScene::IsCompleteLoadBeatMap()
         gameMusic_ = std::make_unique<GameMusic>(audioFilePath); // 音楽の管理を初期化
         gameMusic_->Initialize();
 
-        gameEnvironment_->SetBPM(beatMapLoader_->GetLoadedBeatMapData().bpm);
+        gameBackground_->SetBPM(beatMapLoader_->GetLoadedBeatMapData().bpm);
 
         // ロード完了
         Debug::Log("BeatMap Loaded Successfully\n");
@@ -530,7 +530,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     isMusicPlaying_ = true;
 
-    LayerSystem::CreateLayer("GameEnvironment", 0);
+    LayerSystem::CreateLayer("GameBackground", 0);
     LayerSystem::CreateLayer("GameCore", 10);
     LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
     LayerSystem::CreateLayer("PauseMenu", 30);
@@ -539,7 +539,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     LayerSystem::CreateOutputLayer("DepthOutline");
 
     feedbackEffect_ = std::make_unique<FeedbackEffect>();
-    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameEnvironment_.get());
+    feedbackEffect_->Initialize(&SceneCamera_, gameCore_->GetLaneCount(), gameBackground_.get());
 
     gameCore_->SetJudgeCallback([&](int32_t laneIndex, JudgeType judgeType, int32_t combo)
                                 {
@@ -709,7 +709,7 @@ void GameScene::ImGui()
         if (ImGui::Button("SetBPM"))
         {
             beatManager_->SetBPM(bpm);
-            gameEnvironment_->SetBPM(bpm);
+            gameBackground_->SetBPM(bpm);
         }
 
         static float volume = 0.2f;

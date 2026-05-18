@@ -14,7 +14,7 @@
 #include <Application/Result/UI/ResultUI.h>
 #include <Application/Result/ResultEffectFlow.h>
 
-#include <Application/GameEnvironment/GameEnvironment.h>
+#include <Application/GameBackground/GameEnvironment.h>
 
 #include <Features/PostEffects/BoxFilter.h>
 
@@ -72,7 +72,7 @@ private:
 
     std::unique_ptr<ResultEffectFlow> resultEffectFlow_ = nullptr; // 結果エフェクトフロー
 
-    std::unique_ptr<GameEnvironment> gameEnvironment_ = nullptr; // ゲーム環境
+    std::unique_ptr<GameBackground> gameBackground_ = nullptr; // ゲーム環境
 
     std::unique_ptr<Engine::BoxFilter> boxFilter_ = nullptr; // ポストエフェクトのボックスフィルター
     Engine::BoxFilterData boxFilterData_ = {}; // ボックスフィルターのデータ

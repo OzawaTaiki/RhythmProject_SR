@@ -235,9 +235,6 @@
     <ClCompile Include="Source\Application\Scene\EditorScene.cpp">
       <Filter>Application\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\GameEnvironment\GameEnvironment.cpp">
-      <Filter>Application\Environment</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\JudgeEffect\JudgeEffect.cpp">
       <Filter>Application\FeedBack\Judge\Effect</Filter>
     </ClCompile>
@@ -288,12 +285,6 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Setting\SettingMenu.cpp">
       <Filter>Application\SettingMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\GameEnvironment\SpeakerEffect.cpp">
-      <Filter>Application\FeedBack\Effect\Speaker</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\GameEnvironment\BackgroundEffect.cpp">
-      <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.cpp">
       <Filter>Application\FeedBack\Effect\Holding</Filter>
@@ -376,9 +367,6 @@
     <ClCompile Include="Source\Application\FeedBack\LaneEdgePillar\LaneEdgeEffect.cpp">
       <Filter>Application\FeedBack\ComboThresholds</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\GameEnvironment\SpectrumBar.cpp">
-      <Filter>Application\Environment</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\GameCompleteEffect.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -393,9 +381,6 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Result\ResultModelEffect.cpp">
       <Filter>Application\Result\ModelEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\GameEnvironment\SpectrumFloor.cpp">
-      <Filter>Application\Environment</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\FocusFrame.cpp">
       <Filter>Application</Filter>
@@ -414,6 +399,11 @@
     <ClCompile Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.cpp" />
     <ClCompile Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.cpp" />
     <ClCompile Include="Source\Application\Scene\Transition\SceneTransHex.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\BackgroundEffect.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\GameEnvironment.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\SpeakerEffect.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\SpectrumBar.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\SpectrumFloor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -512,9 +502,6 @@
     <ClInclude Include="Source\Application\Scene\EditorScene.h">
       <Filter>Application\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\GameEnvironment\GameEnvironment.h">
-      <Filter>Application\Environment</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\Result\UI\ResultUI.h">
       <Filter>Application\Result\UI</Filter>
     </ClInclude>
@@ -562,12 +549,6 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Setting\SettingMenu.h">
       <Filter>Application\SettingMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\GameEnvironment\SpeakerEffect.h">
-      <Filter>Application\FeedBack\Effect\Speaker</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\GameEnvironment\BackgroundEffect.h">
-      <Filter>Application\FeedBack\Effect\Speaker</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\FeedBack\HoldingEffect\NoteHoldEffect.h">
       <Filter>Application\FeedBack\Effect\Holding</Filter>
@@ -641,9 +622,6 @@
     <ClInclude Include="Source\Application\FeedBack\LaneEdgePillar\LaneEdgeEffect.h">
       <Filter>Application\FeedBack\ComboThresholds</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\GameEnvironment\SpectrumBar.h">
-      <Filter>Application\Environment</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Application\GameCompleteEffect.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -652,9 +630,6 @@
     </ClInclude>
     <ClInclude Include="Source\Application\FocusFrame.h">
       <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\GameEnvironment\SpectrumFloor.h">
-      <Filter>Application\Environment</Filter>
     </ClInclude>
     <ClInclude Include="Source\Application\Result\ResultModelEffect.h">
       <Filter>Application\Result\ModelEffect</Filter>
@@ -686,6 +661,11 @@
     <ClInclude Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.h" />
     <ClInclude Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.h" />
     <ClInclude Include="Source\Application\Scene\Transition\SceneTransHex.h" />
+    <ClInclude Include="Source\Application\GameBackground\BackgroundEffect.h" />
+    <ClInclude Include="Source\Application\GameBackground\GameEnvironment.h" />
+    <ClInclude Include="Source\Application\GameBackground\SpeakerEffect.h" />
+    <ClInclude Include="Source\Application\GameBackground\SpectrumBar.h" />
+    <ClInclude Include="Source\Application\GameBackground\SpectrumFloor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

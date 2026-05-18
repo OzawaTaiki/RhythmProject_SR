@@ -6,7 +6,8 @@
 #include <Application/FeedBack/MissedVignette/MissedVignette.h>
 #include <Application/FeedBack/LaneEffect/LaneEffect.h>
 #include <Application/FeedBack/TapEffect/TapEffect.h>
-#include <Application/GameEnvironment/BackgroundEffect.h>
+//#include <Application/GameEnvironment/BackgroundEffect.h>
+#include <Application/GameBackground/BackgroundEffect.h>
 #include <Application/FeedBack/HoldingEffect/NoteHoldEffect.h>
 #include <APplication/FeedBack/SpeakerSeekEffect.h>
 #include <Application/FeedBack/LaneEdgePillar/LaneEdgeEffect.h>
@@ -22,7 +23,7 @@
 
 // 前方宣言
 namespace Engine { class Camera; }
-class GameEnvironment;
+class GameBackground;
 
 /// <summary>
 /// フィードバック（判定エフェクト、音、ビネットなど）を管理するクラス。
@@ -45,8 +46,8 @@ public:
     /// </summary>
     /// <param name="camera">座標変換や表示に用いるカメラ</param>
     /// <param name="laneCount">レーン数</param>
-    /// <param name="gameEnvironment">ゲーム環境オブジェクト</param>
-    void Initialize(Engine::Camera* camera, int32_t laneCount, GameEnvironment* gameEnvironment);
+    /// <param name="gameBackground">ゲーム背景オブジェクト</param>
+    void Initialize(Engine::Camera* camera, int32_t laneCount, GameBackground* gameBackground);
 
     /// <summary>
     /// 毎フレームの更新処理。
@@ -149,5 +150,5 @@ private:
 
     // 座標変換用カメラ
     Engine::Camera* camera_ = nullptr; // カメラへのポインタ
-    GameEnvironment* gameEnvironment_ = nullptr; // ゲーム環境へのポインタ
+    GameBackground* gameBackground_ = nullptr; // ゲーム環境へのポインタ
 };

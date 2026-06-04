@@ -138,7 +138,7 @@ void GameScene::Update()
 {
 
     float deltaTime = static_cast<float>(GameTime::GetInstance()->GetDeltaTime());
-
+    ImGui();
 
     gameInputManager_->Update(); // 入力更新
 
@@ -146,6 +146,7 @@ void GameScene::Update()
     if (!gameMusic_ || !gameMusic_->GetSoundInstance())
         return;
 
+    gameBackground_->SetCombo(gameCore_->GetCombo());
     gameBackground_->Update(deltaTime,
                              audioSpectrum_.get(),
                              gameMusic_->GetSoundInstance().get(),
@@ -587,6 +588,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     feedbackEffect_->InitComboThresholds(static_cast<int32_t>(beatMapLoader_->GetLoadedBeatMapData().notes.size()));
     laneOutline_->SetComboThresholds(feedbackEffect_->GetComboThresholds());
+    gameBackground_->SetComboThresholds(feedbackEffect_->GetComboThresholds());
 
 
     isLoadComplete_ = true;

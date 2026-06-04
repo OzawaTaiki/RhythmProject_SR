@@ -47,12 +47,12 @@ void GameMusic::Initialize(float rewindTime)
 void GameMusic::Update(float deltaTime)
 {
 #ifdef _DEBUG
-    ImGui::Begin("GameMusic Debug");
+    //ImGui::Begin("GameMusic Debug");
 
-    ImGui::DragFloat("Bit Depth", &gBitDepth, 0.01f, 0.0f, 1.0f);
-    ImGui::DragFloat("Sample Rate Reduction", &gSampleRateReduction, 0.01f, 0.0f, 1.0f);
+    //ImGui::DragFloat("Bit Depth", &gBitDepth, 0.01f, 0.0f, 1.0f);
+    //ImGui::DragFloat("Sample Rate Reduction", &gSampleRateReduction, 0.01f, 0.0f, 1.0f);
 
-    ImGui::End();
+    //ImGui::End();
 #endif
 
     UpdateDucking(deltaTime);

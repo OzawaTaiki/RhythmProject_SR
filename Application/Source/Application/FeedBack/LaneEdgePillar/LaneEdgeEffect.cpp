@@ -37,7 +37,7 @@ void LaneEdgeEffects::Initialize()
 void LaneEdgeEffects::Update(float deltaTime)
 {
 #ifdef _DEBUG
-    ImGui::Begin("Lane Edge Effects Debug");
+  /*  ImGui::Begin("Lane Edge Effects Debug");
     if(ImGui::Button("Emit"))
     {
         Emit();
@@ -46,13 +46,13 @@ void LaneEdgeEffects::Update(float deltaTime)
     if (ImGui::Button("save"))
     {
         jsonbinder_->Save();
-    }
+    }*/
 #endif
     laneEdgeParticleEffect_->Update(deltaTime);
     laneEdgePillarEffect_->Update(deltaTime);
 
 #ifdef _DEBUG
-    ImGui::End();
+    //ImGui::End();
 #endif
 }
 

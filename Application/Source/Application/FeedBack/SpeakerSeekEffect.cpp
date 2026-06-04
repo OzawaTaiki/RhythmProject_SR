@@ -33,7 +33,7 @@ void SpeakerSeekEffect::Initialize()
 void SpeakerSeekEffect::Update(float deltaTime)
 {
 #ifdef _DEBUG
-    ImGui::Begin("Speaker Seek Effect Debug");
+   /* ImGui::Begin("Speaker Seek Effect Debug");
     ImGui::DragFloat("Duration", &duration_, 0.01f, 0.1f, 5.0f);
     ImGui::DragFloat("Min Vertical Bulge", &minVerticalBulge_, 0.01f, 0.0f, 5.0f);
     ImGui::DragFloat("Max Vertical Bulge", &maxVerticalBulge_, 0.01f, 0.0f, 5.0f);
@@ -44,7 +44,7 @@ void SpeakerSeekEffect::Update(float deltaTime)
     ImGui::ColorEdit4("Color", &color_.x);
     if (ImGui::Button("Emit"))
         Emit(Vector3(-10, -4, 20), Vector3(-3, 0, 0), 10);
-    ImGui::End();
+    ImGui::End();*/
 #endif
 
     // パーティクルを楕円軌道に沿って移動

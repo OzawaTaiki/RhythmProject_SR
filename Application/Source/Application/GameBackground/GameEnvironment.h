@@ -8,8 +8,16 @@
 
 #include "SpectrumBar.h"
 #include "SpectrumFloor.h"
+#include "SpeakerSpectrumReaction.h"
+#include "SpotLightBeam.h"
+#include "PenlightCrowd.h"
+
+#include <Application/FeedBack/ComboThresholds.h>
+
+#include <Features/AudioSpectrum/OnsetDetector.h>
 
 #include <memory>
+#include <vector>
 
 
 struct ColorChangeEvent : Engine::EventData
@@ -56,6 +64,16 @@ public:
     void SetBPM(float bpm);
 
     /// <summary>
+    /// コンボ数を設定する（ペンライト群の本数・彩度に反映）。
+    /// </summary>
+    void SetCombo(int32_t combo);
+
+    /// <summary>
+    /// コンボ閾値定義を設定する。SetComboでの比率計算に使用。
+    /// </summary>
+    void SetComboThresholds(const ComboThresholds* thresholds) { comboThresholds_ = thresholds; }
+
+    /// <summary>
     /// 指定レーンのスピーカーオブジェクトを取得する。
     /// </summary>
     Engine::ObjectModel* GetSpeaker(uint32_t laneIndex);
@@ -81,6 +99,12 @@ private:
     void InitializeOverlayFloor();
 
     void CreateEmissivePSO();
+
+    // ビーム（可視光線）用の加算PSOを生成する
+    void CreateBeamPSO();
+
+    // FFT連動演出（スピーカー反応・ドロップ検出・スポットライト）の初期化
+    void InitializeFFTReaction();
 private:
     std::unique_ptr<SpectrumFloor> spectrumFloor_ = nullptr; //
     std::vector<std::unique_ptr<Engine::ObjectModel>> backgroundObjects_ = {};
@@ -104,4 +128,21 @@ private:
     bool enableEmissive_ = true;
 
     Microsoft::WRL::ComPtr<ID3D12PipelineState> emissivePso_ = nullptr;
+
+    // ---- FFT連動演出 ----
+    std::vector<std::unique_ptr<SpeakerSpectrumReaction>> speakerReactions_;
+    std::unique_ptr<OnsetDetector> onsetDetector_;
+    std::vector<std::unique_ptr<SpotLightBeam>> ceilingBeams_; // 天井トラスのスポットライト
+    std::vector<std::unique_ptr<SpotLightBeam>> backBeams_;    // ステージ奥の逆光
+    std::unique_ptr<PenlightCrowd> penlightCrowd_;
+    Microsoft::WRL::ComPtr<ID3D12PipelineState> beamPso_ = nullptr;
+
+    // 天井ビームの感度・下限（ImGui調整用）
+    float beamEnergyGain_ = 8.0f;
+    float beamEnergyFloor_ = 0.3f;
+    // 奥ビームの感度・下限（ImGui調整用）
+    float backBeamGain_ = 12.0f;
+    float backBeamFloor_ = 0.25f;
+    float comboColorRatio_ = 0.0f;
+    const ComboThresholds* comboThresholds_ = nullptr;
 };

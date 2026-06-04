@@ -404,6 +404,9 @@
     <ClCompile Include="Source\Application\GameBackground\SpeakerEffect.cpp" />
     <ClCompile Include="Source\Application\GameBackground\SpectrumBar.cpp" />
     <ClCompile Include="Source\Application\GameBackground\SpectrumFloor.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\SpeakerSpectrumReaction.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\SpotLightBeam.cpp" />
+    <ClCompile Include="Source\Application\GameBackground\PenlightCrowd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -666,6 +669,10 @@
     <ClInclude Include="Source\Application\GameBackground\SpeakerEffect.h" />
     <ClInclude Include="Source\Application\GameBackground\SpectrumBar.h" />
     <ClInclude Include="Source\Application\GameBackground\SpectrumFloor.h" />
+    <ClInclude Include="Source\Application\GameBackground\FrequencyBands.h" />
+    <ClInclude Include="Source\Application\GameBackground\SpeakerSpectrumReaction.h" />
+    <ClInclude Include="Source\Application\GameBackground\SpotLightBeam.h" />
+    <ClInclude Include="Source\Application\GameBackground\PenlightCrowd.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

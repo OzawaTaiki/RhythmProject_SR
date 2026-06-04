@@ -3,6 +3,14 @@
 
 using namespace Engine;
 
+BackgroundEffect::BackgroundEffect()
+{
+    // エミッタのJSONロードはここで1回だけ行い、以降は使い回す
+    speakerEffect_ = std::make_unique<SpeakerEffect>();
+}
+
+BackgroundEffect::~BackgroundEffect() = default;
+
 void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex, float delayTime)
 {
     if (!gameBackground_)
@@ -13,10 +21,6 @@ void BackgroundEffect::PlaySpeakerEffect(uint32_t laneIndex, float delayTime)
     if (!speaker)
         return;
 
-    // スピーカーの座標を取得
-    Vector3 speakerPos = speaker->GetWorldTransform()->GetWorldPosition();
-
-    // スピーカーエフェクト再生
-    SpeakerEffect effect;
-    effect.PlaySpeakerEffect(speaker,delayTime);
+    // スピーカーエフェクト再生（使い回しのインスタンス）
+    speakerEffect_->PlaySpeakerEffect(speaker, delayTime);
 }

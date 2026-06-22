@@ -18,16 +18,16 @@ void LobbyCamera::Initialize()
 void LobbyCamera::Update(float deltaTime)
 {
 #ifdef _DEBUG
-    //ImGuiTool::TimeLine("TitleCameraAnimation", cameraAnimationSequence_.get());
-    //ImGui::Begin("TitleCameraDebug", nullptr, ImGuiWindowFlags_NoTitleBar);
-    //if(ImGui::Checkbox("isAnimationPlaying", &isAnimationPlaying_))
-    //{
-    //    if (isAnimationPlaying_)
-    //    {
-    //        cameraAnimationSequence_->SetCurrentTime(0.0f);
-    //    }
-    //}
-    //ImGui::End();
+    ImGuiTool::TimeLine("TitleCameraAnimation", cameraAnimationSequence_.get());
+    ImGui::Begin("TitleCameraDebug", nullptr, ImGuiWindowFlags_NoTitleBar);
+    if(ImGui::Checkbox("isAnimationPlaying", &isAnimationPlaying_))
+    {
+        if (isAnimationPlaying_)
+        {
+            cameraAnimationSequence_->SetCurrentTime(0.0f);
+        }
+    }
+    ImGui::End();
 #endif // _DEBUG
 
     if (Input::GetInstance()->IsKeyTriggered(DIK_SPACE) ||

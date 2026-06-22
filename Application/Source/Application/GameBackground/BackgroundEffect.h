@@ -2,14 +2,18 @@
 
 #include <Application/GameBackground/GameEnvironment.h>
 
+#include <memory>
+
+class SpeakerEffect; // 前方宣言
+
 /// <summary>
 /// 背景エフェクト。
 /// </summary>
 class BackgroundEffect
 {
 public:
-    BackgroundEffect() = default;
-    ~BackgroundEffect() = default;
+    BackgroundEffect();
+    ~BackgroundEffect();
 
     /// <summary>
     /// 指定レーンのスピーカーエフェクトを再生する。
@@ -25,4 +29,6 @@ public:
 
 private:
     GameBackground* gameBackground_ = nullptr; // 参照ポインタ
+    // スピーカーエフェクトは1つを使い回す（エミッタJSONの再ロードを避ける）
+    std::unique_ptr<SpeakerEffect> speakerEffect_;
 };

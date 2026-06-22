@@ -70,37 +70,37 @@ void SpectrumBar::Initialize(const std::string& name, size_t id, const json& jso
 void SpectrumBar::Update(float deltaTime, AudioSpectrum* audioSpectrum)
 {
     auto pointLightShared = pointLight_.lock();
-#ifdef _DEBUG
-    ImGui::Begin("Spectrum Bar Info");
-    ImGui::PushID(this);
-    ImGui::Text("-----ID: %zu ------------------------------", id_);
-    ImGui::Text("Frequency Range: %.2f Hz - %.2f Hz", hzRange_.x, hzRange_.y);
-    ImGui::Text("Begin Index: %zu", beginIndex_);
-    ImGui::Text("End Index: %zu", endIndex_);
-    if (pointLightShared)
-    {
-        ImGui::SeparatorText(pointLightShared->GetName().c_str());
-        ImGui::Indent();
-        auto& data = pointLightShared->GetData();
-        if (ImGui::DragFloat3("Position", &lightOffset_.x, 0.1f))
-        {
-            pointLightShared->SetOffset(lightOffset_);
-        }
-        ImGui::ColorEdit3("Color", &data.color.x);
-        ImGui::DragFloat("Decay", &data.decay, 0.1f, 0.0f, 10.0f);
-        ImGui::DragFloat("Intensity", &data.intensity, 0.1f, 0.0f, 100.0f);
-        ImGui::DragFloat("Radius", &data.radius, 0.1f, 0.0f, 100.0f);
-        ImGui::Checkbox("IsHalf", reinterpret_cast<bool*>(&data.isHalf));
-        ImGui::Unindent();
-    }
-    if (ImGui::DragFloat2("Hz Range", &hzRange_.x, 1.0f, 0.0f, 22000.0f))
-        beginIndex_ = endIndex_ = 0;
-    if (ImGui::Button("Save")) jsonBinder_->Save();
-    ImGui::PopID();
-    ImGui::End();
-
-
-#endif
+//#ifdef _DEBUG
+//    ImGui::Begin("Spectrum Bar Info");
+//    ImGui::PushID(this);
+//    ImGui::Text("-----ID: %zu ------------------------------", id_);
+//    ImGui::Text("Frequency Range: %.2f Hz - %.2f Hz", hzRange_.x, hzRange_.y);
+//    ImGui::Text("Begin Index: %zu", beginIndex_);
+//    ImGui::Text("End Index: %zu", endIndex_);
+//    if (pointLightShared)
+//    {
+//        ImGui::SeparatorText(pointLightShared->GetName().c_str());
+//        ImGui::Indent();
+//        auto& data = pointLightShared->GetData();
+//        if (ImGui::DragFloat3("Position", &lightOffset_.x, 0.1f))
+//        {
+//            pointLightShared->SetOffset(lightOffset_);
+//        }
+//        ImGui::ColorEdit3("Color", &data.color.x);
+//        ImGui::DragFloat("Decay", &data.decay, 0.1f, 0.0f, 10.0f);
+//        ImGui::DragFloat("Intensity", &data.intensity, 0.1f, 0.0f, 100.0f);
+//        ImGui::DragFloat("Radius", &data.radius, 0.1f, 0.0f, 100.0f);
+//        ImGui::Checkbox("IsHalf", reinterpret_cast<bool*>(&data.isHalf));
+//        ImGui::Unindent();
+//    }
+//    if (ImGui::DragFloat2("Hz Range", &hzRange_.x, 1.0f, 0.0f, 22000.0f))
+//        beginIndex_ = endIndex_ = 0;
+//    if (ImGui::Button("Save")) jsonBinder_->Save();
+//    ImGui::PopID();
+//    ImGui::End();
+//
+//
+//#endif
     if (beginIndex_ == 0 && endIndex_ == 0)
         InitializeSpectrumRange(audioSpectrum);
 

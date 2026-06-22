@@ -19,6 +19,9 @@ JudgeText::JudgeText() :
     displayDuration_(1.0f), // 初期表示時間を設定
     text_({}) // テキストレンダラーのインスタンスを取得
 {
+    // アニメーションシーケンスは生成・ロードを1回だけ行う（表示のたびに再ロードしない）
+    animationSequence_ = std::make_unique<AnimationSequence>("JudgeTextAnimation");
+    animationSequence_->Initialize("Resources/Data/AnimSeq/");
 }
 
 void JudgeText::Initialize(JudgeType judgeType, int32_t laneIndex, const Camera* camera)
@@ -43,9 +46,9 @@ void JudgeText::Initialize(JudgeType judgeType, int32_t laneIndex, const Camera*
 
     text_.Initialize(FontConfig()); // テキストレンダラーの初期化
 
-    animationSequence_ = std::make_unique<AnimationSequence>("JudgeTextAnimation");
-    animationSequence_->Initialize("Resources/Data/AnimSeq/"); // アニメーションシーケンスの初期化
-
+    // 再生位置を先頭へ巻き戻すだけ（再ロードしない）
+    if (animationSequence_)
+        animationSequence_->SetCurrentTime(0.0f);
 }
 
 void JudgeText::Update(float deltaTime)

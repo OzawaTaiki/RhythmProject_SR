@@ -4,6 +4,9 @@
 #include <System/Audio/VoiceInstance.h>
 #include <System/Audio/AudioEffect.h>
 #include <System/Audio/AudioEffectManager.h>
+#include <Features/AudioSpectrum/AudioSpectrum.h>
+
+#include <memory>
 
 /// <summary>
 /// 音楽再生用クラス。
@@ -95,6 +98,16 @@ public:
 
     void DisableBitCrush();
 
+    /// <summary>
+    /// エフェクト適用前のスペクトラム解析器を返す。
+    /// </summary>
+    Engine::AudioSpectrum* GetSpectrumPre() { return audioSpectrumPre_.get(); }
+
+    /// <summary>
+    /// ビットクラッシャー適用後をシミュレートしたスペクトラム解析器を返す。
+    /// </summary>
+    Engine::AudioSpectrum* GetSpectrumPost() { return audioSpectrumPost_.get(); }
+
 private:
     // ダッキングの状態を更新する
     void UpdateDucking(float deltaTime);
@@ -127,4 +140,10 @@ private:
     }duckingInfo_;
 
     Engine::AudioEffectChain effectChain_; // 音声エフェクトチェーン（Enable/Disable に使用）
+
+    // スペクトラム比較用（エフェクト前後）
+    std::unique_ptr<Engine::AudioSpectrum> audioSpectrumPre_;
+    std::unique_ptr<Engine::AudioSpectrum> audioSpectrumPost_;
+    float bitDepth_ = 0.8f;
+    float sampleRateReduction_ = 0.3f;
 };

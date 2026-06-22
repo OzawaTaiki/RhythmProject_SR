@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Essential">
@@ -154,12 +154,35 @@
     <Filter Include="Application\Select">
       <UniqueIdentifier>{f486e16c-15d4-478d-8d17-93844dbbd7eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\GameBackground">
+      <UniqueIdentifier>{86FED224-5FFC-42E9-BF9F-09709032EC13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\EventData">
+      <UniqueIdentifier>{7522A1F5-6D1D-492C-B099-7D9443CB1C03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Note\Judge">
+      <UniqueIdentifier>{008D8320-CFC7-4BAA-B4BF-8E642480CF1A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\BeatMapEditor\AutoChartGenerator">
+      <UniqueIdentifier>{B7F5C8A1-8BA7-4BAD-9639-207580B7B07A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Transition">
+      <UniqueIdentifier>{E8CAAC9B-71B1-4091-9BB2-9A22C2F4D915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{81719B55-7DFD-4227-872C-DD906AE9F79F}</UniqueIdentifier>
+    </Filter>
+
     <Filter Include="Application\MusicList">
       <UniqueIdentifier>{badb0e31-e06d-42de-90f6-8576993b1df7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+
+      <Filter>Source</Filter>
+
+    </ClCompile>
     <ClCompile Include="Source\Essential\SampleFramework.cpp">
       <Filter>Essential</Filter>
     </ClCompile>
@@ -394,16 +417,65 @@
     <ClCompile Include="Source\Application\MusicList\MusicListManager.cpp">
       <Filter>Application\MusicList</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Note\Judge\JudgeColor.cpp" />
-    <ClCompile Include="Source\Application\Note\NoteDrawer.cpp" />
-    <ClCompile Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.cpp" />
-    <ClCompile Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.cpp" />
-    <ClCompile Include="Source\Application\Scene\Transition\SceneTransHex.cpp" />
-    <ClCompile Include="Source\Application\GameBackground\BackgroundEffect.cpp" />
-    <ClCompile Include="Source\Application\GameBackground\GameEnvironment.cpp" />
-    <ClCompile Include="Source\Application\GameBackground\SpeakerEffect.cpp" />
-    <ClCompile Include="Source\Application\GameBackground\SpectrumBar.cpp" />
-    <ClCompile Include="Source\Application\GameBackground\SpectrumFloor.cpp" />
+    <ClCompile Include="Source\Application\Note\Judge\JudgeColor.cpp">
+
+      <Filter>Application\Note\Judge</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\Note\NoteDrawer.cpp">
+
+      <Filter>Application\Note</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.cpp">
+
+      <Filter>Application\BeatMapEditor\AutoChartGenerator</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.cpp">
+
+      <Filter>Application\BeatMapEditor\Command</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\Scene\Transition\SceneTransHex.cpp">
+
+      <Filter>Application\Scene\Transition</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\BackgroundEffect.cpp">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\GameEnvironment.cpp">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\SpeakerEffect.cpp">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\SpectrumBar.cpp">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\SpectrumFloor.cpp">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\SpeakerSpectrumReaction.cpp">
+      <Filter>Application\GameBackground</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\SpotLightBeam.cpp">
+      <Filter>Application\GameBackground</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\GameBackground\PenlightCrowd.cpp">
+      <Filter>Application\GameBackground</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Essential\SampleFramework.h">
@@ -652,20 +724,76 @@
     <ClInclude Include="Source\Application\MusicList\MusicListManager.h">
       <Filter>Application\MusicList</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\EventData\PauseActionData.h" />
+    <ClInclude Include="Source\Application\EventData\PauseActionData.h">
+
+      <Filter>Application\EventData</Filter>
+
+    </ClInclude>
     <ClInclude Include="Source\Application\TitleCamera\TitleCamera.h">
       <Filter>Application\TitleCamera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\BGMChangeEventData.h" />
-    <ClInclude Include="Source\Application\Note\NoteDrawer.h" />
-    <ClInclude Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.h" />
-    <ClInclude Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.h" />
-    <ClInclude Include="Source\Application\Scene\Transition\SceneTransHex.h" />
-    <ClInclude Include="Source\Application\GameBackground\BackgroundEffect.h" />
-    <ClInclude Include="Source\Application\GameBackground\GameEnvironment.h" />
-    <ClInclude Include="Source\Application\GameBackground\SpeakerEffect.h" />
-    <ClInclude Include="Source\Application\GameBackground\SpectrumBar.h" />
-    <ClInclude Include="Source\Application\GameBackground\SpectrumFloor.h" />
+    <ClInclude Include="Source\Application\BGMChangeEventData.h">
+
+      <Filter>Application</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\Note\NoteDrawer.h">
+
+      <Filter>Application\Note</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\AutoChartGenerator\autoChartGenerator.h">
+
+      <Filter>Application\BeatMapEditor\AutoChartGenerator</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\BeatMapEditor\Command\BatchInsertNotesCommand.h">
+
+      <Filter>Application\BeatMapEditor\Command</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\Scene\Transition\SceneTransHex.h">
+
+      <Filter>Application\Scene\Transition</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\BackgroundEffect.h">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\GameEnvironment.h">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\SpeakerEffect.h">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\SpectrumBar.h">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\SpectrumFloor.h">
+
+      <Filter>Application\GameBackground</Filter>
+
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\FrequencyBands.h">
+      <Filter>Application\GameBackground</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\SpeakerSpectrumReaction.h">
+      <Filter>Application\GameBackground</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\SpotLightBeam.h">
+      <Filter>Application\GameBackground</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\GameBackground\PenlightCrowd.h">
+      <Filter>Application\GameBackground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -682,3 +810,5 @@
     </Text>
   </ItemGroup>
 </Project>
+
+

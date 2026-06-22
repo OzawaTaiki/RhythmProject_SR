@@ -1,7 +1,6 @@
 #include "GameMusic.h"
 
 #include <System/Audio/AudioSystem.h>
-#include <System/Audio/BitcrusherProcessor.h>
 
 #include <Application/EventData/PauseActionData.h>
 #include <Features/Event/EventManager.h>
@@ -23,24 +22,6 @@ constexpr const char* kBitCrusherEffectName = "bitcrusher";
 GameMusic::GameMusic(const std::string& musicFilePath)
 {
     soundInstance_ = AudioSystem::GetInstance()->Load(musicFilePath);
-
-    // スペクトラム比較用の解析器を初期化
-    constexpr size_t kFFTSize = 32768;
-    audioSpectrumPre_  = std::make_unique<Engine::AudioSpectrum>(kFFTSize);
-    audioSpectrumPost_ = std::make_unique<Engine::AudioSpectrum>(kFFTSize);
-
-    if (soundInstance_)
-    {
-        float sampleRate = soundInstance_->GetSampleRate();
-
-        audioSpectrumPre_->SetAudioData(soundInstance_->GetAudioData());
-        audioSpectrumPre_->SetSampleRate(sampleRate);
-        audioSpectrumPre_->SetUseGPU(false);
-
-        audioSpectrumPost_->SetSampleRate(sampleRate);
-        audioSpectrumPost_->SetUseGPU(false);
-        // post は Update() 内で現在時刻の窓だけ処理するため、ここでは設定不要
-    }
 }
 
 GameMusic::~GameMusic()
@@ -69,82 +50,6 @@ void GameMusic::Initialize(float rewindTime)
 
 void GameMusic::Update(float deltaTime)
 {
-#ifdef _DEBUG
-    if (ImGui::Begin("Bitcrusher Spectrum Comparison"))
-    {
-        bool paramsChanged = false;
-        paramsChanged |= ImGui::SliderFloat("Bit Depth",            &bitDepth_,            0.0f, 1.0f);
-        paramsChanged |= ImGui::SliderFloat("Sample Rate Reduction",&sampleRateReduction_, 0.0f, 1.0f);
-        if (paramsChanged)
-            SetBitCrush(bitDepth_, sampleRateReduction_);
-
-        // 現在時刻のスペクトラムを取得して描画
-        if (voiceInstance_ && audioSpectrumPre_ && audioSpectrumPost_ && soundInstance_)
-        {
-            float t  = voiceInstance_->GetElapsedTime();
-            float sr = soundInstance_->GetSampleRate();
-
-            // 現在時刻付近の窓(32768サンプル)だけ取り出してビットクラッシャーを適用
-            constexpr size_t kWin = 32768;
-            auto rawData = soundInstance_->GetAudioData();
-            size_t center = static_cast<size_t>(t * sr);
-            size_t start  = (center >= kWin / 2) ? center - kWin / 2 : 0;
-            start = (rawData.size() > kWin) ? std::min(start, rawData.size() - kWin) : 0;
-            size_t count  = std::min(kWin, rawData.size() - start);
-            std::vector<float> window(rawData.begin() + start, rawData.begin() + start + count);
-            window.resize(kWin, 0.0f);
-
-            auto crushed = BitcrusherProcessor::Process(window, bitDepth_, sampleRateReduction_);
-            audioSpectrumPost_->SetAudioData(crushed);
-
-            auto pre  = audioSpectrumPre_->GetSpectrumAtTime(t);
-            float windowCenter = static_cast<float>(kWin / 2) / sr;
-            auto post = audioSpectrumPost_->GetSpectrumAtTime(windowCenter);
-
-            // 表示用に対数スケールで正規化（0dB = -80dB..0dB → 0..1）
-            auto toNorm = [](float amp) -> float {
-                constexpr float kMinDb = -80.0f;
-                float db = (amp > 1e-10f) ? 20.0f * std::log10(amp) : kMinDb;
-                return std::clamp((db - kMinDb) / (-kMinDb), 0.0f, 1.0f);
-            };
-
-            constexpr int kBars = 64;
-            const int preSize  = static_cast<int>(pre.size());
-            const int postSize = static_cast<int>(post.size());
-
-            // Pre（白）
-            ImGui::TextUnformatted("Pre-effect (white)");
-            for (int i = 0; i < kBars; ++i)
-            {
-                int idx = i * preSize / kBars;
-                float v = (idx < preSize) ? toNorm(pre[idx]) : 0.0f;
-                char label[8];
-                snprintf(label, sizeof(label), "##p%d", i);
-                ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1, 1, 1, 0.9f));
-                ImGui::ProgressBar(v, ImVec2(8.0f, 80.0f), label);
-                ImGui::PopStyleColor();
-                if (i < kBars - 1) ImGui::SameLine(0.0f, 1.0f);
-            }
-
-            // Post（橙）
-            ImGui::Spacing();
-            ImGui::TextUnformatted("Post-effect / bitcrushed (orange)");
-            for (int i = 0; i < kBars; ++i)
-            {
-                int idx = i * postSize / kBars;
-                float v = (idx < postSize) ? toNorm(post[idx]) : 0.0f;
-                char label[8];
-                snprintf(label, sizeof(label), "##q%d", i);
-                ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(1, 0.55f, 0.1f, 0.9f));
-                ImGui::ProgressBar(v, ImVec2(8.0f, 80.0f), label);
-                ImGui::PopStyleColor();
-                if (i < kBars - 1) ImGui::SameLine(0.0f, 1.0f);
-            }
-        }
-    }
-    ImGui::End();
-#endif
-
     UpdateDucking(deltaTime);
 }
 
@@ -254,9 +159,6 @@ void GameMusic::TriggerDucking(float targetVolume, float duration)
 
 void GameMusic::SetBitCrush(float bitDepth, float sampleRateReduction)
 {
-    bitDepth_ = bitDepth;
-    sampleRateReduction_ = sampleRateReduction;
-
     auto* paramMgr = AudioEffectManager::GetInstance()->GetParameterManager(kBitCrusherEffectName);
     if (paramMgr)
     {
@@ -269,9 +171,6 @@ void GameMusic::SetBitCrush(float bitDepth, float sampleRateReduction)
 void GameMusic::EnableBitCrush()
 {
     effectChain_.EnableEffect(0);
-
-    bitDepth_ = gBitDepth;
-    sampleRateReduction_ = gSampleRateReduction;
 
     auto* paramMgr = AudioEffectManager::GetInstance()->GetParameterManager(kBitCrusherEffectName);
     if (paramMgr)

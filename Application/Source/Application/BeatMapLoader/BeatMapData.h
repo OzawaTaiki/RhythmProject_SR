@@ -4,7 +4,9 @@
 #include <vector>
 #include <cstdint>
 
-// ノートデータ構造体
+/// <summary>
+/// 1つのノートが持つデータ。レーン番号・タイミング・種類・ホールド時間を保持する。
+/// </summary>
 struct NoteData
 {
     int32_t laneIndex; // 流れるレーンインデックス

@@ -14,6 +14,10 @@ class PointLightComponent;
 }
 
 
+/// <summary>
+/// 担当周波数帯のFFT振幅を1本のバー（3Dモデル）として可視化するクラス。
+/// id で担当帯域が決まり、Update() でスペクトラムを読み取ってスケールと発光色に反映する。
+/// </summary>
 class SpectrumBar
 {
 public:

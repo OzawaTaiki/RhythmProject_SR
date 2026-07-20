@@ -8,6 +8,10 @@
 class LaneEdgePillarEffect;
 class LaneEdgeParticleEffect;
 
+/// <summary>
+/// レーン端エフェクト全体を束ねるファサードクラス。
+/// LaneEdgePillarEffect（柱状光）と LaneEdgeParticleEffect（パーティクル）を統括して管理する。
+/// </summary>
 class LaneEdgeEffects
 {
 public:
@@ -25,6 +29,10 @@ private:
     std::unique_ptr<Engine::JsonBinder> jsonbinder_;
 };
 
+/// <summary>
+/// レーン端に縦方向の柱状光エフェクトを表示するクラス。
+/// パーティクルをピラー（柱）として管理し、Emit() で発生させる。
+/// </summary>
 class LaneEdgePillarEffect
 {
 public:
@@ -42,6 +50,10 @@ private:
     float pillarLength_ = 50.0f;
 };
 
+/// <summary>
+/// レーン端にパーティクルを散らすエフェクトクラス。
+/// Z方向に一定間隔でパーティクルを Emit() し、レーン端の演出を担う。
+/// </summary>
 class LaneEdgeParticleEffect
 {
 public:

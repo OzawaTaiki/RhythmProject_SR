@@ -1,5 +1,9 @@
 #pragma once
 
+/// <summary>
+/// FFTスペクトラムを区切る周波数帯域の境界値を定義する構造体。
+/// SpeakerSpectrumReaction や SpectrumBar など、Hz範囲を指定する箇所で参照する。
+/// </summary>
 struct FrequencyBands
 {
     static constexpr float kSubBass    = 60.0f;    // 0    - 60   Hz (重低音)

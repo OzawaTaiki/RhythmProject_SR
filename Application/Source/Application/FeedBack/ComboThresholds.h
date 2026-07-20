@@ -2,6 +2,11 @@
 #include <array>
 
 
+/// <summary>
+/// コンボ数に応じた演出レベルの閾値を管理するクラス。
+/// Initialize() で譜面のmaxComboを渡すと各レベルの境界コンボ数を自動計算する。
+/// GetComboLevel() で現在のレベル(0始まり)、GetComboProgress() でレベル内進捗(0-1)を取得する。
+/// </summary>
 class ComboThresholds
 {
 public:

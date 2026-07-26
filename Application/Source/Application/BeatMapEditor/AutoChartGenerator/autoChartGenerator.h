@@ -15,6 +15,9 @@ class AutoChartGenerator
 {
 public:
     // 生成用パラメータ
+    /// <summary>
+    /// Settingsを表す構造体。
+    /// </summary>
     struct Settings
     {
         float sensitivity = 0.5f;// 0 ~ 1 (高いほどノーツ多め)
@@ -27,6 +30,9 @@ public:
     };
 
 
+    /// <summary>
+    /// GenerateRequestを表す構造体。
+    /// </summary>
     struct GenerateRequest
     {
         bool isRequested = false;
@@ -57,6 +63,9 @@ public:
 
 private:
     // 音量のピークを検出してノーツを生成するための構造体
+    /// <summary>
+    /// FluxSeriesを表す構造体。
+    /// </summary>
     struct FluxSeries
     {
         std::vector<float> times; // ピークの時間

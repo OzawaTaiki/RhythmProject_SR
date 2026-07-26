@@ -3,6 +3,9 @@
 #include <map>
 #include <Application/Note/Judge/JudgeType.h>
 
+/// <summary>
+/// JudgementConfigを表す構造体。
+/// </summary>
 struct JudgementConfig
 {
     float scoreValue;      // スコア
@@ -12,6 +15,9 @@ struct JudgementConfig
 };
 
 
+/// <summary>
+/// ScoreCalculatorを表すクラス。
+/// </summary>
 class ScoreCalculator
 {
 public:

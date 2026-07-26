@@ -6,6 +6,9 @@
 
 #include <Application/Note/Judge/JudgeType.h>
 
+/// <summary>
+/// GameCompleteEffectを表すクラス。
+/// </summary>
 class GameCompleteEffect
 {
 public:

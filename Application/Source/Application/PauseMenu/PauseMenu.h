@@ -48,6 +48,9 @@ public:
     void ToActive();
 private:
 
+    /// <summary>
+    /// EventTypeを表す列挙型。
+    /// </summary>
     enum class EventType
     {
         Resume,

@@ -18,6 +18,12 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr uint32_t kShadowMapResolution = 4096;
+constexpr int32_t kDefaultFontSize = 128;
+}
+
 void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 {
     Framework::Initialize(L"");
@@ -25,7 +31,7 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
 
     //rtvManager_->CreateRenderTarget("default", WinApp::kWindowWidth_, WinApp::kWindowHeight_, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, Vector4(0.4625f, 0.925f, 0.4625f, 1.0f), false);
     rtvManager_->CreateRenderTarget("default", WinApp::kWindowWidth_, WinApp::kWindowHeight_, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, Vector4(0.0190f, 0.0190f, 0.0933f, 1.0f), false);
-    rtvManager_->CreateRenderTarget("ShadowMap", 4096, 4096, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,  Vector4(1.0f, 1.0f, 1.0f, 1.0f),true);
+    rtvManager_->CreateRenderTarget("ShadowMap", kShadowMapResolution, kShadowMapResolution, DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,  Vector4(1.0f, 1.0f, 1.0f, 1.0f),true);
 
     sceneManager_->SetSceneFactory(std::make_unique<SceneFactory>());
 
@@ -53,7 +59,7 @@ void SampleFramework::Initialize([[maybe_unused]] const std::wstring& _winTitle)
     SoundEngine::GetInstance()->LoadSoundData("Resources/Sounds/SoundData.json");
     SoundEngine::GetInstance()->LoadEventData("Resources/Sounds/SoundEvents.json");
 
-    FontCache::GetInstance()->GetAtlasData("Resources/Fonts/NotoSansJP-Regular.ttf", 128);
+    FontCache::GetInstance()->GetAtlasData("Resources/Fonts/NotoSansJP-Regular.ttf", kDefaultFontSize);
 
 
     // 最初のシーンで初期化

@@ -17,6 +17,9 @@
 // 前方宣言
 namespace Engine { class Camera; }
 
+/// <summary>
+/// SpectrumRingを表すクラス。
+/// </summary>
 class SpectrumRing
 {
 public:

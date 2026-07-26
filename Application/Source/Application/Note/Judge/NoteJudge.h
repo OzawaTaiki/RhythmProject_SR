@@ -11,6 +11,9 @@
 
 class Note;
 // ノート判定クラス
+/// <summary>
+/// NoteJudgeを表すクラス。
+/// </summary>
 class NoteJudge
 {
 public:

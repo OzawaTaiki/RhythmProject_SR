@@ -22,6 +22,9 @@
 namespace Engine { class Camera; }
 
 // ゲームの核となる部分
+/// <summary>
+/// GameCoreを表すクラス。
+/// </summary>
 class GameCore
 {
 public:
@@ -183,6 +186,9 @@ private:
 
 private:
 
+    /// <summary>
+    /// Stateを表す列挙型。
+    /// </summary>
     enum class State
     {
         waitingForStart, // 開始前オフセット待機中

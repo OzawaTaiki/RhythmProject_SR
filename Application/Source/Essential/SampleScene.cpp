@@ -23,6 +23,13 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kModelLayerOrder = 0;
+constexpr int32_t kMainLayerOrder = 1;
+constexpr int32_t kDefaultSampleRate = 44100;
+}
+
 SampleScene::~SampleScene()
 {
 }
@@ -97,8 +104,8 @@ void SampleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
     //soundInstance_ = AudioSystem::GetInstance()->Load("C:/Users/ozawa/Desktop/composite_100Hz_1000Hz_10000Hz.wav");
 
 
-    LayerSystem::CreateLayer("Model", 0);
-    LayerSystem::CreateLayer("Main", 1);
+    LayerSystem::CreateLayer("Model", kModelLayerOrder);
+    LayerSystem::CreateLayer("Main", kMainLayerOrder);
 
     textGenerator_.Initialize(FontConfig());
 
@@ -106,11 +113,9 @@ void SampleScene::Initialize([[maybe_unused]] SceneData* _sceneData)
     //textureGenerator_->Initialize({ 0.0f,0.0f ,0.0f ,0.3f });
 
     audioSpectrum_ = std::make_unique<AudioSpectrum>();
-    const int sampleRate = 44100;
-
     //= SegmentedAudioGenerator::GenerateSegmentedTones(sampleRate, duration);
     audioSpectrum_->SetAudioData(soundInstance_->GetAudioData());
-    audioSpectrum_->SetSampleRate(sampleRate);
+    audioSpectrum_->SetSampleRate(kDefaultSampleRate);
 
     Time::SetDeltaTimeFixed(false);
 

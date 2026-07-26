@@ -39,6 +39,9 @@ private:
 
 private:
 
+    /// <summary>
+    /// NoteColorを表す構造体。
+    /// </summary>
     struct NoteColor
     {
         Engine::Vector4 defaultColor;

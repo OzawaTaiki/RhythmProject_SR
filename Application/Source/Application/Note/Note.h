@@ -77,6 +77,9 @@ protected:
 };
 
 // 通常ノーツクラス
+/// <summary>
+/// NormalNoteを表すクラス。
+/// </summary>
 class NormalNote : public Note
 {
 public:
@@ -91,6 +94,9 @@ public:
 };
 
 // ロングノーツクラス
+/// <summary>
+/// LongNoteを表すクラス。
+/// </summary>
 class LongNote : public Note
 {
 public:

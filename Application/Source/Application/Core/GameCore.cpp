@@ -12,6 +12,11 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr float kMillisecondsPerSecond = 1000.0f;
+}
+
 GameCore::GameCore(int32_t laneCount)
     : laneCount_(laneCount), waitTimer_(0.0f),
     noteDeletePosition_(0.0f), maxCombo_(0), combo_(0)
@@ -72,7 +77,7 @@ void GameCore::Update(float deltaTime, const std::vector<InputData>& inputData)
 
     for (auto& lane : lanes_)
     {
-        lane->Update(elapsedTime + musicLatencyMs_ / 1000.0f, noteSpeed_);
+        lane->Update(elapsedTime + musicLatencyMs_ / kMillisecondsPerSecond, noteSpeed_);
     }
 }
 
@@ -190,7 +195,7 @@ void GameCore::JudgeNotesInAutoMode(float elapsedTime)
             continue;
 
         JudgeType result = noteJudge_->ProcessNoteJudge(
-            note, elapsedTime + musicLatencyMs_ / 1000.0f);
+            note, elapsedTime + musicLatencyMs_ / kMillisecondsPerSecond);
         if (result != JudgeType::Perfect)
             continue; // 判定なしの場合はスキップ
 
@@ -210,7 +215,7 @@ JudgeType GameCore::ProcessNormalNote(Note* note, const InputData& inputData)
     if (inputData.state == KeyState::Trigger)
     {
         return noteJudge_->ProcessNoteJudge(note, inputData.elapsedTime +
-                                            musicLatencyMs_ / 1000.0f);
+                                            musicLatencyMs_ / kMillisecondsPerSecond);
     }
 
     return JudgeType::None;
@@ -222,7 +227,7 @@ JudgeType GameCore::ProcessHoldNote(Note* note, const InputData& inputData, Lane
     if (inputData.state == KeyState::Trigger)
     {
         JudgeType result = noteJudge_->ProcessNoteJudge(
-            note, inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
+            note, inputData.elapsedTime + musicLatencyMs_ / kMillisecondsPerSecond);
 
         if (result != JudgeType::None && result != JudgeType::Miss)
         {
@@ -256,7 +261,7 @@ JudgeType GameCore::ProcessHoldEndNote(Note* note, const InputData& inputData, L
         if (inputData.state == KeyState::Released)
         {
             JudgeType result = noteJudge_->ProcessNoteJudge(
-                note, inputData.elapsedTime + musicLatencyMs_ / 1000.0f);
+                note, inputData.elapsedTime + musicLatencyMs_ / kMillisecondsPerSecond);
 
             lane->EndHold();
             // holdState_.EndHold(); // ホールド状態を終了

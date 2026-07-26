@@ -10,6 +10,9 @@
 #include <cstdint>
 
 // 判定をもっておくクラス
+/// <summary>
+/// JudgeResultを表すクラス。
+/// </summary>
 class JudgeResult
 {
 public:

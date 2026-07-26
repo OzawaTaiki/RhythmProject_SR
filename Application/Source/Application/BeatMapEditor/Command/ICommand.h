@@ -6,6 +6,9 @@
 /// <remarks>
 /// Command パターンで使用する基本インターフェース。Execute と Undo を実装する。
 /// </remarks>
+/// <summary>
+/// ICommandを表すクラス。
+/// </summary>
 class ICommand 
 {
 

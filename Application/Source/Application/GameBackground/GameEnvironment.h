@@ -20,6 +20,9 @@
 #include <vector>
 
 
+/// <summary>
+/// ColorChangeEventを表す構造体。
+/// </summary>
 struct ColorChangeEvent : Engine::EventData
 {
     Engine::ObjectModel* targets;

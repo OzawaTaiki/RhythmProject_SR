@@ -5,6 +5,9 @@
 #include <Math/Vector/Vector2.h>
 #include <Features/Json/JsonBinder.h>
 
+/// <summary>
+/// SceneTransHexを表すクラス。
+/// </summary>
 class SceneTransHex : public Engine::ISceneTransition
 {
 public:
@@ -53,6 +56,9 @@ private:
 
 
     // 六角形のひとつのパラメータ構造体
+    /// <summary>
+    /// Hexagonを表す構造体。
+    /// </summary>
     struct Hexagon
     {
         Engine::Vector2 position; // 六角形の位置

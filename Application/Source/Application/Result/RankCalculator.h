@@ -4,11 +4,17 @@
 #include <map>
 #include <string>
 
+/// <summary>
+/// Rankを表す列挙型。
+/// </summary>
 enum class Rank
 {
     S, A, B, C
 };
 
+/// <summary>
+/// RankCalculatorを表すクラス。
+/// </summary>
 class RankCalculator
 {
 public:

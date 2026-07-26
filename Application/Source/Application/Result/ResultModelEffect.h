@@ -11,6 +11,9 @@
 // 前方宣言
 namespace Engine { class Camera; }
 
+/// <summary>
+/// ModelKindを表す列挙型。
+/// </summary>
 enum class ModelKind
 {
     RankChar, // ランク文字
@@ -20,6 +23,9 @@ enum class ModelKind
     MAX
 };
 
+/// <summary>
+/// ResultModelEffectを表すクラス。
+/// </summary>
 class ResultModelEffect
 {
 public:

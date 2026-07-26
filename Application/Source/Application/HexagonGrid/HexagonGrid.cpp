@@ -3,14 +3,18 @@
 #include <Debug/ImGuiDebugManager.h>
 #include <Features/UI/Component/UIColliderComponent.h>
 #include <Features/UI/Component/UISpriteRenderComponent.h>
+#include <System/Time/Time.h>
 #include <numbers>
+#include <Core/WinApp/WinApp.h>
 
 using namespace Engine;
 
 namespace
 {
 // 描画エリア
-Rect drawArea(Vector2(0, 0), Vector2(1280, 720));
+Rect drawArea(Vector2(0, 0), WinApp::kWindowSize_);
+constexpr float kHexagonMoveSpeedX = -2.0f;
+constexpr float kHexagonMoveSpeedY = 1.0f;
 }
 
 void HexagonGrid::Initialize(const Rect& area)
@@ -33,7 +37,8 @@ void HexagonGrid::Update()
     float height = radius_ * 1.5f;
 
     // グリッド全体のオフセットを更新
-    moveOffset_ += Vector2(-2.0f, 1.0f) * 0.016f;
+    const Vector2 moveSpeed(kHexagonMoveSpeedX, kHexagonMoveSpeedY);
+    moveOffset_ += moveSpeed * Time::GetDeltaTime<float>();
 
     // ループ処理: オフセットが一定値を超えたらリセット
     // X方向のループ（2列分で1周期）

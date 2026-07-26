@@ -5,6 +5,9 @@
 #include <memory>
 
 
+/// <summary>
+/// NoteDrawerを表すクラス。
+/// </summary>
 class NoteDrawer
 {
 public:

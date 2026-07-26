@@ -4,6 +4,11 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kFocusFrameOrder = 5000;
+}
+
 // TODO : 文字化け
 
 void FocusFrame::Initialize()
@@ -21,7 +26,7 @@ void FocusFrame::Initialize()
         );
         focusFrames_[i]->Initialize();
         focusFrames_[i]->SetSize({ 1,1 });
-        focusFrames_[i]->SetOrder(5000);
+        focusFrames_[i]->SetOrder(kFocusFrameOrder);
     }
 
 }

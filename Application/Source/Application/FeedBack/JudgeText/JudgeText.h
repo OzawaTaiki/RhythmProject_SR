@@ -58,7 +58,7 @@ private:
     /// <summary>
     /// テキストのアニメーション処理（内部）
     /// </summary>
-    void AnimateText();
+    void AnimateText(float deltaTime);
 
 private:
 

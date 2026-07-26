@@ -20,6 +20,9 @@ class InstancedObjectModel;
 /// ・揺れ：ベーススイング × 低〜中域FFTエネルギーで振幅（個体ごとに位相をずらす）
 /// ・色＆本数：コンボ数で本数が増え、カラフルになる
 /// </summary>
+/// <summary>
+/// PenlightCrowdを表すクラス。
+/// </summary>
 class PenlightCrowd
 {
 public:

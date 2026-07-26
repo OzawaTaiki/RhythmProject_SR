@@ -11,6 +11,9 @@
 /// <remarks>
 /// コマンドの実行、元に戻す (Undo)、やり直す (Redo) の履歴を管理します。
 /// </remarks>
+/// <summary>
+/// CommandHistoryを表すクラス。
+/// </summary>
 class CommandHistory
 {
 public:

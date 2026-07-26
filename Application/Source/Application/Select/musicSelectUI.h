@@ -9,6 +9,9 @@
 
 
 // イベント発行時のデータ構造体
+/// <summary>
+/// MusicSelectUIEventDataを表す構造体。
+/// </summary>
 struct MusicSelectUIEventData : Engine::EventData
 {
     std::string selectedFilePath; // 選択されたファイルパス

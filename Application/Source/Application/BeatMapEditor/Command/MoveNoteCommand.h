@@ -11,6 +11,9 @@ namespace BME
 class Document;
 
 // ノートを移動するコマンド
+/// <summary>
+/// MoveNoteCommandを表すクラス。
+/// </summary>
 class MoveNoteCommand : public ICommand
 {
 public:
@@ -33,6 +36,9 @@ private:
 
     float deltaTime_ = 0.0f; // 移動する時間の差分
 
+    /// <summary>
+    /// NoteIdentifierを表す構造体。
+    /// </summary>
     struct NoteIdentifier
     {
         float time; // ノートの時間

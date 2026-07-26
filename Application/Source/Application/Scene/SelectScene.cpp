@@ -13,6 +13,13 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kBackgroundLayerOrder = 0;
+constexpr int32_t kRingLayerOrder = 40;
+constexpr int32_t kUiLayerOrder = 60;
+}
+
 SelectScene::SelectScene()
 {
     EventManager::GetInstance()->AddEventListener("StartGame", this);
@@ -65,9 +72,9 @@ void SelectScene::Initialize([[maybe_unused]] SceneData* sceneData)
     selectUI_ = std::make_unique<SelectUI>();
     selectUI_->Initialize(voiceInstance_);
 
-    LayerSystem::CreateLayer("back", 0);
-    LayerSystem::CreateLayer("ring", 40);
-    LayerSystem::CreateLayer("ui", 60);
+    LayerSystem::CreateLayer("back", kBackgroundLayerOrder);
+    LayerSystem::CreateLayer("ring", kRingLayerOrder);
+    LayerSystem::CreateLayer("ui", kUiLayerOrder);
 
 }
 

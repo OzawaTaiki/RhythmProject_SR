@@ -24,6 +24,9 @@
 /// counter.Update();
 /// float bpm = counter.GetBPM();
 /// </example>
+/// <summary>
+/// TapBPMCounterを表すクラス。
+/// </summary>
 class TapBPMCounter
 {
 public:

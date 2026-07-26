@@ -15,15 +15,19 @@ namespace BME {
 
 void EditorRenderer::Initialize(EditorCoordinate* _coordinate, State* _state,const Matrix4x4& _matVP)
 {
+    constexpr int32_t kMainLayerOrder = 0;
+    constexpr int32_t kMiddleLayerOrder = 100;
+    constexpr int32_t kTopLayerOrder = 2000;
+
     noteRenderer_.Initialize();
     gridRenderer_.Initialize(_coordinate);
     waveformRenderer_.Initialize(_matVP);
     timelineRenderer_.Initialize([_state]() { _state->SetToTestMode(true); });
     uiController_.Initialize();
 
-    LayerSystem::CreateLayer("main", 0);
-    LayerSystem::CreateLayer("mid", 100);
-    LayerSystem::CreateLayer("top", 2000);
+    LayerSystem::CreateLayer("main", kMainLayerOrder);
+    LayerSystem::CreateLayer("mid", kMiddleLayerOrder);
+    LayerSystem::CreateLayer("top", kTopLayerOrder);
 }
 
 void EditorRenderer::Update(

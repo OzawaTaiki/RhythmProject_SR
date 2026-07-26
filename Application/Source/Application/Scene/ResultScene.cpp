@@ -10,6 +10,13 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kBoxFilterKernelSize = 11;
+constexpr int32_t kGameBackgroundLayerOrder = 0;
+constexpr int32_t kMainLayerOrder = 1;
+}
+
 ResultScene::ResultScene()
 {
     EventManager::GetInstance()->AddEventListener("ResultToTitle", this);
@@ -75,13 +82,13 @@ void ResultScene::Initialize(SceneData* sceneData)
     boxFilter_ = std::make_unique<BoxFilter>();
     boxFilter_->Initialize();
 
-    boxFilterData_.kernelSize = 11; // カーネルサイズを設定
+    boxFilterData_.kernelSize = kBoxFilterKernelSize;
 
     boxFilter_->SetData(&boxFilterData_);
 
 
-    LayerSystem::CreateLayer("GameBackground", 0);
-    LayerSystem::CreateLayer("Main", 1);
+    LayerSystem::CreateLayer("GameBackground", kGameBackgroundLayerOrder);
+    LayerSystem::CreateLayer("Main", kMainLayerOrder);
     LayerSystem::CreateOutputLayer("BoxFilter");
 }
 

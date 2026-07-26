@@ -2,6 +2,9 @@
 
 #include <Features/Scene/Interface/BaseScene.h>
 
+/// <summary>
+/// LoadSceneを表すクラス。
+/// </summary>
 class LoadScene : public Engine::BaseScene
 {
 public:

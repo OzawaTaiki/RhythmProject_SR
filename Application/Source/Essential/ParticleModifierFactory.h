@@ -2,6 +2,9 @@
 
 #include <Features/Effect/Modifier/IPaticleMoifierFactory.h>
 
+/// <summary>
+/// ParticleModifierFactoryを表すクラス。
+/// </summary>
 class ParticleModifierFactory : public Engine::IParticleMoifierFactory
 {
 

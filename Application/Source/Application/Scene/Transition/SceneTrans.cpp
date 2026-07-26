@@ -8,6 +8,11 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kTransitionLayerOrder = 100000;
+}
+
 
 void SceneTrans::Initialize()
 {
@@ -31,7 +36,7 @@ void SceneTrans::Initialize()
     loadingText_->Initialize();
 
 
-    LayerSystem::CreateLayer("SceneTransition", 100000); // トランジション用のレイヤーを作成
+    LayerSystem::CreateLayer("SceneTransition", kTransitionLayerOrder);
 }
 
 void SceneTrans::Update()

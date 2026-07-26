@@ -11,6 +11,15 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kBackgroundLayerOrder = 0;
+constexpr int32_t kButtonLayerOrder = 20;
+constexpr int32_t kRingLayerOrder = 40;
+constexpr int32_t kOptionLayerOrder = 60;
+constexpr float kDefaultBpm = 100.0f;
+}
+
 TitleScene::TitleScene()
 {
     EventManager::GetInstance()->AddEventListener("RequestStartGame", this);
@@ -65,14 +74,14 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
 
     textGenerator_.Initialize(FontConfig(Vector2(1024, 1024), 64));
 
-    LayerSystem::CreateLayer("back", 0);
-    LayerSystem::CreateLayer("buttons", 20);
-    LayerSystem::CreateLayer("ring", 40);
-    LayerSystem::CreateLayer("option", 60);
+    LayerSystem::CreateLayer("back", kBackgroundLayerOrder);
+    LayerSystem::CreateLayer("buttons", kButtonLayerOrder);
+    LayerSystem::CreateLayer("ring", kRingLayerOrder);
+    LayerSystem::CreateLayer("option", kOptionLayerOrder);
 
     // ビートマネージャーの初期化
     beatManager_ = std::make_unique<BeatManager>();
-    beatManager_->Initialize(100.0f);
+    beatManager_->Initialize(kDefaultBpm);
     beatManager_->SetMusicVoiceInstance(voiceInstance_);
 
     spectrumRing_ = std::make_shared<SpectrumRing>();
@@ -94,7 +103,7 @@ void TitleScene::Initialize([[maybe_unused]] SceneData* sceneData)
     uvAnimation_.Play();
 
     hexagonGrid_ = std::make_shared<HexagonGrid>();
-    Rect area(Vector2(0, 0), Vector2(1280, 720));
+    Rect area(Vector2(0, 0), WinApp::kWindowSize_);
     hexagonGrid_->Initialize(area);
 }
 

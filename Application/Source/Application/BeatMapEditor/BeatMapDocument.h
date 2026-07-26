@@ -12,6 +12,9 @@ namespace BME // Beat Map Editor
 /// <remarks>
 /// コマンド生成時に渡して譜面データの変更を行う
 /// </remarks>
+/// <summary>
+/// Documentを表すクラス。
+/// </summary>
 class Document
 {
 public:

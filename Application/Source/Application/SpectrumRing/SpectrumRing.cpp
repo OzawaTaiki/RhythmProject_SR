@@ -13,13 +13,14 @@ using namespace Engine;
 
 namespace
 {
+constexpr int32_t kDefaultFftExponent = 15;
 float innerRadius = 1.0f;
 float outerRadius = 3.0f;
 
 size_t numRings = 5;
 Vector4 clearColor = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
-int32_t fftsize = 32768;
+int32_t fftsize = 1 << kDefaultFftExponent;
 int32_t barCount = 48;
 float minHz = 20.0f;
 float maxHz = 10000.0f;
@@ -44,7 +45,7 @@ void SpectrumRing::Update(float elapsedTime)
 #ifdef _DEBUG
     if (ImGuiDebugManager::GetInstance()->Begin("SpectrumRing"))
     {
-        static int n = 15; // 2^15 = 32768
+        static int n = kDefaultFftExponent;
         ImGui::SliderInt("N (FFT = 2^N)", &n, 10, 16);
         ImGui::Text("= %d", 1 << n);
         if (ImGui::Button("Apply"))

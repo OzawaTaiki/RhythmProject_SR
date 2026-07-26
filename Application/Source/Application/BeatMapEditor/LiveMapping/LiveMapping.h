@@ -6,6 +6,9 @@
 #include <cstdint>
 #include <vector>
 
+/// <summary>
+/// MappingDataを表す構造体。
+/// </summary>
 struct MappingData
 {
     int32_t laneIndex; // レーンインデックス
@@ -17,6 +20,9 @@ struct MappingData
 
 };
 
+/// <summary>
+/// LiveMappingを表すクラス。
+/// </summary>
 class LiveMapping
 {
 public:

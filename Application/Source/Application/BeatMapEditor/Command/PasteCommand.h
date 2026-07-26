@@ -9,6 +9,9 @@ namespace BME
 class Document;
 
 // コピーしたノートデータをペーストするコマンド
+/// <summary>
+/// PasteCommandを表すクラス。
+/// </summary>
 class PasteCommand : public ICommand
 {
 public:

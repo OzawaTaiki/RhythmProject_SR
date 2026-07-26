@@ -41,6 +41,9 @@ class BeatMapEditor
 {
 private:
     // エディターモード
+    /// <summary>
+    /// EditorModeを表す列挙型。
+    /// </summary>
     enum class EditorMode
     {
         Select, // 選択
@@ -103,6 +106,9 @@ public:
     void TriggerAutoGenerate(const BME::AutoChartGenerator::Settings& settings);
 
 private:
+    /// <summary>
+    /// NoteColorを表す構造体。
+    /// </summary>
     struct NoteColor
     {
         Engine::Vector4 defaultColor;
@@ -110,6 +116,9 @@ private:
         Engine::Vector4 selectedColor;
     };
 
+    /// <summary>
+    /// MoveStateを表す構造体。
+    /// </summary>
     struct MoveState
     {
         bool isMoving = false; // 移動中フラグ
@@ -117,6 +126,9 @@ private:
         std::vector<size_t> movingIndices; // 移動対象のノートインデックス
     };
 
+    /// <summary>
+    /// ClipboardDataを表す構造体。
+    /// </summary>
     struct ClipboardData
     {
         std::vector<NoteData> notes; // コピーしたノートデータ

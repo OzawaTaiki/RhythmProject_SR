@@ -12,6 +12,11 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kPreviewSpriteOrder = 300;
+}
+
 
 
 void SettingsPreviewPanel::Initialize()
@@ -87,7 +92,7 @@ void SettingsPreviewPanel::Initialize()
     previewSprite_ = std::make_unique<UIImageElement>("SettingsPreviewPanelSprite", Vector2(0, 0), Vector2(320, WinApp::kWindowSize_.y));
     previewSprite_->Initialize();
     previewSprite_->SetTexture(previewTextureHandle_);
-    previewSprite_->SetOrder(300);
+    previewSprite_->SetOrder(kPreviewSpriteOrder);
 };
 
 void SettingsPreviewPanel::Update()

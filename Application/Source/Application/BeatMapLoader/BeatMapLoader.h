@@ -11,6 +11,9 @@
 #include <json.hpp>
 
 /// 譜面データローダークラス
+/// <summary>
+/// BeatMapLoaderを表すクラス。
+/// </summary>
 class BeatMapLoader
 {
 public:

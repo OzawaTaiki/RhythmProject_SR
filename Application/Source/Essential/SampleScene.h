@@ -30,6 +30,9 @@
 
 #include <Features/TextRenderer/Text3DRenderer.h>
 #include <Features/TextRenderer/AtlasData.h>
+/// <summary>
+/// SampleSceneを表すクラス。
+/// </summary>
 class SampleScene : public Engine::BaseScene
 {
 public:

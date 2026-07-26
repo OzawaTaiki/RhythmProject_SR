@@ -3,6 +3,9 @@
 #include <Features/Camera/Camera/Camera.h>
 #include <Features/Animation/Sequence/AnimationSequence.h>
 
+/// <summary>
+/// LobbyCameraを表すクラス。
+/// </summary>
 class LobbyCamera
 {
 public:

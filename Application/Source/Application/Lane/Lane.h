@@ -9,6 +9,9 @@
 namespace Engine { class Camera; }
 
 // 単一のレーン
+/// <summary>
+/// Laneを表すクラス。
+/// </summary>
 class Lane
 {
 public:

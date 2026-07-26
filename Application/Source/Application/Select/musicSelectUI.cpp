@@ -18,6 +18,7 @@ namespace
 {
 const int32_t kVisibleCount = 7; // 一度に表示するアイテム数
 const int32_t kHalfVisibleCount = (kVisibleCount - 1) / 2;
+constexpr int32_t kMusicButtonOrder = 100;
 Vector4 focusColor = Vector4(0.44f, 0.66f, 0.97f, 1.0f);
 
 }
@@ -184,7 +185,7 @@ void MusicSelectUI::InitializeItemsFromData()
             std::string buttonName = "MusicSelectButton" + std::to_string(uiItems_.size());
             auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
             button->Initialize();
-            button->SetOrder(100);
+            button->SetOrder(kMusicButtonOrder);
             button->SetNormalColor(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
             button->SetFocusColor(focusColor);  // フォーカス時もブルーを維持
             button->SetTextColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -416,7 +417,7 @@ void MusicSelectUI::EnsureMinimumItems()
 
         auto button = std::make_unique<UIButtonElement>("MusicSelectButton", Vector2(0.0f, 0.0f), Vector2(200.0f, 50.0f), buttonName);
         button->Initialize();
-        button->SetOrder(100);
+        button->SetOrder(kMusicButtonOrder);
         button->SetNormalColor(Vector4(0.15f, 0.15f, 0.15f, 1.0f));
         button->SetTextColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
         auto comp = button->GetComponent<UISpriteRenderComponent>();

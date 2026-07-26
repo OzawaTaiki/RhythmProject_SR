@@ -35,6 +35,9 @@ public:
 private:
 
     // UIの種類
+    /// <summary>
+    /// UIsを表す列挙型。
+    /// </summary>
     enum class UIs
     {
         MainBackground, // メイン背景
@@ -46,6 +49,9 @@ private:
 
     };
     // テキストの種類
+    /// <summary>
+    /// TextTypeを表す列挙型。
+    /// </summary>
     enum class TextType
     {
         Title, // タイトル
@@ -90,6 +96,9 @@ private:
     // ジャッジタイプからテキストタイプを取得
     TextType GetTextTypeFromJudgeType(JudgeType judgeType) const;
 
+    /// <summary>
+    /// EventTypeを表す列挙型。
+    /// </summary>
     enum class EventType
     {
         ToTitle,
@@ -100,6 +109,9 @@ private:
 
     std::string musicTitle_ = ""; // 楽曲のタイトル
     // アニメーション用の値
+    /// <summary>
+    /// AnimationValueを表す構造体。
+    /// </summary>
     struct AnimationValue
     {
         Engine::Vector2 position = { 0, 0 }; // 座標
@@ -111,6 +123,9 @@ private:
         float delay = 0.0f; // アニメーションの遅延時間
     };
 
+    /// <summary>
+    /// CounterValueを表す構造体。
+    /// </summary>
     struct CounterValue
     {
         int32_t value = 0; // データ保持用
@@ -127,6 +142,9 @@ private:
 
 
     // textParamの拡張
+    /// <summary>
+    /// ExtendedTextParamを表す構造体。
+    /// </summary>
     struct ExtendedTextParam
     {
         std::wstring label; // ラベル

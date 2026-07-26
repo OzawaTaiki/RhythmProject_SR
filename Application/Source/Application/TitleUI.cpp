@@ -5,6 +5,7 @@
 #include <Features/UI/Element/UIButtonElement.h>
 #include <Features/UI/Element/UIElement.h>
 #include <Features/UI/UINavigationManager.h>
+#include <System/Time/Time.h>
 
 using namespace Engine;
 
@@ -46,7 +47,7 @@ void TitleUI::Update() {
 
 #endif // _DEBUG
 
-  float delta = 0.016f;
+  const float delta = Time::GetDeltaTime<float>();
   if (isExpanding_) {
     isActive_ = true;
     currentTime_ += delta;

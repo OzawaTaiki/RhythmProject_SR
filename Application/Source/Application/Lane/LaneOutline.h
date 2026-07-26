@@ -8,6 +8,9 @@
 namespace Engine { class Camera; }
 class ComboThresholds;
 
+/// <summary>
+/// LaneOutlineを表すクラス。
+/// </summary>
 class LaneOutline
 {
 public:

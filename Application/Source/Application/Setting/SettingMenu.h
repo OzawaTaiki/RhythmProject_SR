@@ -8,6 +8,9 @@
 #include <Application/Setting/Preview/SettingsPreviewPanel.h>
 
 // スライダーの値が変更されたときのイベントデータ
+/// <summary>
+/// ValueChangedEventDataを表す構造体。
+/// </summary>
 struct ValueChangedEventData : Engine::EventData
 {
     ValueChangedEventData(const std::string& name, float value)

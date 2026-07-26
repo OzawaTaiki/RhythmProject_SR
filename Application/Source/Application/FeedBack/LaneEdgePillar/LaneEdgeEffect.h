@@ -73,6 +73,9 @@ private:
 };
 
 #include <Features/Effect/Modifier/ParticleModifier.h>
+/// <summary>
+/// LaneEdgeParticleModifierを表すクラス。
+/// </summary>
 class LaneEdgeParticleModifier : public Engine::ParticleModifier
 {
 public:
@@ -82,6 +85,9 @@ public:
     void Apply(Engine::Particle* particle, float deltaTime) override;
 };
 
+/// <summary>
+/// LaneEdgePillarModifierを表すクラス。
+/// </summary>
 class LaneEdgePillarModifier : public Engine::ParticleModifier
 {
 public:

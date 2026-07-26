@@ -8,6 +8,9 @@ namespace BME
 
 class Document;
 
+/// <summary>
+/// BatchInsertNotesCommandを表すクラス。
+/// </summary>
 class BatchInsertNotesCommand : public ICommand
 {
 public:

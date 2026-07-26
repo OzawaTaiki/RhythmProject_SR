@@ -2,6 +2,9 @@
 
 #include <Features/Scene/ISceneFactory.h>
 
+/// <summary>
+/// SceneFactoryを表すクラス。
+/// </summary>
 class SceneFactory : public Engine::ISceneFactory
 {
 public:

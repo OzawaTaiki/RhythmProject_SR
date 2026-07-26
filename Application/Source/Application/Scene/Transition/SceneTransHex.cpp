@@ -9,6 +9,11 @@
 
 using namespace Engine;
 
+namespace
+{
+constexpr int32_t kTransitionLayerOrder = 100000;
+}
+
 SceneTransHex::SceneTransHex()
 {
     ImGuiDebugManager::GetInstance()->AddDebugWindow("SceneTransHex", [this]() { ImGui(); });
@@ -28,7 +33,7 @@ void SceneTransHex::Initialize()
     // 六角形のスプライトを作成
     CreateHexagons();
 
-    LayerSystem::CreateLayer("SceneTransition", 100000); // トランジション用のレイヤーを作成
+    LayerSystem::CreateLayer("SceneTransition", kTransitionLayerOrder);
 
 }
 

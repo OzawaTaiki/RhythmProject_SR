@@ -34,6 +34,9 @@
 #include <Application/Lane/LaneOutline.h>
 #include <Application/GameCompleteEffect.h>
 
+/// <summary>
+/// GameModeを表す列挙型。
+/// </summary>
 enum class GameMode
 {
     Normal,
@@ -109,6 +112,9 @@ private:
     void Load(const std::string& beforeScene, const std::string& filepth, const BeatMapData& data);
 private:
 
+    /// <summary>
+    /// SceneStateを表す列挙型。
+    /// </summary>
     enum class SceneState
     {
         Loading,    // ロード中

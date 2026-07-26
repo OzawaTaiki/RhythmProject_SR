@@ -13,10 +13,16 @@ namespace Engine
 {
 class EventManager;
 }
+/// <summary>
+/// TitleUIを表すクラス。
+/// </summary>
 class TitleUI : public Engine::iEventListener
 {
 private:
 
+    /// <summary>
+    /// TitleUIElementを表す列挙型。
+    /// </summary>
     enum class TitleUIElement
     {
         Background,
@@ -30,6 +36,9 @@ private:
 
         Max
     };
+    /// <summary>
+    /// AnimationUIElementを表す構造体。
+    /// </summary>
     struct AnimationUIElement
     {
         Engine::UIElement* uiElement = nullptr;

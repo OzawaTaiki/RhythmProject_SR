@@ -55,7 +55,7 @@ void JudgeText::Update(float deltaTime)
 {
     timer_ += deltaTime;
 
-    AnimateText();
+    AnimateText(deltaTime);
     UpdateTextParam();
 
     // 表示時間を超えたら終了
@@ -72,9 +72,9 @@ void JudgeText::Draw()
     text_.Draw(judgeText_, textParam_);
 }
 
-void JudgeText::AnimateText()
+void JudgeText::AnimateText(float deltaTime)
 {
-    animationSequence_->Update(0.016f);
+    animationSequence_->Update(deltaTime);
 
     alpha_ = animationSequence_->GetValue<float>("color_alpha"); // アルファ値の取得
     scale_ = animationSequence_->GetValue<Vector2>("scale"); // テキストのスケールの取得

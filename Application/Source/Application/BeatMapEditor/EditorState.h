@@ -10,6 +10,9 @@
 namespace BME
 {
 // エディターモード
+/// <summary>
+/// EditorModeを表す列挙型。
+/// </summary>
 enum class EditorMode
 {
     Select, // 選択
@@ -23,6 +26,9 @@ enum class EditorMode
 };
 
 
+/// <summary>
+/// MoveStateを表す構造体。
+/// </summary>
 struct MoveState
 {
     bool isMoving = false; // 移動中フラグ
@@ -33,6 +39,9 @@ struct MoveState
 };
 
 
+/// <summary>
+/// ClipboardDataを表す構造体。
+/// </summary>
 struct ClipboardData
 {
     std::vector<NoteData> notes; // コピーしたノートデータ

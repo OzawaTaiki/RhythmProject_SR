@@ -5,6 +5,9 @@
 #include <Features/AudioSpectrum/AudioSpectrum.h>
 #include <Features/Json/JsonBinder.h>
 
+/// <summary>
+/// SpeakerSpectrumReactionを表すクラス。
+/// </summary>
 class SpeakerSpectrumReaction
 {
 public:

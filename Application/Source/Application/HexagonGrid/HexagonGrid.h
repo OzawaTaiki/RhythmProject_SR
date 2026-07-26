@@ -4,6 +4,9 @@
 #include <Math/Rect/Rect.h>
 
 
+/// <summary>
+/// HexagonGridを表すクラス。
+/// </summary>
 class HexagonGrid
 {
 public:

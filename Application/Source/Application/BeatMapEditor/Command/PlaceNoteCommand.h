@@ -10,6 +10,9 @@ namespace BME
 class Document;
 
 // ノート配置コマンドクラス
+/// <summary>
+/// PlaceNoteCommandを表すクラス。
+/// </summary>
 class PlaceNoteCommand : public ICommand
 {
 public:

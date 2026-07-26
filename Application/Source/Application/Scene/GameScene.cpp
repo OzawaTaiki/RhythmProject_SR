@@ -28,6 +28,17 @@ using namespace Engine;
 #include <Features/TextRenderer/Text3DRenderer.h>
 #include <Features/UI/UINavigationManager.h>
 
+namespace
+{
+constexpr float kDefaultBpm = 100.0f;
+constexpr int32_t kGameBackgroundLayerOrder = 0;
+constexpr int32_t kGameCoreLayerOrder = 10;
+constexpr int32_t kFeedbackEffectLayerOrder = 20;
+constexpr int32_t kPauseMenuLayerOrder = 30;
+constexpr int32_t kDefaultFftSize = 1 << 15;
+constexpr int32_t kLoadPollingIntervalMs = 10;
+}
+
 
 GameScene::GameScene()
 {
@@ -491,7 +502,7 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     beatMapLoader_ = BeatMapLoader::GetInstance();
 
     beatManager_ = std::make_unique<BeatManager>();
-    beatManager_->Initialize(100);
+    beatManager_->Initialize(kDefaultBpm);
 
 
 
@@ -531,10 +542,10 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
 
     isMusicPlaying_ = true;
 
-    LayerSystem::CreateLayer("GameBackground", 0);
-    LayerSystem::CreateLayer("GameCore", 10);
-    LayerSystem::CreateLayer("FeedbackEffect", 20, PSOFlags::BlendMode::Add);
-    LayerSystem::CreateLayer("PauseMenu", 30);
+    LayerSystem::CreateLayer("GameBackground", kGameBackgroundLayerOrder);
+    LayerSystem::CreateLayer("GameCore", kGameCoreLayerOrder);
+    LayerSystem::CreateLayer("FeedbackEffect", kFeedbackEffectLayerOrder, PSOFlags::BlendMode::Add);
+    LayerSystem::CreateLayer("PauseMenu", kPauseMenuLayerOrder);
     LayerSystem::CreateOutputLayer("Vignette");
     LayerSystem::CreateOutputLayer("Bloom");
     LayerSystem::CreateOutputLayer("DepthOutline");
@@ -580,10 +591,10 @@ void GameScene::Load(const std::string& beforeScene, const std::string& filepth,
     spectrumTextureGenerator_ = std::make_unique<SpectrumTextureGenerator>();
     spectrumTextureGenerator_->Initialize(Vector4(0, 0, 0, 1));
 
-    audioSpectrum_ = std::make_unique<AudioSpectrum>(32768);
+    audioSpectrum_ = std::make_unique<AudioSpectrum>(kDefaultFftSize);
 
     while (!IsCompleteLoadBeatMap())
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(kLoadPollingIntervalMs));
 
 
     feedbackEffect_->InitComboThresholds(static_cast<int32_t>(beatMapLoader_->GetLoadedBeatMapData().notes.size()));

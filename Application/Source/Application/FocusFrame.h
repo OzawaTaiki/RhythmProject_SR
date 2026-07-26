@@ -7,6 +7,9 @@ namespace Engine
 class UISpriteRenderComponent;
 }
 
+/// <summary>
+/// VertexTypeを表す列挙型。
+/// </summary>
 enum class VertexType
 {
     LeftTop,
@@ -15,6 +18,9 @@ enum class VertexType
     LeftBottom,
     Max
 };
+/// <summary>
+/// OutlineTracerを表す構造体。
+/// </summary>
 struct OutlineTracer
 {
     float progress;
@@ -23,6 +29,9 @@ struct OutlineTracer
     std::vector<Engine::Vector2> vertices;
 };
 
+/// <summary>
+/// FocusFrameを表すクラス。
+/// </summary>
 class FocusFrame
 {
 public:

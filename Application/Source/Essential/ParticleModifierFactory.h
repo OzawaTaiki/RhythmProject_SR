@@ -2,6 +2,9 @@
 
 #include <Features/Effect/Modifier/IPaticleMoifierFactory.h>
 
+/// <summary>
+/// 名前に対応するアプリケーション固有のパーティクルモディファイアを生成するファクトリクラス。
+/// </summary>
 class ParticleModifierFactory : public Engine::IParticleMoifierFactory
 {
 

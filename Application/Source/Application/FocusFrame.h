@@ -7,6 +7,9 @@ namespace Engine
 class UISpriteRenderComponent;
 }
 
+/// <summary>
+/// フォーカス枠を構成する四隅の頂点を表す列挙型。
+/// </summary>
 enum class VertexType
 {
     LeftTop,
@@ -15,6 +18,10 @@ enum class VertexType
     LeftBottom,
     Max
 };
+
+/// <summary>
+/// フォーカス枠の輪郭上を移動するトレーサーの進行度、周長、頂点列を保持する構造体。
+/// </summary>
 struct OutlineTracer
 {
     float progress;
@@ -23,6 +30,9 @@ struct OutlineTracer
     std::vector<Engine::Vector2> vertices;
 };
 
+/// <summary>
+/// 選択中のUI要素を囲むフォーカス枠の更新と描画を管理するクラス。
+/// </summary>
 class FocusFrame
 {
 public:

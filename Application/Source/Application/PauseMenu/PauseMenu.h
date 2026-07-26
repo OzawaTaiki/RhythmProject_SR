@@ -48,6 +48,9 @@ public:
     void ToActive();
 private:
 
+    /// <summary>
+    /// ポーズメニューから要求できる再開、再試行、タイトル遷移、設定表示のイベントを表す列挙型。
+    /// </summary>
     enum class EventType
     {
         Resume,

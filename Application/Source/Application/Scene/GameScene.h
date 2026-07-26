@@ -109,6 +109,9 @@ private:
     void Load(const std::string& beforeScene, const std::string& filepth, const BeatMapData& data);
 private:
 
+    /// <summary>
+    /// ゲームシーンのロード、開始待機、プレイ、一時停止、完了、リザルト遷移の進行状態を表す列挙型。
+    /// </summary>
     enum class SceneState
     {
         Loading,    // ロード中

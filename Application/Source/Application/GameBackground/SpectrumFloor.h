@@ -26,6 +26,9 @@ private:
     std::unique_ptr<Engine::InstancedObjectModel> models_;
     std::vector<std::vector<Engine::Vector3>> tilePositions_;
 
+    /// <summary>
+    /// スペクトラム床の各タイルが持つ演出時間、アクティブ状態、表示色を保持する構造体。
+    /// </summary>
     struct TileData
     {
         float timer_ = 0.0f;
@@ -33,7 +36,10 @@ private:
 
         Engine::Vector4 color_ = Engine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     };
-    // 縦のタイルとhz情報を持った構造体
+
+    /// <summary>
+    /// 周波数帯に対応する一列分のタイルと、参照するスペクトラム範囲を保持する構造体。
+    /// </summary>
     struct ColumnData
     {
         std::vector<TileData> tiles_;

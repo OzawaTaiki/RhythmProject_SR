@@ -183,6 +183,10 @@ private:
 
 private:
 
+    /// <summary>
+    /// ゲームコアの進行状態を表す列挙型。
+    /// 開始前の待機状態と、ノーツを処理するプレイ状態を区別する。
+    /// </summary>
     enum class State
     {
         waitingForStart, // 開始前オフセット待機中

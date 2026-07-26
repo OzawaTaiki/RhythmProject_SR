@@ -120,6 +120,9 @@ private:
     // 曲を停止時点での再生経過時間
     float pausedAtTime_ = 0.0f;
 
+    /// <summary>
+    /// 音量を一時的に下げるダッキング処理の状態、目標音量、継続時間、経過時間を保持する構造体。
+    /// </summary>
     struct DuckingInfo
     {
         bool isDucking = false; // ダッキング中かどうか

@@ -34,7 +34,9 @@ public:
 
 private:
 
-    // UIの種類
+    /// <summary>
+    /// リザルト画面を構成する背景および操作ボタンの種類を表す列挙型。
+    /// </summary>
     enum class UIs
     {
         MainBackground, // メイン背景
@@ -45,7 +47,10 @@ private:
         ReplayButton, // リプレイボタン
 
     };
-    // テキストの種類
+
+    /// <summary>
+    /// リザルト画面に表示する楽曲情報、スコア、判定数、コンボ、ランクのテキスト種類を表す列挙型。
+    /// </summary>
     enum class TextType
     {
         Title, // タイトル
@@ -90,6 +95,9 @@ private:
     // ジャッジタイプからテキストタイプを取得
     TextType GetTextTypeFromJudgeType(JudgeType judgeType) const;
 
+    /// <summary>
+    /// リザルト画面から通知するタイトル遷移およびリトライイベントを表す列挙型。
+    /// </summary>
     enum class EventType
     {
         ToTitle,
@@ -99,7 +107,10 @@ private:
 private:
 
     std::string musicTitle_ = ""; // 楽曲のタイトル
-    // アニメーション用の値
+
+    /// <summary>
+    /// UIアニメーションに使用する位置、移動量、拡大率、透明度、時間情報を保持する構造体。
+    /// </summary>
     struct AnimationValue
     {
         Engine::Vector2 position = { 0, 0 }; // 座標
@@ -111,6 +122,9 @@ private:
         float delay = 0.0f; // アニメーションの遅延時間
     };
 
+    /// <summary>
+    /// 数値を目標値まで段階的に表示するカウンターアニメーションの状態を保持する構造体。
+    /// </summary>
     struct CounterValue
     {
         int32_t value = 0; // データ保持用
@@ -126,7 +140,9 @@ private:
     std::unique_ptr<Engine::AnimationSequence> animForUI_ = nullptr; //UI用
 
 
-    // textParamの拡張
+    /// <summary>
+    /// リザルト用テキストのラベル、描画設定、アニメーション値、任意のカウンター値をまとめる構造体。
+    /// </summary>
     struct ExtendedTextParam
     {
         std::wstring label; // ラベル
